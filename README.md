@@ -196,7 +196,7 @@ npx serve .
 Open `http://localhost:8000` in your desktop or mobile browser.
 
 ### Option 3: Play directly
-[Live Server](https://thvariableyt.github.io/SUMIKIRI-/)
+[❇️Live Server](https://thvariableyt.github.io/SUMIKIRI-/)
 
 
 ---
