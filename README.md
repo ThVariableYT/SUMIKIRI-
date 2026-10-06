@@ -195,11 +195,9 @@ npx serve .
 ```
 Open `http://localhost:8000` in your desktop or mobile browser.
 
-### Option 3: Deploy to GitHub Pages in 30 Seconds
-1. Fork or push `index.html` to your GitHub repository.
-2. In your repository, navigate to **Settings** $\rightarrow$ **Pages**.
-3. Under **Branch**, select `main` (or `master`) and directory `/ (root)`.
-4. Click **Save**. Your game is now live and playable on both desktop and mobile!
+### Option 3: Play directly
+[Live Server](https://thvariableyt.github.io/SUMIKIRI-/)
+
 
 ---
 
