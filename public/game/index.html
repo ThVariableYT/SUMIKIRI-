@@ -456,7 +456,7 @@ const store={
   del(k){try{localStorage.removeItem(k);}catch(e){}}};
 
 const SAVE_KEY='sumikiri_v1';
-const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0},
+const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0,ki:0,mirror:0,stance:0,step:0,edge:0,rhythm:0},
   weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
   difficulty:1,shake:true,numbers:true,codex:true,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
 let SAVE=defaultSave();
@@ -661,7 +661,8 @@ const WEAPONS={
   katana:{name:'Katana',kanji:'刀',desc:'The honest answer. Balanced cuts, honest reach.',dmg:[10,12,17],rate:.24,range:84,arc:2.1,knock:130,cost:0},
   naginata:{name:'Naginata',kanji:'薙',desc:'Long reach, wide sweeps, a slower rhythm. The finisher spins full-circle.',dmg:[14,16,23],rate:.34,range:122,arc:2.5,knock:170,cost:600},
   twin:{name:'Twin Blades',kanji:'双',desc:'A blur of steel in four beats. Critical instinct.',dmg:[7,7,9,13],rate:.17,range:68,arc:1.95,knock:70,cost:900,crit:.08},
-  kanabo:{name:'Kanabō',kanji:'棒',desc:'Slow, brutal, shield-breaking. Every landfall trembles.',dmg:[27,42],rate:.52,range:94,arc:2.6,knock:340,cost:1400,guardBreak:true}};
+  kanabo:{name:'Kanabō',kanji:'棒',desc:'Slow, brutal, shield-breaking. Every landfall trembles.',dmg:[27,42],rate:.52,range:94,arc:2.6,knock:340,cost:1400,guardBreak:true},
+  kasa:{name:'Iron Kasa',kanji:'傘',desc:'A shed roof on a haft. Heavy in the hand, generous to the parry — every deflect answers with a fan of ink.',dmg:[11,14,17],rate:.32,range:82,arc:2.2,knock:120,cost:2200,unique:'+30% deflect window · deflects counter with an ink fan'}};
 const WKEYS=Object.keys(WEAPONS);
 
 const BLESS=[
@@ -699,7 +700,14 @@ const SHRINE=[
   {id:'fortune',n:'Fortune',k:'運',max:4,cost:l=>Math.round(130*Math.pow(1.7,l)),d:l=>`+10% ash from kills · now +${l*10}%`},
   {id:'discipline',n:'Discipline',k:'規',max:2,cost:l=>600+l*900,d:l=>`Begin every run with ${l} free inkmarks.`},
   {id:'rejuv',n:'Rejuvenation',k:'癒',max:4,cost:l=>Math.round(120*Math.pow(1.7,l)),d:l=>`+8% HP restored between stages · now +${22+l*8}%`},
-  {id:'talisman',n:'Talisman',k:'符',max:1,cost:()=>1400,d:()=>'Once per act, death returns you at half HP.'}];
+  {id:'talisman',n:'Talisman',k:'符',max:1,cost:()=>1400,d:()=>'Once per act, death returns you at half HP.'},
+  // the deeper shelves: for blades that keep coming home with full pockets
+  {id:'ki',n:'Ki Tempering',k:'気',max:3,cost:l=>Math.round(520*Math.pow(1.9,l)),d:l=>`ki from strikes and deflects +12% per rank · now +${l*12}%`},
+  {id:'mirror',n:'Mirror Hand',k:'弾',max:3,cost:l=>Math.round(640*Math.pow(1.9,l)),d:l=>`deflect window +15% per rank · now +${l*15}%`},
+  {id:'stance',n:'Stone Stance',k:'構',max:3,cost:l=>Math.round(700*Math.pow(1.9,l)),d:l=>`posture damage +15% per rank · now +${l*15}%`},
+  {id:'step',n:'Ghost Steps',k:'歩',max:2,cost:l=>1700+l*2400,d:l=>`+1 dash charge per rank · now +${l}`},
+  {id:'edge',n:'Honed Edge',k:'鋭',max:3,cost:l=>Math.round(560*Math.pow(1.9,l)),d:l=>`+3% critical chance per rank · now +${l*3}%`},
+  {id:'rhythm',n:'Rhythm of Steel',k:'律',max:1,cost:()=>2600,d:()=>'every fifth strike of a combo lands double posture.'}];
 
 const ENEMY={
   kappa:{name:'Kappa Imp',k:'河',hp:26,spd:128,r:15,dmg:9,ash:4,atk:'melee',rng:60,wind:.5,rec:.62,chain:1,peril:.22},
@@ -997,6 +1005,22 @@ for(let i=0;i<3;i++){const c=mkCanvas(400,200),g=c.getContext('2d');
     gr.addColorStop(0,'rgba(226,218,198,0.5)');gr.addColorStop(1,'rgba(226,218,198,0)');
     g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,TAU);g.fill();}
   MIST.push(c);}
+
+// light shafts, second draft: baked once, but alive this time — they drift,
+// breathe and lean, so they read as weather instead of a paper defect.
+const RAYS=[];
+for(let i=0;i<3;i++){const c=mkCanvas(360,640),g=c.getContext('2d');
+  for(let j=0;j<5;j++){const x=26+j*62+((j%2)*16),w=16+(j%3)*14,skew=96+i*34;
+    const gr=g.createLinearGradient(x,0,x+w,0);
+    gr.addColorStop(0,'rgba(248,240,214,0)');gr.addColorStop(.5,'rgba(248,240,214,0.5)');gr.addColorStop(1,'rgba(248,240,214,0)');
+    g.fillStyle=gr;
+    g.beginPath();g.moveTo(x,0);g.lineTo(x+w,0);g.lineTo(x+w+skew,640);g.lineTo(x+skew,640);g.closePath();g.fill();}
+  g.globalCompositeOperation='destination-in'; // dissolve toward the ground so the light never pools
+  const fd=g.createLinearGradient(0,0,0,640);
+  fd.addColorStop(0,'rgba(0,0,0,1)');fd.addColorStop(.7,'rgba(0,0,0,.6)');fd.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=fd;g.fillRect(0,0,360,640);
+  g.globalCompositeOperation='source-over';
+  RAYS.push(c);}
 
 const GRP=[];
 for(let i=0;i<3;i++){const S=256,c=mkCanvas(S,S),g=c.getContext('2d');
@@ -1794,17 +1818,18 @@ function teleHitPlayer(t){
 
 function newPlayer(){return{x:RW/2,y:RH*.68,vx:0,vy:0,r:13,hp:100,maxhp:100,facing:0,weapon:SAVE.lastWeapon,
   comboIdx:0,comboT:0,swing:null,bufT:0,dashT:0,dashDir:0,dashCharges:2,dashRe:0,wbArm:false,
-  ki:0,parryT:0,parryCd:0,invuln:0,dead:false,deadT:0,mantle:0,veng:false,artT:0,swapT:0,walk:0,
+  ki:0,parryT:0,parryCd:0,parryGrace:0,invuln:0,dead:false,deadT:0,mantle:0,veng:false,artT:0,swapT:0,walk:0,
   pdodT:0,dmgBuffT:0,ownedWeapons:[],st:{},clx:0,cly:0,_stepF:0};}
 function recalc(){if(!P)return;const m=SAVE.meta;
   P.st.dmg=(1+m.str*.06)*(1+bl('vermilion')*.2);
   P.st.spd=258*(1+m.spd*.04)*(1+bl('swift')*.12);
   P.st.range=1+bl('reach')*.12;
-  P.st.crit=.05+(P.weapon==='twin'?.08:0)+bl('deepcuts')*.1;
+  P.st.crit=.05+(P.weapon==='twin'?.08:0)+bl('deepcuts')*.1+m.edge*.03;
   P.st.armor=Math.min(.6,bl('iron')*.12);
-  P.st.parryW=.13*(1+bl('thirdeye')*.45);
-  P.st.dashMax=2+bl('storm');
-  P.st.kiGain=1+bl('focused')*.35;
+  P.st.parryW=.22*(1+bl('thirdeye')*.45+m.mirror*.15+(P.weapon==='kasa'?.3:0));
+  P.st.dashMax=2+bl('storm')+m.step;
+  P.st.kiGain=1+bl('focused')*.35+m.ki*.12;
+  P.st.posture=1+m.stance*.15;
   P.st.rate=1/(1+bl('thousand')*.15);
   P.maxhp=100+m.vit*12+bl('inkwell')*25;P.hp=Math.min(P.hp,P.maxhp);
   if(P.dashCharges>P.st.dashMax)P.dashCharges=P.st.dashMax;}
@@ -1837,8 +1862,9 @@ function doSwingHit(){const w=WEAPONS[P.weapon];const rng=w.range*P.st.range+P.r
         const facingAtk=Math.abs(angDiff(e.facing,angTo(e.x,e.y,P.x,P.y)))<1.15;
         if(facingAtk){guardBlocked=true;dmg*=.15;}}
       if(guardBlocked){addFloat(e.x,e.y,'blocked','#8b8494',11);blocked++;}
-      damageEnemy(e,dmg,{crit,ang,knock:w.knock*(guardBlocked?0:1),
-        posture:guardBlocked?2:(w.guardBreak?11:5)});
+      let posture=guardBlocked?3:(w.guardBreak?15:8);
+      if(SAVE.meta.rhythm&&G.style.combo>0&&(G.style.combo+1)%5===0)posture*=2; // the rhythm pays on the fifth beat
+      damageEnemy(e,dmg,{crit,ang,knock:w.knock*(guardBlocked?0:1),posture});
       if(!guardBlocked){hitAny=true;
         if(bl('rot')){e.rotS=Math.min(6,(e.rotS||0)+1);e.rotT=3;}
         if(bl('blood')&&P.hp<P.maxhp)P.hp=Math.min(P.maxhp,P.hp+dmg*.06);
@@ -1852,7 +1878,7 @@ function doSwingHit(){const w=WEAPONS[P.weapon];const rng=w.range*P.st.range+P.r
   else if(blocked)AU.hit();}
 
 // the kill every posture bar begs for. letterbox, zoom, kanji, ink everywhere.
-function deathblow(e){slowmo(.5,.18);G.flash=.5;G.flashCol='#f6f1e2';AU.stamp();AU.crit();
+function deathblow(e){slowmo(.5,.18);G.flash=.28;G.flashCol='#f6f1e2';AU.stamp();AU.crit();
   G.lbxT=.75;G.zp=.5;
   addFloat(e.x,e.y-34,'DEATHBLOW',RED,16);
   G.fx.push({kind:'kanji',txt:'死',x:e.x,y:e.y,t:0,dur:.7});
@@ -1862,8 +1888,9 @@ function deathblow(e){slowmo(.5,.18);G.flash=.5;G.flashCol='#f6f1e2';AU.stamp();
   trauma(.55);splat(e.x,e.y,false);
   P.ki=Math.min(100,P.ki+8);
   killEnemy(e);}
-function tryParry(){if(P.parryCd>0)return;P.parryT=P.st.parryW;P.parryCd=.6;}
-function parrySuccess(src){P.parryT=0;P.parryCd=.18;slowmo(.3,.25);hitstop(.09);G.flash=.3;G.flashCol='#f6f1e2';
+function tryParry(){if(P.parryCd>0)return;P.parryT=P.st.parryW;P.parryGrace=0;P.parryCd=.45;}
+const parryUp=()=>P.parryT>0||P.parryGrace>0; // the window, plus a hair of forgiveness after it
+function parrySuccess(src){P.parryT=0;P.parryGrace=0;P.parryCd=.18;slowmo(.3,.25);hitstop(.09);G.flash=.3;G.flashCol='#f6f1e2';
   P.ki=Math.min(100,P.ki+20*P.st.kiGain);trauma(.3);AU.parry();
   if(bl('thirdeye'))P.hp=Math.min(P.maxhp,P.hp+4*bl('thirdeye'));
   if(bl('thunder')){shockRing(P.x,P.y,18*P.st.dmg,380,170);
@@ -1873,9 +1900,14 @@ function parrySuccess(src){P.parryT=0;P.parryCd=.18;slowmo(.3,.25);hitstop(.09);
   G.fx.push({kind:'pring',x:P.x,y:P.y,t:0,dur:.4});
   addRing(P.x,P.y,52,GOLD);
   if(src&&!src.dead&&src.posture!==undefined){
-    src.posture=Math.min(src.postureMax,src.posture+(src.boss?20:24));src.pLastHit=1.4;
+    const pp=src.postureMax*(src.boss?.28:.55)*P.st.posture; // deflects carve a real chunk of the bar
+    src.posture=Math.min(src.postureMax,src.posture+pp);src.pLastHit=1.4;
     if(src.posture>=src.postureMax&&!src.broken)breakEnemy(src);}
-  if(src&&src.stun!==undefined&&!src.broken)src.stun=Math.max(src.stun||0,src.boss?2.2:1.3);}
+  if(src&&src.stun!==undefined&&!src.broken)src.stun=Math.max(src.stun||0,src.boss?2.2:1.3);
+  if(P.weapon==='kasa'){ // the iron fan answers for you
+    const a=src?angTo(P.x,P.y,src.x,src.y):P.facing;
+    for(const o of[-.42,0,.42])fproj(P.x,P.y,a+o,470,14*P.st.dmg,{r:10});
+    AU.deflect();}}
 function breakEnemy(e){
   e.broken=true;e.brokenT=e.boss?2.6:2.3;e.posture=e.postureMax;e.peril=false;
   addRing(e.x,e.y,48,GOLD);
@@ -1897,7 +1929,7 @@ function doArt(){P.ki=0;P.artT=.5;slowmo(.5,.2);AU.ki();G.flash=.5;G.wash=.35;tr
   const rng=(P.weapon==='naginata'?280:240)*P.st.range;
   G.slashes.push({ang:0,spread:TAU,range:rng,t:0,dur:.4,flip:false,art:true});
   for(const e of G.enemies){if(e.dead)continue;if(dist(e.x,e.y,P.x,P.y)<rng+e.r)
-    damageEnemy(e,65*P.st.dmg,{crit:Math.random()<P.st.crit+.15,ang:angTo(P.x,P.y,e.x,e.y),knock:380,posture:12});}
+    damageEnemy(e,65*P.st.dmg,{crit:Math.random()<P.st.crit+.15,ang:angTo(P.x,P.y,e.x,e.y),knock:380,posture:16});}
   for(const pr of G.projs)if(!pr.friendly)pr.dead=true;
   inkBurst(P.x,P.y,40,INK,1.6);splat(P.x,P.y,true);hitstop(.1);}
 function damagePlayer(dmg,src){if(!P||P.dead)return false;
@@ -1925,7 +1957,7 @@ function spawnEnemy(type,x,y,elite){const md=G.run&&G.run.meido;let d=ENEMY[type
   if(md){d=Object.assign({},d);
     if(mdHas('peril'))d.peril=Math.min(.8,(d.peril||0)*2);
     if(mdHas('still'))d.rec=(d.rec||1)*1.2;}
-  const hsc=md?(1+(G.run.milestone-1)*.09)*DIFFI().hp:(1+.3*(act-1))*DIFFI().hp;
+  const hsc=1.5*(md?(1+(G.run.milestone-1)*.09)*DIFFI().hp:(1+.3*(act-1))*DIFFI().hp); // every foe carries half again the flesh
   const dsc=md?(1+(G.run.milestone-1)*.05)*DIFFI().dmg:(1+.18*(act-1))*DIFFI().dmg;
   const e={type,def:d,x,y,vx:0,vy:0,kx:0,ky:0,r:d.r*(elite?1.2:1),facing:rnd(TAU),state:'seek',t:0,cd:rnd(.3,1),flash:0,stun:0,elite,
     hp:d.hp*hsc*(elite?2.4:1)*(md&&mdHas('armored')?1.4:1)*(G.run.abyss?1+G.run.wave*.03:1),maxhp:0,spd:d.spd*DIFFI().spd*(elite?1.12:1)*(md&&mdHas('frenzy')?1.25:1),dmg:d.dmg*dsc*(elite?1.25:1),
@@ -1933,7 +1965,8 @@ function spawnEnemy(type,x,y,elite){const md=G.run&&G.run.meido;let d=ENEMY[type
     wMul:DIFFI().wind*(md&&mdHas('swift')?.8:1),peril:false,chainLeft:0,chainN:0,posture:0,pLastHit:0,postureMax:0,broken:false,brokenT:0,
     riposte:false,desperate:false,evCd:0,hitT:0,hitAng:0,deadT:0};
   e.maxhp=e.hp;
-  e.postureMax=(28+e.hp*.35)*(elite?1.5:1);
+  // posture is a lever, not a lottery: the bar gives in well before the flesh does
+  e.postureMax=(12+e.hp*.2)*(elite?1.4:1);
   G.enemies.push(e);inkBurst(x,y,10,INK,.8);return e;}
 function damageEnemy(e,dmg,opts={}){if(e.dead)return;dmg=Math.max(1,Math.round(dmg));
   e.hp-=dmg;e.flash=.09;e.hitT=.18;e.hitAng=opts.ang||0;
@@ -1948,7 +1981,7 @@ function damageEnemy(e,dmg,opts={}){if(e.dead)return;dmg=Math.max(1,Math.round(d
   inkBurst(e.x,e.y,opts.crit?10:5,INK,.8);AU.hit();
   if(e.type==='sorc'&&e.state==='channel')e.chan+=.4;
   if(opts.posture&&e.hp>0){
-    e.posture=Math.min(e.postureMax,e.posture+opts.posture);e.pLastHit=1.4;
+    e.posture=Math.min(e.postureMax,e.posture+opts.posture*P.st.posture);e.pLastHit=1.4;
     if(e.posture>=e.postureMax&&!e.broken)breakEnemy(e);}
   if(e.hp<=0)killEnemy(e);}
 function killEnemy(e){if(e.dead)return;e.dead=true;e.deadT=0;
@@ -1965,7 +1998,7 @@ function killEnemy(e){if(e.dead)return;e.dead=true;e.deadT=0;
   G.run.kills++;SAVE.stats.kills++;AU.kill();hitstop(e.elite?.08:.05);trauma(e.boss?.6:.18);
   G.style.t=0;G.style.pts=Math.min(300,G.style.pts+6);
   if(e.boss)bossDefeated(e);}
-function bossDefeated(b){slowmo(1.6,.2);G.flash=.6;G.wash=.6;trauma(.9);AU.roar();AU.sting(.18);G.lbxT=1.2;G.zp=.4;
+function bossDefeated(b){slowmo(1.1,.4);G.flash=.3;G.wash=.35;trauma(.9);AU.roar();AU.sting(.18);G.lbxT=1.2;G.zp=.4;
   G.fx.push({kind:'kanji',txt:b.kanji,x:b.x,y:b.y,t:0,dur:1.1});
   for(const e of G.enemies)if(!e.dead&&!e.boss)killEnemy(e);
   G.run.bossDead=b;}
@@ -1979,7 +2012,7 @@ function houndBoom(e){e.dead=true;splat(e.x,e.y,false);inkBurst(e.x,e.y,26,RED2,
 function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.flash-=dt;
   if(e.hitT>0)e.hitT-=dt;
   if(e.pLastHit>0)e.pLastHit-=dt;
-  if(e.posture>0&&!e.broken&&e.pLastHit<=0)e.posture=Math.max(0,e.posture-dt*7);
+  if(e.posture>0&&!e.broken&&e.pLastHit<=0)e.posture=Math.max(0,e.posture-dt*5);
   if(e.evCd>0)e.evCd-=dt;
   if(e.rotS>0){e.rotT-=dt;const d=4*e.rotS*dt;e.hp-=d;e.rotAcc+=d;
     if(e.rotAcc>10){addFloat(e.x,e.y-10,Math.round(e.rotAcc),INK2,10);e.rotAcc=0;}
@@ -2059,14 +2092,14 @@ function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.fla
       const rr=(e.def.atk==='slam'?e.def.aoe:e.def.rng)*(e.peril?1.2:1);
       if(e.peril&&e.def.atk==='melee'){e.vx=Math.cos(e.aim)*430;e.vy=Math.sin(e.aim)*430;}
       if(!e.atkDone&&teleHitPlayer({kind:e.def.atk==='poke'?'line':'circle',x:e.x,y:e.y,r:rr,len:e.def.rng,ang:e.facing,w:30})&&!P.dead){
-        if(!e.peril&&P.parryT>0&&dist(e.x,e.y,P.x,P.y)<e.def.rng+50)parrySuccess(e);
+        if(!e.peril&&parryUp()&&dist(e.x,e.y,P.x,P.y)<e.def.rng+50)parrySuccess(e);
         else damagePlayer(e.dmg*(e.peril?1.4:1),e);}
       e.atkDone=true;}
     else if(e.def.atk==='volley'){e.fireT-=dt;
       if(e.fireT<=0){e.fireT=.16;eproj(e.x,e.y,e.aim+rnd(-.06,.06),250,e.dmg);AU.deflect();}}
     else if(e.def.atk==='lunge'){e.vx=Math.cos(e.aim)*470;e.vy=Math.sin(e.aim)*470;
       if(!e.atkDone&&dist(e.x,e.y,P.x,P.y)<e.r+P.r+8){
-        if(!e.peril&&P.parryT>0)parrySuccess(e);
+        if(!e.peril&&parryUp())parrySuccess(e);
         else damagePlayer(e.dmg*(e.peril?1.4:1),e);
         e.atkDone=true;}}
     e.t-=dt;
@@ -2103,7 +2136,7 @@ function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.fla
 function bossEnd(b,gap=1.2){b.move=null;b.state='idle';b.stateT=gap*(b.phase2?.75:1)*(b.def.duel?.8:1);}
 function bossPick(b){b.perilDash=false;const mv=b.def.moves.filter(m=>m!==b.lastMove);
   const m=choice(mv.length?mv:b.def.moves);
-  b.lastMove=m;b.move=m;b.sub=0;b.mt=0;b.fireT=0;BOSSMOVES[m].start(b);}
+  b.lastMove=m;b.move=m;b.sub=0;b.mt=0;b.fireT=0;b.state='act';BOSSMOVES[m].start(b);}
 function shockRing(x,y,dmg,spd=430,max=560){G.rings.push({x,y,r:42,spd,w:40,dmg,max,pHit:false});trauma(.3);AU.stamp();}
 function setTimeoutGame(sec,fn){G.fx.push({kind:'call',t:0,dur:sec,fn});}
 
@@ -2123,7 +2156,7 @@ charge:{start(b){b.sub=0;b.mt=0;b.dir=null;b.perilDash=true;},
    if(b.mt>.62){b.sub=1;b.mt=0;b.vx=Math.cos(b.dir)*830;b.vy=Math.sin(b.dir)*830;AU.dash();}}
   else if(b.sub===1){b.x+=b.vx*dt;b.y+=b.vy*dt;
    if(dist(b.x,b.y,P.x,P.y)<b.r+P.r+8&&!b.hitP){b.hitP=true;
-     if(!b.perilDash&&P.parryT>0)parrySuccess(b);else damagePlayer(20*b.dmgS,b);}
+     if(!b.perilDash&&parryUp())parrySuccess(b);else damagePlayer(20*b.dmgS,b);}
    if(b.x<WALL+b.r||b.x>RW-WALL-b.r||b.y<WALL+b.r||b.y>RH-WALL-b.r||b.mt>.55){
      b.sub=2;b.mt=0;b.hitP=false;trauma(.4);AU.stamp();splat(clamp(b.x,WALL,RW-WALL),clamp(b.y,WALL,RH-WALL),false);}}
   else if(b.mt>.45)bossEnd(b);}},
@@ -2178,7 +2211,7 @@ chainDash:{start(b){b.mt=0;b.sub=0;b.n=0;b.count=b.id==='hollow'?4:3;b.perilDash
   if(b.sub===1&&b.mt>.45){b.sub=2;b.mt=0;b.vx=Math.cos(b.dir)*940;b.vy=Math.sin(b.dir)*940;AU.dash();}
   else if(b.sub===2){b.x+=b.vx*dt;b.y+=b.vy*dt;
    if(dist(b.x,b.y,P.x,P.y)<b.r+P.r+10&&!b.hitP){b.hitP=true;
-     if(!b.perilDash&&P.parryT>0)parrySuccess(b);else damagePlayer(18*b.dmgS,b);}
+     if(!b.perilDash&&parryUp())parrySuccess(b);else damagePlayer(18*b.dmgS,b);}
    if(b.x<WALL+b.r||b.x>RW-WALL-b.r||b.y<WALL+b.r||b.y>RH-WALL-b.r||b.mt>.32){b.sub=3;b.mt=0;b.hitP=false;b.n++;trauma(.3);}}
   else if(b.sub===3&&b.mt>.3){if(b.n>=b.count)bossEnd(b);else{b.sub=0;b.mt=0;}}}},
 dive:{start(b){b.mt=0;b.sub=0;b.hidden=false;},
@@ -2233,14 +2266,14 @@ wave:{start(b){b.mt=0;b.sub=0;},
 function updateBoss(b,dt){b.t+=dt;b.bob+=dt*2;if(b.flash>0)b.flash-=dt;b.touchCd-=dt;
   if(b.hitT>0)b.hitT-=dt;
   if(b.pLastHit>0)b.pLastHit-=dt;
-  if(b.posture>0&&!b.broken&&b.pLastHit<=0)b.posture=Math.max(0,b.posture-dt*9);
+  if(b.posture>0&&!b.broken&&b.pLastHit<=0)b.posture=Math.max(0,b.posture-dt*6.5);
   if(b.broken){b.brokenT-=dt;b.vx*=Math.exp(-4*dt);b.vy*=Math.exp(-4*dt);
     b.x+=b.vx*dt;b.y+=b.vy*dt;
     b.x=clamp(b.x,WALL+b.r,RW-WALL-b.r);b.y=clamp(b.y,WALL+b.r,RH-WALL-b.r);
     if(b.brokenT<=0){b.broken=false;b.posture=0;}
     return;}
   if(b.def0.phased&&!b.phase2&&b.hp<b.maxhp*.55){b.phase2=true;b.move=null;b.state='idle';b.stateT=1.6;b.stun=0;
-    G.teles.length=0;slowmo(.8,.2);G.flash=.7;trauma(.7);AU.roar();AU.sting(.2);G.zp=.5;G.lbxT=.9;
+    G.teles.length=0;slowmo(.8,.3);G.flash=.35;trauma(.7);AU.roar();AU.sting(.2);G.zp=.5;G.lbxT=.9;
     shockRing(b.x,b.y,18*b.dmgS);
     b.def=Object.assign({},BOSSES[b.id],{moves:BOSSES[b.id].moves2});
     addFloat(b.x,b.y-60,'THE MASK CRACKS',RED,16);}
@@ -2261,9 +2294,9 @@ function updateBoss(b,dt){b.t+=dt;b.bob+=dt*2;if(b.flash>0)b.flash-=dt;b.touchCd
 function spawnBoss(id){const d=BOSSES[id];const act=curAct();
   const duel=!!d.duel;
   const md=G.run&&G.run.meido;
-  const hs=duel?DIFFI().hp*(md?1+(G.run.milestone-1)*.05:1):
+  const hs=1.5*(duel?DIFFI().hp*(md?1+(G.run.milestone-1)*.05:1):
     (md?(1+(G.run.milestone-1)*.13)*DIFFI().hp:
-    (1+.22*(act-1))*(G.run.abyss?1+G.run.wave*.04:1)*(G.run.gauntlet?1+G.gauntIdx*.07:1)*DIFFI().hp);
+    (1+.22*(act-1))*(G.run.abyss?1+G.run.wave*.04:1)*(G.run.gauntlet?1+G.gauntIdx*.07:1)*DIFFI().hp));
   const introT=duel?1.3:2.4;
   const b={boss:true,id,def:d,def0:d,name:d.name,x:RW/2,y:RH*.3,vx:0,vy:0,r:d.r,
     hp:d.hp*hs,maxhp:d.hp*hs,spd:d.spd*DIFFI().spd,dmgS:(1+.18*(act-1))*DIFFI().dmg,
@@ -2271,7 +2304,7 @@ function spawnBoss(id){const d=BOSSES[id];const act=curAct();
     touchCd:0,hist:[],t:0,bob:0,h:0,kanji:d.kanji,tx:RW/2,ty:RH*.3,fireT:0,spir:0,hidden:false,
     hitP:false,dead:false,elite:false,life:0,perilDash:false,duel,
     posture:0,postureMax:0,broken:false,brokenT:0,pLastHit:0};
-  b.postureMax=60+b.maxhp*.06;
+  b.postureMax=45+b.maxhp*.045;
   G.boss=b;G.enemies.push(b);G.bossIntroT=introT;codexMeet(id,b.x,b.y);
   if(duel){AU.taiko(.45);addFloat(RW/2,RH*.3,'DUEL',RED,22);}
   else{AU.roar();AU.taiko(.55);}
@@ -2408,8 +2441,8 @@ function renderTitleStats(){const s=SAVE.stats;
   const el=$('#title-stats');if(el)el.innerHTML=
     `deaths <b>${s.deaths}</b> · kills <b>${s.kills}</b> · best combo <b>${s.bestCombo}</b> · hours walked <b>${(s.playTime/3600).toFixed(1)}</b>`;
   const ab=$('#btn-abyss'),gt=$('#btn-gauntlet');
-  if(ab){ab.disabled=!SAVE.abyssUnlocked;
-    $('#ab-best').textContent=SAVE.abyssUnlocked?(SAVE.abyssBest?'· best wave '+SAVE.abyssBest:''):'· sealed';}
+  if(ab){ab.disabled=false; // the abyss takes every blade that asks
+    $('#ab-best').textContent=SAVE.abyssBest?'· best wave '+SAVE.abyssBest:'· endless';}
   if(gt){gt.disabled=!SAVE.gauntletUnlocked;
     $('#gt-best').textContent=SAVE.gauntletUnlocked?(SAVE.gauntletBest?'· best '+fmtT(SAVE.gauntletBest):''):'· finish the story';}
   const md=$('#btn-meido'),mdd=$('#btn-meido-daily');
@@ -2435,7 +2468,7 @@ function renderArmory(){const ashEl=$('#ash-armory');if(ashEl)ashEl.textContent=
   Object.entries(WEAPONS).forEach(([id,w])=>{const owned=!!SAVE.weapons[id];
     const row=document.createElement('div');row.className='row';
     row.innerHTML=`<div class="kan">${w.kanji}</div><div class="mid"><b>${w.name}</b><p>${w.desc}</p>
-      <div class="wstats">damage ${w.dmg.join('/')} · reach ${w.range} · beat ${w.rate}s${w.guardBreak?' · breaks shields · heavy posture damage':''}</div></div>`;
+      <div class="wstats">damage ${w.dmg.join('/')} · reach ${w.range} · beat ${w.rate}s${w.guardBreak?' · breaks shields · heavy posture damage':''}${w.unique?' · '+w.unique:''}</div></div>`;
     const btn=document.createElement('button');btn.className='buy';
     if(!owned){btn.textContent=`礼 ${w.cost}`;if(SAVE.ash<w.cost)btn.disabled=true;
       btn.onclick=()=>{SAVE.ash-=w.cost;SAVE.weapons[id]=true;persist();AU.buy();renderArmory();};}
@@ -2453,7 +2486,7 @@ function renderActs(){const strip=$('#act-strip');if(!strip)return;strip.innerHT
     if(!locked)d.onclick=()=>{AU.ui();startRun(act,false);};
     strip.appendChild(d);});
   const nodes=[];
-  if(SAVE.abyssUnlocked)nodes.push({kan:'無',name:'The Abyss',tag:'endless · bosses every 6th',best:SAVE.abyssBest?'best wave '+SAVE.abyssBest:'',fn:()=>startRun(1,true)});
+  nodes.push({kan:'無',name:'The Abyss',tag:'endless · bosses every 6th',best:SAVE.abyssBest?'best wave '+SAVE.abyssBest:'',fn:()=>startRun(1,true)});
   if(SAVE.gauntletUnlocked)nodes.push({kan:'連',name:'The Gauntlet',tag:'ten duels, one page',best:SAVE.gauntletBest?'best '+fmtT(SAVE.gauntletBest):'',fn:()=>startGauntlet()});
   else nodes.push({kan:'連',name:'The Gauntlet',tag:'finish the story first',best:'',fn:null,lock:'封'});
   if(SAVE.abyssUnlocked){
@@ -2548,6 +2581,7 @@ function startStage(){const run=G.run;
     if(run.mut){run.mut.cs.forEach((c,i)=>addFloat(P.x,P.y-56-i*26,'呪 '+c.k+' '+c.n.toUpperCase(),RED,15));
       if(run.mut.b)addFloat(P.x,P.y-56-run.mut.cs.length*26,'祝 '+run.mut.b.k+' '+run.mut.b.n.toUpperCase(),GOLD2,14);}}
   else if(run.abyss&&run.wave%6===0){spawnBoss(choice(Object.keys(BOSSES).filter(k=>!BOSSES[k].duel)));G.introT=1.7;}
+  else if(run.abyss){G.waves=abyssWaves(run.wave);nextWave();G.introT=1.7;} // the endless dark deals its own hand
   else if(sd.duel){spawnBoss(sd.duel);G.introT=1.7;}
   else if(sd.boss){spawnBoss(sd.boss);G.introT=1.7;}
   else{G.waves=sd.w.map(parseWave);nextWave();G.introT=1.7;}
@@ -2558,16 +2592,16 @@ function startStage(){const run=G.run;
       {t:'left thumb — move',cond:()=>G.tutMoved},
       {t:'斬 — cut the nearest foe',cond:()=>G.tutHit},
       {t:'走 — dash through danger',cond:()=>G.tutDash},
-      {t:'弾 — deflect the red flash, never the 危',cond:()=>G.tutParry}]:[
+      {t:'弾 — deflect the gold flash, never the 危',cond:()=>G.tutParry}]:[
       {t:'W A S D — move',cond:()=>G.tutMoved},
       {t:'left click — slash toward the cursor',cond:()=>G.tutHit},
       {t:'space — dash through danger',cond:()=>G.tutDash},
-      {t:'right click — deflect the red flash',cond:()=>G.tutParry}];}
+      {t:'right click — deflect the gold flash',cond:()=>G.tutParry}];}
   else G.hints=null;}
 function nextWave(){G.waveIdx++;
   if(G.waveIdx>=G.waves.length){stageClear();return;}
   G.spawnQ=G.waves[G.waveIdx].slice();G.spawnT=.25;}
-function stageClear(){if(G.clearing||!G.run)return;G.clearing=1;slowmo(.6,.3);AU.stamp();
+function stageClear(){if(G.clearing||!G.run)return;G.clearing=1;slowmo(.4,.5);AU.stamp();
   G.run.totalTime+=G.run.time;G.run.stageTime=G.run.time;SAVE.stats.playTime+=G.run.time;G.run.time=0;
   G.projs.length=0;G.teles.length=0;G.rings.length=0;
   const boss=!!G.run.bossDead;
@@ -2827,7 +2861,10 @@ function update(dt){G.t+=dt;G.windT+=dt;
   if(G.introT>0)G.introT-=dt;
   if(G.bossIntroT>0){G.bossIntroT-=dt;G.lbxT=Math.max(G.lbxT,G.bossIntroT);}
   if(!P.dead){
-    if(P.invuln>0)P.invuln-=dt;if(P.parryT>0)P.parryT-=dt;if(P.parryCd>0)P.parryCd-=dt;
+    if(P.invuln>0)P.invuln-=dt;
+    if(P.parryT>0){P.parryT-=dt;if(P.parryT<=0)P.parryGrace=.09;} // a hair of forgiveness after the window closes
+    else if(P.parryGrace>0)P.parryGrace-=dt;
+    if(P.parryCd>0)P.parryCd-=dt;
     if(P.mantle>0)P.mantle-=dt;
     if(P.pdodT>0)P.pdodT-=dt;if(P.dmgBuffT>0)P.dmgBuffT-=dt;
     if(P.comboT>0){P.comboT-=dt;if(P.comboT<=0)P.comboIdx=0;}
@@ -2931,7 +2968,7 @@ function update(dt){G.t+=dt;G.windT+=dt;
         else if(t.snake){G.fx.push({kind:'boom',x:t.x,y:t.y,t:0,dur:.3,r:t.r});inkBurst(t.x,t.y,14,'#2c3550',1);}
         else if(t.ice)inkBurst(t.x,t.y,8,'#8795a5',.7);
         if(teleHitPlayer(t)){
-          if(t.parry&&P.parryT>0){parrySuccess(t.src);addFloat(P.x,P.y-40,'PARRY',GOLD2,16);}
+          if(t.parry&&parryUp()){parrySuccess(t.src);addFloat(P.x,P.y-40,'PARRY',GOLD2,16);}
           else damagePlayer(t.dmg,t.src);}}
       G.teles[i]=G.teles[G.teles.length-1];G.teles.pop();}}
   for(let i=G.rings.length-1;i>=0;i--){const r=G.rings[i];r.r+=r.spd*dt;
@@ -2942,10 +2979,10 @@ function update(dt){G.t+=dt;G.windT+=dt;
     pr.x+=pr.vx*dt;pr.y+=pr.vy*dt;pr.ttl-=dt;pr.spin+=dt*7;
     if(pr.ttl<=0||pr.x<WALL-20||pr.x>RW-WALL+20||pr.y<WALL-20||pr.y>RH-WALL+20){G.projs.splice(i,1);continue;}
     if(pr.friendly){for(const e of G.enemies){if(e.dead)continue;
-      if(dist(pr.x,pr.y,e.x,e.y)<pr.r+e.r){damageEnemy(e,pr.dmg,{ang:Math.atan2(pr.vy,pr.vx),knock:120,posture:6});
+      if(dist(pr.x,pr.y,e.x,e.y)<pr.r+e.r){damageEnemy(e,pr.dmg,{ang:Math.atan2(pr.vy,pr.vx),knock:120,posture:8});
         pr.dead=true;break;}}}
     else{const d=dist(pr.x,pr.y,P.x,P.y);
-      if(P.parryT>0&&d<95&&Math.abs(angDiff(P.facing,angTo(P.x,P.y,pr.x,pr.y)))<1.6){
+      if(parryUp()&&d<95&&Math.abs(angDiff(P.facing,angTo(P.x,P.y,pr.x,pr.y)))<1.6){
         pr.friendly=true;pr.dmg*=2.2;let best=null,bd=1e9;
         for(const e of G.enemies)if(!e.dead){const dd=dist(pr.x,pr.y,e.x,e.y);if(dd<bd){bd=dd;best=e;}}
         const a=best?angTo(pr.x,pr.y,best.x,best.y):P.facing;
@@ -3000,10 +3037,8 @@ function render(){ctx.setTransform(DPR,0,0,DPR,0,0);
   if(inGame)ctx.drawImage(gradeLayer(),0,0,W,H);
   if(inGame&&G.run&&G.run.meido&&mdHas('mist')&&fogC){ // the sea of fog closes in
     ctx.globalAlpha=.85;ctx.drawImage(fogC,0,0,W,H);ctx.globalAlpha=1;}
-  if(G.slowT>0&&G.ts<.4&&inGame){ // ink ghosts bleed sideways while time kneels
-    ctx.save();ctx.globalAlpha=.14;ctx.globalCompositeOperation='lighter';
-    ctx.drawImage(cv,-7,0,W,H);ctx.drawImage(cv,7,0,W,H);
-    ctx.restore();}
+  if(G.slowT>0&&G.ts<.4&&inGame){ // time kneels: grade everything down a touch
+    ctx.save();ctx.globalAlpha=.06;ctx.fillStyle='#f2ecd9';ctx.fillRect(0,0,W,H);ctx.restore();}
   if(G.wash>0){const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.2,W/2,H/2,Math.max(W,H)*.7);
     g.addColorStop(0,'rgba(179,55,42,0)');g.addColorStop(1,`rgba(140,43,31,${Math.min(.5,G.wash)})`);
     ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
@@ -3030,6 +3065,17 @@ function renderWorld(){
   ctx.scale(zp,zp);ctx.translate(-G.cam.x,-G.cam.y);
   ctx.drawImage(G.floorC,0,0);
   const act=curAct();
+  if(act===1||act===3||act===7){ // dawn light leans through in living shafts
+    ctx.save();ctx.globalCompositeOperation='lighter';
+    for(let i=0;i<3;i++){
+      const a=(act===7?.032:.05)+.028*Math.sin(G.t*.42+i*2.1); // each band breathes on its own clock
+      if(a<=.008)continue;
+      const rx=((hash01(i*7.7)*RW)+G.t*(26+i*10))%(RW+540)-270; // slow, honest drift
+      ctx.save();ctx.translate(rx+180,-30);
+      ctx.rotate(Math.sin(G.t*.24+i*1.9)*.07); // and lean as they go
+      ctx.globalAlpha=a;ctx.drawImage(RAYS[i],-180,0,360,580);
+      ctx.restore();}
+    ctx.restore();}
   if(act===2)drawWater();
   drawProps();
   drawFireflies();
@@ -3508,6 +3554,25 @@ function drawPlayer(){
     ctx.strokeStyle=RED2;ctx.lineWidth=1.6;ctx.lineCap='round';
     for(let i=0;i<3;i++){ctx.beginPath();
       ctx.moveTo(bxx,byy);ctx.lineTo(bxx-Math.cos(ba+i*.7)*6,byy-Math.sin(ba+i*.7)*6);ctx.stroke();}}
+  else if(P.weapon==='kasa'){
+    // the iron umbrella: a shaft, a ribbed roof, a steel rim
+    caps(ctx,hx-Math.cos(ba)*7,hy-Math.sin(ba)*7,hx,hy,2.4,'#241f1c');
+    const ux=Math.cos(ba)*(10+bl*.7),uy=Math.sin(ba)*(10+bl*.7);
+    caps(ctx,hx,hy,ux,uy,2.2,'#3a3430');
+    const cw=bl*.66;
+    ctx.fillStyle='#2b2622';
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(ba-.98)*cw,Math.sin(ba-.98)*cw);
+    ctx.quadraticCurveTo(Math.cos(ba)*cw*1.28,Math.sin(ba)*cw*1.28,Math.cos(ba+.98)*cw,Math.sin(ba+.98)*cw);
+    ctx.quadraticCurveTo(Math.cos(ba)*cw*.55,Math.sin(ba)*cw*.55,Math.cos(ba-.98)*cw,Math.sin(ba-.98)*cw);
+    ctx.closePath();ctx.fill();
+    ctx.strokeStyle='#55504a';ctx.lineWidth=1;
+    for(let i=-2;i<=2;i++){const ra=ba+i*.42;
+      ctx.beginPath();ctx.moveTo(Math.cos(ra)*cw*.2,Math.sin(ra)*cw*.2);
+      ctx.lineTo(Math.cos(ra)*cw*.97,Math.sin(ra)*cw*.97);ctx.stroke();}
+    ctx.strokeStyle='rgba(246,241,226,0.28)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.arc(0,0,cw*.6,ba-.92,ba+.92);ctx.stroke();
+    steel(ctx,Math.cos(ba-.98)*cw,Math.sin(ba-.98)*cw,Math.cos(ba+.98)*cw,Math.sin(ba+.98)*cw,1.6);}
   else{
     // katana (or the paired short blades): hilt, tsuba, steel
     caps(ctx,hx-Math.cos(ba)*6,hy-Math.sin(ba)*6,hx,hy,2.6,'#1d1a16');
@@ -3885,7 +3950,8 @@ if(document.fonts&&document.fonts.load){
   document.fonts.load('800 100px "Shippori Mincho"').then(()=>{bakeTitle();bakeEnemies();bakeBosses();});}
 requestAnimationFrame(frame);
 // one small window for the shell (and for debugging) to reach the brush
-window.SUMI={get G(){return G;},get P(){return P;},get SAVE(){return SAVE;}};
+window.SUMI={get G(){return G;},get P(){return P;},get SAVE(){return SAVE;},
+  get fn(){return{spawnBoss,spawnEnemy,damageEnemy,startRun,startStage};}};
 </script>
 </body>
 </html>
