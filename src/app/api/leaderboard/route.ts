@@ -3,13 +3,16 @@ import { db } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
-const MODES = ['abyss', 'gauntlet', 'story'] as const
+const MODES = ['abyss', 'gauntlet', 'meido', 'story'] as const
 type Mode = (typeof MODES)[number]
 
 const isMode = (v: string): v is Mode => (MODES as readonly string[]).includes(v)
 
+// depth-first modes (abyss, meido) rank by progress before time
+const byDepth = (mode: Mode) => mode === 'abyss' || mode === 'meido'
+
 function orderByFor(mode: Mode) {
-  return mode === 'abyss'
+  return byDepth(mode)
     ? [{ wave: 'desc' as const }, { timeSec: 'asc' as const }]
     : [{ timeSec: 'asc' as const }]
 }
@@ -126,10 +129,9 @@ export async function POST(req: NextRequest) {
     })
 
     const better = await db.run.count({
-      where:
-        mode === 'abyss'
-          ? { mode, OR: [{ wave: { gt: wave } }, { wave, timeSec: { lt: timeSec } }] }
-          : { mode, timeSec: { lt: timeSec } },
+      where: byDepth(mode)
+        ? { mode, OR: [{ wave: { gt: wave } }, { wave, timeSec: { lt: timeSec } }] }
+        : { mode, timeSec: { lt: timeSec } },
     })
 
     return NextResponse.json({ ok: true, rank: better + 1, id: row.id }, { status: 201 })

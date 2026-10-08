@@ -1,0 +1,402 @@
+     1→<!DOCTYPE html>
+     2→<html lang="en">
+     3→<head>
+     4→<meta charset="UTF-8"/>
+     5→<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+     6→<title>SUMIKIRI 墨斬 — a hack &amp; slash painted in ink</title>
+     7→<link rel="preconnect" href="https://fonts.googleapis.com">
+     8→<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+     9→<style>
+    10→:root{
+    11→  --ink:#1d1a16; --ink2:#4a443c; --paper:#e9e1cd; --paper2:#f2ecd9;
+    12→  --red:#b3372a; --red2:#8c2b1f; --gold:#8f6d1f; --indigo:#2c3550;
+    13→}
+    14→*{margin:0;padding:0;box-sizing:border-box}
+    15→html,body{height:100%;overflow:hidden;background:var(--paper);touch-action:manipulation}
+    16→body{font-family:"Shippori Mincho",serif;color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+    17→#cv{position:fixed;inset:0;display:block;touch-action:none}
+    18→body.playing #cv{cursor:none}
+    19→#ui{position:fixed;inset:0;pointer-events:none}
+    20→.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;background:rgba(233,225,205,.9);overflow-y:auto;padding:20px 0}
+    21→.screen.on{display:flex}
+    22→#s-title{background:rgba(233,225,205,.84)}
+    23→.mono{font-family:"IBM Plex Mono",monospace}
+    24→
+    25→.title-wrap{display:flex;align-items:center;gap:6vw}
+    26→.t-kanji{font-size:min(24vh,22vw);font-weight:800;line-height:1.02;letter-spacing:.02em;color:var(--ink);text-shadow:0 0 1px rgba(29,26,22,.4)}
+    27→.t-kanji span{display:block}
+    28→.t-kanji span:last-child{transform:rotate(-1.2deg) translateX(-.04em)}
+    29→.seal{display:flex;align-items:center;justify-content:center;background:var(--red);color:var(--paper2);font-weight:800;transform:rotate(4deg)}
+    30→.title-seal{width:.34em;height:.34em;font-size:min(24vh,22vw);margin-top:-1.2em;margin-left:-.14em;border-radius:3px}
+    31→.t-side h1{font-size:clamp(26px,3.4vw,46px);font-weight:800;letter-spacing:.32em;margin-bottom:2px}
+    32→.t-side .tag{font-size:clamp(12px,1.1vw,15px);color:var(--ink2);letter-spacing:.14em;border-bottom:1px solid rgba(29,26,22,.35);padding-bottom:14px;margin-bottom:26px}
+    33→nav.menu{display:flex;flex-direction:column;gap:11px;align-items:flex-start}
+    34→.mbtn{background:none;border:none;font-family:inherit;font-size:clamp(17px,1.5vw,21px);font-weight:600;color:var(--ink);letter-spacing:.16em;cursor:pointer;display:flex;align-items:center;gap:14px;padding:2px 0;transition:transform .12s ease,color .12s ease}
+    35→.mbtn .idx{font-size:.72em;color:var(--ink2);width:1.4em;transition:color .12s}
+    36→.mbtn::before{content:"";width:9px;height:9px;border:1.5px solid var(--ink);transform:rotate(45deg) scale(.6);opacity:0;transition:all .13s ease}
+    37→.mbtn:hover{transform:translateX(8px);color:var(--red)}
+    38→.mbtn:hover::before{opacity:1;background:var(--red);border-color:var(--red);transform:rotate(45deg) scale(1)}
+    39→.mbtn:hover .idx{color:var(--red)}
+    40→.footline{position:fixed;left:26px;bottom:20px;font-size:12px;color:var(--ink2);letter-spacing:.1em}
+    41→.footline b{color:var(--red);font-weight:600}
+    42→.corner-note{position:fixed;right:26px;bottom:20px;font-size:12px;color:var(--ink2);letter-spacing:.1em}
+    43→
+    44→.page{width:min(860px,92vw);max-height:86vh;display:flex;flex-direction:column}
+    45→.page-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:6px}
+    46→.page-head h2{font-size:clamp(22px,2.6vw,32px);font-weight:800;letter-spacing:.18em}
+    47→.page-head h2 i{font-style:normal;color:var(--red);margin-right:12px}
+    48→.ash-chip{font-size:14px;letter-spacing:.06em}
+    49→.ash-chip .seal{width:22px;height:22px;font-size:13px;margin-right:8px;display:inline-flex;border-radius:2px}
+    50→.page-body{overflow-y:auto;padding:6px 4px 20px;scrollbar-width:thin}
+    51→.page-body::-webkit-scrollbar{width:5px}.page-body::-webkit-scrollbar-thumb{background:rgba(29,26,22,.3)}
+    52→.backrow{display:flex;justify-content:space-between;align-items:center;margin-top:14px;border-top:1px solid rgba(29,26,22,.3);padding-top:14px}
+    53→.hint{font-size:11px;color:var(--ink2);letter-spacing:.08em}
+    54→
+    55→.row{display:flex;align-items:center;gap:20px;padding:15px 6px;border-bottom:1px solid rgba(29,26,22,.18)}
+    56→.row .kan{font-size:38px;font-weight:700;width:52px;text-align:center;line-height:1}
+    57→.row .mid{flex:1;min-width:0}
+    58→.row .mid b{font-size:17px;letter-spacing:.08em}
+    59→.row .mid p{font-size:13px;color:var(--ink2);margin-top:3px;line-height:1.45}
+    60→.pips{display:flex;gap:4px;margin-top:7px}
+    61→.pip{width:14px;height:8px;background:transparent;border:1px solid var(--ink)}
+    62→.pip.f{background:var(--ink)}
+    63→.buy{font-family:"IBM Plex Mono",monospace;font-size:13px;background:none;border:1.5px solid var(--ink);color:var(--ink);padding:8px 16px;cursor:pointer;letter-spacing:.05em;white-space:nowrap;transition:all .12s}
+    64→.buy:hover{background:var(--red);border-color:var(--red);color:var(--paper2)}
+    65→.buy:disabled{opacity:.35;cursor:default}
+    66→.buy:disabled:hover{background:none;border-color:var(--ink);color:var(--ink)}
+    67→.buy.owned{border-color:var(--red);color:var(--red)}
+    68→.wstats{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink2);margin-top:5px;letter-spacing:.02em}
+    69→
+    70→.acts-strip{display:flex;align-items:flex-start;gap:0;width:min(1180px,94vw);overflow-x:auto;padding:70px 30px 30px;position:relative;scrollbar-width:thin}
+    71→.acts-strip::-webkit-scrollbar{height:5px}.acts-strip::-webkit-scrollbar-thumb{background:rgba(29,26,22,.3)}
+    72→.acts-strip::before{content:"";position:absolute;left:20px;right:20px;top:128px;height:3px;background:rgba(29,26,22,.45)}
+    73→.act-node{flex:0 0 150px;position:relative;cursor:pointer;text-align:center;padding:0 8px}
+    74→.act-node:nth-child(odd){margin-top:26px}
+    75→.act-node:nth-child(even){margin-top:-24px}
+    76→.act-node .dot{width:20px;height:20px;border:2.5px solid var(--ink);border-radius:50%;background:var(--paper);margin:26px auto 18px;position:relative;transition:all .15s}
+    77→.act-node.cur .dot{background:var(--red);border-color:var(--red);box-shadow:0 0 0 4px rgba(179,55,42,.25)}
+    78→.act-node:hover .dot{transform:scale(1.25)}
+    79→.act-node .a-k{font-size:44px;font-weight:800;line-height:1}
+    80→.act-node .a-n{font-size:12.5px;margin-top:9px;line-height:1.4;color:var(--ink);letter-spacing:.03em}
+    81→.act-node .a-s{font-family:"IBM Plex Mono",monospace;font-size:10px;margin-top:7px;color:var(--red);letter-spacing:.12em}
+    82→.act-node.lock{opacity:.42;cursor:default}
+    83→.act-node.lock:hover .dot{transform:none}
+    84→.act-node .lock-seal{position:absolute;top:14px;left:50%;transform:translateX(-50%) rotate(-7deg);width:26px;height:26px;background:var(--ink2);color:var(--paper2);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;border-radius:2px}
+    85→
+    86→#s-bless{background:rgba(233,225,205,.86)}
+    87→.bless-title{font-size:clamp(18px,2vw,26px);font-weight:800;letter-spacing:.3em;margin-bottom:8px}
+    88→.bless-sub{font-size:13px;color:var(--ink2);letter-spacing:.12em;margin-bottom:34px}
+    89→#bless-wrap{display:flex;gap:46px;align-items:flex-start}
+    90→.scroll{width:224px;position:relative;transition:transform .2s cubic-bezier(.2,1.5,.4,1);cursor:pointer}
+    91→.scroll::before{content:"";position:absolute;top:-46px;left:50%;width:2px;height:46px;background:var(--ink2);transform:rotate(14deg)}
+    92→.scroll::after{content:"";position:absolute;top:-46px;left:50%;width:2px;height:46px;background:var(--ink2);transform:rotate(-14deg)}
+    93→.rod{height:13px;background:var(--ink);border-radius:6px;margin:0 -12px}
+    94→.sc-paper{background:var(--paper2);border:1.5px solid var(--ink);box-shadow:inset 0 0 0 5px var(--paper2),inset 0 0 0 6px rgba(29,26,22,.75);padding:54px 18px 40px;position:relative;min-height:330px;display:flex;flex-direction:column;align-items:center;text-align:center}
+    95→.scroll:hover{transform:translateY(-14px) rotate(0deg)!important}
+    96→.scroll:nth-child(1){transform:rotate(-2.2deg)}
+    97→.scroll:nth-child(2){transform:rotate(1.6deg) translateY(16px)}
+    98→.scroll:nth-child(3){transform:rotate(-1deg) translateY(-6px)}
+    99→.rar{position:absolute;top:10px;right:10px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;transform:rotate(6deg);border-radius:2px}
+   100→.rar.r0{border:1.5px solid var(--ink2);color:var(--ink2)}
+   101→.rar.r1{background:var(--red);color:var(--paper2)}
+   102→.rar.r2{background:var(--red);color:var(--paper2);box-shadow:0 0 0 2px var(--paper2),0 0 0 3.5px var(--gold)}
+   103→.b-kan{font-size:62px;font-weight:800;line-height:1;margin-bottom:14px}
+   104→.b-name{font-size:18px;font-weight:700;letter-spacing:.06em}
+   105→.b-div{width:70%;height:1px;background:rgba(29,26,22,.35);margin:13px 0;position:relative}
+   106→.b-div::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;background:var(--red);transform:translateX(-50%) rotate(45deg)}
+   107→.b-desc{font-size:14px;color:var(--ink2);line-height:1.55}
+   108→.b-key{position:absolute;bottom:12px;left:0;right:0;font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink2);letter-spacing:.14em}
+   109→.bless-owned{margin-top:34px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink2);letter-spacing:.1em;min-height:16px}
+   110→.bless-owned i{font-style:normal;color:var(--red)}
+   111→
+   112→#s-pause{background:rgba(233,225,205,.72);backdrop-filter:blur(5px)}
+   113→.big-kan{font-size:min(20vh,150px);font-weight:800;line-height:1}
+   114→#s-death .big-kan{color:var(--red)}
+   115→.death-line{font-size:17px;letter-spacing:.1em;color:var(--ink2);margin:22px 0 6px;font-style:italic;text-align:center}
+   116→.stat-line{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink2);letter-spacing:.06em;margin-bottom:30px}
+   117→.stat-line b{color:var(--ink);font-weight:600}
+   118→.stamp{width:170px;height:170px;background:var(--red);color:var(--paper2);font-size:110px;font-weight:800;display:flex;align-items:center;justify-content:center;transform:rotate(-5deg);border-radius:4px;animation:stampIn .38s cubic-bezier(.5,1.8,.4,1) both;margin-bottom:26px}
+   119→@keyframes stampIn{0%{transform:scale(2.6) rotate(10deg);opacity:0}62%{transform:scale(.92) rotate(-7deg);opacity:1}100%{transform:scale(1) rotate(-5deg)}}
+   120→.clear-title{font-size:clamp(24px,3vw,36px);font-weight:800;letter-spacing:.24em;margin-bottom:20px;text-align:center}
+   121→.tally{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--ink2);line-height:2;letter-spacing:.05em;margin-bottom:26px;text-align:center}
+   122→.tally b{color:var(--ink);font-weight:600}.tally .r{color:var(--red);font-weight:600}
+   123→.btnrow{display:flex;gap:38px;flex-wrap:wrap;justify-content:center}
+   124→
+   125→.set-row{display:flex;align-items:center;justify-content:space-between;padding:16px 6px;border-bottom:1px solid rgba(29,26,22,.18);width:100%}
+   126→.set-row label{font-size:16px;letter-spacing:.08em}
+   127→.set-row small{display:block;font-size:12px;color:var(--ink2);margin-top:3px;letter-spacing:.04em}
+   128→input[type=range]{-webkit-appearance:none;width:220px;height:3px;background:var(--ink);outline:none}
+   129→input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--red);border-radius:50%;cursor:pointer}
+   130→.tgl{font-family:"IBM Plex Mono",monospace;background:none;border:1.5px solid var(--ink);padding:7px 18px;cursor:pointer;font-size:13px;color:var(--ink);transition:all .12s}
+   131→.tgl:hover{border-color:var(--red);color:var(--red)}
+   132→.tgl.on{background:var(--ink);color:var(--paper2)}
+   133→.seg{display:flex;gap:10px}
+   134→.seg .tgl.on{background:var(--red);border-color:var(--red)}
+   135→
+   136→.help-cols{display:flex;gap:54px;text-align:left}
+   137→.help-cols>div{flex:1}
+   138→.help-cols h3{font-size:15px;letter-spacing:.22em;border-bottom:1px solid rgba(29,26,22,.4);padding-bottom:8px;margin-bottom:12px}
+   139→.krow{display:flex;gap:14px;margin-bottom:8px;font-size:13.5px;line-height:1.5}
+   140→.krow .k{font-family:"IBM Plex Mono",monospace;font-size:11.5px;min-width:118px;color:var(--red);letter-spacing:.03em;padding-top:2px}
+   141→.help-cols p{font-size:13.5px;line-height:1.65;color:var(--ink2);margin-bottom:10px}
+   142→.gloss{font-size:13px;line-height:1.5;margin-bottom:9px}
+   143→.gloss b{letter-spacing:.04em}
+   144→.gloss i{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--red)}
+   145→
+   146→#rotate{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(233,225,205,.95);z-index:60;pointer-events:auto;text-align:center}
+   147→#rotate.on{display:flex}
+   148→#rotate .rkan{font-size:84px;font-weight:800;color:var(--ink);animation:rot 2.4s ease-in-out infinite}
+   149→@keyframes rot{0%,18%{transform:rotate(0)}62%,100%{transform:rotate(-90deg)}}
+   150→#rotate p{margin-top:20px;letter-spacing:.16em;color:var(--ink2);font-size:14px}
+   151→
+   152→@media (pointer:coarse){
+   153→  .mbtn{padding:9px 0;font-size:clamp(18px,2.6vh,22px);gap:16px}
+   154→  .buy{padding:12px 20px;font-size:14px}
+   155→  .page-body{max-height:70vh}
+   156→}
+   157→@media (max-width:760px){.help-cols{flex-direction:column;gap:20px}.title-wrap{flex-direction:column;gap:20px}#bless-wrap{flex-direction:column;align-items:center;gap:20px}.scroll{width:250px}}
+   158→</style>
+   159→</head>
+   160→<body>
+   161→<canvas id="cv"></canvas>
+   162→<div id="ui">
+   163→
+   164→<div class="screen on" id="s-title">
+   165→  <div class="title-wrap">
+   166→    <div style="display:flex">
+   167→      <div class="t-kanji"><span>墨</span><span>斬</span></div>
+   168→      <div class="seal title-seal">斬</div>
+   169→    </div>
+   170→    <div class="t-side">
+   171→      <h1>SUMIKIRI</h1>
+   172→      <p class="tag">A HACK &amp; SLASH, PAINTED IN INK</p>
+   173→      <nav class="menu" id="title-nav">
+   174→        <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Road</button>
+   175→        <button class="mbtn" data-go="shrine"><span class="idx">二</span>The Shrine</button>
+   176→        <button class="mbtn" data-go="armory"><span class="idx">三</span>The Armory</button>
+   177→        <button class="mbtn" data-go="help"><span class="idx">四</span>How to Play</button>
+   178→        <button class="mbtn" data-go="settings"><span class="idx">五</span>Settings</button>
+   179→      </nav>
+   180→    </div>
+   181→  </div>
+   182→  <div class="footline" id="title-stats"></div>
+   183→  <div class="corner-note mono">M — sound · Esc — pause</div>
+   184→</div>
+   185→
+   186→<div class="screen" id="s-acts">
+   187→  <div class="page">
+   188→    <div class="page-head"><h2><i>道</i>Choose the Road</h2><div class="ash-chip mono"><span class="seal">灰</span><span id="ash-acts"></span> ash</div></div>
+   189→    <div class="acts-strip" id="acts-strip"></div>
+   190→    <div class="backrow"><button class="mbtn" data-go="title"><span class="idx">←</span>Back</button><span class="hint mono">tap a marked act to begin · progress is kept between sessions</span></div>
+   191→  </div>
+   192→</div>
+   193→
+   194→<div class="screen" id="s-shrine">
+   195→  <div class="page">
+   196→    <div class="page-head"><h2><i>詣</i>The Shrine</h2><div class="ash-chip mono"><span class="seal">灰</span><span id="ash-shrine"></span> ash</div></div>
+   197→    <div class="page-body" id="shrine-list"></div>
+   198→    <div class="backrow"><button class="mbtn" data-go="title"><span class="idx">←</span>Back</button><span class="hint mono">ash is earned by cutting — higher style ranks pay more</span></div>
+   199→  </div>
+   200→</div>
+   201→
+   202→<div class="screen" id="s-armory">
+   203→  <div class="page">
+   204→    <div class="page-head"><h2><i>械</i>The Armory</h2><div class="ash-chip mono"><span class="seal">灰</span><span id="ash-armory"></span> ash</div></div>
+   205→    <div class="page-body" id="armory-list"></div>
+   206→    <div class="backrow"><button class="mbtn" data-go="title"><span class="idx">←</span>Back</button><span class="hint mono">switch weapons mid-fight with their number key or slot</span></div>
+   207→  </div>
+   208→</div>
+   209→
+   210→<div class="screen" id="s-help">
+   211→  <div class="page" style="width:min(940px,94vw)">
+   212→    <div class="page-head"><h2><i>教</i>How to Play</h2></div>
+   213→    <div class="page-body">
+   214→      <div class="help-cols">
+   215→        <div>
+   216→          <h3>THE BRUSH-HAND</h3>
+   217→          <div class="krow"><span class="k">W A S D / arrows</span><span>Move.</span></div>
+   218→          <div class="krow"><span class="k">mouse</span><span>Aim every cut.</span></div>
+   219→          <div class="krow"><span class="k">left click</span><span>Slash — chain up to 4 hits. Mashing flows into combos.</span></div>
+   220→          <div class="krow"><span class="k">right click</span><span><b>Deflect</b> the red flash. Deflects stagger attackers and fill their posture — but never deflect a <b>危</b>.</span></div>
+   221→          <div class="krow"><span class="k">space</span><span>Dash — invulnerable while dashing. Cancels any swing.</span></div>
+   222→          <div class="krow"><span class="k">E</span><span>Art — when the Ki meter is full, unleash a devastating technique.</span></div>
+   223→          <div class="krow"><span class="k">1 – 4</span><span>Swap between owned weapons (fixed slot per weapon).</span></div>
+   224→          <div class="krow"><span class="k">Esc / M</span><span>Pause / sound.</span></div>
+   225→          <h3 style="margin-top:20px">THE TOUCH HAND</h3>
+   226→          <div class="krow"><span class="k">left thumb</span><span>Virtual stick — move.</span></div>
+   227→          <div class="krow"><span class="k">斬 button</span><span>Cut — snaps to the nearest foe. Hold to keep swinging.</span></div>
+   228→          <div class="krow"><span class="k">弾 button</span><span>Deflect the red flash.</span></div>
+   229→          <div class="krow"><span class="k">走 button</span><span>Dash through danger.</span></div>
+   230→          <div class="krow"><span class="k">絶 button</span><span>Art, when Ki is full.</span></div>
+   231→          <div class="krow"><span class="k">weapon slots</span><span>Tap to swap. 停 pauses.</span></div>
+   232→        </div>
+   233→        <div>
+   234→          <h3>READING THE INK</h3>
+   235→          <p><b>Red flashes</b> can be <b>deflected</b>. Deflects fill the attacker's <b>posture</b> — the amber bar under their health. A full bar <b>breaks</b> them: a broken foe glows gold, bears a pulsing 死, and your next cut is a one-strike <b>DEATHBLOW</b>. On bosses, a deathblow carves a chunk of their life. Posture bleeds away if you stop pressing — stay aggressive.</p>
+   236→          <p><b>危 — perilous.</b> Attacks marked with the red kanji <i>cannot be deflected</i> and hit 40% harder. Dash through them, or leave. A last-instant dodge is a <b>perfect dodge</b> (見切): it restores Ki and sharpens your next cuts.</p>
+   237→          <p><b>Gold arcs</b> from bosses are their proudest cuts — deflect those for heavy posture damage. <b>Red line-dashes</b> are perilous: dodge only.</p>
+   238→          <p>Melee yokai attack in chains. Keep swinging, keep deflecting. You take no contact damage — only telegraphed attacks hurt, and every death is readable in hindsight.</p>
+   239→          <h3>THE STYLE RANKS</h3>
+   240→          <p>Hit without being hit and the rank climbs: 初 → 中 → 上 → 極 → 鬼 → 神. Higher ranks pay more ash. Get hit and the rank bleeds.</p>
+   241→          <h3>A BESTIARY OF SMALL HORRORS</h3>
+   242→          <div class="gloss"><b>Kappa Imp</b> <i>act I</i> — the fodder. Hunts in packs, chains two cuts, sometimes lunges with 危.</div>
+   243→          <div class="gloss"><b>Oni Brute</b> <i>act I</i> — heavy slam chains; a perilous slam reaches wider. Circle it.</div>
+   244→          <div class="gloss"><b>Tengu Scribe</b> <i>act I</i> — keeps distance, throws fans. Slice the fans from the air, or deflect them back.</div>
+   245→          <div class="gloss"><b>Borei Wraith</b> <i>act II</i> — fast lunges; nearly half are perilous 危. Dodge, don't deflect.</div>
+   246→          <div class="gloss"><b>Inugami Hound</b> <i>act II</i> — perilous charge that detonates. Dash through it at the last breath for a 見切.</div>
+   247→          <div class="gloss"><b>Kame Guard</b> <i>act III</i> — shielded from the front; pokes in threes. Flank it, pierce with blessings, or break the shell with the Kanabō.</div>
+   248→          <div class="gloss"><b>Chōchin Broker</b> <i>act III</i> — heals its allies. Silence it first.</div>
+   249→          <div class="gloss"><b>Gōma Sorcerer</b> <i>act IV</i> — summons endlessly and teleports when cornered.</div>
+   250→          <div class="gloss"><b>Ashen elites</b> <i>act IV+</i> — ringed in red, deeper posture, worth triple. Deathblows still end them.</div>
+   251→        </div>
+   252→      </div>
+   253→    </div>
+   254→    <div class="backrow"><button class="mbtn" data-go="title"><span class="idx">←</span>Back</button></div>
+   255→  </div>
+   256→</div>
+   257→
+   258→<div class="screen" id="s-settings">
+   259→  <div class="page" style="width:min(620px,92vw)">
+   260→    <div class="page-head"><h2><i>設</i>Settings</h2></div>
+   261→    <div class="set-row"><label>Sound</label><input type="range" id="set-vol" min="0" max="100" value="70"></div>
+   262→    <div class="set-row"><label>Screen shake<small>camera trauma on hits and slams</small></label><button class="tgl" id="set-shake">ON</button></div>
+   263→    <div class="set-row"><label>Damage numbers</label><button class="tgl" id="set-nums">ON</button></div>
+   264→    <div class="set-row"><label>Difficulty<small>changes apply on your next act</small></label>
+   265→      <div class="seg"><button class="tgl" data-diff="0">静 Calm</button><button class="tgl" data-diff="1">嵐 Storm</button><button class="tgl" data-diff="2">獄 Tempest</button></div>
+   266→    </div>
+   267→    <div class="set-row"><label>Fullscreen<small>best on mobile — locks landscape</small></label><button class="tgl" id="set-fs">enter</button></div>
+   268→    <div class="set-row"><label>Burn the scroll<small>erases all progress, permanently</small></label><button class="tgl" id="set-wipe">WIPE</button></div>
+   269→    <div class="backrow"><button class="mbtn" id="set-back"><span class="idx">←</span>Back</button></div>
+   270→  </div>
+   271→</div>
+   272→
+   273→<div class="screen" id="s-bless">
+   274→  <div class="bless-title">一 INKMARK OFFERED</div>
+   275→  <div class="bless-sub">the road wants to pay you — choose one</div>
+   276→  <div id="bless-wrap"></div>
+   277→  <div class="bless-owned" id="bless-owned"></div>
+   278→</div>
+   279→
+   280→<div class="screen" id="s-pause">
+   281→  <div class="big-kan">停</div>
+   282→  <nav class="menu" style="margin-top:30px">
+   283→    <button class="mbtn" data-go="resume"><span class="idx">一</span>Resume</button>
+   284→    <button class="mbtn" data-go="settings"><span class="idx">二</span>Settings</button>
+   285→    <button class="mbtn" data-go="abandon"><span class="idx">三</span>Abandon the Road</button>
+   286→  </nav>
+   287→</div>
+   288→
+   289→<div class="screen" id="s-death">
+   290→  <div class="big-kan">死</div>
+   291→  <div class="death-line" id="death-line"></div>
+   292→  <div class="stat-line" id="death-stats"></div>
+   293→  <div class="btnrow" id="death-btns"></div>
+   294→</div>
+   295→
+   296→<div class="screen" id="s-clear">
+   297→  <div class="stamp">斬</div>
+   298→  <div class="clear-title" id="clear-title">STAGE CLEARED</div>
+   299→  <div class="tally" id="clear-tally"></div>
+   300→  <div class="btnrow" id="clear-btns"></div>
+   301→</div>
+   302→
+   303→<div class="screen" id="s-victory">
+   304→  <div class="big-kan" style="color:var(--ink)">終</div>
+   305→  <div class="death-line" style="font-size:19px;max-width:520px;line-height:1.8">The page is blank again.<br>It was never empty.</div>
+   306→  <div class="stat-line" id="victory-stats"></div>
+   307→  <div class="btnrow">
+   308→    <button class="mbtn" data-go="abyss"><span class="idx">一</span>Descend into the Abyss</button>
+   309→    <button class="mbtn" data-go="acts"><span class="idx">二</span>The Roads</button>
+   310→  </div>
+   311→</div>
+   312→
+   313→</div>
+   314→<div id="rotate">
+   315→  <div class="rkan">回</div>
+   316→  <p>turn your device —<br>the road is wide</p>
+   317→  <button class="mbtn" id="rotate-dismiss"><span class="idx">◆</span>Play anyway</button>
+   318→</div>
+   319→<script>
+   320→'use strict';
+   321→const TAU=Math.PI*2, PI=Math.PI;
+   322→const rnd=(a=1,b)=>b===undefined?Math.random()*a:a+Math.random()*(b-a);
+   323→const rndi=(a,b)=>Math.floor(rnd(a,b+1));
+   324→const choice=a=>a[Math.random()*a.length|0];
+   325→const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+   326→const lerp=(a,b,t)=>a+(b-a)*t;
+   327→const dist=(ax,ay,bx,by)=>Math.hypot(ax-bx,ay-by);
+   328→const angTo=(ax,ay,bx,by)=>Math.atan2(by-ay,bx-ax);
+   329→const angDiff=(a,b)=>{let d=(b-a)%TAU;if(d>PI)d-=TAU;if(d<-PI)d+=TAU;return d;};
+   330→const hash01=n=>{const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x);};
+   331→const easeOutQ=t=>1-(1-t)*(1-t);
+   332→const $=q=>document.querySelector(q);
+   333→const fmtT=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+   334→const INK='#1d1a16',INK2='#4a443c',PAPER='#e9e1cd',PAPER2='#f2ecd9',RED='#b3372a',RED2='#8c2b1f',GOLD='#8f6d1f',AMBER='#c9932a';
+   335→const IS_TOUCH=(()=>{try{return matchMedia('(pointer:coarse)').matches||'ontouchstart' in window;}catch(e){return false;}})();
+   336→
+   337→const store={
+   338→  get(k){try{return localStorage.getItem(k);}catch(e){return null;}},
+   339→  set(k,v){try{localStorage.setItem(k,v);}catch(e){}},
+   340→  del(k){try{localStorage.removeItem(k);}catch(e){}}};
+   341→
+   342→const SAVE_KEY='sumikiri_v1';
+   343→const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0},
+   344→  weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,abyssUnlocked:false,abyssBest:0,difficulty:1,
+   345→  shake:true,numbers:true,seenHelp0:false,stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
+   346→let SAVE=defaultSave();
+   347→(function(){
+   348→  const s=store.get(SAVE_KEY);if(!s)return;
+   349→  try{const p=JSON.parse(s);
+   350→    SAVE=Object.assign(defaultSave(),p);
+   351→    SAVE.meta=Object.assign(defaultSave().meta,p.meta||{});
+   352→    SAVE.stats=Object.assign(defaultSave().stats,p.stats||{});
+   353→    SAVE.weapons=Object.assign({katana:true},p.weapons||{});
+   354→  }catch(e){SAVE=defaultSave();}})();
+   355→function persist(){store.set(SAVE_KEY,JSON.stringify(SAVE));}
+   356→const DIFFI=()=>[
+   357→  {dmg:.85,hp:.95,spd:.96,wind:1.15,rec:1.15},
+   358→  {dmg:1.15,hp:1.25,spd:1.08,wind:.85,rec:.8},
+   359→  {dmg:1.35,hp:1.5,spd:1.16,wind:.72,rec:.65}][SAVE.difficulty];
+   360→
+   361→const AU={ctx:null,master:null,vol:.7,muted:false,plucks:new Map(),step:0,nextNote:0,
+   362→init(){if(this.ctx){if(this.ctx.state==='suspended')this.ctx.resume().catch(()=>{});return;}
+   363→  try{this.ctx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){return;}
+   364→  this.master=this.ctx.createGain();this.master.gain.value=this.muted?0:this.vol;
+   365→  this.master.connect(this.ctx.destination);
+   366→  const dg=this.ctx.createGain();dg.gain.value=.028;dg.connect(this.master);
+   367→  [73.4,73.9,110.2].forEach((f,i)=>{const o=this.ctx.createOscillator();o.type='triangle';o.frequency.value=f;
+   368→    const g=this.ctx.createGain();g.gain.value=i?0.4:1;o.connect(g);g.connect(dg);o.start();});
+   369→  this.nextNote=this.ctx.currentTime+.2;
+   370→  setInterval(()=>this.schedule(),110);},
+   371→setVol(v){this.vol=v;if(this.master&&!this.muted)this.master.gain.value=v;},
+   372→toggleMute(){this.muted=!this.muted;if(this.master)this.master.gain.value=this.muted?0:this.vol;return this.muted;},
+   373→tone(f0,f1,dur,type,vol,when=0){if(!this.ctx||this.muted)return;const t=this.ctx.currentTime+when;
+   374→  const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);
+   375→  o.frequency.exponentialRampToValueAtTime(Math.max(1,f1),t+dur);g.gain.setValueAtTime(vol,t);
+   376→  g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(this.master);o.start(t);o.stop(t+dur+.02);},
+   377→noise(dur,vol,fq,type='lowpass',slide=0,when=0){if(!this.ctx||this.muted)return;const t=this.ctx.currentTime+when;
+   378→  const n=Math.ceil(this.ctx.sampleRate*dur),b=this.ctx.createBuffer(1,n,this.ctx.sampleRate),d=b.getChannelData(0);
+   379→  for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+   380→  const s=this.ctx.createBufferSource();s.buffer=b;const f=this.ctx.createBiquadFilter();f.type=type;
+   381→  f.frequency.setValueAtTime(fq,t);if(slide)f.frequency.exponentialRampToValueAtTime(Math.max(40,fq+slide),t+dur);
+   382→  const g=this.ctx.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+   383→  s.connect(f);f.connect(g);g.connect(this.master);s.start(t);s.stop(t+dur+.02);},
+   384→pluck(freq,vol,when=0){if(!this.ctx||this.muted)return;const key=Math.round(freq);
+   385→  if(!this.plucks.has(key)){const rate=this.ctx.sampleRate,N=Math.max(2,Math.round(rate/freq)),len=Math.floor(rate*1.1);
+   386→    const b=this.ctx.createBuffer(1,len,rate),d=b.getChannelData(0);
+   387→    for(let i=0;i<N;i++)d[i]=Math.random()*2-1;
+   388→    for(let i=N;i<len;i++)d[i]=(d[i-N]+d[i-N+1])*.498;
+   389→    this.plucks.set(key,b);}
+   390→  const t=this.ctx.currentTime+when,s=this.ctx.createBufferSource();s.buffer=this.plucks.get(key);
+   391→  const g=this.ctx.createGain();g.gain.setValueAtTime(vol,t);g.gain.setTargetAtTime(0,t+.6,.3);
+   392→  s.connect(g);g.connect(this.master);s.start(t);},
+   393→drum(vol,when=0){if(!this.ctx||this.muted)return;
+   394→  this.tone(105,38,.32,'sine',vol,when);this.noise(.09,vol*.5,300,'lowpass',-150,when);},
+   395→slash(i){this.noise(.11,.16,2200+i*500,'lowpass',-1500);this.tone(300+i*90,120,.08,'triangle',.04);},
+   396→hit(){this.tone(150,70,.08,'square',.12);this.noise(.05,.14,900,'lowpass',-400);},
+   397→crit(){this.tone(240,60,.14,'sawtooth',.13);this.noise(.08,.16,1400,'lowpass',-900);},
+   398→parry(){this.tone(1250,1180,.34,'triangle',.2);this.tone(1660,1580,.28,'sine',.12);this.noise(.05,.08,5000,'highpass');},
+   399→deflect(){this.tone(820,1100,.12,'square',.08);},
+   400→dash(){this.noise(.16,.12,500,'bandpass',1600);},
+
+[showing lines 1-400 of 2016; use offset=401 with limit to continue reading]

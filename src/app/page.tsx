@@ -44,6 +44,7 @@ export default function Home() {
     <div style={{ position: 'fixed', inset: 0, overflow: 'hidden' }}>
       <iframe
         ref={frameRef}
+        id="game-frame"
         src="/game/index.html"
         title="SUMIKIRI"
         allow="fullscreen"

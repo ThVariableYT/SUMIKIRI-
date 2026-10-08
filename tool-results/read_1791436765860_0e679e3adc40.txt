@@ -1,0 +1,1002 @@
+     1→<!DOCTYPE html>
+     2→<html lang="en">
+     3→<head>
+     4→<meta charset="UTF-8"/>
+     5→<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+     6→<title>SUMIKIRI 墨斬 — ink &amp; steel</title>
+     7→<link rel="preconnect" href="https://fonts.googleapis.com">
+     8→<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+     9→<style>
+    10→:root{
+    11→  --ink:#1d1a16; --ink2:#4a443c; --paper:#e9e1cd; --paper2:#f2ecd9; --paper3:#fbf7ec;
+    12→  --red:#b3372a; --red2:#8c2b1f; --gold:#8f6d1f; --gold2:#c9932a; --indigo:#2c3550;
+    13→}
+    14→*{margin:0;padding:0;box-sizing:border-box}
+    15→html,body{height:100%;overflow:hidden;background:var(--paper);touch-action:manipulation}
+    16→body{font-family:"Shippori Mincho",serif;color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+    17→#cv{position:fixed;inset:0;display:block;touch-action:none}
+    18→body.playing #cv{cursor:none}
+    19→#ui{position:fixed;inset:0;pointer-events:none}
+    20→.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;
+    21→  background:rgba(233,225,205,.72);-webkit-backdrop-filter:blur(9px) saturate(.92);backdrop-filter:blur(9px) saturate(.92);
+    22→  overflow-y:auto;padding:20px 0;animation:fadein .22s ease both}
+    23→.screen.on{display:flex}
+    24→#s-title{background:rgba(233,225,205,.38);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+    25→@keyframes fadein{from{opacity:0}to{opacity:1}}
+    26→.mono{font-family:"IBM Plex Mono",monospace}
+    27→
+    28→.title-wrap{display:flex;align-items:center;gap:6vw}
+    29→.t-kanji{font-size:min(24vh,22vw);font-weight:800;line-height:1.02;letter-spacing:.02em;color:var(--ink);text-shadow:0 0 1px rgba(29,26,22,.4)}
+    30→.t-kanji span{display:block}
+    31→.t-kanji span:last-child{transform:rotate(-1.2deg) translateX(-.04em)}
+    32→.seal{display:flex;align-items:center;justify-content:center;background:var(--red);color:var(--paper2);font-weight:800;transform:rotate(4deg)}
+    33→.title-seal{width:.34em;height:.34em;font-size:min(24vh,22vw);margin-top:-1.2em;margin-left:-.14em;border-radius:3px;box-shadow:0 2px 0 rgba(60,16,10,.25)}
+    34→.t-side h1{font-size:clamp(26px,3.4vw,46px);font-weight:800;letter-spacing:.32em;margin-bottom:2px}
+    35→.t-side .tag{font-size:clamp(12px,1.1vw,15px);color:var(--ink2);letter-spacing:.14em;border-bottom:1px solid rgba(29,26,22,.35);padding-bottom:14px;margin-bottom:26px}
+    36→nav.menu{display:flex;flex-direction:column;gap:11px;align-items:flex-start}
+    37→.mbtn{background:none;border:none;font-family:inherit;font-size:clamp(17px,1.5vw,21px);font-weight:600;color:var(--ink);letter-spacing:.16em;cursor:pointer;display:flex;align-items:center;gap:14px;padding:2px 0;transition:transform .12s ease,color .12s ease}
+    38→.mbtn .idx{font-size:.72em;color:var(--ink2);width:1.4em;transition:color .12s}
+    39→.mbtn::before{content:"";width:9px;height:9px;border:1.5px solid var(--ink);transform:rotate(45deg) scale(.6);opacity:0;transition:all .13s ease}
+    40→.mbtn:hover{transform:translateX(8px);color:var(--red)}
+    41→.mbtn:hover::before{opacity:1;background:var(--red);border-color:var(--red);transform:rotate(45deg) scale(1)}
+    42→.mbtn:hover .idx{color:var(--red)}
+    43→.mbtn:disabled{opacity:.34;cursor:default}
+    44→.mbtn:disabled:hover{transform:none;color:var(--ink)}
+    45→.footline{position:fixed;left:26px;bottom:20px;font-size:12px;color:var(--ink2);letter-spacing:.1em}
+    46→.footline b{color:var(--red);font-weight:600}
+    47→.corner-note{position:fixed;right:26px;bottom:20px;font-size:12px;color:var(--ink2);letter-spacing:.1em}
+    48→
+    49→.page{width:min(880px,92vw);max-height:88vh;display:flex;flex-direction:column}
+    50→.page-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:6px}
+    51→.page-head h2{font-size:clamp(22px,2.6vw,32px);font-weight:800;letter-spacing:.18em}
+    52→.page-head .sub{font-size:12px;color:var(--ink2);letter-spacing:.14em}
+    53→.page-body{overflow-y:auto;padding:14px 6px 10px;scrollbar-width:thin;scrollbar-color:rgba(74,68,60,.5) transparent}
+    54→.page-body::-webkit-scrollbar{width:5px}
+    55→.page-body::-webkit-scrollbar-thumb{background:rgba(74,68,60,.5);border-radius:3px}
+    56→.ashline{font-size:15px;margin:4px 0 10px;color:var(--ink2)}
+    57→.ashline b{color:var(--ink);font-weight:700}
+    58→
+    59→.row{display:flex;align-items:center;gap:16px;padding:12px 10px;border-bottom:1px dashed rgba(74,68,60,.35)}
+    60→.row .kan{font-size:34px;font-weight:800;width:52px;text-align:center;color:var(--ink);flex:none}
+    61→.row .mid{flex:1;min-width:0}
+    62→.row .mid b{font-size:17px;letter-spacing:.06em}
+    63→.row .mid p{font-size:13px;color:var(--ink2);margin:2px 0 4px;line-height:1.5}
+    64→.pips{display:flex;gap:5px;margin-top:4px}
+    65→.pip{width:9px;height:9px;border:1.5px solid var(--ink2);transform:rotate(45deg);opacity:.55}
+    66→.pip.f{background:var(--red);border-color:var(--red);opacity:1}
+    67→.wstats{font-size:12px;color:var(--ink2);letter-spacing:.02em}
+    68→.buy{font-family:inherit;font-weight:700;font-size:16px;background:var(--paper3);border:1.5px solid var(--ink);color:var(--ink);
+    69→  padding:8px 18px;cursor:pointer;letter-spacing:.1em;box-shadow:2px 2px 0 rgba(29,26,22,.28);flex:none;transition:all .12s ease}
+    70→.buy:hover:not(:disabled){background:var(--red);border-color:var(--red);color:var(--paper2);transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(140,43,31,.35)}
+    71→.buy:disabled{opacity:.38;cursor:default}
+    72→.buy.wide{padding:10px 26px;font-size:18px}
+    73→
+    74→.seg{display:flex;border:1.5px solid var(--ink)}
+    75→.seg button{font-family:inherit;font-size:16px;font-weight:700;background:transparent;border:none;color:var(--ink);padding:7px 20px;cursor:pointer;letter-spacing:.1em}
+    76→.seg button+button{border-left:1.5px solid var(--ink)}
+    77→.seg button.on{background:var(--ink);color:var(--paper2)}
+    78→.seg button.danger.on{background:var(--red)}
+    79→
+    80→.tgl{font-family:inherit;font-size:16px;font-weight:600;background:transparent;border:1.5px solid var(--ink);color:var(--ink);padding:8px 18px;cursor:pointer;letter-spacing:.1em}
+    81→.tgl.on{background:var(--gold);border-color:var(--gold);color:var(--paper3)}
+    82→.setrow{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 8px;border-bottom:1px dashed rgba(74,68,60,.35)}
+    83→.setrow .lab{font-size:17px;font-weight:600;letter-spacing:.08em}
+    84→.setrow .lab small{display:block;font-weight:400;font-size:12px;color:var(--ink2);letter-spacing:.05em}
+    85→input[type=range]{-webkit-appearance:none;appearance:none;width:200px;height:3px;background:var(--ink2);outline:none}
+    86→input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--red);border-radius:50%;border:2px solid var(--paper3);cursor:pointer;box-shadow:0 1px 3px rgba(29,26,22,.4)}
+    87→
+    88→#s-bless{background:rgba(29,26,22,.44);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+    89→#bless-wrap{display:flex;gap:4vw;padding:4vh 0 3vh;flex-wrap:wrap;justify-content:center}
+    90→.scroll{display:flex;flex-direction:column;width:min(220px,26vw);cursor:pointer;position:relative;
+    91→  animation:scdrop .5s cubic-bezier(.2,1.4,.4,1) both}
+    92→.scroll:nth-child(2){animation-delay:.08s}
+    93→.scroll:nth-child(3){animation-delay:.16s}
+    94→@keyframes scdrop{from{opacity:0;transform:translateY(-46px) rotate(-1.5deg)}to{opacity:1;transform:rotate(0)}}
+    95→.rod{height:16px;background:var(--ink);border-radius:3px;box-shadow:0 3px 6px rgba(29,26,22,.4);flex:none}
+    96→.rod:first-child{border-bottom:3px solid var(--red2)}
+    97→.sc-paper{background:var(--paper3);padding:20px 14px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;min-height:300px;
+    98→  box-shadow:inset 0 0 34px rgba(120,100,60,.14), 0 6px 14px rgba(29,26,22,.35);position:relative;transition:transform .16s ease,box-shadow .16s ease}
+    99→.scroll:hover .sc-paper{transform:translateY(-6px);box-shadow:inset 0 0 34px rgba(120,100,60,.14), 0 14px 22px rgba(29,26,22,.45)}
+   100→.rar{font-size:12px;font-weight:800;letter-spacing:.3em;padding:2px 10px;margin-bottom:10px}
+   101→.rar.r0{color:var(--ink2);border:1px solid var(--ink2)}
+   102→.rar.r1{color:var(--gold);border:1px solid var(--gold)}
+   103→.rar.r2{color:var(--paper3);background:var(--red);border:1px solid var(--red)}
+   104→.b-kan{font-size:64px;font-weight:800;line-height:1;margin:6px 0 4px}
+   105→.b-name{font-size:18px;font-weight:700;letter-spacing:.08em}
+   106→.b-div{width:56%;height:2px;background:var(--ink);margin:12px auto 10px;opacity:.7}
+   107→.b-desc{font-size:13px;color:var(--ink2);line-height:1.65;max-width:200px}
+   108→.b-key{margin-top:auto;padding-top:14px;font-size:11px;color:var(--ink2);letter-spacing:.14em}
+   109→#bless-owned{color:rgba(242,236,217,.85);font-size:13px;letter-spacing:.08em}
+   110→#bless-owned i{font-style:normal;color:var(--gold2);font-weight:700;margin-right:2px}
+   111→#bless-head{color:var(--paper2);font-size:22px;font-weight:700;letter-spacing:.24em}
+   112→#bless-sub{color:rgba(242,236,217,.6);font-size:12px;letter-spacing:.16em;margin-top:6px}
+   113→
+   114→.big-kan{font-size:clamp(90px,18vh,170px);font-weight:800;color:var(--red);line-height:1;margin:0 0 10px;
+   115→  transform:rotate(-7deg);animation:stamp .38s cubic-bezier(.25,1.6,.4,1) both}
+   116→@keyframes stamp{from{opacity:0;transform:rotate(-7deg) scale(2.6)}to{opacity:1;transform:rotate(-7deg) scale(1)}}
+   117→.death-line{font-size:16px;color:var(--ink2);max-width:520px;text-align:center;line-height:1.9;margin-bottom:8px;font-style:italic}
+   118→.stat-line{font-size:13.5px;color:var(--ink2);margin:6px 0 22px;text-align:center;letter-spacing:.04em}
+   119→.stat-line b{color:var(--ink);font-weight:700}
+   120→.stat-line .r{color:var(--red);font-weight:700}
+   121→.btnrow{display:flex;flex-direction:column;align-items:center;gap:9px}
+   122→.rec-note{font-size:12.5px;color:var(--gold);letter-spacing:.08em;margin-top:14px;min-height:18px}
+   123→
+   124→.act-strip{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;padding:16px 0 10px}
+   125→.act-node{width:150px;padding:16px 10px 14px;border:2px solid var(--ink);background:var(--paper3);cursor:pointer;text-align:center;position:relative;
+   126→  box-shadow:3px 3px 0 rgba(29,26,22,.24);transition:transform .13s ease,box-shadow .13s ease}
+   127→.act-node:hover:not(.locked){transform:translate(-2px,-2px);box-shadow:5px 5px 0 rgba(179,55,42,.32);border-color:var(--red)}
+   128→.act-node .a-kan{font-size:44px;font-weight:800;line-height:1.1}
+   129→.act-node .a-name{font-size:12.5px;font-weight:700;letter-spacing:.04em;margin-top:6px;line-height:1.4;min-height:34px}
+   130→.act-node .a-tag{font-size:10.5px;color:var(--ink2);letter-spacing:.12em;margin-top:4px}
+   131→.act-node.locked{opacity:.5;cursor:default}
+   132→.act-node .lock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(233,225,205,.72)}
+   133→.act-node .lock span{display:inline-block;background:var(--ink2);color:var(--paper);font-weight:800;padding:4px 10px;transform:rotate(-8deg);font-size:14px;letter-spacing:.2em}
+   134→.act-node.cur{border-color:var(--red)}
+   135→.act-node .a-dots{display:flex;gap:4px;justify-content:center;margin-top:8px}
+   136→.act-node .a-dots i{width:5px;height:5px;background:var(--ink2);border-radius:50%;opacity:.4}
+   137→.act-node .a-dots i.done{background:var(--red);opacity:1}
+   138→.act-node.side-node{border-style:dashed}
+   139→.act-node.side-node .a-kan{color:var(--red)}
+   140→
+   141→.helpgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:6px 26px;padding:8px 2px}
+   142→.helpcol h4{font-size:15px;font-weight:800;letter-spacing:.18em;border-bottom:1px solid var(--ink2);padding-bottom:6px;margin:12px 0 8px}
+   143→.hrow{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);padding:4.5px 0;border-bottom:1px dotted rgba(74,68,60,.25)}
+   144→.hrow b{color:var(--ink);font-weight:600}
+   145→.besti{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px 22px}
+   146→.brow{display:flex;gap:12px;align-items:baseline;padding:7px 2px;border-bottom:1px dotted rgba(74,68,60,.25)}
+   147→.brow .bk{font-size:26px;font-weight:800;width:34px;flex:none;text-align:center}
+   148→.brow .bn{font-size:13.5px;font-weight:700}
+   149→.brow .bd{font-size:12px;color:var(--ink2);line-height:1.5}
+   150→
+   151→#s-pause .big-kan{color:var(--ink);transform:rotate(0)}
+   152→.recs-tabs{display:flex;gap:8px;margin:8px 0 12px;justify-content:center}
+   153→.recs-tabs button{font-family:inherit;font-size:15px;font-weight:700;letter-spacing:.14em;background:transparent;border:1.5px solid var(--ink);color:var(--ink);padding:7px 20px;cursor:pointer}
+   154→.recs-tabs button.on{background:var(--ink);color:var(--paper2)}
+   155→.rec-list{width:100%;max-width:640px}
+   156→.rec-h,.rec-r{display:grid;grid-template-columns:44px 1.4fr 70px 60px 84px 46px;gap:6px;align-items:center;padding:7px 12px;font-size:13px}
+   157→.rec-h{color:var(--ink2);font-size:11px;letter-spacing:.14em;border-bottom:2px solid var(--ink)}
+   158→.rec-r{border-bottom:1px dashed rgba(74,68,60,.3);background:var(--paper3)}
+   159→.rec-r.me{outline:2px solid var(--gold);background:#f6efdb}
+   160→.rec-r .pos{font-weight:800;color:var(--red)}
+   161→.rec-r .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+   162→.rec-r .dim{color:var(--ink2)}
+   163→.rec-empty{padding:26px 0;text-align:center;color:var(--ink2);font-size:14px;letter-spacing:.06em}
+   164→#rec-own{font-size:12.5px;color:var(--gold);letter-spacing:.08em;margin:12px 0 0;text-align:center;min-height:18px}
+   165→
+   166→#s-submit .field{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:8px}
+   167→#s-submit input{font-family:inherit;font-size:24px;font-weight:700;text-align:center;letter-spacing:.1em;width:min(340px,80vw);
+   168→  background:var(--paper3);border:none;border-bottom:3px solid var(--ink);padding:10px 8px;color:var(--ink);outline:none}
+   169→#s-submit input:focus{border-bottom-color:var(--red)}
+   170→#s-submit .hint{font-size:12px;color:var(--ink2);letter-spacing:.08em}
+   171→
+   172→/* codex: the page stops when a stranger steps on it */
+   173→#s-codex{background:rgba(29,26,22,.5);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+   174→.codex-card{display:flex;width:min(820px,94vw);max-height:88vh;background:var(--paper3);border:2px solid var(--ink);
+   175→  box-shadow:0 18px 46px rgba(20,16,12,.5),inset 0 0 60px rgba(120,100,60,.12);
+   176→  animation:cxin .34s cubic-bezier(.2,1.3,.4,1) both}
+   177→@keyframes cxin{from{opacity:0;transform:translateY(26px) scale(.94) rotate(-.6deg)}to{opacity:1;transform:none}}
+   178→.codex-left{flex:none;width:min(272px,40vw);position:relative;background:var(--paper2);border-right:2px solid var(--ink);display:flex}
+   179→#codex-cv{width:100%;height:auto;display:block;margin:auto;animation:cxfloat 3.4s ease-in-out infinite}
+   180→@keyframes cxfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+   181→.codex-seal{position:absolute;right:12px;bottom:10px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+   182→  background:var(--red);color:var(--paper2);font-weight:800;font-size:20px;border-radius:3px;transform:rotate(-7deg);
+   183→  box-shadow:0 2px 0 rgba(60,16,10,.3)}
+   184→.codex-right{flex:1;min-width:0;padding:22px 28px 18px;display:flex;flex-direction:column}
+   185→.cx-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:10px}
+   186→.cx-kan{font-size:44px;font-weight:800;line-height:1;color:var(--ink);flex:none}
+   187→.cx-title{flex:1;min-width:0}
+   188→.cx-name{font-size:clamp(18px,2.2vw,24px);font-weight:800;letter-spacing:.12em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+   189→.cx-class{font-size:11px;letter-spacing:.22em;color:var(--red);font-weight:700;margin-top:3px}
+   190→.cx-no{font-size:11px;color:var(--ink2);letter-spacing:.14em;flex:none}
+   191→.cx-stats{display:flex;gap:22px;padding:10px 2px 0;flex:none}
+   192→.cx-stat{display:flex;align-items:center;gap:8px}
+   193→.cx-stat .lab{font-size:9.5px;letter-spacing:.18em;color:var(--ink2);font-weight:700}
+   194→.cx-pips{display:flex;gap:4px}
+   195→.cx-pip{width:8px;height:8px;border:1.5px solid var(--ink2);transform:rotate(45deg);opacity:.5}
+   196→.cx-pip.f{background:var(--ink);border-color:var(--ink);opacity:1}
+   197→.cx-desc{font-size:13.5px;line-height:1.75;color:var(--ink2);margin:10px 0 12px;font-style:italic;flex:none}
+   198→.cx-sec{font-size:11px;font-weight:800;letter-spacing:.26em;color:var(--ink);border-bottom:1px solid var(--ink2);padding-bottom:5px;flex:none}
+   199→.cx-atks{overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(74,68,60,.5) transparent}
+   200→.cx-atks::-webkit-scrollbar{width:5px}
+   201→.cx-atks::-webkit-scrollbar-thumb{background:rgba(74,68,60,.5);border-radius:3px}
+   202→.cx-atk{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;padding:8px 2px;border-bottom:1px dotted rgba(74,68,60,.3)}
+   203→.cx-atk b{font-size:14.5px;letter-spacing:.04em;font-weight:700}
+   204→.cx-atk p{flex-basis:100%;font-size:12px;color:var(--ink2);line-height:1.5;margin:1px 0 0}
+   205→.cx-bdg{font-size:9.5px;font-weight:800;letter-spacing:.12em;padding:1.5px 7px;border:1px solid currentColor;flex:none}
+   206→.cx-bdg.par{color:var(--red)}
+   207→.cx-bdg.def{color:var(--gold)}
+   208→.cx-hint{margin-top:auto;padding-top:14px;font-size:11.5px;letter-spacing:.14em;color:var(--ink2);text-align:right;flex:none}
+   209→@media (max-width:700px){
+   210→  .codex-card{flex-direction:column;overflow-y:auto}
+   211→  .codex-left{width:100%;border-right:none;border-bottom:2px solid var(--ink)}
+   212→  #codex-cv{width:min(230px,62vw)}
+   213→  .codex-right{padding:16px 18px 14px}
+   214→  .cx-kan{font-size:36px}
+   215→  .cx-atks{overflow:visible}}
+   216→
+   217→#rotate{position:fixed;inset:0;z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:var(--paper)}
+   218→#rotate.on{display:flex}
+   219→.rkan{font-size:120px;font-weight:800;color:var(--ink);animation:spinq 2.6s ease-in-out infinite}
+   220→@keyframes spinq{0%,20%{transform:rotate(0)}55%,75%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}
+   221→#rotate p{font-size:15px;color:var(--ink2);letter-spacing:.1em;text-align:center;line-height:1.8}
+   222→@media (max-width:860px){
+   223→  .title-wrap{gap:4vw}
+   224→  .t-side h1{letter-spacing:.18em}
+   225→  .rec-h,.rec-r{grid-template-columns:36px 1.3fr 58px 52px 72px 38px;font-size:12px;padding:6px 8px}
+   226→}
+   227→</style>
+   228→</head>
+   229→<body>
+   230→<canvas id="cv"></canvas>
+   231→<div id="ui">
+   232→
+   233→<div class="screen on" id="s-title">
+   234→  <div class="title-wrap">
+   235→    <div class="t-kanji"><span>墨</span><span>斬</span><span class="seal title-seal">印</span></div>
+   236→    <div class="t-side">
+   237→      <h1>SUMIKIRI</h1>
+   238→      <div class="tag">a hack &amp; slash painted in ink · v2 「黒 edition」</div>
+   239→      <nav class="menu">
+   240→        <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Road</button>
+   241→        <button class="mbtn" id="btn-abyss"><span class="idx">二</span>The Abyss <small class="mono" id="ab-best" style="font-size:12px;color:var(--ink2)"></small></button>
+   242→        <button class="mbtn" id="btn-gauntlet"><span class="idx">三</span>The Gauntlet <small class="mono" id="gt-best" style="font-size:12px;color:var(--ink2)"></small></button>
+   243→        <button class="mbtn" data-go="records"><span class="idx">四</span>Records of Ink</button>
+   244→        <button class="mbtn" data-go="shrine"><span class="idx">五</span>The Shrine</button>
+   245→        <button class="mbtn" data-go="armory"><span class="idx">六</span>The Armory</button>
+   246→        <button class="mbtn" data-go="help"><span class="idx">七</span>How to Hold a Blade</button>
+   247→        <button class="mbtn" data-go="settings"><span class="idx">八</span>Settings</button>
+   248→      </nav>
+   249→    </div>
+   250→  </div>
+   251→  <div class="footline" id="title-stats"></div>
+   252→  <div class="corner-note">墨 · 斬 · 終</div>
+   253→</div>
+   254→
+   255→<div class="screen" id="s-acts">
+   256→  <div class="page">
+   257→    <div class="page-head"><h2>THE ROADS</h2><span class="sub">seven acts to the blank page</span></div>
+   258→    <div class="page-body">
+   259→      <div class="act-strip" id="act-strip"></div>
+   260→      <div class="btnrow" style="margin-top:14px"><button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button></div>
+   261→    </div>
+   262→  </div>
+   263→</div>
+   264→
+   265→<div class="screen" id="s-shrine">
+   266→  <div class="page">
+   267→    <div class="page-head"><h2>THE SHRINE 社</h2><span class="sub">ash is remembrance — spend it well</span></div>
+   268→    <div class="page-body">
+   269→      <div class="ashline">you carry <b class="mono" id="ash-shrine">0</b> 灰 ash</div>
+   270→      <div id="shrine-list"></div>
+   271→      <div class="btnrow" style="margin-top:16px"><button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button></div>
+   272→    </div>
+   273→  </div>
+   274→</div>
+   275→
+   276→<div class="screen" id="s-armory">
+   277→  <div class="page">
+   278→    <div class="page-head"><h2>THE ARMORY 器</h2><span class="sub">four answers to one question</span></div>
+   279→    <div class="page-body">
+   280→      <div class="ashline">you carry <b class="mono" id="ash-armory">0</b> 灰 ash</div>
+   281→      <div id="armory-list"></div>
+   282→      <div class="btnrow" style="margin-top:16px"><button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button></div>
+   283→    </div>
+   284→  </div>
+   285→</div>
+   286→
+   287→<div class="screen" id="s-help">
+   288→  <div class="page">
+   289→    <div class="page-head"><h2>HOW TO HOLD A BLADE</h2><span class="sub">deflect · break posture · deathblow</span></div>
+   290→    <div class="page-body">
+   291→      <div class="helpgrid" id="help-controls"></div>
+   292→      <div class="helpcol"><h4>THE THREE LAWS</h4></div>
+   293→      <div class="helpgrid">
+   294→        <div class="helpcol">
+   295→          <div class="hrow"><b>Deflect 弾</b><span>parry the gold flash — it shreds posture</span></div>
+   296→          <div class="hrow"><b>Peril 危</b><span>red kanji means unblockable — dash it</span></div>
+   297→          <div class="hrow"><b>Posture 姿</b><span>fill the gold bar to break a foe</span></div>
+   298→          <div class="hrow"><b>Deathblow 死</b><span>strike a broken foe for the kill</span></div>
+   299→          <div class="hrow"><b>見切</b><span>dashing through an attack empowers you</span></div>
+   300→        </div>
+   301→        <div class="helpcol">
+   302→          <div class="hrow"><b>Ki 気</b><span>strikes and deflects fill the gauge</span></div>
+   303→          <div class="hrow"><b>Art 絶</b><span>at 100 ki, release the whole page</span></div>
+   304→          <div class="hrow"><b>Ash 灰</b><span>the dead leave it; the shrine takes it</span></div>
+   305→          <div class="hrow"><b>Style 位</b><span>fight beautifully — beauty pays in ash</span></div>
+   306→          <div class="hrow"><b>Duels 闘</b><span>named blades guard acts 2, 4 and 6</span></div>
+   307→        </div>
+   308→      </div>
+   309→      <div class="helpcol"><h4>BESTIARY — THE INKMEN</h4></div>
+   310→      <div class="besti" id="help-besti"></div>
+   311→      <div class="btnrow" style="margin-top:16px"><button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button></div>
+   312→    </div>
+   313→  </div>
+   314→</div>
+   315→
+   316→<div class="screen" id="s-settings">
+   317→  <div class="page" style="width:min(620px,92vw)">
+   318→    <div class="page-head"><h2>SETTINGS 設</h2><span class="sub">tune the hand, not the blade</span></div>
+   319→    <div class="page-body" id="settings-body">
+   320→      <div class="setrow"><div class="lab">Volume<small>the paper rustles</small></div><input type="range" id="set-vol" min="0" max="100" value="70"></div>
+   321→      <div class="setrow"><div class="lab">Screen shake<small>weight of the blade</small></div><button class="tgl" id="set-shake">shake</button></div>
+   322→      <div class="setrow"><div class="lab">Damage numbers<small>numbers on the page</small></div><button class="tgl" id="set-nums">numbers</button></div>
+   323→      <div class="setrow"><div class="lab">Difficulty<small>静 calm · 嵐 storm · 狱 tempest</small></div>
+   324→        <div class="seg" id="diff-seg">
+   325→          <button data-diff="0">静</button><button data-diff="1">嵐</button><button data-diff="2">狱</button>
+   326→        </div>
+   327→      </div>
+   328→      <div class="setrow"><div class="lab">Fullscreen<small>fill the whole page</small></div><button class="buy" id="set-fs">enter</button></div>
+   329→      <div class="setrow"><div class="lab">Burn the notebook<small>erases all progress</small></div><button class="buy danger" id="set-wipe" style="border-color:var(--red);color:var(--red)">WIPE</button></div>
+   330→      <div class="btnrow" style="margin-top:16px"><button class="mbtn" id="set-back"><span class="idx">◆</span>Back</button></div>
+   331→    </div>
+   332→  </div>
+   333→</div>
+   334→
+   335→<div class="screen" id="s-bless">
+   336→  <div id="bless-head">CHOOSE AN INKMARK</div>
+   337→  <div id="bless-sub">the ink remembers what you take</div>
+   338→  <div id="bless-wrap"></div>
+   339→  <div id="bless-owned"></div>
+   340→</div>
+   341→
+   342→<div class="screen" id="s-pause">
+   343→  <div class="big-kan">停</div>
+   344→  <div class="stat-line">the ink waits. it is patient.</div>
+   345→  <div class="btnrow">
+   346→    <button class="mbtn" data-go="resume"><span class="idx">◆</span>Resume</button>
+   347→    <button class="mbtn" data-go="settings"><span class="idx">◆</span>Settings</button>
+   348→    <button class="mbtn" data-go="abandon"><span class="idx">◆</span>Abandon the Run</button>
+   349→  </div>
+   350→</div>
+   351→
+   352→<div class="screen" id="s-death">
+   353→  <div class="big-kan">死</div>
+   354→  <div class="death-line" id="death-line"></div>
+   355→  <div class="stat-line" id="death-stats"></div>
+   356→  <div class="rec-note" id="death-rec"></div>
+   357→  <div class="btnrow" id="death-btns"></div>
+   358→</div>
+   359→
+   360→<div class="screen" id="s-clear">
+   361→  <div class="big-kan" style="color:var(--ink)">斬</div>
+   362→  <div class="stat-line" id="clear-title" style="font-size:19px;letter-spacing:.14em"></div>
+   363→  <div class="stat-line" id="clear-tally"></div>
+   364→  <div class="btnrow" id="clear-btns"></div>
+   365→</div>
+   366→
+   367→<div class="screen" id="s-victory">
+   368→  <div class="big-kan" style="color:var(--ink)">終</div>
+   369→  <div class="death-line" style="font-size:19px;max-width:520px;line-height:1.8">The page is blank again.<br>It was never empty.</div>
+   370→  <div class="stat-line" id="victory-stats"></div>
+   371→  <div class="rec-note" id="victory-rec"></div>
+   372→  <div class="btnrow">
+   373→    <button class="mbtn" data-go="abyss"><span class="idx">一</span>Descend into the Abyss</button>
+   374→    <button class="mbtn" data-go="gauntlet"><span class="idx">二</span>The Gauntlet 連</button>
+   375→    <button class="mbtn" data-go="acts"><span class="idx">三</span>The Roads</button>
+   376→  </div>
+   377→</div>
+   378→
+   379→<div class="screen" id="s-records">
+   380→  <div class="page" style="width:min(720px,94vw)">
+   381→    <div class="page-head"><h2>RECORDS OF INK 銘</h2><span class="sub">names carved by other hands</span></div>
+   382→    <div class="page-body">
+   383→      <div class="recs-tabs">
+   384→        <button data-rec="abyss">ABYSS 無</button><button data-rec="gauntlet">GAUNTLET 連</button><button data-rec="story">STORY 終</button>
+   385→      </div>
+   386→      <div class="rec-list" id="rec-list"><div class="rec-empty">gathering the pages…</div></div>
+   387→      <div id="rec-own"></div>
+   388→      <div class="btnrow" style="margin-top:14px">
+   389→        <button class="mbtn" id="rec-refresh"><span class="idx">◆</span>Refresh</button>
+   390→        <button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button>
+   391→      </div>
+   392→    </div>
+   393→  </div>
+   394→</div>
+   395→
+   396→<div class="screen" id="s-submit">
+   397→  <div class="big-kan" style="font-size:clamp(64px,12vh,110px)">銘</div>
+   398→  <div class="death-line">A name for the records —<br>so the ink knows who held the blade.</div>
+   399→  <div class="field">
+   400→    <input id="submit-name" maxlength="16" placeholder="nameless" autocomplete="off" spellcheck="false">
+   401→    <div class="hint">up to 16 characters · kept on this page only</div>
+   402→    <button class="buy wide" id="submit-go">CARVE 銘</button>
+   403→  </div>
+   404→</div>
+   405→
+   406→<div class="screen" id="s-codex">
+   407→  <div class="codex-card">
+   408→    <div class="codex-left">
+   409→      <canvas id="codex-cv" width="544" height="660"></canvas>
+   410→      <div class="codex-seal">初</div>
+   411→    </div>
+   412→    <div class="codex-right">
+   413→      <div class="cx-head">
+   414→        <div class="cx-kan" id="codex-kan">河</div>
+   415→        <div class="cx-title"><div class="cx-name" id="codex-name">KAPPA IMP</div><div class="cx-class" id="codex-class">IMP · SWARM</div></div>
+   416→        <div class="cx-no mono" id="codex-no">No. 01</div>
+   417→      </div>
+   418→      <div class="cx-stats" id="codex-stats"></div>
+   419→      <div class="cx-desc" id="codex-desc"></div>
+   420→      <div class="cx-sec">ATTACKS 技</div>
+   421→      <div class="cx-atks" id="codex-atks"></div>
+   422→      <div class="cx-hint" id="codex-hint">press any key to raise your blade</div>
+   423→    </div>
+   424→  </div>
+   425→</div>
+   426→
+   427→</div>
+   428→<div id="rotate">
+   429→  <div class="rkan">回</div>
+   430→  <p>turn your device —<br>the road is wide</p>
+   431→  <button class="mbtn" id="rotate-dismiss"><span class="idx">◆</span>Play anyway</button>
+   432→</div>
+   433→<script>
+   434→'use strict';
+   435→const TAU=Math.PI*2, PI=Math.PI;
+   436→const rnd=(a=1,b)=>b===undefined?Math.random()*a:a+Math.random()*(b-a);
+   437→const rndi=(a,b)=>Math.floor(rnd(a,b+1));
+   438→const choice=a=>a[Math.random()*a.length|0];
+   439→const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+   440→const lerp=(a,b,t)=>a+(b-a)*t;
+   441→const dist=(ax,ay,bx,by)=>Math.hypot(ax-bx,ay-by);
+   442→const angTo=(ax,ay,bx,by)=>Math.atan2(by-ay,bx-ax);
+   443→const angDiff=(a,b)=>{let d=(b-a)%TAU;if(d>PI)d-=TAU;if(d<-PI)d+=TAU;return d;};
+   444→const hash01=n=>{const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x);};
+   445→const easeOutQ=t=>1-(1-t)*(1-t);
+   446→const easeOutC=t=>1-Math.pow(1-t,3);
+   447→const $=q=>document.querySelector(q);
+   448→const fmtT=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+   449→const INK='#1d1a16',INK2='#4a443c',PAPER='#e9e1cd',PAPER2='#f2ecd9',PAPER3='#fbf7ec',RED='#b3372a',RED2='#8c2b1f',GOLD='#8f6d1f',GOLD2='#c9932a',AMBER='#c9932a';
+   450→function mkCanvas(w,h){const c=document.createElement('canvas');c.width=Math.max(2,w|0);c.height=Math.max(2,h|0);return c;}
+   451→const IS_TOUCH=(()=>{try{return matchMedia('(pointer:coarse)').matches||'ontouchstart' in window;}catch(e){return false;}})();
+   452→
+   453→const store={
+   454→  get(k){try{return localStorage.getItem(k);}catch(e){return null;}},
+   455→  set(k,v){try{localStorage.setItem(k,v);}catch(e){}},
+   456→  del(k){try{localStorage.removeItem(k);}catch(e){}}};
+   457→
+   458→const SAVE_KEY='sumikiri_v1';
+   459→const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0},
+   460→  weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,
+   461→  difficulty:1,shake:true,numbers:true,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
+   462→let SAVE=defaultSave();
+   463→(function(){
+   464→  const s=store.get(SAVE_KEY);if(!s)return;
+   465→  try{const p=JSON.parse(s);
+   466→    SAVE=Object.assign(defaultSave(),p);
+   467→    SAVE.meta=Object.assign(defaultSave().meta,p.meta||{});
+   468→    SAVE.stats=Object.assign(defaultSave().stats,p.stats||{});
+   469→    SAVE.weapons=Object.assign({katana:true},p.weapons||{});
+   470→  }catch(e){SAVE=defaultSave();}})();
+   471→function persist(){store.set(SAVE_KEY,JSON.stringify(SAVE));}
+   472→const DIFFI=()=>[
+   473→  {dmg:.85,hp:.95,spd:.96,wind:1.15,rec:1.15},
+   474→  {dmg:1.15,hp:1.25,spd:1.08,wind:.85,rec:.8},
+   475→  {dmg:1.35,hp:1.5,spd:1.16,wind:.72,rec:.65}][SAVE.difficulty];
+   476→
+   477→// audio: everything synthesized, nothing sampled. the plucks are karplus-strong
+   478→// buffers built on demand, the drone never fully sleeps.
+   479→const AU={ctx:null,master:null,vol:.7,muted:false,plucks:new Map(),step:0,nextNote:0,
+   480→init(){if(this.ctx){if(this.ctx.state==='suspended')this.ctx.resume().catch(()=>{});return;}
+   481→  try{this.ctx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){return;}
+   482→  this.master=this.ctx.createGain();this.master.gain.value=this.muted?0:this.vol;
+   483→  this.master.connect(this.ctx.destination);
+   484→  const dg=this.ctx.createGain();dg.gain.value=.028;dg.connect(this.master);
+   485→  [73.4,73.9,110.2].forEach((f,i)=>{const o=this.ctx.createOscillator();o.type='triangle';o.frequency.value=f;
+   486→    const g=this.ctx.createGain();g.gain.value=i?0.4:1;o.connect(g);g.connect(dg);o.start();});
+   487→  this.nextNote=this.ctx.currentTime+.2;
+   488→  setInterval(()=>this.schedule(),110);},
+   489→setVol(v){this.vol=v;if(this.master&&!this.muted)this.master.gain.value=v;},
+   490→toggleMute(){this.muted=!this.muted;if(this.master)this.master.gain.value=this.muted?0:this.vol;return this.muted;},
+   491→tone(f0,f1,dur,type,vol,when=0){if(!this.ctx||this.muted)return;const t=this.ctx.currentTime+when;
+   492→  const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);
+   493→  o.frequency.exponentialRampToValueAtTime(Math.max(1,f1),t+dur);g.gain.setValueAtTime(vol,t);
+   494→  g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(this.master);o.start(t);o.stop(t+dur+.02);},
+   495→noise(dur,vol,fq,type='lowpass',slide=0,when=0){if(!this.ctx||this.muted)return;const t=this.ctx.currentTime+when;
+   496→  const n=Math.ceil(this.ctx.sampleRate*dur),b=this.ctx.createBuffer(1,n,this.ctx.sampleRate),d=b.getChannelData(0);
+   497→  for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+   498→  const s=this.ctx.createBufferSource();s.buffer=b;const f=this.ctx.createBiquadFilter();f.type=type;
+   499→  f.frequency.setValueAtTime(fq,t);if(slide)f.frequency.exponentialRampToValueAtTime(Math.max(40,fq+slide),t+dur);
+   500→  const g=this.ctx.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+   501→  s.connect(f);f.connect(g);g.connect(this.master);s.start(t);s.stop(t+dur+.02);},
+   502→pluck(freq,vol,when=0){if(!this.ctx||this.muted)return;const key=Math.round(freq);
+   503→  if(!this.plucks.has(key)){const rate=this.ctx.sampleRate,N=Math.max(2,Math.round(rate/freq)),len=Math.floor(rate*1.1);
+   504→    const b=this.ctx.createBuffer(1,len,rate),d=b.getChannelData(0);
+   505→    for(let i=0;i<N;i++)d[i]=Math.random()*2-1;
+   506→    for(let i=N;i<len;i++)d[i]=(d[i-N]+d[i-N+1])*.498;
+   507→    this.plucks.set(key,b);}
+   508→  const t=this.ctx.currentTime+when,s=this.ctx.createBufferSource();s.buffer=this.plucks.get(key);
+   509→  const g=this.ctx.createGain();g.gain.setValueAtTime(vol,t);g.gain.setTargetAtTime(0,t+.6,.3);
+   510→  s.connect(g);g.connect(this.master);s.start(t);},
+   511→drum(vol,when=0){if(!this.ctx||this.muted)return;
+   512→  this.tone(105,38,.32,'sine',vol,when);this.noise(.09,vol*.5,300,'lowpass',-150,when);},
+   513→taiko(vol=.5,when=0){if(!this.ctx||this.muted)return;const t=this.ctx.currentTime+when;
+   514→  this.tone(87,34,.5,'sine',vol,t);this.tone(174,68,.24,'triangle',vol*.35,t);
+   515→  this.noise(.16,vol*.5,240,'lowpass',-160,t);
+   516→  this.tone(84,36,.6,'sine',vol*.7,t+.42);this.noise(.2,vol*.36,200,'lowpass',-120,t+.42);},
+   517→sting(vol=.16){if(!this.ctx||this.muted)return;
+   518→  [146.8,155.1,220].forEach((f,i)=>this.tone(f,f*.97,1.3,'sawtooth',vol*(1-i*.25)));
+   519→  this.noise(.9,vol*.4,900,'bandpass',-500);},
+   520→thunder(vol=.3){if(!this.ctx||this.muted)return;
+   521→  this.noise(1.6,vol,260,'lowpass',-140);this.tone(70,30,1.2,'sine',vol*.8);},
+   522→swish(){this.noise(.5,.14,900,'bandpass',1900);},
+   523→slash(i){this.noise(.11,.16,2200+i*500,'lowpass',-1500);this.tone(300+i*90,120,.08,'triangle',.04);},
+   524→hit(){this.tone(150,70,.08,'square',.12);this.noise(.05,.14,900,'lowpass',-400);},
+   525→crit(){this.tone(240,60,.14,'sawtooth',.13);this.noise(.08,.16,1400,'lowpass',-900);},
+   526→parry(){this.tone(1250,1180,.34,'triangle',.2);this.tone(1660,1580,.28,'sine',.12);this.noise(.05,.08,5000,'highpass');
+   527→  this.tone(2490,2380,.2,'sine',.05,.02);},
+   528→deflect(){this.tone(820,1100,.12,'square',.08);},
+   529→dash(){this.noise(.16,.12,500,'bandpass',1600);},
+   530→hurt(){this.tone(210,64,.22,'sawtooth',.17);this.noise(.1,.14,600,'lowpass',-300);},
+   531→kill(){this.noise(.2,.2,700,'lowpass',-500);this.tone(95,42,.18,'sine',.16);},
+   532→orb(){this.tone(660,660,.06,'sine',.08);this.tone(990,990,.09,'sine',.06,.05);},
+   533→ui(){this.tone(500,420,.05,'sine',.06);},
+   534→buy(){this.tone(520,780,.1,'triangle',.1);this.pluck(293,.12);},
+   535→stamp(){this.tone(80,32,.28,'sine',.4);this.noise(.12,.22,380,'lowpass',-200);},
+   536→roar(){this.tone(95,42,.8,'sawtooth',.2);this.noise(.6,.14,300,'lowpass',-120);},
+   537→ki(){this.tone(160,640,.4,'sawtooth',.1);this.noise(.35,.12,800,'bandpass',2400);},
+   538→zap(){this.noise(.16,.24,3000,'highpass',-2000);this.tone(1200,180,.14,'square',.1);},
+   539→heal(){this.tone(392,523,.22,'sine',.09);this.tone(659,784,.3,'sine',.05,.08);},
+   540→schedule(){if(!this.ctx||this.muted)return;const ahead=this.ctx.currentTime+.32;
+   541→  while(this.nextNote<ahead){this.playStep(this.step,this.nextNote-this.ctx.currentTime);this.step++;this.nextNote+=.30;}},
+   542→playStep(s,when){const lvl=(G&&G.mode==='game')?G.musicLevel:.15;
+   543→  const scale=[146.8,174.6,196,220,261.6,293.7,349.2,392];
+   544→  const pat=[0,-1,2,4,-1,3,-1,2,4,-1,5,7,-1,4,3,-1];
+   545→  const deg=pat[s%16];
+   546→  if(deg>=0&&(hash01(s*3.3)>.25||lvl>.5))this.pluck(scale[deg]*(hash01(s)>.85?2:1),.085*(0.7+lvl*.5),Math.max(0,when));
+   547→  if(hash01(s*7.7)>.75)this.pluck(scale[(deg+2+8)%8]*.5,.05,Math.max(0,when+.15));
+   548→  if(lvl>.45&&s%8===0)this.drum(.22+lvl*.15,Math.max(0,when));
+   549→  if(lvl>.7&&s%8===4)this.drum(.1,Math.max(0,when));
+   550→  if(lvl>.6&&s%16===12)this.drum(.09,Math.max(0,when+.12));
+   551→  if(lvl>.9&&s%4===2)this.noise(.05,.05,6000,'highpass',0,Math.max(0,when));}};
+   552→
+   553→const keys={},once={};const mouse={x:innerWidth/2,y:innerHeight/2,down:false};let mouseSeen=false,mouseOnceL=false;
+   554→const IN={atk:false,atkT:false,par:false,dash:false,art:false,weap:-1};
+   555→const joy={id:-1,ox:0,oy:0,x:0,y:0,mag:0,ang:0};
+   556→const btnHeld={},TBP={},WSLOTS=[];
+   557→let rotateDismiss=false;
+   558→
+   559→addEventListener('keydown',e=>{
+   560→  if(!keys[e.code])once[e.code]=true;keys[e.code]=true;
+   561→  if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();
+   562→  if(e.code==='KeyM'&&!once.KeyMhandled){once.KeyMhandled=true;AU.toggleMute();}
+   563→  if(G.mode==='codex'){if(!e.repeat&&G.t>G.codexArm)closeCodex();return;}
+   564→  if(e.code==='Escape')handleEscape();
+   565→  AU.init();});
+   566→addEventListener('keyup',e=>{keys[e.code]=false;once.KeyMhandled=false;});
+   567→addEventListener('blur',()=>{for(const k in keys)keys[k]=false;mouse.down=false;
+   568→  if(G.mode==='game')setMode('pause');});
+   569→addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;mouseSeen=true;});
+   570→addEventListener('mousedown',e=>{AU.init();if(e.button===0){mouse.down=true;mouseOnceL=true;}if(e.button===2)once.RMB=true;});
+   571→addEventListener('mouseup',e=>{if(e.button===0)mouse.down=false;});
+   572→addEventListener('contextmenu',e=>e.preventDefault());
+   573→function jp(code){if(once[code]){once[code]=false;return true;}return false;}
+   574→function jm(){if(mouseOnceL){mouseOnceL=false;return true;}return false;}
+   575→function jr(){if(once.RMB){once.RMB=false;return true;}return false;}
+   576→
+   577→function touchButtons(){
+   578→  const s=clamp(Math.min(W,H)/760,.82,1.15);
+   579→  return[
+   580→    {id:'pause',x:W-40,y:44,r:24,kan:'停'},
+   581→    {id:'atk',x:W-96*s,y:H-112*s,r:62*s,kan:'斬'},
+   582→    {id:'par',x:W-214*s,y:H-78*s,r:44*s,kan:'弾'},
+   583→    {id:'dash',x:W-84*s,y:H-232*s,r:44*s,kan:'走'},
+   584→    {id:'art',x:W-208*s,y:H-196*s,r:36*s,kan:'絶'}];}
+   585→function onTS(e){
+   586→  AU.init();
+   587→  if(G.mode!=='game')return;
+   588→  e.preventDefault();
+   589→  for(const t of e.changedTouches){
+   590→    const x=t.clientX,y=t.clientY;
+   591→    const bs=touchButtons();
+   592→    let hit=null;
+   593→    for(let i=0;i<bs.length;i++)if(bs[i].id!=='atk'&&dist(x,y,bs[i].x,bs[i].y)<bs[i].r*1.3){hit=bs[i];break;}
+   594→    if(hit){
+   595→      if(hit.id==='pause'){setMode('pause');return;}
+   596→      btnHeld[t.identifier]=hit.id;TBP[hit.id]=true;
+   597→      if(hit.id==='par')IN.par=true;else if(hit.id==='dash')IN.dash=true;else if(hit.id==='art')IN.art=true;
+   598→      continue;}
+   599→    if(x<W*0.45&&joy.id===-1){joy.id=t.identifier;joy.ox=x;joy.oy=y;joy.x=joy.y=joy.mag=0;continue;}
+   600→    for(const s of WSLOTS){
+   601→      if(x>=s.x-10&&x<=s.x+s.s+10&&y>=s.y-10&&y<=s.y+s.s+10){IN.weap=s.i;hit=true;break;}}
+   602→    if(hit)continue;
+   603→    if(dist(x,y,bs[1].x,bs[1].y)<bs[1].r*1.25){
+   604→      btnHeld[t.identifier]='atk';TBP.atk=true;IN.atk=true;IN.atkT=true;}}}
+   605→function onTM(e){
+   606→  if(G.mode!=='game')return;
+   607→  e.preventDefault();
+   608→  for(const t of e.changedTouches){
+   609→    if(t.identifier===joy.id){
+   610→      let dx=t.clientX-joy.ox,dy=t.clientY-joy.oy;const d=Math.hypot(dx,dy);
+   611→      if(d>64){dx=dx/d*64;dy=dy/d*64;}
+   612→      joy.x=dx/64;joy.y=dy/64;joy.mag=Math.min(1,d/64);
+   613→      if(joy.mag>.01)joy.ang=Math.atan2(dy,dx);}}}
+   614→function onTE(e){
+   615→  if(G.mode!=='game')return;
+   616→  e.preventDefault();
+   617→  for(const t of e.changedTouches){
+   618→    if(t.identifier===joy.id){joy.id=-1;joy.x=joy.y=joy.mag=0;}
+   619→    const b=btnHeld[t.identifier];
+   620→    if(b){TBP[b]=false;if(b==='atk')IN.atk=false;delete btnHeld[t.identifier];}}}
+   621→addEventListener('touchstart',onTS,{passive:false});
+   622→addEventListener('touchmove',onTM,{passive:false});
+   623→addEventListener('touchend',onTE,{passive:false});
+   624→addEventListener('touchcancel',onTE,{passive:false});
+   625→
+   626→const cv=$('#cv'),ctx=cv.getContext('2d');
+   627→let W=innerWidth,H=innerHeight,DPR=1,Z=1,vigC=null,gradeC=null,_vigHurt=null;
+   628→function checkOrient(){
+   629→  const el=$('#rotate');
+   630→  el.classList.toggle('on',IS_TOUCH&&innerHeight>innerWidth*1.05&&G.mode==='game'&&!rotateDismiss);}
+   631→function resize(){DPR=Math.min(IS_TOUCH?1.5:2,devicePixelRatio||1);W=innerWidth;H=innerHeight;
+   632→  cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';
+   633→  Z=clamp(Math.min(W/1350,H/860),.62,1.5);
+   634→  vigC=mkCanvas(W,H);
+   635→  const c=vigC.getContext('2d');
+   636→  const g=c.createRadialGradient(W/2,H/2,Math.min(W,H)*.38,W/2,H/2,Math.max(W,H)*.74);
+   637→  g.addColorStop(0,'rgba(43,36,26,0)');g.addColorStop(1,'rgba(43,36,26,0.34)');c.fillStyle=g;c.fillRect(0,0,W,H);
+   638→  gradeC=null;_vigHurt=null;}
+   639→addEventListener('resize',resize);
+   640→const RW=1700,RH=1000,WALL=56;
+   641→
+   642→const G={mode:'title',run:null,enemies:[],projs:[],parts:[],floats:[],slashes:[],teles:[],rings:[],marks:[],pickups:[],ghosts:[],fx:[],
+   643→  cam:{x:RW/2,y:RH/2},trauma:0,hitstop:0,slowT:0,ts:1,flash:0,flashCol:'#f6f1e2',wash:0,hurtV:0,musicLevel:.15,
+   644→  floorC:null,decalC:null,dctx:null,waveIdx:-1,waves:[],spawnQ:[],spawnT:0,waveGap:0,clearing:0,introT:0,bossIntroT:0,shakeX:0,shakeY:0,
+   645→  style:{pts:0,rank:0,combo:0,t:9,anim:0},hints:null,tutMoved:false,tutHit:false,tutDash:false,tutParry:false,
+   646→  ambience:[],t:0,boss:null,blessPicks:null,prevMode:null,
+   647→  wind:0,windT:0,gusts:[],lbx:0,lbxT:0,zp:0,wipe:null,boltT:6,lightningAt:0,props:[],fireflies:[],gauntIdx:0,
+   648→  codexQ:[],codexSeen:null,codexCur:null,codexT:0,zpC:0,codexArm:0};
+   649→let P=null;
+   650→const bl=id=>G.run?(G.run.blessings[id]||0):0;
+   651→const curAct=()=>G.run?(G.run.abyss?Math.min(7,1+Math.floor(G.run.wave/4)):(G.run.gauntlet?7:G.run.act)):1;
+   652→resize();
+   653→
+   654→const WEAPONS={
+   655→  katana:{name:'Katana',kanji:'刀',desc:'The honest answer. Balanced cuts, honest reach.',dmg:[10,12,17],rate:.24,range:84,arc:2.1,knock:130,cost:0},
+   656→  naginata:{name:'Naginata',kanji:'薙',desc:'Long reach, wide sweeps, a slower rhythm. The finisher spins full-circle.',dmg:[14,16,23],rate:.34,range:122,arc:2.5,knock:170,cost:600},
+   657→  twin:{name:'Twin Blades',kanji:'双',desc:'A blur of steel in four beats. Critical instinct.',dmg:[7,7,9,13],rate:.17,range:68,arc:1.95,knock:70,cost:900,crit:.08},
+   658→  kanabo:{name:'Kanabō',kanji:'棒',desc:'Slow, brutal, shield-breaking. Every landfall trembles.',dmg:[27,42],rate:.52,range:94,arc:2.6,knock:340,cost:1400,guardBreak:true}};
+   659→const WKEYS=Object.keys(WEAPONS);
+   660→
+   661→const BLESS=[
+   662→  {id:'vermilion',n:'Vermilion Edge',k:'朱',r:0,d:'+20% damage. Stacks.'},
+   663→  {id:'swift',n:'Fleet Shadow',k:'疾',r:0,d:'+12% movement speed.'},
+   664→  {id:'iron',n:'Iron Skin',k:'鉄',r:0,d:'Take 12% less damage.'},
+   665→  {id:'deepcuts',n:'Deep Cuts',k:'切',r:0,d:'+10% chance to critically strike (×2).'},
+   666→  {id:'harvest',n:'Harvest',k:'刈',r:0,d:'Health orbs restore twice as much.'},
+   667→  {id:'focused',n:'Focused Ki',k:'気',r:0,d:'Ki gained from strikes +35%.'},
+   668→  {id:'reach',n:'Long Reach',k:'長',r:0,d:'+12% attack range.'},
+   669→  {id:'thousand',n:'Thousand Cuts',k:'乱',r:0,d:'Attack speed +15%.'},
+   670→  {id:'breath',n:'Second Breath',k:'息',r:0,d:'Perfect dodges restore 5 HP.'},
+   671→  {id:'blood',n:'Blood Ink',k:'血',r:1,d:'Heal 6% of damage you deal.'},
+   672→  {id:'rot',n:'Withering Rot',k:'滅',r:1,d:'Strikes inflict Ink Rot — 12 damage over 3s. Stacks.'},
+   673→  {id:'burst',n:'Ink Burst',k:'散',r:1,d:'Slain enemies burst, wounding nearby foes.'},
+   674→  {id:'thirdeye',n:'Third Eye',k:'眼',r:1,d:'Deflect window 45% longer. Deflects restore 4 HP.'},
+   675→  {id:'storm',n:'Storm Steps',k:'走',r:1,d:'+1 dash charge.'},
+   676→  {id:'sake',n:'Dawn Sake',k:'酒',r:1,d:'Each kill mends 3 HP.'},
+   677→  {id:'windblade',n:'Wind Blade',k:'風',r:1,d:'Dashes loose a cutting wave.'},
+   678→  {id:'venge',n:'Vengeance',k:'瞋',r:1,d:'After taking a wound, your next strike deals +60%.'},
+   679→  {id:'mantle',n:"Night's Mantle",k:'護',r:1,d:'Dashing grants +50% damage for 1.5s.'},
+   680→  {id:'drums',n:'War Drums',k:'鼓',r:1,d:'Each kill shortens dash recharge by 0.4s.'},
+   681→  {id:'inkwell',n:'Ink Well',k:'溝',r:1,d:'+25 max HP, and heal 25 now. Stacks.'},
+   682→  {id:'execute',n:'Executioner',k:'斬',r:1,d:'Strikes on foes below 25% HP deal double.'},
+   683→  {id:'twinfang',n:'Twin Fang',k:'双',r:2,d:'Combo finishers release a cutting wave.'},
+   684→  {id:'thunder',n:'Thunder Palm',k:'雷',r:2,d:'Deflects crash a shockwave into nearby foes.'},
+   685→  {id:'godbrush',n:"Gods' Brush",k:'筆',r:2,d:'14% chance your strikes fling extra ink waves.'},
+   686→  {id:'pierce',n:'Piercing Fang',k:'貫',r:2,d:'Your cuts ignore frontal shields.'}];
+   687→const RARK=['並','希','極'];
+   688→
+   689→const SHRINE=[
+   690→  {id:'vit',n:'Vitality',k:'命',max:5,cost:l=>Math.round(90*Math.pow(1.65,l)),d:l=>`+12 max HP per rank · now +${l*12}`},
+   691→  {id:'str',n:'Strength',k:'力',max:5,cost:l=>Math.round(110*Math.pow(1.65,l)),d:l=>`+6% damage per rank · now +${l*6}%`},
+   692→  {id:'spd',n:'Swiftness',k:'風',max:4,cost:l=>Math.round(100*Math.pow(1.7,l)),d:l=>`+4% move speed per rank · now +${l*4}%`},
+   693→  {id:'fortune',n:'Fortune',k:'運',max:4,cost:l=>Math.round(130*Math.pow(1.7,l)),d:l=>`+10% ash from kills · now +${l*10}%`},
+   694→  {id:'discipline',n:'Discipline',k:'規',max:2,cost:l=>600+l*900,d:l=>`Begin every run with ${l} free inkmarks.`},
+   695→  {id:'rejuv',n:'Rejuvenation',k:'癒',max:4,cost:l=>Math.round(120*Math.pow(1.7,l)),d:l=>`+8% HP restored between stages · now +${22+l*8}%`},
+   696→  {id:'talisman',n:'Talisman',k:'符',max:1,cost:()=>1400,d:()=>'Once per act, death returns you at half HP.'}];
+   697→
+   698→const ENEMY={
+   699→  kappa:{name:'Kappa Imp',k:'河',hp:26,spd:128,r:15,dmg:9,ash:4,atk:'melee',rng:60,wind:.5,rec:.62,chain:1,peril:.22},
+   700→  oni:{name:'Oni Brute',k:'鬼',hp:80,spd:82,r:24,dmg:17,ash:9,atk:'slam',rng:96,wind:.72,rec:.8,aoe:105,chain:2,peril:.3},
+   701→  tengu:{name:'Tengu Scribe',k:'天',hp:34,spd:106,r:16,dmg:9,ash:7,atk:'volley',rng:430,wind:.62,rec:1.05,keep:270},
+   702→  wraith:{name:'Borei Wraith',k:'亡',hp:34,spd:158,r:14,dmg:12,ash:8,atk:'lunge',rng:230,wind:.42,rec:.68,chain:1,peril:.45},
+   703→  kame:{name:'Kame Guard',k:'亀',hp:105,spd:56,r:21,dmg:15,ash:11,atk:'poke',rng:138,wind:.58,rec:.8,guard:true,chain:2,peril:.25},
+   704→  broker:{name:'Chōchin Broker',k:'提',hp:46,spd:74,r:16,dmg:0,ash:13,atk:'none',rng:0,wind:0,rec:1},
+   705→  hound:{name:'Inugami Hound',k:'犬',hp:26,spd:176,r:15,dmg:12,ash:8,atk:'boom',rng:340,wind:.46,rec:.4},
+   706→  sorc:{name:'Gōma Sorcerer',k:'咒',hp:64,spd:62,r:19,dmg:0,ash:15,atk:'summon',rng:999,wind:1.4,rec:2.2,keep:400},
+   707→  mirror:{name:'Mirror Shade',k:'鏡',hp:52,spd:120,r:14,dmg:8,ash:0,atk:'volley',rng:420,wind:.55,rec:1.05,keep:250},
+   708→  ronin:{name:'Fallen Ronin',k:'浪',hp:70,spd:118,r:16,dmg:14,ash:12,atk:'riposte',rng:118,wind:.5,rec:.5,chain:3},
+   709→  archer:{name:'Ashigaru Archer',k:'弓',hp:40,spd:92,r:15,dmg:11,ash:10,atk:'arrow',rng:999,wind:.8,rec:1.1,keep:340}};
+   710→
+   711→const BOSSES={
+   712→  uzu:{name:'Uzu, the Whirlpool Blade',kanji:'渦',hp:260,r:26,spd:112,touch:6,duel:1,moves:['blinkStrike','gust','chainDash']},
+   713→  goroki:{name:'Goroki, Warlord of Rot',kanji:'鬼',hp:520,r:42,spd:70,touch:9,moves:['slam','charge','shock','summon'],summon:'kappa'},
+   714→  zangetsu:{name:"Zangetsu, Twilight's Edge",kanji:'残',hp:430,r:27,spd:120,touch:7,duel:1,moves:['blinkStrike','icelance','frost','mirrorDash']},
+   715→  orochi:{name:'Orochi of the Flooded Veil',kanji:'蛇',hp:660,r:30,spd:118,touch:8,serpent:true,moves:['volley','dive','coil','spiralBurst']},
+   716→  jin:{name:'Jin, the Cinder Saint',kanji:'燼',hp:560,r:30,spd:98,touch:8,duel:1,moves:['nova','bolts','summon','charge'],summon:'wraith'},
+   717→  sojobo:{name:'Sōjōbō, Master of Fans',kanji:'天',hp:800,r:32,spd:88,touch:8,moves:['blinkVolley','gust','summon','chainDash','volley'],summon:'tengu'},
+   718→  yuki:{name:'Yukiko, Widow of the White Gale',kanji:'雪',hp:940,r:28,spd:96,touch:8,moves:['frost','icelance','nova','blinkStrike','clones']},
+   719→  raijin:{name:'Raiden, Drum of a Hundred Storms',kanji:'雷',hp:1100,r:36,spd:74,touch:9,moves:['bolts','spiralBurst','chainDash','shock']},
+   720→  hollow:{name:'The Hollow Daimyō',kanji:'灰',hp:1280,r:38,spd:92,touch:10,moves:['charge','volley','bolts','summon','nova','chainDash'],summon:'wraith'},
+   721→  kami:{name:'The Nameless Kami',kanji:'空',hp:1580,r:32,spd:100,touch:9,phased:true,moves:['rain','spiralBurst','summon','blinkVolley'],moves2:['mirrorDash','wave','clones','volley'],summon:'kappa'}};
+   722→const GAUNTLET=['uzu','goroki','zangetsu','orochi','jin','sojobo','yuki','raijin','hollow','kami'];
+   723→
+   724→const ACTS=[
+   725→{name:'The Rice Fields at Dusk',kanji:'一',intro:['Rice fields drink the sun.','A blade wakes in black ink.','The crows have noticed.'],stages:[
+   726→ {n:'First Blood',w:['kappa*4','kappa*5']},
+   727→ {n:'Crows Among the Stalks',w:['kappa*5,tengu*2','kappa*4,tengu*2']},
+   728→ {n:'The Terraced Rise',w:['kappa*4,oni*1','tengu*2,kappa*5','oni*1,kappa*5,tengu*1']},
+   729→ {n:'Old Well, Older Ghosts',w:['oni*2,kappa*4','tengu*2,oni*1,kappa*3','oni*2,tengu*2,kappa*4']},
+   730→ {n:'The Rot Below',boss:'goroki'}]},
+   731→{name:'The Flooded Bridge',kanji:'二',intro:['Rain erases the roads.','Below the planks, something breathes','in drowned wooden lungs.'],stages:[
+   732→ {n:'Lanterns on the Water',w:['wraith*3,kappa*3','wraith*3,tengu*2']},
+   733→ {n:'The Weir Gate',w:['hound*3','wraith*3,oni*2','hound*2,wraith*2,tengu*2']},
+   734→ {n:'Silt and Sorrow',w:['tengu*3,hound*2','kappa*6,wraith*3','oni*2,tengu*2,hound*2']},
+   735→ {n:'What the River Kept',w:['oni*2,hound*3','wraith*4,tengu*2,oni*1','hound*4,wraith*3,oni*2']},
+   736→ {n:'A Blade in the Current',duel:'uzu'},
+   737→ {n:'Beneath the Black Water',boss:'orochi'}]},
+   738→{name:'The Bamboo Court',kanji:'三',intro:['Green shadows whisper.','Every stalk a listening spear.','Tread light. Cut lighter.'],stages:[
+   739→ {n:'A Path of Whistling Reed',w:['kame*2,kappa*4','tengu*3,wraith*2']},
+   740→ {n:"The Scribe's Ambush",w:['broker*1,oni*2,kappa*4','kame*2,wraith*3']},
+   741→ {n:'Paper Walls, Paper Men',w:['kame*2,hound*3,tengu*2','broker*1,wraith*4,oni*1','archer*2,kappa*4']},
+   742→ {n:'The Hollow Grove',w:['kame*3,broker*1,tengu*3','oni*2,hound*3,kame*2','kame*2,broker*1,wraith*4']},
+   743→ {n:'Judgement of the Court',boss:'sojobo'}]},
+   744→{name:'The White Gale',kanji:'四',intro:['Snow buries the road','and everything the road meant.','Only the blade is warm.'],stages:[
+   745→ {n:'First Frost, First Fear',w:['sorc*1,kappa*5','kame*2,wraith*3','archer*2,wraith*2']},
+   746→ {n:"The Widow's Orchard",w:['oni!*1,tengu*3','sorc*1,hound*3,broker*1','archer*2,sorc*1']},
+   747→ {n:'Mirror, Mirror, Breathless',w:['kame*2,sorc*1,wraith*3','oni!*1,tengu*3,hound*2']},
+   748→ {n:'The Long White Night',w:['sorc*2,broker*1,kame*2','oni!*1,wraith!*2,tengu*3','hound*4,sorc*1']},
+   749→ {n:'Twilight, Twice',duel:'zangetsu'},
+   750→ {n:'Her Cold Embrace',boss:'yuki'}]},
+   751→{name:'The Storm Drum',kanji:'五',intro:['Thunder keeps the beat.','Dance, or be danced upon —','the sky does not ask twice.'],stages:[
+   752→ {n:'Static in the Pines',w:['tengu!*2,kappa*6','wraith!*3,oni*2','ronin*1,tengu*2']},
+   753→ {n:'The Rise and the Fall',w:['kame!*2,hound!*3','sorc*2,tengu*2','ronin*1,kame*2,kappa*4']},
+   754→ {n:'Chords of Rain and Iron',w:['oni!*2,broker*1,wraith*4','sorc!*1,kame*2,hound*3','ronin!*1,archer*2,tengu*2']},
+   755→ {n:'One Hundred Drums',w:['kame!*2,sorc!*1,tengu!*2','oni!*2,wraith!*3,broker!*1','hound!*4,oni!*1,ronin!*1']},
+   756→ {n:'The Eye of the Storm',boss:'raijin'}]},
+   757→{name:'The Ash Garden',kanji:'六',intro:['Everything burns grey.','Even memory smolders here,','quiet as a grave.'],stages:[
+   758→ {n:'Cinder Bloom',w:['wraith!*4,kappa*6','oni!*2,tengu!*2','ronin!*1,hound*2']},
+   759→ {n:'The Smoke That Walks',w:['sorc!*2,hound!*3','kame!*2,broker!*1,wraith*3','archer!*2,ronin*1']},
+   760→ {n:'Harvest of Cinders',w:['oni!*3,kame!*2','tengu!*3,sorc*1,hound*3','ronin!*2,archer*2']},
+   761→ {n:'The Unquiet Kiln',w:['oni!*2,wraith!*4,kame*2','sorc!*2,broker!*1,hound*4','tengu!*3,oni!*2,kame*2']},
+   762→ {n:'The Saint of Embers',duel:'jin'},
+   763→ {n:'What Refuses to Burn',boss:'hollow'}]},
+   764→{name:'The Blank Eternity',kanji:'七',intro:['At the edge of the page','the painter\u2019s hand hesitates.','Finish the story.'],stages:[
+   765→ {n:'Where Ink Was Born',w:['wraith!*5,kappa*5','oni!*3,tengu*2','ronin!*2,kame*2']},
+   766→ {n:'The Unpainted Army',w:['kame!*3,hound!*4','sorc!*2,wraith!*4','ronin!*2,archer!*2,sorc*1']},
+   767→ {n:'The Margin of the World',w:['oni!*3,tengu!*3,broker!*1','kame!*3,sorc!*2','ronin!*3,hound!*3']},
+   768→ {n:'The Last White Space',w:['oni!*3,wraith!*4,hound*3','kame*2,sorc*2,tengu*3','ronin!*3,archer!*2,broker!*1']},
+   769→ {n:'The Painter\u2019s Hand',boss:'kami'}]}];
+   770→
+   771→const DEATHLINES=['The ink dries. The story doesn\u2019t.','Even the greatest stroke begins on a blank page.','The crows will remember this one.','A blade is only borrowed. So is a life.','Rest. The paper keeps your place.','Somewhere, a brush is already dipping again.','The paper forgives. It always does.','Wipe the blade. Bow. Begin again.'];
+   772→const RANKS=['','初','中','上','極','鬼','神'],RANKL=['','STUDENT','ADEPT','EXPERT','MASTER','ONI','KAMI'],RANKT=[0,20,50,90,140,200,270];
+   773→
+   774→const BESTIARY={
+   775→  kappa:'Quick, frail, honest. Deflect the lunge, or step aside and answer.',
+   776→  oni:'The slam is slow and proud of itself. The ground remembers it longer than you will.',
+   777→  tengu:'Keeps its distance and throws fans. Fans can be deflected back — twice as sharp.',
+   778→  wraith:'Often strikes in 危 peril. Never block what carries the red kanji — dash through it.',
+   779→  kame:'A wall with a spear. Guard-break it (kanabō or posture) or walk around the problem.',
+   780→  broker:'Heals its neighbors. The lantern burns brightest — put it out first.',
+   781→  hound:'Charges and detonates. It always detonates; the only question is where.',
+   782→  sorc:'Teleports when cornered, summons imps while safe. Interrupt the channel with reach.',
+   783→  mirror:'A copy of you, thrown by Yuki. It has no ideas of its own — only your posture.',
+   784→  ronin:'A swordsman who remembers training. Chains three cuts; the gold windup can be deflected.',
+   785→  archer:'Arrows from the edge of the fight. Deflect an arrow and it becomes your argument.',
+   786→  uzu:'Duel, act 2. Blinks, fans the air, dashes in chains. Fight the wind with stillness.',
+   787→  zangetsu:'Duel, act 4. Ice lances and mirror slashes. Gold flashes are gifts — take them.',
+   788→  jin:'Duel, act 6. Calls lightning and the restless dead. Stay close; the storm is for the far.',
+   789→  goroki:'Act 1. Jumps, charges (危), rings of rot. Summoner of imps — posture is the lever.',
+   790→  orochi:'Act 2. A serpent that swims beneath. Watch the water, not the head.',
+   791→  sojobo:'Act 3. Blinks and gusts and summons scribes. Patience is a fan you also hold.',
+   792→  yuki:'Act 4. Frost circles, ice lances, clones of you. Her gold slash is the honest one.',
+   793→  raijin:'Act 5. Drums orbit him. Bolts fall on your shadow — keep the shadow moving.',
+   794→  hollow:'Act 4 of the spirit. Charges, volleys, calls the wraiths. Grey, but not empty.',
+   795→  kami:'Act 7. The painter\u2019s hand. At half it cracks and learns your tricks back.'};
+   796→
+   797→// ---- the codex: first-sight cards ---------------------------------------------
+   798→// every foe gets one introduction per run — the page stops, the stranger is
+   799→// sketched, and the blade comes back up when you say so.
+   800→const CODEX={
+   801→  kappa:{no:'01',cls:'IMP · SWARM',st:[4,2,1],
+   802→    d:'A river imp that never learned patience. It fights in packs and dies in packs, the well water still sloshing behind its eyes.',
+   803→    a:[['Lunge Cut','hops in and bites with steel — a plain cut','d'],
+   804→      ['Peril Bite','the red flash lunge — never block it, dash through','p']]},
+   805→  oni:{no:'02',cls:'BRUTE · HEAVY',st:[2,4,5],
+   806→    d:'Muscle wearing a mask. Every swing is slow enough to read and heavy enough to remember — it likes the sound the ground makes.',
+   807→    a:[['Overhead Slam','a wide ring where the club falls — deflect it or leave the circle','d'],
+   808→      ['Two-Beat Chain','the slam comes twice; the second is always greedier',''],
+   809→      ['Peril Sweep','red flash under the mask — dash out, the ring does not negotiate','p']]},
+   810→  tengu:{no:'03',cls:'SCRIBE · RANGED',st:[3,2,2],
+   811→    d:'A mountain scribe with a fan collection and a grudge. It never closes the distance; it makes the distance the weapon.',
+   812→    a:[['Fan Volley','thrown fans across the gap — deflect one back, twice as sharp','d'],
+   813→      ['Sidestep','glides sideways as you approach — cut the angle, not the bird','']]},
+   814→  wraith:{no:'04',cls:'SPIRIT · LUNGER',st:[5,3,2],
+   815→    d:'Something that drowned before it finished being angry. It drifts above the reeds and strikes through you, not at you.',
+   816→    a:[['Ghost Rush','a fast lunge out of the drift — deflectable, if the nerve holds','d'],
+   817→      ['Peril Pierce','half its strikes carry the red kanji — dash through; blocking feeds it','p']]},
+   818→  kame:{no:'05',cls:'GUARD · SHIELDED',st:[1,3,5],
+   819→    d:'A wall that learned to hold a spear. The shell turns honest cuts aside — posture is the lever, or simply walk around the problem.',
+   820→    a:[['Spear Thrust','long reach from behind the rim — deflect to bend the spear arm','d'],
+   821→      ['Peril Thrust','the red thrust ignores your guard — sidestep, do not trade','p'],
+   822→      ['Shell Guard','frontal cuts are nearly wasted; break its posture or flank it','']]},
+   823→  broker:{no:'06',cls:'LANTERN · MENDER',st:[2,0,3],
+   824→    d:'A paper lantern with a merchant\u2019s manners. It sells health to its neighbors and charges you the whole fight.',
+   825→    a:[['Mend Rite','channels healing into wounded allies — silence the light first',''],
+   826→      ['Paper Dance','no strike of its own; it simply refuses to be where you swing','']]},
+   827→  hound:{no:'07',cls:'BEAST · BLAST',st:[5,3,1],
+   828→    d:'A shrine dog that swallowed its own fire. It has one argument and it ends in a blast — the only question is where.',
+   829→    a:[['Ignition Charge','locks on and charges — the red line always detonates; step off it','p'],
+   830→      ['Timed Bloom','given time it detonates anyway — do not linger near the barking','p']]},
+   831→  sorc:{no:'08',cls:'SORCERER · SUMMONER',st:[1,1,3],
+   832→    d:'A hood full of bad arithmetic. It counts your steps, blinks when cornered, and pays kappa to die in its place.',
+   833→    a:[['Imp Channel','summons imps while you are far — interrupt with reach or a returned fan',''],
+   834→      ['Ink Blink','teleports when you close in — watch the ink burst, not the robe','']]},
+   835→  mirror:{no:'09',cls:'ECHO · REFLECTION',st:[4,2,2],
+   836→    d:'You, as thrown by Yukiko. It fights with your posture and your patience — and neither was ever yours to lend.',
+   837→    a:[['Reflected Volley','pale shards in your own rhythm — deflect to disagree','d']]},
+   838→  ronin:{no:'10',cls:'SWORDSMAN · CHAIN',st:[4,3,3],
+   839→    d:'A blade that kept its training after losing everything else. Desperation makes it faster; your gold makes it shorter.',
+   840→    a:[['Three-Cut Chain','slashes in strings of up to three — the rhythm is honest, deflect the beats','d'],
+   841→      ['Gold Riposte','a bright windup into a wide gold arc — parry it and the fight tips','d'],
+   842→      ['Peril Cross','at the edge of desperation the red cuts come — dash, do not trade','p']]},
+   843→  archer:{no:'11',cls:'ASHIGARU · RANGED',st:[3,2,2],
+   844→    d:'Conscripted, paid in rice, deadly from farther away than you would like. It keeps a field of arrows between you at all times.',
+   845→    a:[['Twin Volley','paired arrows from the edge of the fight — deflect to return the argument','d'],
+   846→      ['Trailing Step','kites backward as you close — corner it or bring reach','']]},
+   847→  uzu:{no:'12',cls:'DUELIST · WHIRLPOOL',st:[4,3,4],
+   848→    d:'A duelist the river shaped: patient, then everywhere at once. The current taught him that stillness is also motion.',
+   849→    a:[['Blink Strike','vanishes, arrives cutting — the gold flash is your opening','d'],
+   850→      ['Gale Fan','rows of wind across the field — thread the gaps',''],
+   851→      ['Chain Rush','red dashes in strings — the last one is a feint','p']]},
+   852→  goroki:{no:'13',cls:'WARLORD · ROT',st:[2,5,5],
+   853→    d:'Act 1\u2019s keeper. Rot given rank and a club to swing it with. Posture is the lever — the mask is proud and slow.',
+   854→    a:[['Titan Slam','leaps and lands a wide ring — leave the circle or meet it with steel','d'],
+   855→      ['Ruin Charge','a red line, then a body — step off it','p'],
+   856→      ['Rot Ring','a slow expanding ring from where he stands',''],
+   857→      ['Imp Summons','calls kappa to the field — they die like all imps','']]},
+   858→  zangetsu:{no:'14',cls:'DUELIST · TWILIGHT',st:[4,4,4],
+   859→    d:'Twilight taught this one restraint. Ice where a lesser duelist would shout — every gold flash is a gift, and he gives few.',
+   860→    a:[['Blink Strike','arrives inside your guard — the flash is the tell','d'],
+   861→      ['Ice Lance','a telegraphed line of shards — sidestep early',''],
+   862→      ['Frost Field','frost circles bloom where you stand — keep moving',''],
+   863→      ['Mirror Dash','a red dash through your position — dash with it, not against','p']]},
+   864→  orochi:{no:'15',cls:'SERPENT · THE FLOOD',st:[4,4,5],
+   865→    d:'Act 2\u2019s ending. A serpent that swims beneath the ink — watch the water, not the head. The head is where it wants you looking.',
+   866→    a:[['Shard Fan','a spray of shards — one deflect answers three','d'],
+   867→      ['Undertow','dives under and erupts beneath your feet','p'],
+   868→      ['Coil Ring','a ring and a spray at once — choose your escape once',''],
+   869→      ['Spiral Storm','a rotating spiral of orbs — walk the gaps, do not run them','']]},
+   870→  jin:{no:'16',cls:'SAINT · EMBER',st:[3,4,5],
+   871→    d:'Act 6\u2019s duel. A monk who burned his temple to keep it warm. Stay close — the storm is for the far, and he is always near.',
+   872→    a:[['Ember Nova','a full ring of embers — close the distance first',''],
+   873→      ['Storm Bolts','bolts fall on your shadow — keep the shadow moving',''],
+   874→      ['Wraith Summons','calls the drowned to hold you in place',''],
+   875→      ['Ruin Charge','the red charge — a duelist\u2019s last honest argument','p']]},
+   876→  sojobo:{no:'17',cls:'MASTER · THE MOUNTAIN',st:[3,4,5],
+   877→    d:'Act 3\u2019s judge. Blinks, gusts, summons — patience is a fan you also hold. Nothing he does is fast; all of it is inevitable.',
+   878→    a:[['Blink Barrage','blinks between volley bursts — deflect the shards home','d'],
+   879→      ['Gale Fan','wind rows from wherever he appears',''],
+   880→      ['Scribe Summons','tengu join the court — silence them or ignore them, but choose',''],
+   881→      ['Chain Rush','red dashes in threes','p']]},
+   882→  yuki:{no:'18',cls:'WIDOW · WHITE GALE',st:[3,4,5],
+   883→    d:'Act 4\u2019s ending. Snow with a memory. Her gold slash is the honest one — everything else is weather.',
+   884→    a:[['Frost Field','frost circles bloom where you linger',''],
+   885→      ['Ice Lance','a telegraphed shard line — sidestep early',''],
+   886→      ['Bolt Nova','a ring of pale shards — one dash solves it',''],
+   887→      ['Blink Strike','the gold arrival — the one worth parrying','d'],
+   888→      ['Mirror Clones','copies of you join the field — they have your posture, not your ideas','']]},
+   889→  raijin:{no:'19',cls:'STORM · HUNDRED DRUMS',st:[2,5,5],
+   890→    d:'Act 5\u2019s keeper. The drums orbit him; the sky does not ask twice. Keep the shadow moving and the drums quiet.',
+   891→    a:[['Storm Bolts','bolts fall on your shadow, six in a row',''],
+   892→      ['Spiral Storm','a long rotating spiral — walk the gaps',''],
+   893→      ['Chain Rush','red dashes between drumbeats','p'],
+   894→      ['Rot Ring','a ring with a second one behind it','']]},
+   895→  hollow:{no:'20',cls:'DAIMYŌ · ASH',st:[3,5,5],
+   896→    d:'Act 6\u2019s ending. Grey, but not empty — a daimyō of everything that refused to burn. His cape remembers the fire anyway.',
+   897→    a:[['Ruin Charge','the red line — the oldest argument in the book','p'],
+   898→      ['Shard Fan','twin volleys from a wall of grey','d'],
+   899→      ['Storm Bolts','calls the sky like he owns it',''],
+   900→      ['Wraith Summons','the drowned hold your feet',''],
+   901→      ['Bolt Nova','a ring you must be outside of',''],
+   902→      ['Chain Rush','four red dashes — count them, then move','p']]},
+   903→  kami:{no:'21',cls:'THE PAINTER\u2019S HAND',st:[4,5,5],
+   904→    d:'Act 7. The hand that drew every road you walked. At half its mask cracks — and it learns your tricks back.',
+   905→    a:[['Skyfall Rain','ink falls in a wide field — the gaps move, move with them',''],
+   906→      ['Spiral Storm','a rotating storm of orbs',''],
+   907→      ['Imp Summons','even the blank page borrows imps',''],
+   908→      ['Blink Barrage','arrives firing — deflect the shards','d'],
+   909→      ['Second Hand','past half: mirror dashes, your own clones, waves of ink — nothing you have not survived before','p']]}};
+   910→
+   911→// ---- the ink kitchen: everything you see is baked at boot on offscreen
+   912→// canvases, with a few live layers (wind, weather, light) drawn per frame.
+   913→
+   914→const paperTile=(()=>{const S=512,c=mkCanvas(S,S),g=c.getContext('2d');
+   915→  g.fillStyle=PAPER2;g.fillRect(0,0,S,S);
+   916→  for(let i=0;i<160;i++){const x=rnd(S),y=rnd(S),r=rnd(1,3.4);
+   917→    g.fillStyle=`rgba(${Math.random()<.5?'190,180,150':'120,108,88'},${rnd(.03,.09)})`;
+   918→    g.beginPath();g.ellipse(x,y,r,r*rnd(.5,.9),rnd(TAU),0,TAU);g.fill();}
+   919→  for(let i=0;i<900;i++){const x=rnd(S),y=rnd(S),l=rnd(2,7),a=rnd(TAU);
+   920→    g.strokeStyle=`rgba(90,80,60,${rnd(.015,.05)})`;g.lineWidth=rnd(.4,1.1);
+   921→    g.beginPath();g.moveTo(x,y);g.lineTo(x+Math.cos(a)*l,y+Math.sin(a)*l);g.stroke();}
+   922→  return c;})();
+   923→
+   924→function inkBlob(g,x,y,r,fill,seed=0,rough=.55){
+   925→  g.fillStyle=fill;g.beginPath();
+   926→  const n=9;
+   927→  for(let i=0;i<=n;i++){const a=i/n*TAU;
+   928→    const rr=r*(1-rough*.5+hash01(seed+i*13.3)*rough);
+   929→    const px=x+Math.cos(a)*rr,py=y+Math.sin(a)*rr;
+   930→    if(i===0)g.moveTo(px,py);else g.lineTo(px,py);}
+   931→  g.closePath();g.fill();}
+   932→
+   933→function brushLine(g,x0,y0,x1,y1,w,col,alpha=1){
+   934→  g.strokeStyle=col;g.globalAlpha=alpha;g.lineCap='round';
+   935→  const dx=x1-x0,dy=y1-y0,d=Math.hypot(dx,dy)||1,n=Math.max(2,d/9|0);
+   936→  for(let i=0;i<n;i++){const t0=i/n,t1=(i+1)/n,tm=t0+(t1-t0)/2;
+   937→    const w0=w*(.35+Math.sin(tm*PI)*.75);
+   938→    g.lineWidth=Math.max(.5,w0);
+   939→    g.beginPath();g.moveTo(x0+dx*t0,y0+dy*t0);g.lineTo(x0+dx*t1,y0+dy*t1);g.stroke();}
+   940→  g.globalAlpha=1;}
+   941→
+   942→function mkGlow(col,r=64){const c=mkCanvas(r*2,r*2),g=c.getContext('2d');
+   943→  const gr=g.createRadialGradient(r,r,0,r,r,r);
+   944→  gr.addColorStop(0,col);gr.addColorStop(.4,col.replace(/[\d.]+\)$/,'0.28)'));gr.addColorStop(1,col.replace(/[\d.]+\)$/,'0)'));
+   945→  g.fillStyle=gr;g.fillRect(0,0,r*2,r*2);return c;}
+   946→const glowRed=mkGlow('rgba(179,55,42,0.55)');
+   947→const glowWhite=mkGlow('rgba(246,241,226,0.75)');
+   948→const glowGold=mkGlow('rgba(201,147,42,0.6)');
+   949→const glowBlue=mkGlow('rgba(105,130,170,0.5)');
+   950→const glowEmber=mkGlow('rgba(230,110,40,0.6)');
+   951→
+   952→const SPLATS=[];
+   953→for(let s=0;s<6;s++){const S=140,c=mkCanvas(S,S),g=c.getContext('2d');
+   954→  g.translate(S/2,S/2);g.fillStyle=INK;
+   955→  inkBlob(g,0,0,20+s*4,'rgba(29,26,22,0.85)',s*7.1,.7);
+   956→  for(let i=0;i<7;i++){const a=rnd(TAU),d=rnd(12,46);
+   957→    inkBlob(g,Math.cos(a)*d,Math.sin(a)*d,rnd(2,7),'rgba(29,26,22,0.7)',s*31+i,.8);
+   958→    brushLine(g,0,0,Math.cos(a)*d*.7,Math.sin(a)*d*.7,2.5,'rgba(29,26,22,0.4)');}
+   959→  SPLATS.push(c);}
+   960→
+   961→const MIST=[];
+   962→for(let i=0;i<3;i++){const c=mkCanvas(400,200),g=c.getContext('2d');
+   963→  for(let j=0;j<5;j++){const x=rnd(60,340),y=rnd(50,150),r=rnd(50,120);
+   964→    const gr=g.createRadialGradient(x,y,0,x,y,r);
+   965→    gr.addColorStop(0,'rgba(226,218,198,0.5)');gr.addColorStop(1,'rgba(226,218,198,0)');
+   966→    g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,TAU);g.fill();}
+   967→  MIST.push(c);}
+   968→
+   969→const GRP=[];
+   970→for(let i=0;i<3;i++){const S=256,c=mkCanvas(S,S),g=c.getContext('2d');
+   971→  const d=g.createImageData(S,S);
+   972→  for(let j=0;j<d.data.length;j+=4){const v=Math.random()*255|0;
+   973→    d.data[j]=v;d.data[j+1]=v;d.data[j+2]=v;d.data[j+3]=26;}
+   974→  g.putImageData(d,0,0);GRP.push(g.createPattern(c,'repeat'));}
+   975→
+   976→// fighters are baked once at 2.2x and drawn at 1x — the supersample keeps
+   977→// edges crisp on dense screens. the kit below is shared by enemies, bosses
+   978→// and the codex portraits; only the assembly differs.
+   979→const SS=2.2;
+   980→function spr(S,fn){
+   981→  const C=Math.ceil(S*SS),c=mkCanvas(C,C),g=c.getContext('2d');
+   982→  g.translate(C/2,C/2);g.scale(SS,SS);fn(g);
+   983→  const f=mkCanvas(C,C),fg=f.getContext('2d');
+   984→  fg.drawImage(c,0,0);fg.globalCompositeOperation='source-atop';
+   985→  fg.fillStyle='rgba(250,247,236,0.92)';fg.fillRect(0,0,C,C);
+   986→  return{n:c,f,s:S};}
+   987→
+   988→// every fighter is seen from above, facing +x. weapons point where they
+   989→// look; live wobble, feet and glints do the rest.
+   990→function blob(g,x,y,rx,ry,col){g.fillStyle=col;g.beginPath();g.ellipse(x,y,rx,ry,0,0,TAU);g.fill();}
+   991→function oBlob(g,x,y,rx,ry,col){blob(g,x,y,rx,ry,col);
+   992→  g.strokeStyle='rgba(20,17,14,0.42)';g.lineWidth=1.1;
+   993→  g.beginPath();g.ellipse(x,y,rx,ry,0,0,TAU);g.stroke();}
+   994→function caps(g,x0,y0,x1,y1,w,col){g.strokeStyle=col;g.lineWidth=w;g.lineCap='round';
+   995→  g.beginPath();g.moveTo(x0,y0);g.lineTo(x1,y1);g.stroke();}
+   996→function sheen(g,x,y,rx,ry,col='rgba(246,241,226,0.22)',a0=-.9,a1=.5){
+   997→  g.strokeStyle=col;g.lineWidth=Math.max(1,Math.min(rx,ry)*.26);g.lineCap='round';
+   998→  g.beginPath();g.ellipse(x,y,rx*.8,ry*.8,0,a0,a1);g.stroke();}
+   999→function steel(g,x0,y0,x1,y1,w){ // dark spine + bright edge — how ink says "sharp"
+  1000→  caps(g,x0,y0,x1,y1,w,'#33302c');
+
+[showing lines 1-1000 of 3617; use offset=1001 with limit to continue reading]

@@ -1,0 +1,402 @@
+     1→   400→dash(){this.noise(.16,.12,500,'bandpass',1600);},
+     2→   401→hurt(){this.tone(210,64,.22,'sawtooth',.17);this.noise(.1,.14,600,'lowpass',-300);},
+     3→   402→kill(){this.noise(.2,.2,700,'lowpass',-500);this.tone(95,42,.18,'sine',.16);},
+     4→   403→orb(){this.tone(660,660,.06,'sine',.08);this.tone(990,990,.09,'sine',.06,.05);},
+     5→   404→ui(){this.tone(500,420,.05,'sine',.06);},
+     6→   405→buy(){this.tone(520,780,.1,'triangle',.1);this.pluck(293,.12);},
+     7→   406→stamp(){this.tone(80,32,.28,'sine',.4);this.noise(.12,.22,380,'lowpass',-200);},
+     8→   407→roar(){this.tone(95,42,.8,'sawtooth',.2);this.noise(.6,.14,300,'lowpass',-120);},
+     9→   408→ki(){this.tone(160,640,.4,'sawtooth',.1);this.noise(.35,.12,800,'bandpass',2400);},
+    10→   409→zap(){this.noise(.16,.24,3000,'highpass',-2000);this.tone(1200,180,.14,'square',.1);},
+    11→   410→heal(){this.tone(392,523,.22,'sine',.09);},
+    12→   411→schedule(){if(!this.ctx||this.muted)return;const ahead=this.ctx.currentTime+.32;
+    13→   412→  while(this.nextNote<ahead){this.playStep(this.step,this.nextNote-this.ctx.currentTime);this.step++;this.nextNote+=.30;}},
+    14→   413→playStep(s,when){const lvl=(G&&G.mode==='game')?G.musicLevel:.15;
+    15→   414→  const scale=[146.8,174.6,196,220,261.6,293.7,349.2,392];
+    16→   415→  const pat=[0,-1,2,4,-1,3,-1,2,4,-1,5,7,-1,4,3,-1];
+    17→   416→  const deg=pat[s%16];
+    18→   417→  if(deg>=0&&(hash01(s*3.3)>.25||lvl>.5))this.pluck(scale[deg]*(hash01(s)>.85?2:1),.085*(0.7+lvl*.5),Math.max(0,when));
+    19→   418→  if(hash01(s*7.7)>.75)this.pluck(scale[(deg+2+8)%8]*.5,.05,Math.max(0,when+.15));
+    20→   419→  if(lvl>.45&&s%8===0)this.drum(.22+lvl*.15,Math.max(0,when));
+    21→   420→  if(lvl>.7&&s%8===4)this.drum(.1,Math.max(0,when));
+    22→   421→  if(lvl>.6&&s%16===12)this.drum(.09,Math.max(0,when+.12));}};
+    23→   422→
+    24→   423→const keys={},once={};const mouse={x:innerWidth/2,y:innerHeight/2,down:false};let mouseSeen=false,mouseOnceL=false;
+    25→   424→const IN={atk:false,atkT:false,par:false,dash:false,art:false,weap:-1};
+    26→   425→const joy={id:-1,ox:0,oy:0,x:0,y:0,mag:0,ang:0};
+    27→   426→const btnHeld={},TBP={},WSLOTS=[];
+    28→   427→let rotateDismiss=false;
+    29→   428→
+    30→   429→addEventListener('keydown',e=>{
+    31→   430→  if(!keys[e.code])once[e.code]=true;keys[e.code]=true;
+    32→   431→  if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();
+    33→   432→  if(e.code==='KeyM'&&!once.KeyMhandled){once.KeyMhandled=true;AU.toggleMute();}
+    34→   433→  if(e.code==='Escape')handleEscape();
+    35→   434→  AU.init();});
+    36→   435→addEventListener('keyup',e=>{keys[e.code]=false;once.KeyMhandled=false;});
+    37→   436→addEventListener('blur',()=>{for(const k in keys)keys[k]=false;mouse.down=false;});
+    38→   437→addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;mouseSeen=true;});
+    39→   438→addEventListener('mousedown',e=>{AU.init();if(e.button===0){mouse.down=true;mouseOnceL=true;}if(e.button===2)once.RMB=true;});
+    40→   439→addEventListener('mouseup',e=>{if(e.button===0)mouse.down=false;});
+    41→   440→addEventListener('contextmenu',e=>e.preventDefault());
+    42→   441→function jp(code){if(once[code]){once[code]=false;return true;}return false;}
+    43→   442→function jm(){if(mouseOnceL){mouseOnceL=false;return true;}return false;}
+    44→   443→function jr(){if(once.RMB){once.RMB=false;return true;}return false;}
+    45→   444→
+    46→   445→function touchButtons(){
+    47→   446→  const s=clamp(Math.min(W,H)/760,.82,1.15);
+    48→   447→  return[
+    49→   448→    {id:'pause',x:W-40,y:44,r:24,kan:'停'},
+    50→   449→    {id:'atk',x:W-96*s,y:H-112*s,r:62*s,kan:'斬'},
+    51→   450→    {id:'par',x:W-214*s,y:H-78*s,r:44*s,kan:'弾'},
+    52→   451→    {id:'dash',x:W-84*s,y:H-232*s,r:44*s,kan:'走'},
+    53→   452→    {id:'art',x:W-208*s,y:H-196*s,r:36*s,kan:'絶'}];}
+    54→   453→function onTS(e){
+    55→   454→  AU.init();
+    56→   455→  if(G.mode!=='game')return;
+    57→   456→  e.preventDefault();
+    58→   457→  for(const t of e.changedTouches){
+    59→   458→    const x=t.clientX,y=t.clientY;
+    60→   459→    const bs=touchButtons();
+    61→   460→    let hit=null;
+    62→   461→    for(let i=0;i<bs.length;i++)if(bs[i].id!=='atk'&&dist(x,y,bs[i].x,bs[i].y)<bs[i].r*1.3){hit=bs[i];break;}
+    63→   462→    if(hit){
+    64→   463→      if(hit.id==='pause'){setMode('pause');return;}
+    65→   464→      btnHeld[t.identifier]=hit.id;TBP[hit.id]=true;
+    66→   465→      if(hit.id==='par')IN.par=true;else if(hit.id==='dash')IN.dash=true;else if(hit.id==='art')IN.art=true;
+    67→   466→      continue;}
+    68→   467→    if(x<W*0.45&&joy.id===-1){joy.id=t.identifier;joy.ox=x;joy.oy=y;joy.x=joy.y=joy.mag=0;continue;}
+    69→   468→    for(const s of WSLOTS){
+    70→   469→      if(x>=s.x-10&&x<=s.x+s.s+10&&y>=s.y-10&&y<=s.y+s.s+10){IN.weap=s.i;hit=true;break;}}
+    71→   470→    if(hit)continue;
+    72→   471→    if(dist(x,y,bs[1].x,bs[1].y)<bs[1].r*1.25){
+    73→   472→      btnHeld[t.identifier]='atk';TBP.atk=true;IN.atk=true;IN.atkT=true;}}}
+    74→   473→function onTM(e){
+    75→   474→  if(G.mode!=='game')return;
+    76→   475→  e.preventDefault();
+    77→   476→  for(const t of e.changedTouches){
+    78→   477→    if(t.identifier===joy.id){
+    79→   478→      let dx=t.clientX-joy.ox,dy=t.clientY-joy.oy;const d=Math.hypot(dx,dy);
+    80→   479→      if(d>64){dx=dx/d*64;dy=dy/d*64;}
+    81→   480→      joy.x=dx/64;joy.y=dy/64;joy.mag=Math.min(1,d/64);
+    82→   481→      if(joy.mag>.01)joy.ang=Math.atan2(dy,dx);}}}
+    83→   482→function onTE(e){
+    84→   483→  if(G.mode!=='game')return;
+    85→   484→  e.preventDefault();
+    86→   485→  for(const t of e.changedTouches){
+    87→   486→    if(t.identifier===joy.id){joy.id=-1;joy.x=joy.y=joy.mag=0;}
+    88→   487→    const b=btnHeld[t.identifier];
+    89→   488→    if(b){TBP[b]=false;if(b==='atk')IN.atk=false;delete btnHeld[t.identifier];}}}
+    90→   489→addEventListener('touchstart',onTS,{passive:false});
+    91→   490→addEventListener('touchmove',onTM,{passive:false});
+    92→   491→addEventListener('touchend',onTE,{passive:false});
+    93→   492→addEventListener('touchcancel',onTE,{passive:false});
+    94→   493→
+    95→   494→const cv=$('#cv'),ctx=cv.getContext('2d');
+    96→   495→let W=innerWidth,H=innerHeight,DPR=1,Z=1,vigC=null,_vigHurt=null;
+    97→   496→function checkOrient(){
+    98→   497→  const el=$('#rotate');
+    99→   498→  el.classList.toggle('on',IS_TOUCH&&innerHeight>innerWidth*1.05&&G.mode==='game'&&!rotateDismiss);}
+   100→   499→function resize(){DPR=Math.min(IS_TOUCH?1.5:2,devicePixelRatio||1);W=innerWidth;H=innerHeight;
+   101→   500→  cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';
+   102→   501→  Z=clamp(Math.min(W/1350,H/860),.62,1.5);
+   103→   502→  vigC=document.createElement('canvas');vigC.width=Math.max(2,W);vigC.height=Math.max(2,H);
+   104→   503→  const c=vigC.getContext('2d');
+   105→   504→  const g=c.createRadialGradient(W/2,H/2,Math.min(W,H)*.36,W/2,H/2,Math.max(W,H)*.72);
+   106→   505→  g.addColorStop(0,'rgba(43,36,26,0)');g.addColorStop(1,'rgba(43,36,26,0.34)');c.fillStyle=g;c.fillRect(0,0,W,H);
+   107→   506→  _vigHurt=null;checkOrient();}
+   108→   507→addEventListener('resize',resize);resize();
+   109→   508→const RW=1700,RH=1000,WALL=56;
+   110→   509→
+   111→   510→const G={mode:'title',run:null,enemies:[],projs:[],parts:[],floats:[],slashes:[],teles:[],rings:[],marks:[],pickups:[],ghosts:[],fx:[],
+   112→   511→  cam:{x:RW/2,y:RH/2},trauma:0,hitstop:0,slowT:0,ts:1,flash:0,wash:0,hurtV:0,musicLevel:.15,
+   113→   512→  floorC:null,decalC:null,dctx:null,waveIdx:-1,waves:[],spawnQ:[],spawnT:0,waveGap:0,clearing:0,introT:0,bossIntroT:0,shakeX:0,shakeY:0,
+   114→   513→  style:{pts:0,rank:0,combo:0,t:9,anim:0},hints:null,tutMoved:false,tutHit:false,tutDash:false,tutParry:false,
+   115→   514→  ambience:[],t:0,boss:null,blessPicks:null,prevMode:null};
+   116→   515→let P=null;
+   117→   516→const bl=id=>G.run?(G.run.blessings[id]||0):0;
+   118→   517→const curAct=()=>G.run?(G.run.abyss?Math.min(7,1+Math.floor(G.run.wave/4)):G.run.act):1;
+   119→   518→
+   120→   519→const WEAPONS={
+   121→   520→  katana:{name:'Katana',kanji:'刀',desc:'The honest answer. Balanced cuts, honest reach.',dmg:[10,12,17],rate:.24,range:84,arc:2.1,knock:130,cost:0},
+   122→   521→  naginata:{name:'Naginata',kanji:'薙',desc:'Long reach, wide sweeps, a slower rhythm. The finisher spins full-circle.',dmg:[14,16,23],rate:.34,range:122,arc:2.5,knock:170,cost:600},
+   123→   522→  twin:{name:'Twin Blades',kanji:'双',desc:'A blur of steel in four beats. Critical instinct.',dmg:[7,7,9,13],rate:.17,range:68,arc:1.95,knock:70,cost:900,crit:.08},
+   124→   523→  kanabo:{name:'Kanabō',kanji:'棒',desc:'Slow, brutal, shield-breaking. Every landfall trembles.',dmg:[27,42],rate:.52,range:94,arc:2.6,knock:340,cost:1400,guardBreak:true}};
+   125→   524→const WKEYS=Object.keys(WEAPONS);
+   126→   525→
+   127→   526→const BLESS=[
+   128→   527→  {id:'vermilion',n:'Vermilion Edge',k:'朱',r:0,d:'+20% damage. Stacks.'},
+   129→   528→  {id:'swift',n:'Fleet Shadow',k:'疾',r:0,d:'+12% movement speed.'},
+   130→   529→  {id:'iron',n:'Iron Skin',k:'鉄',r:0,d:'Take 12% less damage.'},
+   131→   530→  {id:'deepcuts',n:'Deep Cuts',k:'切',r:0,d:'+10% chance to critically strike (×2).'},
+   132→   531→  {id:'harvest',n:'Harvest',k:'刈',r:0,d:'Health orbs restore twice as much.'},
+   133→   532→  {id:'focused',n:'Focused Ki',k:'気',r:0,d:'Ki gained from strikes +35%.'},
+   134→   533→  {id:'reach',n:'Long Reach',k:'長',r:0,d:'+12% attack range.'},
+   135→   534→  {id:'thousand',n:'Thousand Cuts',k:'乱',r:0,d:'Attack speed +15%.'},
+   136→   535→  {id:'blood',n:'Blood Ink',k:'血',r:1,d:'Heal 6% of damage you deal.'},
+   137→   536→  {id:'rot',n:'Withering Rot',k:'滅',r:1,d:'Strikes inflict Ink Rot — 12 damage over 3s. Stacks.'},
+   138→   537→  {id:'burst',n:'Ink Burst',k:'散',r:1,d:'Slain enemies burst, wounding nearby foes.'},
+   139→   538→  {id:'thirdeye',n:'Third Eye',k:'眼',r:1,d:'Deflect window 45% longer. Deflects restore 4 HP.'},
+   140→   539→  {id:'storm',n:'Storm Steps',k:'走',r:1,d:'+1 dash charge.'},
+   141→   540→  {id:'venge',n:'Vengeance',k:'瞋',r:1,d:'After taking a wound, your next strike deals +60%.'},
+   142→   541→  {id:'mantle',n:"Night's Mantle",k:'護',r:1,d:'Dashing grants +50% damage for 1.5s.'},
+   143→   542→  {id:'drums',n:'War Drums',k:'鼓',r:1,d:'Each kill shortens dash recharge by 0.4s.'},
+   144→   543→  {id:'inkwell',n:'Ink Well',k:'溝',r:1,d:'+25 max HP, and heal 25 now. Stacks.'},
+   145→   544→  {id:'execute',n:'Executioner',k:'斬',r:1,d:'Strikes on foes below 25% HP deal double.'},
+   146→   545→  {id:'twinfang',n:'Twin Fang',k:'双',r:2,d:'Combo finishers release a cutting wave.'},
+   147→   546→  {id:'godbrush',n:"Gods' Brush",k:'筆',r:2,d:'14% chance your strikes fling extra ink waves.'},
+   148→   547→  {id:'pierce',n:'Piercing Fang',k:'貫',r:2,d:'Your cuts ignore frontal shields.'}];
+   149→   548→const RARK=['並','希','極'];
+   150→   549→
+   151→   550→const SHRINE=[
+   152→   551→  {id:'vit',n:'Vitality',k:'命',max:5,cost:l=>Math.round(90*Math.pow(1.65,l)),d:l=>`+12 max HP per rank · now +${l*12}`},
+   153→   552→  {id:'str',n:'Strength',k:'力',max:5,cost:l=>Math.round(110*Math.pow(1.65,l)),d:l=>`+6% damage per rank · now +${l*6}%`},
+   154→   553→  {id:'spd',n:'Swiftness',k:'風',max:4,cost:l=>Math.round(100*Math.pow(1.7,l)),d:l=>`+4% move speed per rank · now +${l*4}%`},
+   155→   554→  {id:'fortune',n:'Fortune',k:'運',max:4,cost:l=>Math.round(130*Math.pow(1.7,l)),d:l=>`+10% ash from kills · now +${l*10}%`},
+   156→   555→  {id:'discipline',n:'Discipline',k:'規',max:2,cost:l=>600+l*900,d:l=>`Begin every run with ${l} free inkmarks.`},
+   157→   556→  {id:'rejuv',n:'Rejuvenation',k:'癒',max:4,cost:l=>Math.round(120*Math.pow(1.7,l)),d:l=>`+8% HP restored between stages · now +${22+l*8}%`},
+   158→   557→  {id:'talisman',n:'Talisman',k:'符',max:1,cost:()=>1400,d:()=>'Once per act, death returns you at half HP.'}];
+   159→   558→
+   160→   559→const ENEMY={
+   161→   560→  kappa:{name:'Kappa Imp',hp:26,spd:128,r:15,dmg:9,ash:4,atk:'melee',rng:60,wind:.5,rec:.62,chain:1,peril:.22},
+   162→   561→  oni:{name:'Oni Brute',hp:80,spd:82,r:24,dmg:17,ash:9,atk:'slam',rng:96,wind:.72,rec:.8,aoe:105,chain:2,peril:.3},
+   163→   562→  tengu:{name:'Tengu Scribe',hp:34,spd:106,r:16,dmg:9,ash:7,atk:'volley',rng:430,wind:.62,rec:1.05,keep:270},
+   164→   563→  wraith:{name:'Borei Wraith',hp:34,spd:158,r:14,dmg:12,ash:8,atk:'lunge',rng:230,wind:.42,rec:.68,chain:1,peril:.45},
+   165→   564→  kame:{name:'Kame Guard',hp:105,spd:56,r:21,dmg:15,ash:11,atk:'poke',rng:138,wind:.58,rec:.8,guard:true,chain:2,peril:.25},
+   166→   565→  broker:{name:'Chōchin Broker',hp:46,spd:74,r:16,dmg:0,ash:13,atk:'none',rng:0,wind:0,rec:1},
+   167→   566→  hound:{name:'Inugami Hound',hp:26,spd:176,r:15,dmg:12,ash:8,atk:'boom',rng:340,wind:.46,rec:.4},
+   168→   567→  sorc:{name:'Gōma Sorcerer',hp:64,spd:62,r:19,dmg:0,ash:15,atk:'summon',rng:999,wind:1.4,rec:2.2,keep:400},
+   169→   568→  mirror:{name:'Mirror Shade',hp:52,spd:120,r:14,dmg:8,ash:0,atk:'volley',rng:420,wind:.55,rec:1.05,keep:250}};
+   170→   569→
+   171→   570→const BOSSES={
+   172→   571→  goroki:{name:'Goroki, Warlord of Rot',kanji:'鬼',hp:520,r:42,spd:70,touch:9,moves:['slam','charge','shock','summon'],summon:'kappa'},
+   173→   572→  orochi:{name:'Orochi of the Flooded Veil',kanji:'蛇',hp:660,r:30,spd:118,touch:8,serpent:true,moves:['volley','dive','coil','spiralBurst']},
+   174→   573→  sojobo:{name:'Sōjōbō, Master of Fans',kanji:'天',hp:800,r:32,spd:88,touch:8,moves:['blinkVolley','gust','summon','chainDash','volley'],summon:'tengu'},
+   175→   574→  yuki:{name:'Yukiko, Widow of the White Gale',kanji:'雪',hp:940,r:28,spd:96,touch:8,moves:['frost','icelance','nova','blinkStrike','clones']},
+   176→   575→  raijin:{name:'Raiden, Drum of a Hundred Storms',kanji:'雷',hp:1100,r:36,spd:74,touch:9,moves:['bolts','spiralBurst','chainDash','shock']},
+   177→   576→  hollow:{name:'The Hollow Daimyō',kanji:'灰',hp:1280,r:38,spd:92,touch:10,moves:['charge','volley','bolts','summon','nova','chainDash'],summon:'wraith'},
+   178→   577→  kami:{name:'The Nameless Kami',kanji:'空',hp:1580,r:32,spd:100,touch:9,phased:true,moves:['rain','spiralBurst','summon','blinkVolley'],moves2:['mirrorDash','wave','clones','volley'],summon:'kappa'}};
+   179→   578→
+   180→   579→const ACTS=[
+   181→   580→{name:'The Rice Fields at Dusk',kanji:'一',intro:['Rice fields drink the sun.','A blade wakes in black ink.','The crows have noticed.'],stages:[
+   182→   581→ {n:'First Blood',w:['kappa*4','kappa*5']},
+   183→   582→ {n:'Crows Among the Stalks',w:['kappa*5,tengu*2','kappa*4,tengu*2']},
+   184→   583→ {n:'The Terraced Rise',w:['kappa*4,oni*1','tengu*2,kappa*5','oni*1,kappa*5,tengu*1']},
+   185→   584→ {n:'Old Well, Older Ghosts',w:['oni*2,kappa*4','tengu*2,oni*1,kappa*3','oni*2,tengu*2,kappa*4']},
+   186→   585→ {n:'The Rot Below',boss:'goroki'}]},
+   187→   586→{name:'The Flooded Bridge',kanji:'二',intro:['Rain erases the roads.','Below the planks, something breathes','in drowned wooden lungs.'],stages:[
+   188→   587→ {n:'Lanterns on the Water',w:['wraith*3,kappa*3','wraith*3,tengu*2']},
+   189→   588→ {n:'The Weir Gate',w:['hound*3','wraith*3,oni*2','hound*2,wraith*2,tengu*2']},
+   190→   589→ {n:'Silt and Sorrow',w:['tengu*3,hound*2','kappa*6,wraith*3','oni*2,tengu*2,hound*2']},
+   191→   590→ {n:'What the River Kept',w:['oni*2,hound*3','wraith*4,tengu*2,oni*1','hound*4,wraith*3,oni*2']},
+   192→   591→ {n:'Beneath the Black Water',boss:'orochi'}]},
+   193→   592→{name:'The Bamboo Court',kanji:'三',intro:['Green shadows whisper.','Every stalk a listening spear.','Tread light. Cut lighter.'],stages:[
+   194→   593→ {n:'A Path of Whistling Reed',w:['kame*2,kappa*4','tengu*3,wraith*2']},
+   195→   594→ {n:"The Scribe's Ambush",w:['broker*1,oni*2,kappa*4','kame*2,wraith*3']},
+   196→   595→ {n:'Paper Walls, Paper Men',w:['kame*2,hound*3,tengu*2','broker*1,wraith*4,oni*1']},
+   197→   596→ {n:'The Hollow Grove',w:['kame*3,broker*1,tengu*3','oni*2,hound*3,kame*2','kame*2,broker*1,wraith*4']},
+   198→   597→ {n:'Judgement of the Court',boss:'sojobo'}]},
+   199→   598→{name:'The White Gale',kanji:'四',intro:['Snow buries the road','and everything the road meant.','Only the blade is warm.'],stages:[
+   200→   599→ {n:'First Frost, First Fear',w:['sorc*1,kappa*5','kame*2,wraith*3']},
+   201→   600→ {n:"The Widow's Orchard",w:['oni!*1,tengu*3','sorc*1,hound*3,broker*1']},
+   202→   601→ {n:'Mirror, Mirror, Breathless',w:['kame*2,sorc*1,wraith*3','oni!*1,tengu*3,hound*2']},
+   203→   602→ {n:'The Long White Night',w:['sorc*2,broker*1,kame*2','oni!*1,wraith!*2,tengu*3','hound*4,sorc*1']},
+   204→   603→ {n:'Her Cold Embrace',boss:'yuki'}]},
+   205→   604→{name:'The Storm Drum',kanji:'五',intro:['Thunder keeps the beat.','Dance, or be danced upon —','the sky does not ask twice.'],stages:[
+   206→   605→ {n:'Static in the Pines',w:['tengu!*2,kappa*6','wraith!*3,oni*2']},
+   207→   606→ {n:'The Rise and the Fall',w:['kame!*2,hound!*3','sorc*2,tengu*2']},
+   208→   607→ {n:'Chords of Rain and Iron',w:['oni!*2,broker*1,wraith*4','sorc!*1,kame*2,hound*3']},
+   209→   608→ {n:'One Hundred Drums',w:['kame!*2,sorc!*1,tengu!*2','oni!*2,wraith!*3,broker!*1','hound!*4,oni!*1']},
+   210→   609→ {n:'The Eye of the Storm',boss:'raijin'}]},
+   211→   610→{name:'The Ash Garden',kanji:'六',intro:['Everything burns grey.','Even memory smolders here,','quiet as a grave.'],stages:[
+   212→   611→ {n:'Cinder Bloom',w:['wraith!*4,kappa*6','oni!*2,tengu!*2']},
+   213→   612→ {n:'The Smoke That Walks',w:['sorc!*2,hound!*3','kame!*2,broker!*1,wraith!*3']},
+   214→   613→ {n:'Harvest of Cinders',w:['oni!*3,kame!*2','tengu!*3,sorc!*1,hound!*3']},
+   215→   614→ {n:'The Unquiet Kiln',w:['oni!*2,wraith!*4,kame*2','sorc!*2,broker!*1,hound*4','tengu!*3,oni!*2,kame*2']},
+   216→   615→ {n:'What Refuses to Burn',boss:'hollow'}]},
+   217→   616→{name:'The Blank Eternity',kanji:'七',intro:['At the edge of the page','the painter\u2019s hand hesitates.','Finish the story.'],stages:[
+   218→   617→ {n:'Where Ink Was Born',w:['wraith!*5,kappa*5','oni!*3,tengu!*2']},
+   219→   618→ {n:'The Unpainted Army',w:['kame!*3,hound!*4','sorc!*2,wraith!*4']},
+   220→   619→ {n:'The Margin of the World',w:['oni!*3,tengu!*3,broker!*1','kame!*3,sorc!*2']},
+   221→   620→ {n:'The Last White Space',w:['oni!*3,wraith!*4,hound*3','kame*2,sorc*2,tengu*3','oni!*4,broker!*1,kame*2']},
+   222→   621→ {n:'The Painter\u2019s Hand',boss:'kami'}]}];
+   223→   622→
+   224→   623→const DEATHLINES=['The ink dries. The story doesn\u2019t.','Even the greatest stroke begins on a blank page.','The crows will remember this one.','A blade is only borrowed. So is a life.','Rest. The paper keeps your place.','Somewhere, a brush is already dipping again.','The paper forgives. It always does.','Wipe the blade. Bow. Begin again.'];
+   225→   624→const RANKS=['','初','中','上','極','鬼','神'],RANKL=['','STUDENT','ADEPT','EXPERT','MASTER','ONI','KAMI'],RANKT=[0,20,50,90,140,200,270];
+   226→   625→
+   227→   626→const SCREENS=['s-title','s-acts','s-shrine','s-armory','s-help','s-settings','s-bless','s-pause','s-death','s-clear','s-victory'];
+   228→   627→function setMode(m){G.mode=m;document.body.classList.toggle('playing',m==='game');
+   229→   628→  for(const s of SCREENS){const el=document.getElementById(s);if(el)el.classList.toggle('on',s==='s-'+m);}
+   230→   629→  checkOrient();}
+   231→   630→function handleEscape(){
+   232→   631→  if(G.mode==='game')setMode('pause');
+   233→   632→  else if(G.mode==='pause')setMode('game');
+   234→   633→  else if(G.mode==='settings')leaveSettings();
+   235→   634→  else if(['shrine','armory','help','acts'].includes(G.mode))setMode('title');}
+   236→   635→function leaveSettings(){const p=G.prevMode==='pause'?'pause':'title';G.prevMode=null;toMenu(p);}
+   237→   636→function toMenu(m){if(m==='acts')renderActs();if(m==='shrine')renderShrine();if(m==='armory')renderArmory();
+   238→   637→  if(m==='title')renderTitleStats();setMode(m);}
+   239→   638→function renderTitleStats(){const s=SAVE.stats;
+   240→   639→  const el=$('#title-stats');if(el)el.innerHTML=
+   241→   640→    `deaths <b>${s.deaths}</b> · kills <b>${s.kills}</b> · best combo <b>${s.bestCombo}</b> · hours walked <b>${(s.playTime/3600).toFixed(1)}</b>`;}
+   242→   641→function renderShrine(){const ashEl=$('#ash-shrine');if(ashEl)ashEl.textContent=SAVE.ash;
+   243→   642→  const list=$('#shrine-list');if(!list)return;list.innerHTML='';
+   244→   643→  SHRINE.forEach(s=>{const l=SAVE.meta[s.id];const row=document.createElement('div');row.className='row';
+   245→   644→    let pips='';for(let i=0;i<s.max;i++)pips+=`<span class="pip${i<l?' f':''}"></span>`;
+   246→   645→    row.innerHTML=`<div class="kan">${s.k}</div><div class="mid"><b>${s.n}</b><p>${s.d(l)}</p>
+   247→   646→      <div class="pips">${pips}</div></div>`;
+   248→   647→    const btn=document.createElement('button');btn.className='buy';
+   249→   648→    if(l>=s.max){btn.textContent='完 complete';btn.disabled=true;}
+   250→   649→    else{const cost=s.cost(l);btn.textContent=`礼 ${cost}`;
+   251→   650→      if(SAVE.ash<cost)btn.disabled=true;
+   252→   651→      btn.onclick=()=>{SAVE.ash-=cost;SAVE.meta[s.id]++;persist();AU.buy();renderShrine();};}
+   253→   652→    row.appendChild(btn);list.appendChild(row);});}
+   254→   653→function renderArmory(){const ashEl=$('#ash-armory');if(ashEl)ashEl.textContent=SAVE.ash;
+   255→   654→  const list=$('#armory-list');if(!list)return;list.innerHTML='';
+   256→   655→  Object.entries(WEAPONS).forEach(([id,w])=>{const owned=!!SAVE.weapons[id];
+   257→   656→    const row=document.createElement('div');row.className='row';
+   258→   657→    row.innerHTML=`<div class="kan">${w.kanji}</div><div class="mid"><b>${w.name}</b><p>${w.desc}</p>
+   259→   658→      <div class="wstats">damage ${w.dmg.join('/')} · reach ${w.range} · beat ${w.rate}s${w.guardBreak?' · breaks shields · heavy posture damage':''}</div></div>`;
+   260→   659→    const btn=document.createElement('button');btn.className='buy';
+   261→   660→    if(!owned){btn.textContent=`礼 ${w.cost}`;if(SAVE.ash<w.cost)btn.disabled=true;
+   262→   661→      btn.onclick=()=>{SAVE.ash-=w.cost;SAVE.weapons[id]=true;persist();AU.buy();renderArmory();};}
+   263→   662→    else if(SAVE.lastWeapon===id){btn.textContent='握 in hand';btn.disabled=true;btn.classList.add('owned');}
+   264→   663→    else{btn.textContent='握 equip';
+   265→   664→      btn.onclick=()=>{SAVE.lastWeapon=id;persist();AU.ui();renderArmory();};}
+   266→   665→    row.appendChild(btn);list.appendChild(row);});}
+   267→   666→function renderActs(){const ashEl=$('#ash-acts');if(ashEl)ashEl.textContent=SAVE.ash;
+   268→   667→  const strip=$('#acts-strip');if(!strip)return;strip.innerHTML='';
+   269→   668→  ACTS.forEach((a,i)=>{const act=i+1;const locked=act>SAVE.unlockedAct;
+   270→   669→    const node=document.createElement('div');
+   271→   670→    node.className='act-node'+(locked?' lock':'')+(act===SAVE.unlockedAct?' cur':'');
+   272→   671→    const status=locked?'':(act<SAVE.unlockedAct?'cleared — 斬':(act===7&&SAVE.unlockedAct===7?'cleared — 斬':'the road ahead'));
+   273→   672→    node.innerHTML=`${locked?'<div class="lock-seal">封</div>':''}<div class="dot"></div><div class="a-k">${a.kanji}</div>
+   274→   673→      <div class="a-n">${a.name}</div><div class="a-s">${locked?'SEALED':status}</div>`;
+   275→   674→    if(!locked)node.onclick=()=>{AU.init();AU.ui();startRun(act,false);};
+   276→   675→    strip.appendChild(node);});
+   277→   676→  if(SAVE.abyssUnlocked){const node=document.createElement('div');node.className='act-node';
+   278→   677→    node.innerHTML=`<div class="dot" style="border-color:${RED}"></div><div class="a-k" style="color:${RED}">無</div>
+   279→   678→      <div class="a-n">The Abyss</div><div class="a-s">best wave ${SAVE.abyssBest}</div>`;
+   280→   679→    node.onclick=()=>{AU.init();AU.ui();startRun(1,true);};strip.appendChild(node);}}
+   281→   680→ $('#ui').addEventListener('click',e=>{
+   282→   681→  const b=e.target.closest('[data-go]');if(!b)return;
+   283→   682→  try{
+   284→   683→    AU.init();AU.ui();
+   285→   684→    const go=b.dataset.go;
+   286→   685→    if(go==='resume'){setMode('game');return;}
+   287→   686→    if(go==='abandon'){
+   288→   687→      if(G.run){SAVE.stats.playTime+=G.run.time;G.run.time=0;persist();}
+   289→   688→      G.run=null;P=null;G.floorC=null;G.boss=null;G.blessPicks=null;
+   290→   689→      toMenu('acts');return;}
+   291→   690→    if(go==='abyss'){startRun(1,true);return;}
+   292→   691→    if(go==='settings'){G.prevMode=(G.mode==='pause')?'pause':'title';toMenu('settings');return;}
+   293→   692→    toMenu(go);
+   294→   693→  }catch(err){console.error('navigation error:',err);}});
+   295→   694→
+   296→   695→function mkCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
+   297→   696→function inkBlob(c,x,y,r,col,seed,rough=.22){c.fillStyle=col;const n=Math.max(7,r/2.2|0);c.beginPath();
+   298→   697→  for(let i=0;i<=n;i++){const a=i/n*TAU,rr=r*(1-rough/2+rough*hash01(seed+i*13.7));
+   299→   698→    const px=x+Math.cos(a)*rr,py=y+Math.sin(a)*rr;i?c.lineTo(px,py):c.moveTo(px,py);}c.closePath();c.fill();}
+   300→   699→function brushLine(c,x1,y1,x2,y2,w,col,alpha=1){c.save();c.globalAlpha*=alpha;c.strokeStyle=col;c.lineCap='round';
+   301→   700→  c.lineWidth=w;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
+   302→   701→  c.lineWidth=w*.5;c.globalAlpha*=.5;c.beginPath();
+   303→   702→  c.moveTo(x1+w*.12*(hash01(x1+y1)-.5),y1+w*.3);c.lineTo(x2+w*.12*(hash01(x2+y2)-.5),y2-w*.2);c.stroke();c.restore();}
+   304→   703→function mkGlow(col){const s=64,c=mkCanvas(s,s),g=c.getContext('2d');
+   305→   704→  const gr=g.createRadialGradient(32,32,2,32,32,30);gr.addColorStop(0,col);gr.addColorStop(1,'rgba(0,0,0,0)');
+   306→   705→  g.fillStyle=gr;g.fillRect(0,0,s,s);return c;}
+   307→   706→
+   308→   707→const paperTile=(()=>{const s=512,c=mkCanvas(s,s),g=c.getContext('2d');
+   309→   708→  g.fillStyle=PAPER;g.fillRect(0,0,s,s);
+   310→   709→  for(let i=0;i<900;i++){const x=hash01(i*3.1)*s,y=hash01(i*7.7)*s,l=2+hash01(i*5.3)*9;
+   311→   710→    g.strokeStyle=`rgba(120,105,80,${.03+hash01(i)*.04})`;g.lineWidth=.8;
+   312→   711→    g.beginPath();g.moveTo(x,y);g.lineTo(x+(hash01(i*9)-.5)*l,y+(hash01(i*11)-.5)*l);g.stroke();}
+   313→   712→  for(let i=0;i<14;i++)inkBlob(g,hash01(i*31)*s,hash01(i*17)*s,10+hash01(i*7)*30,'rgba(150,135,105,0.035)',i);
+   314→   713→  return c;})();
+   315→   714→const SPLATS=[];
+   316→   715→for(let v=0;v<5;v++){const s=140,c=mkCanvas(s,s),g=c.getContext('2d');const seed=v*99;
+   317→   716→  for(let i=0;i<9;i++){const a=hash01(seed+i)*TAU,d=hash01(seed+i*3)*34,r=5+hash01(seed+i*7)*16;
+   318→   717→    inkBlob(g,70+Math.cos(a)*d,70+Math.sin(a)*d,r*(.5+hash01(seed+i*13)*.8),RED2,seed+i,.5);}
+   319→   718→  inkBlob(g,70,70,20+hash01(seed)*10,RED2,seed+40,.4);
+   320→   719→  SPLATS.push(c);}
+   321→   720→const glowRed=mkGlow('rgba(179,55,42,0.55)'),glowWhite=mkGlow('rgba(252,248,238,0.8)'),glowGold=mkGlow('rgba(200,160,60,0.5)');
+   322→   721→const GRAIN=[];
+   323→   722→for(let i=0;i<3;i++){const c=mkCanvas(256,256),g=c.getContext('2d');
+   324→   723→  const im=g.createImageData(256,256);
+   325→   724→  for(let p=0;p<im.data.length;p+=4){const v=Math.random()<.5?0:255;
+   326→   725→    im.data[p]=im.data[p+1]=im.data[p+2]=v;im.data[p+3]=Math.random()*46;}
+   327→   726→  g.putImageData(im,0,0);GRAIN.push(c);}
+   328→   727→const GRP=GRAIN.map(c=>ctx.createPattern(c,'repeat'));
+   329→   728→const MIST=[];
+   330→   729→for(let i=0;i<3;i++){const c=mkCanvas(400,200),g=c.getContext('2d');
+   331→   730→  const gr=g.createRadialGradient(200,100,10,200,100,190);
+   332→   731→  gr.addColorStop(0,'rgba(233,225,205,0.55)');gr.addColorStop(1,'rgba(233,225,205,0)');
+   333→   732→  g.fillStyle=gr;g.fillRect(0,0,400,200);MIST.push(c);}
+   334→   733→
+   335→   734→function enemySprite(type,flash){const S=type==='oni'||type==='kame'?128:(type==='mirror'?96:104);
+   336→   735→  const c=mkCanvas(S,S),g=c.getContext('2d');const m=S/2;const C=flash?'#fdfaf1':null;const col=h=>C||h;
+   337→   736→  g.save();g.translate(m,m);
+   338→   737→  if(type==='kappa'){const t='#2e4a3f';
+   339→   738→    inkBlob(g,0,6,26,col(t),1);inkBlob(g,0,-14,17,col('#233a30'),2);
+   340→   739→    g.fillStyle=col('#173026');g.beginPath();g.arc(0,-18,12,PI,0);g.fill();
+   341→   740→    g.fillStyle=col('#d8b56a');g.beginPath();g.moveTo(10,-8);g.lineTo(26,-4);g.lineTo(10,0);g.closePath();g.fill();
+   342→   741→    g.fillStyle=col(RED);g.beginPath();g.arc(6,-13,3,0,TAU);g.fill();
+   343→   742→    inkBlob(g,-16,10,8,col(t),3);inkBlob(g,16,10,8,col(t),4);
+   344→   743→  }else if(type==='oni'){const t='#33262b';
+   345→   744→    inkBlob(g,0,6,40,col(t),5,.3);inkBlob(g,0,-24,26,col('#3d2c30'),6);
+   346→   745→    g.fillStyle=col('#d8d2c2');g.beginPath();g.moveTo(-16,-40);g.lineTo(-22,-62);g.lineTo(-8,-44);g.closePath();g.fill();
+   347→   746→    g.beginPath();g.moveTo(16,-40);g.lineTo(22,-62);g.lineTo(8,-44);g.closePath();g.fill();
+   348→   747→    g.fillStyle=col(RED);g.beginPath();g.arc(-9,-27,4,0,TAU);g.arc(9,-27,4,0,TAU);g.fill();
+   349→   748→    g.strokeStyle=col(RED);g.lineWidth=7;g.lineCap='round';g.beginPath();g.moveTo(-30,34);g.lineTo(30,34);g.stroke();
+   350→   749→    brushLine(g,38,-10,52,40,9,col('#5a4636'));inkBlob(g,52,42,10,col('#4a3828'),7);
+   351→   750→    g.fillStyle=col('#efe9d8');g.beginPath();g.moveTo(-12,-16);g.lineTo(-16,-6);g.lineTo(-7,-13);g.closePath();g.fill();
+   352→   751→    g.beginPath();g.moveTo(12,-16);g.lineTo(16,-6);g.lineTo(7,-13);g.closePath();g.fill();
+   353→   752→  }else if(type==='tengu'){const t='#42333f';
+   354→   753→    g.fillStyle=col('#8b8494');g.beginPath();g.moveTo(-8,-18);g.lineTo(-42,-34);g.lineTo(-16,2);g.closePath();g.fill();
+   355→   754→    g.beginPath();g.moveTo(-8,-2);g.lineTo(-40,14);g.lineTo(-12,12);g.closePath();g.fill();
+   356→   755→    inkBlob(g,0,12,20,col(t),8);g.fillStyle=col(t);
+   357→   756→    g.beginPath();g.moveTo(-16,10);g.lineTo(-20,40);g.lineTo(-6,46);g.lineTo(0,14);g.closePath();g.fill();
+   358→   757→    g.beginPath();g.moveTo(16,10);g.lineTo(22,40);g.lineTo(6,46);g.lineTo(0,14);g.closePath();g.fill();
+   359→   758→    inkBlob(g,0,-20,15,col('#8c3030'),9);
+   360→   759→    g.fillStyle=col('#e8e2d0');g.beginPath();g.moveTo(2,-24);g.lineTo(24,-14);g.lineTo(2,-10);g.closePath();g.fill();
+   361→   760→    g.fillStyle=col(INK);g.beginPath();g.arc(-5,-24,2.6,0,TAU);g.fill();
+   362→   761→    g.fillStyle=col(GOLD);for(let i=-2;i<=2;i++)g.fillRect(-3,-38+i*3.4,6,1.4);
+   363→   762→  }else if(type==='wraith'){const t='#565364';
+   364→   763→    g.globalAlpha=.92;g.fillStyle=col(t);g.beginPath();g.moveTo(0,-34);
+   365→   764→    for(let i=0;i<=8;i++){const x=lerp(-20,20,i/8);g.lineTo(x,-10+Math.sin(i*2.4)*4);}
+   366→   765→    for(let i=8;i>=0;i--){const x=lerp(-20,20,i/8);g.lineTo(x,26+Math.sin(i*2.9+1)*10);}g.closePath();g.fill();
+   367→   766→    g.globalAlpha=1;g.fillStyle=col(INK);g.beginPath();g.arc(-7,-16,4.5,0,TAU);g.arc(7,-16,4.5,0,TAU);g.fill();
+   368→   767→    g.strokeStyle=col('#6c6a7c');g.lineWidth=3;g.beginPath();g.arc(0,-24,10,PI*.9,PI*2.1);g.stroke();
+   369→   768→  }else if(type==='kame'){const t='#37415c';
+   370→   769→    inkBlob(g,0,0,40,col(t),10,.28);inkBlob(g,0,0,30,col('#46527a'),11,.28);inkBlob(g,0,0,19,col(t),12,.3);
+   371→   770→    g.strokeStyle=col('#262e48');g.lineWidth=3;
+   372→   771→    for(let i=0;i<5;i++){g.beginPath();g.arc(0,0,35,i/5*TAU,(i/5+.42)*TAU);g.stroke();}
+   373→   772→    brushLine(g,26,0,66,-6,5,col('#8a7a5a'));inkBlob(g,66,-6,6,col('#a89a72'),13);
+   374→   773→    inkBlob(g,-24,24,9,col(t),14);inkBlob(g,24,24,9,col(t),15);
+   375→   774→  }else if(type==='broker'){
+   376→   775→    g.fillStyle=col('#8b8494');g.beginPath();g.moveTo(0,-30);g.lineTo(-16,-48);g.lineTo(16,-48);g.closePath();g.fill();
+   377→   776→    inkBlob(g,0,4,22,col('#d9cd9f'),16,.2);g.strokeStyle=col('#7a6f52');g.lineWidth=2.4;
+   378→   777→    for(let i=-2;i<=2;i++){g.beginPath();g.moveTo(0,-18);g.quadraticCurveTo(i*9,4,0,26);g.stroke();}
+   379→   778→    g.fillStyle=col(INK);g.beginPath();g.arc(5,-4,5,0,TAU);g.fill();
+   380→   779→    g.fillStyle=col(RED);g.beginPath();g.arc(6.6,-4,2.2,0,TAU);g.fill();
+   381→   780→    inkBlob(g,0,32,5,col('#8b8494'),17);
+   382→   781→  }else if(type==='hound'){const t='#3a3030';
+   383→   782→    inkBlob(g,0,4,25,col(t),18,.35);
+   384→   783→    g.strokeStyle=col(RED);g.lineWidth=4;g.lineCap='round';
+   385→   784→    for(let i=0;i<4;i++){g.beginPath();g.moveTo(-12+i*8,-16);g.lineTo(-14+i*8,-30-hash01(i)*8);g.stroke();}
+   386→   785→    inkBlob(g,26,-4,11,col(t),19,.4);g.fillStyle=col(RED);g.beginPath();g.arc(31,-7,2.6,0,TAU);g.fill();
+   387→   786→    g.fillStyle=col('#d8d2c2');g.beginPath();g.moveTo(34,-2);g.lineTo(42,2);g.lineTo(34,2);g.closePath();g.fill();
+   388→   787→    inkBlob(g,-22,10,7,col(t),20);inkBlob(g,-8,12,7,col(t),21);inkBlob(g,10,12,7,col(t),22);inkBlob(g,22,10,7,col(t),23);
+   389→   788→  }else if(type==='sorc'){const t='#2c2833';
+   390→   789→    g.fillStyle=col(t);g.beginPath();g.moveTo(0,-36);g.lineTo(30,34);g.lineTo(-30,34);g.closePath();g.fill();
+   391→   790→    inkBlob(g,0,-30,13,col('#221f2a'),24);
+   392→   791→    g.fillStyle=col('#e8e2d0');g.fillRect(-6,-33,12,2);g.fillRect(-6,-29,12,2);
+   393→   792→    inkBlob(g,-26,4,6,col(RED),25);inkBlob(g,26,4,6,col(RED),26);
+   394→   793→    g.strokeStyle=col('#1a1720');g.lineWidth=2;g.beginPath();g.arc(0,-30,16,0,TAU);g.stroke();
+   395→   794→  }else if(type==='mirror'){
+   396→   795→    inkBlob(g,0,2,19,col('#e8ecf0'),27,.15);g.fillStyle=col('#3a4048');
+   397→   796→    g.beginPath();g.moveTo(-14,-8);g.quadraticCurveTo(0,-38,14,-8);g.quadraticCurveTo(0,-20,-14,-8);g.fill();
+   398→   797→    g.fillStyle=col('#7fa3b8');g.beginPath();g.arc(-6,-6,2.8,0,TAU);g.arc(6,-6,2.8,0,TAU);g.fill();}
+   399→   798→  g.restore();return c;}
+   400→   799→const ESPR={};['kappa','oni','tengu','wraith','kame','broker','hound','sorc','mirror'].forEach(t=>{
+   401→
+   402→[showing lines 400-799 of 2016; use offset=800 with limit to continue reading]

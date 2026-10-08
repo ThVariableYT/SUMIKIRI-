@@ -235,16 +235,18 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="t-kanji"><span>墨</span><span>斬</span><span class="seal title-seal">印</span></div>
     <div class="t-side">
       <h1>SUMIKIRI</h1>
-      <div class="tag">a hack &amp; slash painted in ink · v2 「黒 edition」</div>
+      <div class="tag">a hack &amp; slash painted in ink · v3 「月 edition」</div>
       <nav class="menu">
         <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Road</button>
-        <button class="mbtn" id="btn-abyss"><span class="idx">二</span>The Abyss <small class="mono" id="ab-best" style="font-size:12px;color:var(--ink2)"></small></button>
-        <button class="mbtn" id="btn-gauntlet"><span class="idx">三</span>The Gauntlet <small class="mono" id="gt-best" style="font-size:12px;color:var(--ink2)"></small></button>
-        <button class="mbtn" data-go="records"><span class="idx">四</span>Records of Ink</button>
-        <button class="mbtn" data-go="shrine"><span class="idx">五</span>The Shrine</button>
-        <button class="mbtn" data-go="armory"><span class="idx">六</span>The Armory</button>
-        <button class="mbtn" data-go="help"><span class="idx">七</span>How to Hold a Blade</button>
-        <button class="mbtn" data-go="settings"><span class="idx">八</span>Settings</button>
+        <button class="mbtn" id="btn-abyss" data-go="abyss"><span class="idx">二</span>The Abyss <small class="mono" id="ab-best" style="font-size:12px;color:var(--ink2)"></small></button>
+        <button class="mbtn" id="btn-gauntlet" data-go="gauntlet"><span class="idx">三</span>The Gauntlet <small class="mono" id="gt-best" style="font-size:12px;color:var(--ink2)"></small></button>
+        <button class="mbtn" id="btn-meido" data-go="meido"><span class="idx">四</span>The Night Road <small class="mono" id="md-best" style="font-size:12px;color:var(--ink2)"></small></button>
+        <button class="mbtn" id="btn-meido-daily" data-go="meidoDaily"><span class="idx">五</span>Rite of the Day <small class="mono" id="md-daily" style="font-size:12px;color:var(--ink2)"></small></button>
+        <button class="mbtn" data-go="records"><span class="idx">六</span>Records of Ink</button>
+        <button class="mbtn" data-go="shrine"><span class="idx">七</span>The Shrine</button>
+        <button class="mbtn" data-go="armory"><span class="idx">八</span>The Armory</button>
+        <button class="mbtn" data-go="help"><span class="idx">九</span>How to Hold a Blade</button>
+        <button class="mbtn" data-go="settings"><span class="idx">十</span>Settings</button>
       </nav>
     </div>
   </div>
@@ -304,6 +306,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
           <div class="hrow"><b>Ash 灰</b><span>the dead leave it; the shrine takes it</span></div>
           <div class="hrow"><b>Style 位</b><span>fight beautifully — beauty pays in ash</span></div>
           <div class="hrow"><b>Duels 闘</b><span>named blades guard acts 2, 4 and 6</span></div>
+          <div class="hrow"><b>Night Road 冥</b><span>curse-hung marks, reshuffled every run</span></div>
         </div>
       </div>
       <div class="helpcol"><h4>BESTIARY — THE INKMEN</h4></div>
@@ -369,11 +372,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   <div class="death-line" style="font-size:19px;max-width:520px;line-height:1.8">The page is blank again.<br>It was never empty.</div>
   <div class="stat-line" id="victory-stats"></div>
   <div class="rec-note" id="victory-rec"></div>
-  <div class="btnrow">
-    <button class="mbtn" data-go="abyss"><span class="idx">一</span>Descend into the Abyss</button>
-    <button class="mbtn" data-go="gauntlet"><span class="idx">二</span>The Gauntlet 連</button>
-    <button class="mbtn" data-go="acts"><span class="idx">三</span>The Roads</button>
-  </div>
+  <div class="btnrow" id="victory-btns"></div>
 </div>
 
 <div class="screen" id="s-records">
@@ -381,7 +380,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="page-head"><h2>RECORDS OF INK 銘</h2><span class="sub">names carved by other hands</span></div>
     <div class="page-body">
       <div class="recs-tabs">
-        <button data-rec="abyss">ABYSS 無</button><button data-rec="gauntlet">GAUNTLET 連</button><button data-rec="story">STORY 終</button>
+        <button data-rec="abyss">ABYSS 無</button><button data-rec="meido">NIGHT 冥</button><button data-rec="gauntlet">GAUNTLET 連</button><button data-rec="story">STORY 終</button>
       </div>
       <div class="rec-list" id="rec-list"><div class="rec-empty">gathering the pages…</div></div>
       <div id="rec-own"></div>
@@ -457,7 +456,7 @@ const store={
 
 const SAVE_KEY='sumikiri_v1';
 const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0},
-  weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,
+  weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
   difficulty:1,shake:true,numbers:true,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
 let SAVE=defaultSave();
 (function(){
@@ -624,7 +623,7 @@ addEventListener('touchend',onTE,{passive:false});
 addEventListener('touchcancel',onTE,{passive:false});
 
 const cv=$('#cv'),ctx=cv.getContext('2d');
-let W=innerWidth,H=innerHeight,DPR=1,Z=1,vigC=null,gradeC=null,_vigHurt=null;
+let W=innerWidth,H=innerHeight,DPR=1,Z=1,vigC=null,gradeC=null,_vigHurt=null,fogC=null,gradeAct=-1;
 function checkOrient(){
   const el=$('#rotate');
   el.classList.toggle('on',IS_TOUCH&&innerHeight>innerWidth*1.05&&G.mode==='game'&&!rotateDismiss);}
@@ -635,6 +634,12 @@ function resize(){DPR=Math.min(IS_TOUCH?1.5:2,devicePixelRatio||1);W=innerWidth;
   const c=vigC.getContext('2d');
   const g=c.createRadialGradient(W/2,H/2,Math.min(W,H)*.38,W/2,H/2,Math.max(W,H)*.74);
   g.addColorStop(0,'rgba(43,36,26,0)');g.addColorStop(1,'rgba(43,36,26,0.34)');c.fillStyle=g;c.fillRect(0,0,W,H);
+  // the fog the night road wears when the Sea of Fog curse is hung
+  fogC=mkCanvas(W,H);
+  const fc=fogC.getContext('2d');
+  const fg2=fc.createRadialGradient(W/2,H/2,Math.min(W,H)*.16,W/2,H/2,Math.max(W,H)*.62);
+  fg2.addColorStop(0,'rgba(226,230,238,0)');fg2.addColorStop(.55,'rgba(200,208,222,0.16)');fg2.addColorStop(1,'rgba(58,66,88,0.52)');
+  fc.fillStyle=fg2;fc.fillRect(0,0,W,H);
   gradeC=null;_vigHurt=null;}
 addEventListener('resize',resize);
 const RW=1700,RH=1000,WALL=56;
@@ -648,7 +653,7 @@ const G={mode:'title',run:null,enemies:[],projs:[],parts:[],floats:[],slashes:[]
   codexQ:[],codexSeen:null,codexCur:null,codexT:0,zpC:0,codexArm:0};
 let P=null;
 const bl=id=>G.run?(G.run.blessings[id]||0):0;
-const curAct=()=>G.run?(G.run.abyss?Math.min(7,1+Math.floor(G.run.wave/4)):(G.run.gauntlet?7:G.run.act)):1;
+const curAct=()=>G.run?(G.run.meido?9:(G.run.abyss?Math.min(7,1+Math.floor(G.run.wave/4)):(G.run.gauntlet?7:G.run.act))):1;
 resize();
 
 const WEAPONS={
@@ -720,6 +725,31 @@ const BOSSES={
   hollow:{name:'The Hollow Daimyō',kanji:'灰',hp:1280,r:38,spd:92,touch:10,moves:['charge','volley','bolts','summon','nova','chainDash'],summon:'wraith'},
   kami:{name:'The Nameless Kami',kanji:'空',hp:1580,r:32,spd:100,touch:9,phased:true,moves:['rain','spiralBurst','summon','blinkVolley'],moves2:['mirrorDash','wave','clones','volley'],summon:'kappa'}};
 const GAUNTLET=['uzu','goroki','zangetsu','orochi','jin','sojobo','yuki','raijin','hollow','kami'];
+
+// ---- the night road 冥 ------------------------------------------------------
+// a seeded roguelite: every mark reshuffles the foes, hangs a fresh curse on
+// the dark, and deals a new hand of inkmarks. one seed, one night — the rite
+// of the day hands everyone the same night.
+function mulberry(seed){let a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;
+  let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const MEIDO_LEN=9;
+const CURSES=[
+  {id:'horde',k:'集',n:'Crowded Dark',d:'+3 foes in every fight'},
+  {id:'armored',k:'護',n:'Hide of Iron',d:'foes carry 40% more flesh'},
+  {id:'frenzy',k:'激',n:'Frenzied',d:'foes move a quarter faster'},
+  {id:'swift',k:'迅',n:'Quickened Steel',d:'foes wind up 20% sooner'},
+  {id:'peril',k:'危',n:'Red Ledger',d:'unblockable strikes come twice as often'},
+  {id:'mist',k:'霧',n:'Sea of Fog',d:'the night hides its knives'},
+  {id:'storm',k:'雷',n:'Walking Storm',d:'lightning hunts the field'},
+  {id:'gale',k:'風',n:'Crosswind',d:'the gale drags every step'},
+  {id:'bones',k:'骸',n:'Bones Only',d:'fewer foes, all of them elite'}];
+const BOONS=[
+  {id:'grace',k:'慈',n:'Charity',d:'ash drops doubled this night'},
+  {id:'vigor',k:'癒',n:'Warmth',d:'+25 hp at each mark'},
+  {id:'bounty',k:'恵',n:'Plenty',d:'health orbs come twice as often'},
+  {id:'still',k:'静',n:'Still Air',d:'wounded foes recover slower'}];
+const mdMut=()=>(G.run&&G.run.meido&&G.run.mut)?G.run.mut:null;
+const mdHas=id=>{const m=mdMut();return !!(m&&m.cs.some(c=>c.id===id));};
 
 const ACTS=[
 {name:'The Rice Fields at Dusk',kanji:'一',intro:['Rice fields drink the sun.','A blade wakes in black ink.','The crows have noticed.'],stages:[
@@ -965,6 +995,18 @@ for(let i=0;i<3;i++){const c=mkCanvas(400,200),g=c.getContext('2d');
     gr.addColorStop(0,'rgba(226,218,198,0.5)');gr.addColorStop(1,'rgba(226,218,198,0)');
     g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,TAU);g.fill();}
   MIST.push(c);}
+
+// light shafts: pre-baked slanted rays that drift over the dawn acts.
+// drawn additively at low alpha, they cost three blits a frame.
+const RAYS=[];
+for(let i=0;i<3;i++){const c=mkCanvas(420,640),g=c.getContext('2d');
+  g.translate(0,0);
+  for(let j=0;j<6;j++){const x=40+j*62+((j%2)*22),w=rnd(16,46);
+    const gr=g.createLinearGradient(x,0,x+w,640);
+    gr.addColorStop(0,'rgba(246,240,222,0)');gr.addColorStop(.5,'rgba(246,240,222,0.55)');gr.addColorStop(1,'rgba(246,240,222,0)');
+    g.fillStyle=gr;
+    g.beginPath();g.moveTo(x,0);g.lineTo(x+w,0);g.lineTo(x+w+130,640);g.lineTo(x+130,640);g.closePath();g.fill();}
+  RAYS.push(c);}
 
 const GRP=[];
 for(let i=0;i<3;i++){const S=256,c=mkCanvas(S,S),g=c.getContext('2d');
@@ -1467,12 +1509,15 @@ const GRADE={
   5:{tint:'rgba(88,64,110,0.12)',lx:.5,ly:.6,shadow:'rgba(24,18,40,0.3)',vig:.46,amb:'storm'},
   6:{tint:'rgba(110,100,90,0.12)',lx:.8,ly:.4,shadow:'rgba(40,36,30,0.3)',vig:.44,amb:'ash'},
   7:{tint:'rgba(251,247,236,0.14)',lx:0,ly:0,shadow:'rgba(60,60,70,0.12)',vig:.2,amb:'blank'},
-  8:{tint:'rgba(140,43,31,0.09)',lx:0,ly:.7,shadow:'rgba(60,16,10,0.3)',vig:.5,amb:'abyss'}};
+  8:{tint:'rgba(140,43,31,0.09)',lx:0,ly:.7,shadow:'rgba(60,16,10,0.3)',vig:.5,amb:'abyss'},
+  9:{tint:'rgba(44,58,94,0.15)',lx:.22,ly:.28,shadow:'rgba(10,14,26,0.4)',vig:.5,amb:'moon'}};
 const gradeOf=()=>GRADE[curAct()]||GRADE[1];
 function gradeLayer(){
-  if(!gradeC||gradeC.width!==W||gradeC.height!==H){
+  const act=curAct();
+  if(!gradeC||gradeC.width!==W||gradeC.height!==H||gradeAct!==act){
+    gradeAct=act;
     gradeC=mkCanvas(W,H);const g=gradeC.getContext('2d');
-    const gr=gradeOf();
+    const gr=GRADE[act]||GRADE[1];
     const c=g.createRadialGradient(W*.5,H*.42,Math.min(W,H)*.3,W*.5,H*.5,Math.max(W,H)*.72);
     c.addColorStop(0,'rgba(20,16,12,0)');c.addColorStop(1,`rgba(20,16,12,${gr.vig})`);
     g.fillStyle=c;g.fillRect(0,0,W,H);
@@ -1483,7 +1528,19 @@ function gradeLayer(){
     const lx=clamp(gr.lx,0,1)*W,ly=clamp(gr.ly,0,1)*H*.8;
     const k=g.createRadialGradient(lx,ly,0,lx,ly,Math.max(W,H)*.55);
     k.addColorStop(0,gr.tint.replace(/[\d.]+\)$/,'0.10)'));k.addColorStop(1,'rgba(0,0,0,0)');
-    g.fillStyle=k;g.fillRect(0,0,W,H);}
+    g.fillStyle=k;g.fillRect(0,0,W,H);
+    // the sky keeps a body: dusk burns a sun over act one, the moon minds the night road
+    if(act===1){const sx=W*.8,sy=H*.18,r=Math.min(W,H)*.15;
+      const s=g.createRadialGradient(sx,sy,0,sx,sy,r*2.8);
+      s.addColorStop(0,'rgba(198,86,44,0.26)');s.addColorStop(.4,'rgba(198,86,44,0.12)');s.addColorStop(1,'rgba(198,86,44,0)');
+      g.fillStyle=s;g.fillRect(0,0,W,H);
+      g.fillStyle='rgba(212,112,54,0.20)';g.beginPath();g.arc(sx,sy,r,0,TAU);g.fill();}
+    else if(act===9){const mx=W*.2,my=H*.14,r=Math.min(W,H)*.075;
+      const m=g.createRadialGradient(mx,my,0,mx,my,r*3.4);
+      m.addColorStop(0,'rgba(224,228,238,0.22)');m.addColorStop(.45,'rgba(224,228,238,0.08)');m.addColorStop(1,'rgba(224,228,238,0)');
+      g.fillStyle=m;g.fillRect(0,0,W,H);
+      g.fillStyle='rgba(238,240,244,0.2)';g.beginPath();g.arc(mx,my,r,0,TAU);g.fill();
+      g.fillStyle='rgba(44,58,94,0.14)';g.beginPath();g.arc(mx+r*.45,my-r*.3,r*.24,0,TAU);g.fill();}}
   return gradeC;}
 
 function buildFloor(act){const c=mkCanvas(RW,RH),g=c.getContext('2d');
@@ -1494,6 +1551,16 @@ function buildFloor(act){const c=mkCanvas(RW,RH),g=c.getContext('2d');
   if(act===4){g.fillStyle='rgba(222,232,244,0.30)';g.fillRect(0,0,RW,RH);}
   if(act===6){g.fillStyle='rgba(112,104,94,0.15)';g.fillRect(0,0,RW,RH);}
   if(act===7){g.fillStyle='rgba(251,247,236,0.65)';g.fillRect(0,0,RW,RH);}
+  if(act===9){ // the night road: indigo wash, a moon, a pond that keeps it
+    g.fillStyle='rgba(30,38,58,0.38)';g.fillRect(0,0,RW,RH);
+    const mx=RW*.16,my=RH*.12;
+    const mg=g.createRadialGradient(mx,my,0,mx,my,200);
+    mg.addColorStop(0,'rgba(228,232,240,0.30)');mg.addColorStop(1,'rgba(228,232,240,0)');
+    g.fillStyle=mg;g.fillRect(0,0,RW,RH);
+    g.fillStyle='rgba(236,238,242,0.20)';g.beginPath();g.arc(mx,my,56,0,TAU);g.fill();
+    inkBlob(g,RW*.62,RH*.8,150,'rgba(36,48,76,0.38)',seed+3,.3);
+    g.strokeStyle='rgba(160,176,204,0.16)';g.lineWidth=2;
+    for(let i=0;i<4;i++){g.beginPath();g.ellipse(RW*.62,RH*.8-i*16,120-i*14,26-i*4,0,0,TAU);g.stroke();}}
   if(G.run&&G.run.abyss){g.fillStyle='rgba(46,24,20,0.34)';g.fillRect(0,0,RW,RH);}
   for(let i=0;i<30;i++){const x=hash01(seed+i*3)*RW,y=hash01(seed+i*7)*RH;
     if(act===1){
@@ -1530,6 +1597,11 @@ function buildFloor(act){const c=mkCanvas(RW,RH),g=c.getContext('2d');
       g.beginPath();g.moveTo(x,y);g.lineTo(x+rnd(-26,26),y-rnd(6,18));g.stroke();
     }else if(act===7){
       g.strokeStyle='rgba(70,70,84,0.1)';g.lineWidth=1;g.strokeRect(x-14,y-20,28,40);
+    }else if(act===9){
+      g.strokeStyle='rgba(52,64,90,0.5)';g.lineWidth=2;g.lineCap='round';
+      g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+4,y-14,x+rnd(-6,6),y-rnd(16,30));g.stroke();
+      g.fillStyle='rgba(150,166,196,0.35)';
+      g.beginPath();g.arc(x+rnd(-8,8),y-rnd(8,24),rnd(1,2.2),0,TAU);g.fill();
     }else{
       g.strokeStyle='rgba(150,60,40,0.3)';g.lineWidth=2;
       g.beginPath();g.moveTo(x,y);g.lineTo(x+rnd(-20,20),y-rnd(8,20));g.stroke();}}
@@ -1555,23 +1627,25 @@ function buildFloor(act){const c=mkCanvas(RW,RH),g=c.getContext('2d');
     g.fillStyle='#333';g.fillText('空',RW/2,RH/2);g.restore();}
   if(G.run&&G.run.abyss){g.save();g.globalAlpha=.08;g.font='800 300px "Shippori Mincho"';g.textAlign='center';g.textBaseline='middle';
     g.fillStyle=RED2;g.fillText('無',RW/2,RH/2);g.restore();}
+  if(G.run&&G.run.meido){g.save();g.globalAlpha=.09;g.font='800 300px "Shippori Mincho"';g.textAlign='center';g.textBaseline='middle';
+    g.fillStyle='#2c3550';g.fillText('冥',RW/2,RH/2);g.restore();}
   G.floorC=c;}
 
 // live props that sway in the wind — grass, reeds, bamboo, embers' stalks.
 // generated deterministically per act so the field doesn't reshuffle on redraw.
 function buildProps(act){
   const pr=[];
-  const n=act===7?26:(act===4?36:88);
+  const n=act===7?26:(act===4?36:(act===9?42:88));
   for(let i=0;i<n;i++){
     const x=WALL+40+hash01(act*99+i*1.7)*(RW-WALL*2-80);
     const y=WALL+40+hash01(act*131+i*2.3)*(RH-WALL*2-80);
     if(dist(x,y,RW/2,RH*.68)<120)continue; // keep the spawn point clean
     const kind=act===1?'stalk':act===2?'reed':act===3?'bamboo':act===4?'snow':
-      act===5?'pine':act===6?'burnt':act===7?'speck':'ember';
+      act===5?'pine':act===6?'burnt':act===7?'speck':act===9?'wisp':'ember';
     pr.push({x,y,ph:hash01(i*7.3)*TAU,h:kind==='bamboo'?rnd(80,140):rnd(18,44),kind});}
   G.props=pr;
   G.fireflies=[];
-  if(act===3||act===1||act===8){
+  if(act===3||act===1||act===8||act===9){
     for(let i=0;i<7;i++)G.fireflies.push({x:rnd(WALL,RW-WALL),y:rnd(WALL,RH-WALL),ph:rnd(TAU),sp:rnd(.4,1)});}}
 function drawProps(){
   const w=G.wind;
@@ -1616,6 +1690,15 @@ function drawProps(){
     else if(k==='speck'){
       ctx.fillStyle='rgba(60,60,70,0.25)';
       ctx.beginPath();ctx.arc(0,-p.h*.5+Math.sin(G.windT+p.ph)*4,2.2,0,TAU);ctx.fill();}
+    else if(k==='wisp'){ // night road: pale spirit-flames that swim in place
+      const fl=Math.sin(G.t*1.4+p.ph)*.5+.5;
+      ctx.globalAlpha=.5;
+      ctx.drawImage(glowBlue,-14,-p.h-14+Math.sin(G.t*.9+p.ph)*5,28,28);
+      ctx.globalAlpha=1;
+      ctx.fillStyle=`rgba(196,208,230,${.5+.4*fl})`;
+      ctx.beginPath();ctx.ellipse(0,-p.h+Math.sin(G.t*.9+p.ph)*5,2.4+fl,4.5+fl*2.4,0,0,TAU);ctx.fill();
+      ctx.strokeStyle='rgba(120,140,180,0.4)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(0,2);ctx.quadraticCurveTo(sway*4,-p.h*.4,0,-p.h+Math.sin(G.t*.9+p.ph)*5);ctx.stroke();}
     else{ // ember stalks in the abyss
       ctx.strokeStyle='rgba(70,30,24,0.7)';ctx.lineWidth=2;
       ctx.beginPath();ctx.moveTo(0,4);ctx.quadraticCurveTo(sway*5,-p.h*.5,sway*10,-p.h);ctx.stroke();
@@ -1722,7 +1805,7 @@ function teleHitPlayer(t){
 function newPlayer(){return{x:RW/2,y:RH*.68,vx:0,vy:0,r:13,hp:100,maxhp:100,facing:0,weapon:SAVE.lastWeapon,
   comboIdx:0,comboT:0,swing:null,bufT:0,dashT:0,dashDir:0,dashCharges:2,dashRe:0,wbArm:false,
   ki:0,parryT:0,parryCd:0,invuln:0,dead:false,deadT:0,mantle:0,veng:false,artT:0,swapT:0,walk:0,
-  pdodT:0,dmgBuffT:0,ownedWeapons:[],st:{}};}
+  pdodT:0,dmgBuffT:0,ownedWeapons:[],st:{},clx:0,cly:0,_stepF:0};}
 function recalc(){if(!P)return;const m=SAVE.meta;
   P.st.dmg=(1+m.str*.06)*(1+bl('vermilion')*.2);
   P.st.spd=258*(1+m.spd*.04)*(1+bl('swift')*.12);
@@ -1784,6 +1867,7 @@ function deathblow(e){slowmo(.5,.18);G.flash=.5;G.flashCol='#f6f1e2';AU.stamp();
   addFloat(e.x,e.y-34,'DEATHBLOW',RED,16);
   G.fx.push({kind:'kanji',txt:'死',x:e.x,y:e.y,t:0,dur:.7});
   addRing(e.x,e.y,84,RED2);addRing(e.x,e.y,54,GOLD);
+  G.fx.push({kind:'impact',x:e.x,y:e.y,t:0,dur:.26});
   inkBurst(e.x,e.y,34,INK,1.6);inkBurst(e.x,e.y,10,RED2,1.1);
   trauma(.55);splat(e.x,e.y,false);
   P.ki=Math.min(100,P.ki+8);
@@ -1795,6 +1879,7 @@ function parrySuccess(src){P.parryT=0;P.parryCd=.18;slowmo(.3,.25);hitstop(.09);
   if(bl('thunder')){shockRing(P.x,P.y,18*P.st.dmg,380,170);
     addFloat(P.x,P.y-44,'雷',GOLD2,18);}
   G.fx.push({kind:'spark',x:P.x,y:P.y,t:0,dur:.32});
+  G.fx.push({kind:'impact',x:P.x,y:P.y,t:0,dur:.2});
   G.fx.push({kind:'pring',x:P.x,y:P.y,t:0,dur:.4});
   addRing(P.x,P.y,52,GOLD);
   if(src&&!src.dead&&src.posture!==undefined){
@@ -1844,20 +1929,31 @@ function killPlayer(){P.dead=true;P.deadT=0;slowmo(1.6,.18);AU.kill();AU.sting(.
 
 // ---- enemies ------------------------------------------------------------------
 
-function spawnEnemy(type,x,y,elite){const d=ENEMY[type];const act=curAct();
-  const hsc=(1+.3*(act-1))*DIFFI().hp,dsc=(1+.18*(act-1))*DIFFI().dmg;
+function spawnEnemy(type,x,y,elite){const md=G.run&&G.run.meido;let d=ENEMY[type];const act=curAct();
+  // the night road hands each stranger a private def, tinted by whatever
+  // curse hangs over this mark — the shared tables stay untouched
+  if(md){d=Object.assign({},d);
+    if(mdHas('peril'))d.peril=Math.min(.8,(d.peril||0)*2);
+    if(mdHas('still'))d.rec=(d.rec||1)*1.2;}
+  const hsc=md?(1+(G.run.milestone-1)*.09)*DIFFI().hp:(1+.3*(act-1))*DIFFI().hp;
+  const dsc=md?(1+(G.run.milestone-1)*.05)*DIFFI().dmg:(1+.18*(act-1))*DIFFI().dmg;
   const e={type,def:d,x,y,vx:0,vy:0,kx:0,ky:0,r:d.r*(elite?1.2:1),facing:rnd(TAU),state:'seek',t:0,cd:rnd(.3,1),flash:0,stun:0,elite,
-    hp:d.hp*hsc*(elite?2.4:1)*(G.run.abyss?1+G.run.wave*.03:1),maxhp:0,spd:d.spd*DIFFI().spd*(elite?1.12:1),dmg:d.dmg*dsc*(elite?1.25:1),
+    hp:d.hp*hsc*(elite?2.4:1)*(md&&mdHas('armored')?1.4:1)*(G.run.abyss?1+G.run.wave*.03:1),maxhp:0,spd:d.spd*DIFFI().spd*(elite?1.12:1)*(md&&mdHas('frenzy')?1.25:1),dmg:d.dmg*dsc*(elite?1.25:1),
     bob:rnd(TAU),rotS:0,rotT:0,rotAcc:0,life:0,fireT:0,aim:0,chan:0,tpCd:0,side:0,healing:null,atkDone:false,dead:false,
-    wMul:DIFFI().wind,peril:false,chainLeft:0,chainN:0,posture:0,pLastHit:0,postureMax:0,broken:false,brokenT:0,
-    riposte:false,desperate:false,evCd:0};
+    wMul:DIFFI().wind*(md&&mdHas('swift')?.8:1),peril:false,chainLeft:0,chainN:0,posture:0,pLastHit:0,postureMax:0,broken:false,brokenT:0,
+    riposte:false,desperate:false,evCd:0,hitT:0,hitAng:0,deadT:0};
   e.maxhp=e.hp;
   e.postureMax=(28+e.hp*.35)*(elite?1.5:1);
   G.enemies.push(e);inkBurst(x,y,10,INK,.8);return e;}
 function damageEnemy(e,dmg,opts={}){if(e.dead)return;dmg=Math.max(1,Math.round(dmg));
-  e.hp-=dmg;e.flash=.09;
-  if(opts.crit){addFloat(e.x,e.y-10,dmg+'!',RED,17);AU.crit();addRing(e.x,e.y,26,RED);}
+  e.hp-=dmg;e.flash=.09;e.hitT=.18;e.hitAng=opts.ang||0;
+  if(opts.crit){G.fx.push({kind:'impact',x:e.x,y:e.y,t:0,dur:.14});
+    addFloat(e.x,e.y-10,dmg+'!',RED,17);AU.crit();addRing(e.x,e.y,26,RED);}
   else addFloat(e.x,e.y-10,dmg,INK,12);
+  if(e.hp>0&&e.hp<e.maxhp*.34&&G.dctx&&Math.random()<.5){ // the badly hurt leak onto the page
+    G.dctx.globalAlpha=.16;G.dctx.fillStyle=INK;
+    G.dctx.beginPath();G.dctx.arc(e.x+rnd(-10,10),e.y+rnd(-6,12),rnd(2,5),0,TAU);G.dctx.fill();
+    G.dctx.globalAlpha=1;}
   if(!e.boss){e.kx+=(opts.knock||100)*Math.cos(opts.ang||0)/e.r*3;e.ky+=(opts.knock||100)*Math.sin(opts.ang||0)/e.r*3;}
   inkBurst(e.x,e.y,opts.crit?10:5,INK,.8);AU.hit();
   if(e.type==='sorc'&&e.state==='channel')e.chan+=.4;
@@ -1865,12 +1961,13 @@ function damageEnemy(e,dmg,opts={}){if(e.dead)return;dmg=Math.max(1,Math.round(d
     e.posture=Math.min(e.postureMax,e.posture+opts.posture);e.pLastHit=1.4;
     if(e.posture>=e.postureMax&&!e.broken)breakEnemy(e);}
   if(e.hp<=0)killEnemy(e);}
-function killEnemy(e){if(e.dead)return;e.dead=true;
+function killEnemy(e){if(e.dead)return;e.dead=true;e.deadT=0;
   splat(e.x,e.y,e.boss||e.elite);inkBurst(e.x,e.y,e.boss?60:16,INK,e.boss?2:1);
-  const ash=Math.round((e.def.ash||0)*(1+(G.run.abyss?G.run.wave*.05:G.run.gauntlet?1+G.gauntIdx*.15:G.run.act*.25))*(1+G.style.rank*.25)*(1+SAVE.meta.fortune*.1)*(e.elite?3:1));
+  for(let i=0;i<3;i++)addPart({x:e.x+rnd(-8,8),y:e.y-6,vx:rnd(-14,14),vy:rnd(-90,-40),life:rnd(.6,1),max:1,size:rnd(1.6,3),color:'rgba(74,68,60,0.8)',grav:-40,drag:.96});
+  const ash=Math.round((e.def.ash||0)*(1+(G.run.abyss?G.run.wave*.05:G.run.gauntlet?1+G.gauntIdx*.15:G.run.meido?1+G.run.milestone*.18:G.run.act*.25))*(1+G.style.rank*.25)*(1+SAVE.meta.fortune*.1)*(e.elite?3:1)*(mdHas('grace')?2:1));
   if(ash>0){const drops=Math.min(6,2+Math.ceil(ash/6));
     for(let i=0;i<drops;i++)G.pickups.push({kind:'ash',x:e.x+rnd(-14,14),y:e.y+rnd(-14,14),vx:rnd(-40,40),vy:rnd(-60,-20),val:Math.ceil(ash/drops),t:0});}
-  if(Math.random()<(e.type==='broker'?1:.08))G.pickups.push({kind:'orb',x:e.x,y:e.y,vx:rnd(-30,30),vy:rnd(-40,0),t:0});
+  if(Math.random()<(e.type==='broker'?1:(.08*(mdHas('bounty')?2.2:1))))G.pickups.push({kind:'orb',x:e.x,y:e.y,vx:rnd(-30,30),vy:rnd(-40,0),t:0});
   if(bl('burst')){for(const o of G.enemies)if(!o.dead&&o!==e&&dist(o.x,o.y,e.x,e.y)<115)damageEnemy(o,20*P.st.dmg,{ang:angTo(e.x,e.y,o.x,o.y),knock:60,posture:4});
     inkBurst(e.x,e.y,20,RED2,1.2);}
   if(bl('drums'))P.dashRe=Math.max(0,P.dashRe-.4);
@@ -1890,6 +1987,7 @@ function houndBoom(e){e.dead=true;splat(e.x,e.y,false);inkBurst(e.x,e.y,26,RED2,
   if(dist(e.x,e.y,P.x,P.y)<95+P.r)damagePlayer(e.dmg*1.6,e);}
 
 function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.flash-=dt;
+  if(e.hitT>0)e.hitT-=dt;
   if(e.pLastHit>0)e.pLastHit-=dt;
   if(e.posture>0&&!e.broken&&e.pLastHit<=0)e.posture=Math.max(0,e.posture-dt*7);
   if(e.evCd>0)e.evCd-=dt;
@@ -2143,6 +2241,7 @@ wave:{start(b){b.mt=0;b.sub=0;},
   if(b.mt>1.4)bossEnd(b);}}};
 
 function updateBoss(b,dt){b.t+=dt;b.bob+=dt*2;if(b.flash>0)b.flash-=dt;b.touchCd-=dt;
+  if(b.hitT>0)b.hitT-=dt;
   if(b.pLastHit>0)b.pLastHit-=dt;
   if(b.posture>0&&!b.broken&&b.pLastHit<=0)b.posture=Math.max(0,b.posture-dt*9);
   if(b.broken){b.brokenT-=dt;b.vx*=Math.exp(-4*dt);b.vy*=Math.exp(-4*dt);
@@ -2171,7 +2270,10 @@ function updateBoss(b,dt){b.t+=dt;b.bob+=dt*2;if(b.flash>0)b.flash-=dt;b.touchCd
       const a=angTo(b.x,b.y,P.x,P.y);P.vx+=Math.cos(a)*300;P.vy+=Math.sin(a)*300;}}}
 function spawnBoss(id){const d=BOSSES[id];const act=curAct();
   const duel=!!d.duel;
-  const hs=duel?DIFFI().hp:(1+.22*(act-1))*(G.run.abyss?1+G.run.wave*.04:1)*(G.run.gauntlet?1+G.gauntIdx*.07:1)*DIFFI().hp;
+  const md=G.run&&G.run.meido;
+  const hs=duel?DIFFI().hp*(md?1+(G.run.milestone-1)*.05:1):
+    (md?(1+(G.run.milestone-1)*.13)*DIFFI().hp:
+    (1+.22*(act-1))*(G.run.abyss?1+G.run.wave*.04:1)*(G.run.gauntlet?1+G.gauntIdx*.07:1)*DIFFI().hp);
   const introT=duel?1.3:2.4;
   const b={boss:true,id,def:d,def0:d,name:d.name,x:RW/2,y:RH*.3,vx:0,vy:0,r:d.r,
     hp:d.hp*hs,maxhp:d.hp*hs,spd:d.spd*DIFFI().spd,dmgS:(1+.18*(act-1))*DIFFI().dmg,
@@ -2319,7 +2421,13 @@ function renderTitleStats(){const s=SAVE.stats;
   if(ab){ab.disabled=!SAVE.abyssUnlocked;
     $('#ab-best').textContent=SAVE.abyssUnlocked?(SAVE.abyssBest?'· best wave '+SAVE.abyssBest:''):'· sealed';}
   if(gt){gt.disabled=!SAVE.gauntletUnlocked;
-    $('#gt-best').textContent=SAVE.gauntletUnlocked?(SAVE.gauntletBest?'· best '+fmtT(SAVE.gauntletBest):''):'· finish the story';}}
+    $('#gt-best').textContent=SAVE.gauntletUnlocked?(SAVE.gauntletBest?'· best '+fmtT(SAVE.gauntletBest):''):'· finish the story';}
+  const md=$('#btn-meido'),mdd=$('#btn-meido-daily');
+  if(md){md.disabled=!SAVE.abyssUnlocked;
+    $('#md-best').textContent=SAVE.abyssUnlocked?(SAVE.meidoBest?'· deepest mark '+SAVE.meidoBest:''):'· reach act 3';}
+  if(mdd){mdd.disabled=!SAVE.abyssUnlocked;
+    const d=new Date();
+    $('#md-daily').textContent=SAVE.abyssUnlocked?('· seed '+(d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate())):'· sealed';}}
 function renderShrine(){const ashEl=$('#ash-shrine');if(ashEl)ashEl.textContent=SAVE.ash;
   const list=$('#shrine-list');if(!list)return;list.innerHTML='';
   SHRINE.forEach(s=>{const l=SAVE.meta[s.id];const row=document.createElement('div');row.className='row';
@@ -2358,6 +2466,9 @@ function renderActs(){const strip=$('#act-strip');if(!strip)return;strip.innerHT
   if(SAVE.abyssUnlocked)nodes.push({kan:'無',name:'The Abyss',tag:'endless · bosses every 6th',best:SAVE.abyssBest?'best wave '+SAVE.abyssBest:'',fn:()=>startRun(1,true)});
   if(SAVE.gauntletUnlocked)nodes.push({kan:'連',name:'The Gauntlet',tag:'ten duels, one page',best:SAVE.gauntletBest?'best '+fmtT(SAVE.gauntletBest):'',fn:()=>startGauntlet()});
   else nodes.push({kan:'連',name:'The Gauntlet',tag:'finish the story first',best:'',fn:null,lock:'封'});
+  if(SAVE.abyssUnlocked){
+    nodes.push({kan:'冥',name:'The Night Road',tag:'nine marks · reshuffled every run',best:SAVE.meidoBest?'deepest mark '+SAVE.meidoBest:'',fn:()=>startMeido(false)});
+    nodes.push({kan:'日',name:'Rite of the Day',tag:'one seed, shared by every blade',best:'',fn:()=>startMeido(true)});}
   for(const n of nodes){const d=document.createElement('div');
     d.className='act-node side-node'+(n.fn?'':' locked');
     d.innerHTML=`<div class="a-kan">${n.kan}</div><div class="a-name">${n.name}</div><div class="a-tag">${n.tag}</div>`+
@@ -2380,7 +2491,45 @@ function startGauntlet(){G.run={act:7,stage:1,blessings:{},ashEarned:0,kills:0,t
   P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;
   for(let i=0;i<SAVE.meta.discipline;i++)grantBlessing(choice(BLESS),true);
   G.gauntIdx=0;startStage();}
+// the night road: nine marks, a seeded dark, and no two nights alike
+function startMeido(daily){
+  const now=new Date();
+  const seed=daily?((now.getFullYear()*10000+(now.getMonth()+1)*100+now.getDate())>>>0):
+    ((Date.now()^(Math.random()*4294967295))>>>0);
+  G.run={act:9,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,
+    meido:true,daily:!!daily,seed,rng:mulberry(seed),milestone:1,mut:null,lastC:'',gauntlet:false,abyss:false,wave:1,bossDead:null};
+  G.codexSeen=new Set();G.codexQ.length=0;G.codexCur=null;
+  P=newPlayer();P.ownedWeapons=WKEYS.filter(w=>SAVE.weapons[w]);
+  if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon='katana';
+  P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;
+  for(let i=0;i<SAVE.meta.discipline;i++)grantBlessing(choice(BLESS),true);
+  startStage();}
+// every mark hangs fresh curses (two, past the gate) and sometimes a boon
+function meidoPickMut(){
+  const r=G.run.rng,m=G.run.milestone;
+  const pool=CURSES.filter(c=>c.id!==G.run.lastC);
+  const n=m>MEIDO_LEN?2:1;
+  const cs=[];
+  while(cs.length<n){const c=pool[(r()*pool.length)|0];
+    if(!cs.includes(c))cs.push(c);}
+  G.run.lastC=cs[cs.length-1].id;
+  const b=((m%3===1)||m>MEIDO_LEN)?BOONS[(r()*BOONS.length)|0]:null;
+  return{cs,b};}
+// the night's cast: drawn from the whole bestiary, weighted by how deep it is
+function meidoWaves(){
+  const run=G.run,m=run.milestone,r=run.rng;
+  const pool=['kappa','tengu','wraith','hound'];
+  if(m>=3)pool.push('oni','kame','archer');
+  if(m>=5)pool.push('ronin');
+  if(m>=6)pool.push('broker','sorc','mirror');
+  let cnt=Math.min(13,4+Math.floor(m*.8));
+  if(mdHas('horde'))cnt+=3;
+  if(mdHas('bones'))cnt=Math.max(3,Math.ceil(cnt/2.5));
+  const ec=mdHas('bones')?1:m*.07;
+  const mk=n=>{const a=[];for(let i=0;i<n;i++)a.push({t:pool[(r()*pool.length)|0],e:r()<ec});return a;};
+  return[mk(Math.ceil(cnt*.6)),mk(Math.max(2,Math.floor(cnt*.4)))];}
 function currentStageDef(){if(G.run.gauntlet)return{n:'Duel '+(G.gauntIdx+1)+' of '+GAUNTLET.length,w:null};
+  if(G.run.meido)return{n:G.run.milestone===5?'The Fifth Mark — a duel':(G.run.milestone===MEIDO_LEN?'The Gate':'Mark '+G.run.milestone),w:null};
   if(G.run.abyss)return{n:'Wave '+G.run.wave,w:null};
   return ACTS[G.run.act-1].stages[G.run.stage-1];}
 function startStage(){const run=G.run;
@@ -2394,6 +2543,17 @@ function startStage(){const run=G.run;
   G.cam.x=P.x;G.cam.y=P.y;HUD.hpGhost=P.hp;
   const sd=currentStageDef();
   if(run.gauntlet){spawnBoss(GAUNTLET[G.gauntIdx]);G.introT=1.4;}
+  else if(run.meido){
+    run.mut=meidoPickMut();
+    const m=run.milestone;
+    if(m===5){const ids=['uzu','zangetsu','jin'];spawnBoss(ids[(run.rng()*ids.length)|0]);G.introT=1.6;}
+    else if(m===MEIDO_LEN||(m>MEIDO_LEN&&(m-MEIDO_LEN)%3===0)){
+      const ids=Object.keys(BOSSES).filter(k=>!BOSSES[k].duel);
+      spawnBoss(ids[(run.rng()*ids.length)|0]);G.introT=1.8;}
+    else{G.waves=meidoWaves();nextWave();G.introT=1.7;}
+    // the night announces its mood: red stamps for curses, gold for boons
+    if(run.mut){run.mut.cs.forEach((c,i)=>addFloat(P.x,P.y-56-i*26,'呪 '+c.k+' '+c.n.toUpperCase(),RED,15));
+      if(run.mut.b)addFloat(P.x,P.y-56-run.mut.cs.length*26,'祝 '+run.mut.b.k+' '+run.mut.b.n.toUpperCase(),GOLD2,14);}}
   else if(run.abyss&&run.wave%6===0){spawnBoss(choice(Object.keys(BOSSES).filter(k=>!BOSSES[k].duel)));G.introT=1.7;}
   else if(sd.duel){spawnBoss(sd.duel);G.introT=1.7;}
   else if(sd.boss){spawnBoss(sd.boss);G.introT=1.7;}
@@ -2425,6 +2585,16 @@ function stageClear(){if(G.clearing||!G.run)return;G.clearing=1;slowmo(.6,.3);AU
       if(G.gauntIdx>=GAUNTLET.length){gauntletVictory();return;}
       const heal=Math.round(P.maxhp*.35);P.hp=Math.min(P.maxhp,P.hp+heal);AU.heal();
       showClear('DUEL '+G.gauntIdx+' OF '+GAUNTLET.length+' WON',(G.gauntIdx%2===1)?'bless':'next');}
+    else if(G.run.meido){
+      const m=G.run.milestone;
+      G.run.milestone++;
+      SAVE.meidoBest=Math.max(SAVE.meidoBest,m); // deepest mark survived
+      const heal=Math.round(P.maxhp*.12)+(mdHas('vigor')?25:0);
+      P.hp=Math.min(P.maxhp,P.hp+heal);AU.heal();
+      const bonus=Math.round(30+m*22)*(mdHas('grace')?2:1);
+      SAVE.ash+=bonus;G.run.ashEarned+=bonus;persist();
+      if(m===MEIDO_LEN){meidoVictory();return;}
+      showClear('MARK '+m+' CLEARED',(G.run.milestone%2===0)?'bless':'mnext');}
     else{
       const heal=Math.round(P.maxhp*(0.22+SAVE.meta.rejuv*.08));
       P.hp=Math.min(P.maxhp,P.hp+heal);AU.heal();
@@ -2446,14 +2616,32 @@ function gauntletVictory(){const t=Math.round(G.run.totalTime+G.run.time);
   SAVE.stats.playTime+=G.run.time;persist();
   $('#victory-stats').innerHTML=
     `ten duels · <b class="mono">${fmtT(t)}</b> · kills <b>${G.run.kills}</b> · best combo <b>${G.run.bestCombo}</b><br>the gauntlet remembers. so will the records.`;
+  victoryButtons([['Descend into the Abyss',()=>startRun(1,true)],['The Gauntlet 連',()=>startGauntlet()],['The Roads',()=>toMenu('acts')]]);
   setMode('victory');AU.roar();AU.taiko(.6);G.lbxT=1.2;
-  lbSubmit('gauntlet','victory-rec');}
+  lbSubmit('gauntlet','victory-rec','victory');}
+// the gate at mark nine: the night signs the page and offers the deeper dark
+function meidoVictory(){
+  SAVE.meidoBest=Math.max(SAVE.meidoBest,MEIDO_LEN);persist();
+  const marks=Object.values(G.run.blessings).reduce((a,b)=>a+b,0);
+  $('#victory-stats').innerHTML=
+    `nine marks in one night${G.run.daily?' — the rite of the day':''} · seed <b class="mono">${G.run.seed}</b><br>`+
+    `kills <b>${G.run.kills}</b> · best combo <b>${G.run.bestCombo}</b> · inkmarks carried <b>${marks}</b>`;
+  victoryButtons([['Descend Beyond the Gate',()=>startStage()],['The Night, Again',()=>startMeido(G.run.daily)],['The Roads',()=>toMenu('acts')]]);
+  setMode('victory');AU.roar();AU.taiko(.6);G.lbxT=1.2;
+  lbSubmit('meido','victory-rec','victory');}
+// one builder for the victory buttons, so each victory owns its own exits
+function victoryButtons(list){const row=$('#victory-btns');if(!row)return;
+  row.innerHTML='';
+  for(const[label,fn]of list){const b=document.createElement('button');b.className='mbtn';
+    b.innerHTML=`<span class="idx">◆</span>${label}`;b.onclick=()=>{AU.ui();fn();};row.appendChild(b);}}
 function grantBlessing(b,silent){G.run.blessings[b.id]=(G.run.blessings[b.id]||0)+1;recalc();
   if(b.id==='inkwell')P.hp=Math.min(P.maxhp,P.hp+25);
   if(!silent)AU.buy();}
 function offerBlessings(){const picks=[];const pool=BLESS.slice();
-  while(picks.length<3&&pool.length){const r=Math.random()*100,t=r<8?2:r<40?1:0;
-    const cands=pool.filter(b=>b.r===t);const b=cands.length?choice(cands):choice(pool);
+  // the night road deals from its seeded deck, so a rite can be walked again
+  const R=(G.run&&G.run.meido&&G.run.rng)?G.run.rng:Math.random;
+  while(picks.length<3&&pool.length){const r=R()*100,t=r<8?2:r<40?1:0;
+    const cands=pool.filter(b=>b.r===t);const b=cands.length?cands[(R()*cands.length)|0]:pool[(R()*pool.length)|0];
     picks.push(b);pool.splice(pool.indexOf(b),1);}
   const wrap=$('#bless-wrap');wrap.innerHTML='';
   picks.forEach((b,i)=>{const d=document.createElement('div');d.className='scroll';
@@ -2465,7 +2653,7 @@ function offerBlessings(){const picks=[];const pool=BLESS.slice();
   $('#bless-owned').innerHTML=owned?'inkmarks carried: '+owned:'';
   G.blessPicks=picks;setMode('bless');}
 function pickBless(b){grantBlessing(b);
-  if(G.run.gauntlet)startStage();
+  if(G.run.gauntlet||G.run.meido)startStage();
   else{G.run.stage++;startStage();}}
 function showClear(title,kind){$('#clear-title').textContent=title;
   const run=G.run;
@@ -2477,6 +2665,7 @@ function showClear(title,kind){$('#clear-title').textContent=title;
     b.innerHTML=`<span class="idx">◆</span>${label}`;b.onclick=()=>{AU.ui();fn();};btns.appendChild(b);};
   if(kind==='bless')add('Take an Inkmark',offerBlessings);
   else if(kind==='next')add('The Next Duel',()=>startStage());
+  else if(kind==='mnext')add('Walk the Night',()=>startStage());
   else if(kind==='act'){add('Next Act',()=>{G.run.act++;G.run.stage=1;startRunKeep();});
     add('The Roads',()=>toMenu('acts'));}
   else if(kind==='descend'){add('Descend Deeper',()=>startStage());
@@ -2486,37 +2675,40 @@ function startRunKeep(){G.run.ashEarned=0;G.run.kills=0;G.run.revived=false;star
 function showVictory(){SAVE.gauntletUnlocked=true;persist();
   $('#victory-stats').innerHTML=`kills <b>${SAVE.stats.kills}</b> · deaths <b>${SAVE.stats.deaths}</b> · the abyss and the gauntlet await`;
   $('#victory-rec').textContent='';
+  victoryButtons([['Descend into the Abyss',()=>startRun(1,true)],['The Gauntlet 連',()=>startGauntlet()],['The Roads',()=>toMenu('acts')]]);
   setMode('victory');AU.roar();AU.taiko(.55);G.lbxT=1.4;
-  lbSubmit('story','victory-rec');}
+  lbSubmit('story','victory-rec','victory');}
 function showDeath(){const t=G.run.time;
   G.run.totalTime=(G.run.totalTime||0)+t;
   SAVE.stats.deaths++;G.run.deaths++;
   SAVE.stats.playTime+=t;G.run.time=0;persist();
   $('#death-line').textContent='"'+choice(DEATHLINES)+'"';
   const where=G.run.gauntlet?'the gauntlet · duel '+(G.gauntIdx+1)+' of '+GAUNTLET.length:
-    (G.run.abyss?'the abyss · wave '+G.run.wave:'act '+ACTS[G.run.act-1].kanji+' · stage '+G.run.stage);
+    (G.run.meido?'the night road · mark '+G.run.milestone+' · seed '+G.run.seed:
+    (G.run.abyss?'the abyss · wave '+G.run.wave:'act '+ACTS[G.run.act-1].kanji+' · stage '+G.run.stage));
   $('#death-stats').innerHTML=`${where} · kills <b>${G.run.kills}</b> · time <b>${fmtT(t)}</b> · ash kept <b>${G.run.ashEarned}</b>`;
   $('#death-rec').textContent='';
   if(G.run.abyss)lbSubmit('abyss','death-rec');
   else if(G.run.gauntlet)lbSubmit('gauntlet','death-rec');
+  else if(G.run.meido)lbSubmit('meido','death-rec');
   const btns=$('#death-btns');btns.innerHTML='';
   const add=(label,fn)=>{const b=document.createElement('button');b.className='mbtn';
     b.innerHTML=`<span class="idx">◆</span>${label}`;b.onclick=()=>{AU.ui();fn();};btns.appendChild(b);};
-  add('Walk Again',()=>G.run.gauntlet?startGauntlet():startRun(G.run.act,G.run.abyss));
+  add('Walk Again',()=>G.run.gauntlet?startGauntlet():(G.run.meido?startMeido(G.run.daily):startRun(G.run.act,G.run.abyss)));
   add('The Shrine',()=>toMenu('shrine'));
   add('The Roads',()=>toMenu('acts'));
-  if(!G.run.gauntlet&&G.run.deaths>=3&&SAVE.difficulty>0)add('Accept Mercy (lower difficulty)',()=>{SAVE.difficulty--;persist();startRun(G.run.act,G.run.abyss);});
+  if(!G.run.gauntlet&&!G.run.meido&&G.run.deaths>=3&&SAVE.difficulty>0)add('Accept Mercy (lower difficulty)',()=>{SAVE.difficulty--;persist();startRun(G.run.act,G.run.abyss);});
   setMode('death');AU.stamp();}
 
 // ---- records: etched server-side, so the names outlive the page ---------------
 
-let pendingMode=null;
-async function lbSubmit(mode,elId='death-rec'){
+let pendingMode=null,pendingRet=null;
+async function lbSubmit(mode,elId='death-rec',ret='death'){
   try{
-    if(!SAVE.recordsName){pendingMode=mode;openSubmit();return;}
+    if(!SAVE.recordsName){pendingMode=mode;pendingRet=ret;openSubmit();return;}
     const run=G.run;if(!run)return;
     const body={name:SAVE.recordsName,mode,
-      wave:mode==='abyss'?Math.max(0,run.wave-1):(mode==='gauntlet'?G.gauntIdx:7),
+      wave:mode==='abyss'?Math.max(0,run.wave-1):(mode==='gauntlet'?G.gauntIdx:(mode==='meido'?Math.max(0,run.milestone-1):7)),
       kills:run.kills,timeSec:Math.max(1,Math.round(run.totalTime)),difficulty:SAVE.difficulty};
     const res=await fetch('/api/leaderboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     const data=await res.json();
@@ -2527,18 +2719,18 @@ async function lbSubmit(mode,elId='death-rec'){
     if(el)el.textContent='the records are beyond this page\u2019s reach';}}
 function openSubmit(){const inp=$('#submit-name');
   if(inp)inp.value=SAVE.recordsName||'';
-  setMode('submit');
-  setTimeout(()=>{if(inp)inp.focus();},60);}
+  // deferred one breath so whatever screen is mid-assembly (death, victory)
+  // finishes first — otherwise it stomps the carving screen the same tick
+  setTimeout(()=>{setMode('submit');if(inp)inp.focus();},90);}
 function finishSubmit(){
   const inp=$('#submit-name');
   let n=(inp&&inp.value||'').trim().replace(/\s+/g,' ').slice(0,16);
   if(!n)n='nameless';
   SAVE.recordsName=n;persist();
-  const abyss=pendingMode==='abyss';
-  const ret=abyss?'death':'victory';
-  const m=pendingMode;pendingMode=null;
+  const ret=pendingRet||'death';
+  const m=pendingMode;pendingMode=null;pendingRet=null;
   setMode(ret);AU.stamp();
-  if(m)lbSubmit(m,abyss?'death-rec':'victory-rec');}
+  if(m)lbSubmit(m,ret==='death'?'death-rec':'victory-rec',ret);}
 const submitBtn=$('#submit-go');
 if(submitBtn)submitBtn.onclick=finishSubmit;
 const submitInp=$('#submit-name');
@@ -2557,17 +2749,18 @@ async function loadRecords(m){
     if(!list)return;
     if(!rows.length){list.innerHTML='<div class="rec-empty">no names yet — the page is still blank</div>';}
     else{
-      let html=`<div class="rec-h"><span>RANK</span><span>NAME</span><span>${m==='abyss'?'WAVE':'DUELS'}</span><span>KILLS</span><span>TIME</span><span>DIFF</span></div>`;
+      let html=`<div class="rec-h"><span>RANK</span><span>NAME</span><span>${m==='abyss'?'WAVE':(m==='meido'?'MARKS':'DUELS')}</span><span>KILLS</span><span>TIME</span><span>DIFF</span></div>`;
       const DFK=['静','嵐','狱'];
       rows.forEach((r,i)=>{
         const me=r.name===SAVE.recordsName;
         html+=`<div class="rec-r${me?' me':''}"><span class="pos">${i+1}</span><span class="nm">${escapeHtml(r.name)}</span>`+
-          `<span class="dim mono">${m==='abyss'?('w'+r.wave):(r.wave+'/10')}</span><span class="dim mono">${r.kills}</span>`+
+          `<span class="dim mono">${m==='abyss'?('w'+r.wave):(m==='meido'?('m'+r.wave):(r.wave+'/10'))}</span><span class="dim mono">${r.kills}</span>`+
           `<span class="dim mono">${fmtT(r.timeSec)}</span><span class="dim">${DFK[r.difficulty]||'嵐'}</span></div>`;});
       list.innerHTML=html;}
     const own=$('#rec-own');
     if(own){
       if(m==='abyss')own.textContent=SAVE.abyssUnlocked?(SAVE.abyssBest?'your deepest wave: '+SAVE.abyssBest:'you have not descended yet'):'';
+      else if(m==='meido')own.textContent=SAVE.abyssUnlocked?(SAVE.meidoBest?'your deepest mark: '+SAVE.meidoBest:'you have not walked the night yet'):'';
       else if(m==='gauntlet')own.textContent=SAVE.gauntletBest?('your best gauntlet: '+fmtT(SAVE.gauntletBest)):'';
       else own.textContent=SAVE.gauntletUnlocked?'the story is finished':'finish act 7 to be counted';}
   }catch(e){
@@ -2587,6 +2780,8 @@ document.addEventListener('click',e=>{
   else if(go==='settings'){G.prevMode=G.mode;setMode('settings');}
   else if(go==='abyss')startRun(1,true);
   else if(go==='gauntlet')startGauntlet();
+  else if(go==='meido')startMeido(false);
+  else if(go==='meidoDaily')startMeido(true);
   else if(go==='records'){loadRecords(recMode);setMode('records');}
   else toMenu(go);});
 
@@ -2610,7 +2805,7 @@ function renderHelp(){
 function screenToWorld(sx,sy){return{x:(sx-W/2)/Z+G.cam.x,y:(sy-H/2)/Z+G.cam.y};}
 function update(dt){G.t+=dt;G.windT+=dt;
   G.wind=Math.sin(G.windT*.7)*.55+Math.sin(G.windT*.23)*.45;
-  if(Math.random()<dt*.12)G.gusts.push({x:-100,y:rnd(RH),t:0,dur:2.2,sp:rnd(500,760),w:rnd(60,150)});
+  if(Math.random()<dt*(mdHas('gale')?.34:.12))G.gusts.push({x:-100,y:rnd(RH),t:0,dur:2.2,sp:rnd(500,760),w:rnd(60,150)});
   for(let i=G.gusts.length-1;i>=0;i--){const g=G.gusts[i];g.t+=dt;g.x+=g.sp*dt;
     if(g.t>g.dur||g.x>RW+200){G.gusts[i]=G.gusts[G.gusts.length-1];G.gusts.pop();}}
   if(G.lbxT>0)G.lbxT-=dt;
@@ -2620,6 +2815,13 @@ function update(dt){G.t+=dt;G.windT+=dt;
   if(curAct()===5&&!G.run.abyss){G.boltT-=dt;
     if(G.boltT<=0){G.boltT=rnd(4,9);G.flash=Math.max(G.flash,.32);G.flashCol='#e8e4f2';
       AU.thunder(.22);G.fx.push({kind:'bolt',x:clamp(P.x+rnd(-500,500),WALL+80,RW-WALL-80),y:clamp(P.y+rnd(-360,360),WALL+80,RH-WALL-80),t:0,dur:.18});}}
+  if(G.run&&G.run.meido&&mdHas('storm')&&!G.codexCur){ // the walking storm hunts the field
+    G.mboltT=(G.mboltT||2)-dt;
+    if(G.mboltT<=0){G.mboltT=rnd(1.9,3.2);
+      const a=rnd(TAU),dd=rnd(70,300);
+      addTele({kind:'circle',x:clamp(P.x+Math.cos(a)*dd,WALL+70,RW-WALL-70),y:clamp(P.y+Math.sin(a)*dd,WALL+70,RH-WALL-70),
+        r:84,dur:1.1,dmg:15,peril:true});
+      G.flash=Math.max(G.flash,.15);G.flashCol='#e8e4f2';AU.zap();}}
   if(G.zpC>0&&!G.codexCur)G.zpC=Math.max(0,G.zpC-dt*4);
   if(G.codexCur){codexUpdate(dt);return;}
   if(G.codexQ.length&&G.mode==='game'&&G.introT<1.35)openCodex();
@@ -2646,8 +2848,11 @@ function update(dt){G.t+=dt;G.windT+=dt;
     const mag=Math.hypot(ix,iy)||1;ix/=mag;iy/=mag;
     if(P.dashT>0){P.dashT-=dt;P.vx=Math.cos(P.dashDir)*760;P.vy=Math.sin(P.dashDir)*760;
       P.wbArm=true;
-      if((G.t*60|0)%2===0)G.ghosts.push({x:P.x,y:P.y,t:0,dur:.3});
+      if((G.t*60|0)%2===0){G.ghosts.push({x:P.x,y:P.y,t:0,dur:.32,dir:P.dashDir});
+        addPart({x:P.x+rnd(-6,6),y:P.y+rnd(-10,10),vx:-Math.cos(P.dashDir)*rnd(240,420),vy:-Math.sin(P.dashDir)*rnd(240,420),
+          life:.22,max:.22,size:rnd(1.2,2.4),color:INK2,grav:0,drag:.86});}
       if(P.dashT<=0&&P.wbArm){P.wbArm=false;
+        for(let i=0;i<6;i++)addPart({x:P.x+rnd(-14,14),y:P.y+rnd(-2,10),vx:rnd(-90,90),vy:rnd(-60,-8),life:rnd(.25,.5),max:.5,size:rnd(1.5,3.2),color:'rgba(130,118,94,0.5)',grav:260,drag:.9});
         if(bl('windblade')){fproj(P.x,P.y,P.dashDir,460,12,{r:11});AU.deflect();}}}
     else{const acc=2400,mult=P.swing?.42:1;
       P.vx+=ix*acc*mult*dt;P.vy+=iy*acc*mult*dt;
@@ -2655,8 +2860,15 @@ function update(dt){G.t+=dt;G.windT+=dt;
       const sp=Math.hypot(P.vx,P.vy),mx=P.st.spd*mult;
       if(sp>mx){P.vx*=mx/sp;P.vy*=mx/sp;}}
     P.x+=P.vx*dt;P.y+=P.vy*dt;
+    if(mdHas('gale'))P.x+=G.wind*62*dt; // the crosswind drags every step
     P.x=clamp(P.x,WALL+P.r,RW-WALL-P.r);P.y=clamp(P.y,WALL+P.r,RH-WALL-P.r);
     P.walk+=dt*Math.hypot(P.vx,P.vy)*.045;
+    // cloth remembers where the body was a moment ago
+    P.clx=lerp(P.clx||0,clamp(-P.vx*.05,-10,10),1-Math.exp(-9*dt));
+    P.cly=lerp(P.cly||0,clamp(-P.vy*.05,-8,8),1-Math.exp(-9*dt));
+    // dust where the sandals bite
+    if(Math.hypot(P.vx,P.vy)>230&&(G.t*9|0)!==P._stepF){P._stepF=G.t*9|0;
+      addPart({x:P.x+rnd(-6,6),y:P.y+9,vx:rnd(-16,16),vy:rnd(-26,-8),life:rnd(.3,.5),max:.5,size:rnd(1.4,2.8),color:'rgba(120,110,88,0.55)',grav:120,drag:.92});}
     if(mouseSeen){const w=screenToWorld(mouse.x,mouse.y);P.facing=angTo(P.x,P.y,w.x,w.y);}
     else if(joy.mag>.3)P.facing=joy.ang;
     else if(Math.hypot(P.vx,P.vy)>40)P.facing=Math.atan2(P.vy,P.vx);
@@ -2708,7 +2920,8 @@ function update(dt){G.t+=dt;G.windT+=dt;
       G.waveGap-=dt;
       if(G.waveGap<=0){G.waveGap=0;if(G.run.bossDead)stageClear();else nextWave();}}}
   for(let i=G.enemies.length-1;i>=0;i--){const e=G.enemies[i];
-    if(e.dead){G.enemies.splice(i,1);continue;}
+    if(e.dead){e.deadT=(e.deadT||0)+dt; // the ink takes a half-second to let go
+      if(e.deadT>.5)G.enemies.splice(i,1);continue;}
     if(e.boss)updateBoss(e,dt);else updateEnemy(e,dt);}
   const es=G.enemies;
   for(let i=0;i<es.length;i++)for(let j=i+1;j<es.length;j++){const a=es[i],b=es[j];
@@ -2792,6 +3005,12 @@ function render(){ctx.setTransform(DPR,0,0,DPR,0,0);
   const inGame=(G.mode==='game'||G.mode==='bless'||G.mode==='pause'||G.mode==='death'||G.mode==='clear'||G.mode==='victory'||G.mode==='submit'||G.mode==='codex')&&G.floorC&&G.run;
   if(inGame)renderWorld();else drawTitleScene();
   if(inGame)ctx.drawImage(gradeLayer(),0,0,W,H);
+  if(inGame&&G.run&&G.run.meido&&mdHas('mist')&&fogC){ // the sea of fog closes in
+    ctx.globalAlpha=.85;ctx.drawImage(fogC,0,0,W,H);ctx.globalAlpha=1;}
+  if(G.slowT>0&&G.ts<.4&&inGame){ // ink ghosts bleed sideways while time kneels
+    ctx.save();ctx.globalAlpha=.14;ctx.globalCompositeOperation='lighter';
+    ctx.drawImage(cv,-7,0,W,H);ctx.drawImage(cv,7,0,W,H);
+    ctx.restore();}
   if(G.wash>0){const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.2,W/2,H/2,Math.max(W,H)*.7);
     g.addColorStop(0,'rgba(179,55,42,0)');g.addColorStop(1,`rgba(140,43,31,${Math.min(.5,G.wash)})`);
     ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
@@ -2813,16 +3032,24 @@ const DRAWQ=[];let GRAD=null;
 function renderWorld(){
   GRAD=gradeOf();
   const zp=Z*(1+(G.zp+(G.codexCur?G.zpC:0))*.32);
-  ctx.save();ctx.translate(W/2+G.shakeX,H/2+G.shakeY);ctx.scale(zp,zp);ctx.translate(-G.cam.x,-G.cam.y);
+  ctx.save();ctx.translate(W/2+G.shakeX,H/2+G.shakeY);
+  if(G.trauma>0)ctx.rotate(Math.sin(G.t*43)*G.trauma*.014); // the page flinches with you
+  ctx.scale(zp,zp);ctx.translate(-G.cam.x,-G.cam.y);
   ctx.drawImage(G.floorC,0,0);
   const act=curAct();
+  // dawn light leans through in shafts — three drifting blits, that's all
+  if(act===1||act===3||act===7){
+    ctx.globalAlpha=act===7?.05:.085;
+    for(let i=0;i<3;i++){const rx=((hash01(i*7.7)*RW)+G.t*(9+i*5))%(RW+460)-230;
+      ctx.drawImage(RAYS[i],rx,-30,380,560);}
+    ctx.globalAlpha=1;}
   if(act===2)drawWater();
   drawProps();
   drawFireflies();
   ctx.globalAlpha=.92;ctx.drawImage(G.decalC,0,0);ctx.globalAlpha=1;
   ctx.globalAlpha=.15;
   for(let i=0;i<4;i++){const mx=((hash01(i*9.7)*RW)+G.t*(6+i*3))%(RW+500)-250;
-    const my=RH*(.18+.2*i);ctx.drawImage(MIST[i%3],mx-200,my-100,400,200);}
+    const my=RH*(.18+.2*i)+Math.sin(G.t*.3+i*1.7)*16;ctx.drawImage(MIST[i%3],mx-200,my-100,400,200);}
   ctx.globalAlpha=1;
   for(const m of G.marks){const p=m.t/m.dur;
     ctx.strokeStyle=RED;ctx.globalAlpha=.5+.4*Math.sin(m.t*20);
@@ -2834,9 +3061,14 @@ function renderWorld(){
     ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,TAU);ctx.stroke();
     ctx.globalAlpha=.35;ctx.lineWidth=r.w;ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,TAU);ctx.stroke();ctx.globalAlpha=1;}
   for(const g of G.ghosts){const a=1-g.t/g.dur;
-    ctx.save();ctx.translate(g.x,g.y);ctx.globalAlpha=a*.34;ctx.fillStyle=INK;
-    ctx.beginPath();ctx.ellipse(0,0,9,15,0,0,TAU);ctx.fill();
-    ctx.beginPath();ctx.ellipse(0,-6,7,7,0,0,TAU);ctx.fill();ctx.restore();}
+    ctx.save();ctx.translate(g.x,g.y);ctx.rotate(g.dir||0);ctx.globalAlpha=a*.3;ctx.fillStyle=INK;
+    // a proper silhouette: cloak, body, head — not just two blobs
+    ctx.beginPath();ctx.moveTo(-2,2);ctx.lineTo(-17,-9);ctx.lineTo(-6,-13);ctx.closePath();ctx.fill();
+    ctx.beginPath();ctx.ellipse(0,0,8,13,0,0,TAU);ctx.fill();
+    ctx.beginPath();ctx.arc(0,-11,5.6,0,TAU);ctx.fill();
+    ctx.globalAlpha=a*.16;ctx.strokeStyle=PAPER3;ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.arc(0,-11,6.5,0,TAU);ctx.stroke();
+    ctx.restore();}
   for(const p of G.pickups){const bob=Math.sin(p.t*5)*3;
     if(p.kind==='orb'){ctx.drawImage(glowRed,p.x-26,p.y-26+bob,52,52);
       ctx.fillStyle=RED;ctx.beginPath();ctx.arc(p.x,p.y+bob,8,0,TAU);ctx.fill();
@@ -2847,7 +3079,8 @@ function renderWorld(){
     ctx.strokeStyle=RED;ctx.globalAlpha=.4;ctx.lineWidth=1.5;
     ctx.beginPath();ctx.moveTo(e.x,e.y);ctx.lineTo(e.healing.x,e.healing.y);ctx.stroke();ctx.globalAlpha=1;}
   DRAWQ.length=0;
-  for(let i=0;i<G.enemies.length;i++){const q=G.enemies[i];if(!q.dead&&!q.hidden)DRAWQ.push(q);}
+  for(let i=0;i<G.enemies.length;i++){const q=G.enemies[i];
+    if(!q.hidden&&(!q.dead||(q.deadT||0)<.42))DRAWQ.push(q);} // the dying still get drawn
   DRAWQ.sort((a,b)=>a.y-b.y);
   let drewP=false;
   for(let i=0;i<DRAWQ.length;i++){const e=DRAWQ[i];
@@ -2879,6 +3112,12 @@ function renderWorld(){
       ctx.fillStyle=RED;ctx.fillText(f.txt,0,0);ctx.restore();}
     else if(f.kind==='boom'){ctx.strokeStyle=RED2;ctx.globalAlpha=1-p;ctx.lineWidth=6;
       ctx.beginPath();ctx.arc(f.x,f.y,f.r*(0.4+p*.7),0,TAU);ctx.stroke();}
+    else if(f.kind==='impact'){ // manga lines rushing at the moment of contact
+      ctx.strokeStyle=INK;ctx.globalAlpha=(1-p)*.75;ctx.lineWidth=2.4;ctx.lineCap='round';
+      for(let i=0;i<13;i++){const a=(i/13-.5)*2.2;
+        const r1=56+p*44,r2=r1+20+hash01(i*7.7+f.x)*36;
+        ctx.beginPath();ctx.moveTo(f.x+Math.cos(a)*r1,f.y+Math.sin(a)*r1);
+        ctx.lineTo(f.x+Math.cos(a)*r2,f.y+Math.sin(a)*r2);ctx.stroke();}}
     else if(f.kind==='bolt'){ctx.strokeStyle='#2c2438';ctx.globalAlpha=1-p;ctx.lineWidth=5-p*3;ctx.lineCap='round';
       ctx.beginPath();let x=f.x,y=f.y-560;ctx.moveTo(x,y);
       for(let i=0;i<9;i++){y+=62;x+=hash01(i*3.7+f.x)*36-18;ctx.lineTo(x,y);}
@@ -2886,7 +3125,8 @@ function renderWorld(){
       ctx.globalAlpha=(1-p)*.6;ctx.drawImage(glowWhite,f.x-60,f.y-40,120,120);}}
   ctx.globalAlpha=1;
   for(const f of G.floats){const a=1-Math.pow(f.t/f.dur,2);
-    ctx.globalAlpha=a;ctx.font=`600 ${f.size}px "IBM Plex Mono"`;
+    const pop=1+.6*Math.max(0,1-f.t*7); // numbers land like stamps
+    ctx.globalAlpha=a;ctx.font=`600 ${Math.round(f.size*pop)}px "IBM Plex Mono"`;
     ctx.textAlign='center';ctx.fillStyle=f.color;ctx.fillText(f.text,f.x,f.y);}
   ctx.globalAlpha=1;ctx.textAlign='left';
   drawWeather();
@@ -2922,7 +3162,7 @@ function drawGusts(){
     ctx.stroke();}
   ctx.globalAlpha=1;}
 function drawWeather(){const act=curAct();
-  const n=act===5?46:(act===4?30:(act===1?12:(act===6?18:(act===3?10:(act===7?10:14)))));
+  const n=act===5?46:(act===4?30:(act===1?12:(act===6?18:(act===3?10:(act===7?10:(act===9?16:14))))));
   for(let i=0;i<n;i++){
     const seed=i*1.618;
     if(act===1){ // petals on the dusk wind
@@ -2965,6 +3205,12 @@ function drawWeather(){const act=curAct();
       ctx.globalAlpha=.16+(1-t/(RH+40))*.14;
       ctx.fillStyle=INK;
       ctx.beginPath();ctx.arc(hash01(seed*7)*RW+Math.sin(G.t*.5+seed)*20,t-20,1.2+hash01(seed)*1.6,0,TAU);ctx.fill();}
+    else if(act===9){ // pale motes rise where the spirits walk
+      const t=(G.t*(13+hash01(seed)*9)+hash01(seed*3)*RH*2)%(RH+40);
+      const x=hash01(seed*7)*RW+Math.sin(G.t*.4+seed)*26+G.wind*26;
+      ctx.globalAlpha=.18+(1-t/(RH+40))*.22;
+      ctx.fillStyle=i%3?'#9aa8c4':'#c8d2e4';
+      ctx.beginPath();ctx.arc(x,t-20,1.2+hash01(seed)*1.8,0,TAU);ctx.fill();}
     else{ // abyss: red embers
       const t=(G.t*(26+i*2)+hash01(seed*3)*1400)%1400;
       ctx.globalAlpha=.5*(1-t/1400);ctx.fillStyle=i%4===0?AMBER:RED;
@@ -3030,6 +3276,9 @@ function drawSlash(s){
   ctx.globalAlpha=(1-p)*.7;ctx.strokeStyle=INK;ctx.lineWidth=1.6;
   for(let i=1;i<=2;i++){const rr=s.range*(1-i*.14);
     ctx.beginPath();ctx.arc(P.x,P.y,rr,Math.max(sa,lead-spreadTip(s)*.7),lead);ctx.stroke();}
+  // one white-hot inner edge, so the cut reads as steel
+  ctx.globalAlpha=(1-p)*.55;ctx.strokeStyle='#f6f1e2';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(P.x,P.y,s.range*.9,sa,ea);ctx.stroke();
   ctx.globalAlpha=1;
   if(!s.stamped&&G.dctx){s.stamped=true;
     G.dctx.strokeStyle='rgba(29,26,22,0.07)';G.dctx.lineWidth=10;
@@ -3099,6 +3348,18 @@ function drawFeet(e){
     ctx.beginPath();ctx.ellipse(fx,fy,fs,fs*.62,side,0,TAU);ctx.fill();}}
 
 function drawEnemy(e){ctx.save();
+  if(e.dead){ // the ink lets go slowly: the body fades, lifts, and thins
+    const q=Math.min(1,(e.deadT||0)/.42);
+    if(q<1){
+      shadowBlob(e.x,e.y,e.r*(1-q*.6));
+      ctx.translate(e.x,e.y-q*14);
+      const sc=1+q*.4;ctx.scale(sc,sc);
+      ctx.globalAlpha=1-q;
+      const kit=e.boss?BSPR[e.id]:ESPR[e.type];
+      ctx.drawImage(kit.n,-kit.s/2,-kit.s/2,kit.s,kit.s);
+      ctx.globalAlpha=(1-q)*.4;ctx.strokeStyle=INK;ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.arc(0,0,e.r+q*24,0,TAU);ctx.stroke();}
+    ctx.restore();return;}
   if(e.boss&&e.id==='orochi')drawSerpentBody(e);
   shadowBlob(e.x,e.y,e.r,1+(e.state==='windup'?-.12:0));
   if(!NOFEET[e.type]&&!e.boss)drawFeet(e);
@@ -3106,13 +3367,17 @@ function drawEnemy(e){ctx.save();
   ctx.translate(e.x,e.y-(e.boss?e.h||0:0)+hover-((e.state==='windup')?4:0));
   const bob=Math.sin(e.bob)*1.6;
   if(e.stun>0)ctx.rotate(Math.sin(G.t*22)*.14);
+  if(e.hitT>0)ctx.rotate(Math.sin((e.hitT/.18)*PI)*.16*((Math.cos(e.hitAng)>=0)?1:-1)); // struck flesh flinches aside
   ctx.save();ctx.rotate(e.facing);
   if(Math.abs(angDiff(0,e.facing))>PI/2)ctx.scale(1,-1);
   const lunge=e.state==='active'?1.14:(e.state==='windup'?.9:1);
-  ctx.scale(lunge,2-lunge);
+  const punch=1+(e.hitT>0?e.hitT*.5:0);
+  ctx.scale(lunge*punch,(2-lunge)/punch);
   const kit=e.boss?BSPR[e.id]:ESPR[e.type];
   const img=e.flash>0?kit.f:kit.n;
-  if(e.type==='wraith'||e.type==='mirror')ctx.globalAlpha=.9;
+  let alpha=e.type==='wraith'||e.type==='mirror'?.9:1;
+  if(mdHas('mist'))alpha*=clamp(1.35-dist(e.x,e.y,P.x,P.y)/620,.14,1); // the fog eats the far ones
+  ctx.globalAlpha=alpha;
   const S=kit.s;
   ctx.drawImage(img,-S/2,-S/2,S,S);
   ctx.restore();
@@ -3201,7 +3466,7 @@ function drawPlayer(){
   // cloak: two ragged brushes that follow motion and wind
   const back=fa+PI;
   const flap=Math.sin(G.t*9+P.walk)*.25+(moving?.35:.12);
-  const wind=G.wind*.3;
+  const wind=G.wind*.3+clamp((P.clx||0)*.03,-.55,.55); // cloth lags a step behind
   for(const[rad,alpha]of[[24,.5],[18,.92]]){
     ctx.fillStyle=`rgba(32,28,24,${alpha})`;
     ctx.beginPath();
@@ -3401,6 +3666,22 @@ function drawHUD(){
     ctx.fillStyle='rgba(29,26,22,0.18)';ctx.fillRect(sx-34,sy+48,68,4);
     ctx.fillStyle=GOLD;ctx.fillRect(sx-34,sy+48,68*clamp(st.pts/RANKT[st.rank],0,1),4);
     ctx.textAlign='left';ctx.textBaseline='alphabetic';}
+  // the night stamps its mood in the corner: curses red, boons gold
+  if(run.meido&&run.mut){
+    let cy=30;
+    const chip=(k,col,name)=>{const cx=W-30;
+      ctx.save();ctx.translate(cx,cy);ctx.rotate(PI/4);
+      ctx.fillStyle=col;ctx.fillRect(-8,-8,16,16);
+      ctx.strokeStyle='rgba(242,236,217,0.7)';ctx.lineWidth=1;ctx.strokeRect(-8,-8,16,16);
+      ctx.restore();
+      ctx.font='700 12px "Shippori Mincho"';ctx.fillStyle=PAPER2;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(k,cx,cy+1);
+      ctx.font='600 7.5px "IBM Plex Mono"';ctx.fillStyle=INK2;ctx.textAlign='right';
+      ctx.fillText(name,cx-13,cy+1);
+      ctx.textAlign='left';ctx.textBaseline='alphabetic';
+      cy+=27;};
+    for(const c of run.mut.cs)chip(c.k,RED2,c.n.toUpperCase());
+    if(run.mut.b)chip(run.mut.b.k,GOLD,run.mut.b.n.toUpperCase());}
   // weapons: scroll tags bottom-left
   WSLOTS.length=0;
   const wy=H-(IS_TOUCH?170:58);
@@ -3460,6 +3741,7 @@ function drawHUD(){
   ctx.font='600 11px "IBM Plex Mono"';ctx.fillStyle=INK2;ctx.textAlign='center';
   const sd=currentStageDef();
   if(run.gauntlet)ctx.fillText(`THE GAUNTLET 連 · duel ${G.gauntIdx+1}/${GAUNTLET.length} · ${sd.n}`,W/2,H-16);
+  else if(run.meido)ctx.fillText(`THE NIGHT ROAD 冥 · mark ${run.milestone}${run.daily?' · daily rite':''} · seed ${run.seed}`,W/2,H-16);
   else if(run.abyss)ctx.fillText(`THE ABYSS · wave ${run.wave} · deepest ${SAVE.abyssBest+1}`,W/2,H-16);
   else{const act=ACTS[run.act-1];
     ctx.fillText(`ACT ${act.kanji} · stage ${run.stage}/${act.stages.length} · ${sd.n||''}`,W/2,H-16);
@@ -3476,8 +3758,9 @@ function drawHUD(){
       ctx.fillText(act.intro[0],W/2,H*.42);ctx.fillText(act.intro[1],W/2,H*.42+28);ctx.fillText(act.intro[2],W/2,H*.42+56);}
     ctx.font='700 24px "Shippori Mincho"';
     ctx.fillText(G.run.abyss?'THE ABYSS — WAVE '+G.run.wave:
+      (G.run.meido?(G.run.milestone===MEIDO_LEN?'THE NIGHT ROAD — THE GATE':'THE NIGHT ROAD — MARK '+G.run.milestone):
       (G.run.gauntlet?'THE GAUNTLET — DUEL '+(G.gauntIdx+1):
-      (act?act.kanji+' — '+currentStageDef().n:'')),W/2,H*.36);
+      (act?act.kanji+' — '+currentStageDef().n:''))),W/2,H*.36);
     ctx.globalAlpha=1;ctx.textAlign='left';}
   // boss intro: the page holds its breath
   if(G.bossIntroT>0&&G.boss){const a=clamp(G.bossIntroT/2.4,0,1);const aa=a>.85?(1-a)/.15:(a<.15?a/.15:1);
@@ -3611,6 +3894,8 @@ function frame(now){requestAnimationFrame(frame);
 if(document.fonts&&document.fonts.load){
   document.fonts.load('800 100px "Shippori Mincho"').then(()=>{bakeTitle();bakeEnemies();bakeBosses();});}
 requestAnimationFrame(frame);
+// one small window for the shell (and for debugging) to reach the brush
+window.SUMI={get G(){return G;},get P(){return P;},get SAVE(){return SAVE;}};
 </script>
 </body>
 </html>
