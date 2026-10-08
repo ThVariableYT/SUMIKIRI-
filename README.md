@@ -1,6 +1,8 @@
 # 墨斬 — SUMIKIRI
 ### *A Hack & Slash Action Roguelike, Painted in Ink*
 
+<img width="2752" height="1536" alt="banner" src="https://github.com/user-attachments/assets/30d267d4-a6c0-473e-b1f6-5ca9aa6b2839" />
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-b3372a.svg)](LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-1d1a16.svg)](package.json)
 [![Tech: HTML5 Canvas](https://img.shields.io/badge/Tech-HTML5_Canvas_2D-8f6d1f.svg)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
