@@ -323,6 +323,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
       <div class="setrow"><div class="lab">Volume<small>the paper rustles</small></div><input type="range" id="set-vol" min="0" max="100" value="70"></div>
       <div class="setrow"><div class="lab">Screen shake<small>weight of the blade</small></div><button class="tgl" id="set-shake">shake</button></div>
       <div class="setrow"><div class="lab">Damage numbers<small>numbers on the page</small></div><button class="tgl" id="set-nums">numbers</button></div>
+      <div class="setrow"><div class="lab">First-sight cards<small>the codex pauses new foes</small></div><button class="tgl" id="set-cdx">cards</button></div>
       <div class="setrow"><div class="lab">Difficulty<small>静 calm · 嵐 storm · 狱 tempest</small></div>
         <div class="seg" id="diff-seg">
           <button data-diff="0">静</button><button data-diff="1">嵐</button><button data-diff="2">狱</button>
@@ -457,7 +458,7 @@ const store={
 const SAVE_KEY='sumikiri_v1';
 const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0},
   weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
-  difficulty:1,shake:true,numbers:true,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
+  difficulty:1,shake:true,numbers:true,codex:true,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
 let SAVE=defaultSave();
 (function(){
   const s=store.get(SAVE_KEY);if(!s)return;
@@ -825,8 +826,9 @@ const BESTIARY={
   kami:'Act 7. The painter\u2019s hand. At half it cracks and learns your tricks back.'};
 
 // ---- the codex: first-sight cards ---------------------------------------------
-// every foe gets one introduction per run — the page stops, the stranger is
-// sketched, and the blade comes back up when you say so.
+// every foe gets one introduction per run. dying and walking again keeps the
+// book closed on faces it already drew — only a run taken fresh from the roads
+// re-deals the cast, and the settings can silence the whole ritual.
 const CODEX={
   kappa:{no:'01',cls:'IMP · SWARM',st:[4,2,1],
     d:'A river imp that never learned patience. It fights in packs and dies in packs, the well water still sloshing behind its eyes.',
@@ -995,18 +997,6 @@ for(let i=0;i<3;i++){const c=mkCanvas(400,200),g=c.getContext('2d');
     gr.addColorStop(0,'rgba(226,218,198,0.5)');gr.addColorStop(1,'rgba(226,218,198,0)');
     g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,TAU);g.fill();}
   MIST.push(c);}
-
-// light shafts: pre-baked slanted rays that drift over the dawn acts.
-// drawn additively at low alpha, they cost three blits a frame.
-const RAYS=[];
-for(let i=0;i<3;i++){const c=mkCanvas(420,640),g=c.getContext('2d');
-  g.translate(0,0);
-  for(let j=0;j<6;j++){const x=40+j*62+((j%2)*22),w=rnd(16,46);
-    const gr=g.createLinearGradient(x,0,x+w,640);
-    gr.addColorStop(0,'rgba(246,240,222,0)');gr.addColorStop(.5,'rgba(246,240,222,0.55)');gr.addColorStop(1,'rgba(246,240,222,0)');
-    g.fillStyle=gr;
-    g.beginPath();g.moveTo(x,0);g.lineTo(x+w,0);g.lineTo(x+w+130,640);g.lineTo(x+130,640);g.closePath();g.fill();}
-  RAYS.push(c);}
 
 const GRP=[];
 for(let i=0;i<3;i++){const S=256,c=mkCanvas(S,S),g=c.getContext('2d');
@@ -2315,7 +2305,7 @@ function toMenu(m){if(m==='acts')renderActs();if(m==='shrine')renderShrine();if(
 // codex plumbing: queue → card → dismiss. the world freezes while the
 // card is up; wind, wipe and camera keep breathing so the pause feels alive.
 function codexMeet(type,x,y){
-  if(!G.run||!G.codexSeen||!CODEX[type]||G.codexSeen.has(type))return;
+  if(!SAVE.codex||!G.run||!G.codexSeen||!CODEX[type]||G.codexSeen.has(type))return;
   G.codexSeen.add(type);
   G.codexQ.push({type,x,y});}
 function openCodex(){
@@ -2477,28 +2467,31 @@ function renderActs(){const strip=$('#act-strip');if(!strip)return;strip.innerHT
     if(n.fn)d.onclick=()=>{AU.ui();n.fn();};
     strip.appendChild(d);}}
 
-function startRun(act,abyss=false){G.run={act,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,abyss,wave:1,bossDead:null,gauntlet:false};
-  G.codexSeen=new Set();G.codexQ.length=0;G.codexCur=null;
+function startRun(act,abyss=false,keepBook=false){G.run={act,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,abyss,wave:1,bossDead:null,gauntlet:false};
+  if(!keepBook)G.codexSeen=new Set(); // a fresh run re-introduces the cast
+  G.codexQ.length=0;G.codexCur=null;
   P=newPlayer();P.ownedWeapons=WKEYS.filter(w=>SAVE.weapons[w]);
   if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon='katana';
   P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;
   for(let i=0;i<SAVE.meta.discipline;i++)grantBlessing(choice(BLESS),true);
   startStage();}
-function startGauntlet(){G.run={act:7,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,gauntlet:true,wave:1,bossDead:null,abyss:false};
-  G.codexSeen=new Set();G.codexQ.length=0;G.codexCur=null;
+function startGauntlet(keepBook=false){G.run={act:7,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,gauntlet:true,wave:1,bossDead:null,abyss:false};
+  if(!keepBook)G.codexSeen=new Set();
+  G.codexQ.length=0;G.codexCur=null;
   P=newPlayer();P.ownedWeapons=WKEYS.filter(w=>SAVE.weapons[w]);
   if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon='katana';
   P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;
   for(let i=0;i<SAVE.meta.discipline;i++)grantBlessing(choice(BLESS),true);
   G.gauntIdx=0;startStage();}
 // the night road: nine marks, a seeded dark, and no two nights alike
-function startMeido(daily){
+function startMeido(daily,keepBook=false){
   const now=new Date();
   const seed=daily?((now.getFullYear()*10000+(now.getMonth()+1)*100+now.getDate())>>>0):
     ((Date.now()^(Math.random()*4294967295))>>>0);
   G.run={act:9,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,
     meido:true,daily:!!daily,seed,rng:mulberry(seed),milestone:1,mut:null,lastC:'',gauntlet:false,abyss:false,wave:1,bossDead:null};
-  G.codexSeen=new Set();G.codexQ.length=0;G.codexCur=null;
+  if(!keepBook)G.codexSeen=new Set();
+  G.codexQ.length=0;G.codexCur=null;
   P=newPlayer();P.ownedWeapons=WKEYS.filter(w=>SAVE.weapons[w]);
   if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon='katana';
   P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;
@@ -2694,10 +2687,10 @@ function showDeath(){const t=G.run.time;
   const btns=$('#death-btns');btns.innerHTML='';
   const add=(label,fn)=>{const b=document.createElement('button');b.className='mbtn';
     b.innerHTML=`<span class="idx">◆</span>${label}`;b.onclick=()=>{AU.ui();fn();};btns.appendChild(b);};
-  add('Walk Again',()=>G.run.gauntlet?startGauntlet():(G.run.meido?startMeido(G.run.daily):startRun(G.run.act,G.run.abyss)));
+  add('Walk Again',()=>G.run.gauntlet?startGauntlet(true):(G.run.meido?startMeido(G.run.daily,true):startRun(G.run.act,G.run.abyss,true)));
   add('The Shrine',()=>toMenu('shrine'));
   add('The Roads',()=>toMenu('acts'));
-  if(!G.run.gauntlet&&!G.run.meido&&G.run.deaths>=3&&SAVE.difficulty>0)add('Accept Mercy (lower difficulty)',()=>{SAVE.difficulty--;persist();startRun(G.run.act,G.run.abyss);});
+  if(!G.run.gauntlet&&!G.run.meido&&G.run.deaths>=3&&SAVE.difficulty>0)add('Accept Mercy (lower difficulty)',()=>{SAVE.difficulty--;persist();startRun(G.run.act,G.run.abyss,true);});
   setMode('death');AU.stamp();}
 
 // ---- records: etched server-side, so the names outlive the page ---------------
@@ -3037,12 +3030,6 @@ function renderWorld(){
   ctx.scale(zp,zp);ctx.translate(-G.cam.x,-G.cam.y);
   ctx.drawImage(G.floorC,0,0);
   const act=curAct();
-  // dawn light leans through in shafts — three drifting blits, that's all
-  if(act===1||act===3||act===7){
-    ctx.globalAlpha=act===7?.05:.085;
-    for(let i=0;i<3;i++){const rx=((hash01(i*7.7)*RW)+G.t*(9+i*5))%(RW+460)-230;
-      ctx.drawImage(RAYS[i],rx,-30,380,560);}
-    ctx.globalAlpha=1;}
   if(act===2)drawWater();
   drawProps();
   drawFireflies();
@@ -3837,11 +3824,14 @@ function drawTouchUI(){
   const el=$('#set-vol');if(el)el.value=Math.round(AU.vol*100);})();
 const volEl=$('#set-vol');
 if(volEl)volEl.addEventListener('input',e=>{const v=+e.target.value/100;AU.setVol(v);store.set('sumikiri_vol',v);});
-function syncTgl(){const sh=$('#set-shake'),nm=$('#set-nums');if(sh)sh.classList.toggle('on',SAVE.shake);
+function syncTgl(){const sh=$('#set-shake'),nm=$('#set-nums'),cd=$('#set-cdx');if(sh)sh.classList.toggle('on',SAVE.shake);
   if(nm)nm.classList.toggle('on',SAVE.numbers);
+  if(cd)cd.classList.toggle('on',SAVE.codex);
   document.querySelectorAll('[data-diff]').forEach(b=>b.classList.toggle('on',+b.dataset.diff===SAVE.difficulty));}
 const shBtn=$('#set-shake');if(shBtn)shBtn.onclick=()=>{SAVE.shake=!SAVE.shake;persist();syncTgl();AU.ui();};
 const nmBtn=$('#set-nums');if(nmBtn)nmBtn.onclick=()=>{SAVE.numbers=!SAVE.numbers;persist();syncTgl();AU.ui();};
+const cdxBtn=$('#set-cdx');if(cdxBtn)cdxBtn.onclick=()=>{SAVE.codex=!SAVE.codex;persist();syncTgl();AU.ui();
+  if(!SAVE.codex)G.codexQ.length=0;}; // anything still waiting in the book goes quiet too
 document.querySelectorAll('[data-diff]').forEach(b=>b.onclick=()=>{SAVE.difficulty=+b.dataset.diff;persist();syncTgl();AU.ui();});
 const backBtn=$('#set-back');if(backBtn)backBtn.onclick=()=>{AU.ui();leaveSettings();};
 const fsBtn=$('#set-fs');
