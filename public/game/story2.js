@@ -620,6 +620,20 @@ S.bossMoves={
 // lunge squash — keeps working without a single change).
 
 S.updateEnemy=function(e,dt,dp,angP,move,keepDist){
+  const handled=s2Step(e,dt,dp,angP,move,keepDist);
+  if(handled){
+    // The engine returns the moment we say "handled" — which means the shared
+    // velocity integration living at the END of its updateEnemy (after its own
+    // switch, guarded by state!=='charging') never runs for the red road's
+    // cast. For a while that meant every foe painted speed into a body that
+    // never spent it: e.vx was set, e.x stood still. The vermilion road owns
+    // its bodies end to end, so it owns the integration too.
+    e.x+=e.vx*dt;e.y+=e.vy*dt;
+    e.x=clamp(e.x,WALL+e.r,RW-WALL-e.r);e.y=clamp(e.y,WALL+e.r,RH-WALL-e.r);
+  }
+  return handled;};
+
+function s2Step(e,dt,dp,angP,move,keepDist){
   const fire=(o)=>addTele(o);
   const R=Math.random;
   switch(e.state){
@@ -727,7 +741,9 @@ S.updateEnemy=function(e,dt,dp,angP,move,keepDist){
       e.atkDone=true;}
     if((G.t*60|0)%3===0)addPart({x:e.x,y:e.y,life:.24,max:.24,size:2.6,color:'rgba(58,53,66,0.55)'});
     e.t-=dt;
-    if(e.t<=0){e.state='recover';e.t=e.def.rec*DIFFI().rec+rnd(.2);e.cd=e.def.rec*DIFFI().rec;e.atkDone=false;}
+    if(e.x<WALL+e.r+6||e.x>RW-WALL-e.r-6||e.y<WALL+e.r+6||e.y>RH-WALL-e.r-6||e.t<=0){
+      e.state='recover';e.t=e.def.rec*DIFFI().rec+rnd(.2);e.cd=e.def.rec*DIFFI().rec;e.atkDone=false;
+      e.vx*=.2;e.vy*=.2;}
     return true;
   case 'recover':
     e.vx*=Math.exp(-4*dt);e.vy*=Math.exp(-4*dt);e.t-=dt;

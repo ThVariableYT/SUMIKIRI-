@@ -403,6 +403,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   .screen{padding:12px 0}
 }
 </style>
+<link rel="stylesheet" href="menufx.css">
 </head>
 <body>
 <canvas id="cv"></canvas>
@@ -413,7 +414,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="t-kanji"><span>墨</span><span>斬</span><span class="seal title-seal">印</span></div>
     <div class="t-side">
       <h1>SUMIKIRI</h1>
-      <div class="tag">a hack &amp; slash painted in ink · update 2.0 「朱」 the vermilion road</div>
+      <div class="tag">a hack &amp; slash painted in ink · update 2.1 「灯」 the painted light</div>
       <nav class="menu">
         <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Roads <small class="mono" style="font-size:11px;color:var(--ink2)">· two stories</small></button>
         <button class="mbtn" data-go="records"><span class="idx">二</span>Records of Ink</button>
@@ -629,6 +630,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </div>
 <script src="story2.js"></script>
 <script src="ambient2.js"></script>
+<script src="gfx.js"></script>
+<script src="menufx.js"></script>
 <script>
 'use strict';
 const TAU=Math.PI*2, PI=Math.PI;
@@ -2064,7 +2067,8 @@ function drawTitleScene(){
     if(a<=.04)continue;
     ctx.globalAlpha=a;ctx.drawImage(glowGold,f.x-13,f.y-13,26,26);
     ctx.fillStyle=GOLD2;ctx.beginPath();ctx.arc(f.x,f.y,1.5,0,TAU);ctx.fill();}
-  ctx.globalAlpha=1;}
+  ctx.globalAlpha=1;
+  if(window.GFX)GFX.titleFX();} // the low sun leans its rays across the whole scene
 
 // ---- feel plumbing -----------------------------------------------------------
 
@@ -3279,6 +3283,14 @@ function renderHelp(){
 
 const CHTAG={new:'新',fix:'修',vis:'絵',cbt:'戦',eco:'社',base:'基'};
 const CHRONICLE=[
+  {v:'2.1',kan:'灯',name:'update 2.1 — the painted light',note:'the cast of the red road walks, and every page learned to glow',items:[
+    ['fix','the vermilion road’s whole cast stood rooted — every foe painted speed its body never spent; they walk now, all eight: foxes weave, cats pounce the full length of their dash, mud closes, and the keepers’ summons answer the call'],
+    ['vis','THE PAINTED LIGHT — a true glow pass over every frame: vermilion and gold halate softly where the ink is thick, in two radii (a tight halo and a wide dream of one), while pale paper stays crisp; slashes, telegraphs, embers, fireflies and auras all carry their own light now'],
+    ['vis','the dark acts learned night: a light-map folds the abyss, the moon road, the lantern river and the ashfall into dusk — then the hero’s lamp, the moon, floating lanterns, ember-shot and every telegraph punch warmth back through it'],
+    ['vis','every body stands ON the ground — soft contact shadows under heroes, inkmen and keepers (a leaping boss sheds its own)'],
+    ['vis','the far edge of every page recedes behind a breath of tinted air — depth haze, each act in its own weather'],
+    ['vis','the title’s low sun leans slow god-rays across the whole scene'],
+    ['vis','the menus live: pages arrive as settling brush-strokes, headers draw a vermilion line, cards stagger in, locked roads sway their seals, the current road breathes a red ring — and gold motes drift through every page, with an ink ripple wherever your hand lands']]},
   {v:'2.0',kan:'朱',name:'update 2.0 — the vermilion road',note:'a second story, a second hand, and the page learned to be deep',items:[
     ['new','THE VERMILION ROAD 朱 — a whole second campaign: six acts, its own sky, its own ground, and a new ending; the first story is now named — 墨 THE INK ROAD, and both roads hang side by side on the roads page'],
     ['new','AKANE 茜, the brush-dancer — the second hand: faster and lighter than the ronin, her great brush sweeping wide vermilion arcs; momentum is her edge (朱勢 — speed itself sharpens her strokes, and a red ring shows how much), and her ki spends as 紅潮, a crimson tide of ink across the field instead of the spin'],
@@ -3606,13 +3618,16 @@ function drawCrows(){
 const HUD={hpGhost:100};
 function render(){ctx.setTransform(DPR,0,0,DPR,0,0);
   ctx.fillStyle=PAPER;ctx.fillRect(0,0,W,H);
+  if(window.GFX)GFX.beginCapture(); // the glow mirror opens before the world paints
   const inGame=(G.mode==='game'||G.mode==='bless'||G.mode==='pause'||G.mode==='death'||G.mode==='clear'||G.mode==='victory'||G.mode==='submit'||G.mode==='codex')&&G.floorC&&G.run;
-  if(inGame)renderWorld();else drawTitleScene();
+  if(inGame)renderWorld();else{drawTitleScene();if(window.GFX)GFX.post();}
   if(inGame)ctx.drawImage(gradeLayer(),0,0,W,H);
+  if(inGame&&window.GFX){GFX.night();GFX.atmos();} // painted light: the dark acts carry a light-map, every page carries air
   if(inGame&&window.AMBI2)AMBI2.onScreen(); // the bloom that follows the key light
   if(inGame&&G.run&&G.run.meido&&mdHas('mist')&&fogC){ // the sea of fog closes in
     ctx.globalAlpha=.85;ctx.drawImage(fogC,0,0,W,H);ctx.globalAlpha=1;}
   if(inGame)drawFgPetals(); // the near air — petals between you and the world
+  if(inGame&&window.GFX)GFX.post(); // the painted light: bloom + ink bleed over everything seen
   if(G.slowT>0&&G.ts<.4&&inGame){ // time kneels: grade everything down a touch
     ctx.save();ctx.globalAlpha=.06;ctx.fillStyle='#f2ecd9';ctx.fillRect(0,0,W,H);ctx.restore();}
   if(G.wash>0){const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.2,W/2,H/2,Math.max(W,H)*.7);
@@ -3673,6 +3688,7 @@ function renderWorld(){
     ctx.lineWidth=3;ctx.beginPath();ctx.arc(m.x,m.y,14+p*18,0,TAU);ctx.stroke();
     ctx.globalAlpha=.25;ctx.fillStyle=RED;ctx.beginPath();ctx.arc(m.x,m.y,p*14,0,TAU);ctx.fill();ctx.globalAlpha=1;}
   if(G.codexCur)drawCodexFocus();
+  if(window.GFX)GFX.entityShadows(); // every body stands on the ground before it is drawn
   for(const t of G.teles){if(t.t<0)continue;drawTele(t);}
   for(const r of G.rings){ctx.strokeStyle=INK;ctx.globalAlpha=.8;ctx.lineWidth=r.w*.5;
     ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,TAU);ctx.stroke();
