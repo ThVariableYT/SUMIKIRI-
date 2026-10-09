@@ -125,6 +125,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 .rec-note{font-size:12.5px;color:var(--gold);letter-spacing:.08em;margin-top:14px;min-height:18px}
 
 .act-strip{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;padding:16px 0 10px}
+.story-head{display:flex;align-items:baseline;gap:12px;margin:20px 0 0;padding:0 6px;border-bottom:2px solid var(--ink);padding-bottom:6px}
+.story-head .sk{font-size:34px;font-weight:800;line-height:1}
+.story-head .sn{font-weight:800;letter-spacing:.16em;font-size:15px}
+.story-head .ss{font-size:10.5px;color:var(--ink2);letter-spacing:.12em}
+.story-head.s2{border-color:var(--red)}
+.story-head.s2 .sk{color:var(--red)}
+.story-head.s2 .sn{color:var(--red)}
+.act-node.s2 .a-kan{color:var(--red)}
+.act-node.s2{border-color:var(--red)}
 .act-node{width:150px;padding:16px 10px 14px;border:2px solid var(--ink);background:var(--paper3);cursor:pointer;text-align:center;position:relative;
   box-shadow:3px 3px 0 rgba(29,26,22,.24);transition:transform .13s ease,box-shadow .13s ease}
 .act-node:hover:not(.locked){transform:translate(-2px,-2px);box-shadow:5px 5px 0 rgba(179,55,42,.32);border-color:var(--red)}
@@ -354,6 +363,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   .rec-h span:nth-child(6),.rec-r span:nth-child(6){display:none} /* difficulty reads in the rank */
   /* the roads: two nodes abreast */
   .act-strip{gap:10px}
+  .story-head{gap:8px;margin:14px 0 0}
+  .story-head .sk{font-size:26px}
+  .story-head .sn{font-size:12.5px;letter-spacing:.1em}
+  .story-head .ss{display:none}
   .act-node{width:44vw;max-width:175px;padding:12px 8px 10px}
   .act-node .a-kan{font-size:36px}
   .act-node .a-name{min-height:32px;font-size:11.5px}
@@ -400,19 +413,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="t-kanji"><span>墨</span><span>斬</span><span class="seal title-seal">印</span></div>
     <div class="t-side">
       <h1>SUMIKIRI</h1>
-      <div class="tag">a hack &amp; slash painted in ink · v8 「犬 edition」</div>
+      <div class="tag">a hack &amp; slash painted in ink · update 2.0 「朱」 the vermilion road</div>
       <nav class="menu">
-        <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Road</button>
-        <button class="mbtn" id="btn-abyss" data-go="abyss"><span class="idx">二</span>The Abyss <small class="mono" id="ab-best" style="font-size:12px;color:var(--ink2)"></small></button>
-        <button class="mbtn" id="btn-gauntlet" data-go="gauntlet"><span class="idx">三</span>The Gauntlet <small class="mono" id="gt-best" style="font-size:12px;color:var(--ink2)"></small></button>
-        <button class="mbtn" id="btn-meido" data-go="meido"><span class="idx">四</span>The Night Road <small class="mono" id="md-best" style="font-size:12px;color:var(--ink2)"></small></button>
-        <button class="mbtn" id="btn-meido-daily" data-go="meidoDaily"><span class="idx">五</span>Rite of the Day <small class="mono" id="md-daily" style="font-size:12px;color:var(--ink2)"></small></button>
-        <button class="mbtn" data-go="records"><span class="idx">六</span>Records of Ink</button>
+        <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Roads <small class="mono" style="font-size:11px;color:var(--ink2)">· two stories</small></button>
+        <button class="mbtn" data-go="records"><span class="idx">二</span>Records of Ink</button>
         <button class="mbtn" data-go="chrono" aria-label="The Chronicle — every change the ink has taken"><span class="idx" style="display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:block"><path d="M5 4.6h14"/><path d="M5 19.4h14"/><path d="M7 6.2h10V17c-1.7-.9-3.3-.9-5 0-1.7.9-3.3.9-5 0z"/><path d="M9.7 9.4h4.6"/><path d="M9.7 12.4h4.6"/></svg></span>The Chronicle</button>
-        <button class="mbtn" data-go="shrine"><span class="idx">七</span>The Shrine</button>
-        <button class="mbtn" data-go="armory"><span class="idx">八</span>The Armory</button>
-        <button class="mbtn" data-go="help"><span class="idx">九</span>How to Hold a Blade</button>
-        <button class="mbtn" data-go="settings"><span class="idx">十</span>Settings</button>
+        <button class="mbtn" data-go="shrine"><span class="idx">三</span>The Shrine</button>
+        <button class="mbtn" data-go="armory"><span class="idx">四</span>The Armory</button>
+        <button class="mbtn" data-go="help"><span class="idx">五</span>How to Hold a Blade</button>
+        <button class="mbtn" data-go="settings"><span class="idx">六</span>Settings</button>
       </nav>
     </div>
   </div>
@@ -422,9 +431,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 
 <div class="screen" id="s-acts">
   <div class="page">
-    <div class="page-head"><h2>THE ROADS</h2><span class="sub">seven acts to the blank page</span></div>
+    <div class="page-head"><h2>THE ROADS 路</h2><span class="sub">two stories · one page</span></div>
     <div class="page-body">
-      <div class="act-strip" id="act-strip"></div>
+      <div id="roads-body"></div>
       <div class="btnrow" style="margin-top:14px"><button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button></div>
     </div>
   </div>
@@ -551,7 +560,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="page-head"><h2>RECORDS OF INK 銘</h2><span class="sub">names carved by other hands</span></div>
     <div class="page-body">
       <div class="recs-tabs">
-        <button data-rec="abyss">ABYSS 無</button><button data-rec="meido">NIGHT 冥</button><button data-rec="gauntlet">GAUNTLET 連</button><button data-rec="story">STORY 終</button>
+        <button data-rec="abyss">ABYSS 無</button><button data-rec="meido">NIGHT 冥</button><button data-rec="gauntlet">GAUNTLET 連</button><button data-rec="story">INK 墨</button><button data-rec="story2">朱 VERMILION</button>
       </div>
       <div class="rec-list" id="rec-list"><div class="rec-empty">gathering the pages…</div></div>
       <div id="rec-own"></div>
@@ -618,6 +627,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   <p class="mono" style="font-size:11px;opacity:.65">fullscreen (in settings) locks it there</p>
   <button class="mbtn" id="rotate-dismiss"><span class="idx">◆</span>Play anyway</button>
 </div>
+<script src="story2.js"></script>
+<script src="ambient2.js"></script>
 <script>
 'use strict';
 const TAU=Math.PI*2, PI=Math.PI;
@@ -645,7 +656,7 @@ const store={
 
 const SAVE_KEY='sumikiri_v1';
 const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0,ki:0,mirror:0,stance:0,step:0,edge:0,rhythm:0,gourd:0},
-  weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
+  weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,unlockedAct2:1,achieved2:false,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
   difficulty:1,shake:true,numbers:true,codex:true,haptic:true,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
 let SAVE=defaultSave();
 (function(){
@@ -883,7 +894,7 @@ const G={mode:'title',run:null,enemies:[],projs:[],parts:[],floats:[],slashes:[]
   codexQ:[],codexSeen:null,codexCur:null,codexT:0,zpC:0,codexArm:0};
 let P=null;
 const bl=id=>G.run?(G.run.blessings[id]||0):0;
-const curAct=()=>G.run?(G.run.meido?9:(G.run.abyss?Math.min(7,1+Math.floor(G.run.wave/4)):(G.run.gauntlet?7:G.run.act))):1;
+const curAct=()=>G.run?(G.run.meido?9:(G.run.abyss?Math.min(7,1+Math.floor(G.run.wave/4)):(G.run.gauntlet?7:(G.run.story===2?10+G.run.act:G.run.act)))):1;
 resize();
 
 const WEAPONS={
@@ -892,6 +903,7 @@ const WEAPONS={
   twin:{name:'Twin Blades',kanji:'双',desc:'A blur of steel in four beats. Critical instinct.',dmg:[7,7,9,13],rate:.17,range:68,arc:1.95,knock:70,cost:900,crit:.08},
   kanabo:{name:'Kanabō',kanji:'棒',desc:'Slow, brutal, shield-breaking. Every landfall trembles.',dmg:[27,42],rate:.52,range:94,arc:2.6,knock:340,cost:1400,guardBreak:true},
   kasa:{name:'Iron Kasa',kanji:'傘',desc:'A shed roof on a haft. Heavy in the hand, generous to the parry — every deflect answers with a fan of ink.',dmg:[11,14,17],rate:.32,range:82,arc:2.2,knock:120,cost:2200,unique:'+30% deflect window · deflects counter with an ink fan'}};
+if(window.STORY2)Object.assign(WEAPONS,STORY2.weapons); // the brush joins the armory
 const WKEYS=Object.keys(WEAPONS);
 
 const BLESS=[
@@ -951,6 +963,7 @@ const ENEMY={
   mirror:{name:'Mirror Shade',k:'鏡',hp:52,spd:120,r:14,dmg:8,ash:0,atk:'volley',rng:420,wind:.55,rec:1.05,keep:250},
   ronin:{name:'Fallen Ronin',k:'浪',hp:70,spd:118,r:16,dmg:14,ash:12,atk:'riposte',rng:118,wind:.5,rec:.5,chain:3},
   archer:{name:'Ashigaru Archer',k:'弓',hp:40,spd:92,r:15,dmg:11,ash:10,atk:'arrow',rng:999,wind:.8,rec:1.1,keep:340}};
+if(window.STORY2)Object.assign(ENEMY,STORY2.enemy); // story 2: the vermilion cast
 
 const BOSSES={
   uzu:{name:'Uzu, the Whirlpool Blade',kanji:'渦',hp:260,r:26,spd:112,touch:6,duel:1,moves:['blinkStrike','gust','chainDash']},
@@ -963,6 +976,7 @@ const BOSSES={
   raijin:{name:'Raiden, Drum of a Hundred Storms',kanji:'雷',hp:1100,r:36,spd:74,touch:9,moves:['bolts','spiralBurst','chainDash','shock']},
   hollow:{name:'The Hollow Daimyō',kanji:'灰',hp:1280,r:38,spd:92,touch:10,moves:['charge','volley','bolts','summon','nova','chainDash'],summon:'wraith'},
   kami:{name:'The Nameless Kami',kanji:'空',hp:1580,r:32,spd:100,touch:9,phased:true,moves:['rain','spiralBurst','summon','blinkVolley'],moves2:['mirrorDash','wave','clones','volley'],summon:'kappa'}};
+if(window.STORY2)Object.assign(BOSSES,STORY2.bosses); // story 2: the six keepers of 朱
 const GAUNTLET=['uzu','goroki','zangetsu','orochi','jin','sojobo','yuki','raijin','hollow','kami'];
 
 // ---- the night road 冥 ------------------------------------------------------
@@ -1062,6 +1076,7 @@ const BESTIARY={
   raijin:'Act 5. Drums orbit him. Bolts fall on your shadow — keep the shadow moving.',
   hollow:'Act 4 of the spirit. Charges, volleys, calls the wraiths. Grey, but not empty.',
   kami:'Act 7. The painter\u2019s hand. At half it cracks and learns your tricks back.'};
+if(window.STORY2)Object.assign(BESTIARY,STORY2.bestiary); // story 2: field notes for the new road
 
 // ---- the codex: first-sight cards ---------------------------------------------
 // every foe gets one introduction per run. dying and walking again keeps the
@@ -1177,6 +1192,7 @@ const CODEX={
       ['Imp Summons','even the blank page borrows imps',''],
       ['Blink Barrage','arrives firing — deflect the shards','d'],
       ['Second Hand','past half: mirror dashes, your own clones, waves of ink — nothing you have not survived before','p']]}};
+if(window.STORY2)Object.assign(CODEX,STORY2.codex); // story 2: the vermilion codex
 
 // ---- the ink kitchen: everything you see is baked at boot on offscreen
 // canvases, with a few live layers (wind, weather, light) drawn per frame.
@@ -1525,7 +1541,8 @@ function bakeEnemies(){
       g.fillStyle='#c9c2ab';
       g.beginPath();g.moveTo(30,0);g.lineTo(25,-2.4);g.lineTo(25,2.4);g.closePath();g.fill();
       caps(g,0,-5,9,-8,2.4,'#3f4a3f');caps(g,0,5,9,8,2.4,'#3f4a3f');}};
-  for(const k in defs)ESPR[k]=spr(Math.ceil(ENEMY[k].r*5.4),defs[k]);}
+  for(const k in defs)ESPR[k]=spr(Math.ceil(ENEMY[k].r*5.4),defs[k]);
+  if(window.STORY2)for(const k in STORY2.painters)ESPR[k]=spr(Math.ceil((ENEMY[k]||{r:14}).r*5.4),STORY2.painters[k]);}
 
 const BSPR={};
 function bakeBosses(){
@@ -1762,7 +1779,8 @@ function bakeBosses(){
       oBlob(g,28,15,4.4,3,'#3a3430');
       g.fillStyle='rgba(29,26,22,0.5)';
       g.beginPath();g.arc(-4,16,2,0,TAU);g.arc(8,13,1.5,0,TAU);g.fill();}};
-  for(const k in defs)BSPR[k]=spr(Math.ceil(BOSSES[k].r*5.6),defs[k]);}
+  for(const k in defs)BSPR[k]=spr(Math.ceil(BOSSES[k].r*5.6),defs[k]);
+  if(window.STORY2)for(const k in STORY2.bossPainters)BSPR[k]=spr(Math.ceil((BOSSES[k]||{r:30}).r*5.6),STORY2.bossPainters[k]);}
 
 // per-act light direction for shadows + the color grade baked to screen size
 const GRADE={
@@ -1775,6 +1793,7 @@ const GRADE={
   7:{tint:'rgba(251,247,236,0.14)',lx:0,ly:0,shadow:'rgba(60,60,70,0.12)',vig:.2,amb:'blank'},
   8:{tint:'rgba(140,43,31,0.09)',lx:0,ly:.7,shadow:'rgba(60,16,10,0.3)',vig:.5,amb:'abyss'},
   9:{tint:'rgba(44,58,94,0.15)',lx:.22,ly:.28,shadow:'rgba(10,14,26,0.4)',vig:.5,amb:'moon'}};
+if(window.STORY2)Object.assign(GRADE,STORY2.grade); // story 2: light for the vermilion road
 const gradeOf=()=>GRADE[curAct()]||GRADE[1];
 function gradeLayer(){
   const act=curAct();
@@ -1826,7 +1845,8 @@ function buildFloor(act){const c=mkCanvas(RW,RH),g=c.getContext('2d');
     g.strokeStyle='rgba(160,176,204,0.16)';g.lineWidth=2;
     for(let i=0;i<4;i++){g.beginPath();g.ellipse(RW*.62,RH*.8-i*16,120-i*14,26-i*4,0,0,TAU);g.stroke();}}
   if(G.run&&G.run.abyss){g.fillStyle='rgba(46,24,20,0.34)';g.fillRect(0,0,RW,RH);}
-  for(let i=0;i<30;i++){const x=hash01(seed+i*3)*RW,y=hash01(seed+i*7)*RH;
+  if(act>=11&&window.STORY2){STORY2.buildFloor(act,g,seed);}
+  else for(let i=0;i<30;i++){const x=hash01(seed+i*3)*RW,y=hash01(seed+i*7)*RH;
     if(act===1){
       g.strokeStyle='rgba(120,130,70,0.4)';g.lineWidth=1.6;
       for(let j=0;j<4;j++){const bx=x+j*5;
@@ -1898,6 +1918,7 @@ function buildFloor(act){const c=mkCanvas(RW,RH),g=c.getContext('2d');
 // live props that sway in the wind — grass, reeds, bamboo, embers' stalks.
 // generated deterministically per act so the field doesn't reshuffle on redraw.
 function buildProps(act){
+  if(act>=11&&window.STORY2){STORY2.buildProps(act);return;} // the red road paints its own
   const pr=[];
   const n=act===7?26:(act===4?36:(act===9?42:88));
   for(let i=0;i<n;i++){
@@ -2102,7 +2123,8 @@ function recalc(){if(!P)return;const m=SAVE.meta;
   P.st.rate=1/(1+bl('thousand')*.15);
   P.maxhp=100+m.vit*12+bl('inkwell')*25;P.hp=Math.min(P.hp,P.maxhp);
   if(P.dashCharges>P.st.dashMax)P.dashCharges=P.st.dashMax;
-  if(P.gourd===undefined||P.gourd>P.st.gourdMax)P.gourd=P.st.gourdMax;}
+  if(P.gourd===undefined||P.gourd>P.st.gourdMax)P.gourd=P.st.gourdMax;
+  if(G.run&&G.run.story===2&&window.STORY2)STORY2.recalc(P);} // her body answers differently
 
 function startSwing(){const w=WEAPONS[P.weapon];const idx=P.comboIdx%w.dmg.length;
   P.swing={t:0,dur:w.rate*P.st.rate,idx,hit:false,flip:idx%2===1};
@@ -2122,6 +2144,7 @@ function doSwingHit(){const w=WEAPONS[P.weapon];const rng=w.range*P.st.range+P.r
       let crit=Math.random()<P.st.crit;if(crit)dmg*=2;
       if(P.mantle>0)dmg*=1.5;if(P.veng){dmg*=1.6;P.veng=false;}
       if(P.dmgBuffT>0)dmg*=1.25;
+      if(G.run&&G.run.story===2&&window.STORY2)dmg*=1+STORY2.momentum()*.3; // 朱勢 — momentum is her edge
       if(bl('execute')&&e.hp<e.maxhp*.25)dmg*=2;
       if(e.broken&&e.boss){dmg=dmg*2+e.maxhp*.15;e.broken=false;e.posture=0;
         slowmo(.4,.25);AU.stamp();trauma(.5);G.wash=.5;G.zp=.45;G.lbxT=.6;
@@ -2222,6 +2245,9 @@ function perfectDodge(src){if(P.pdodT>0)return;P.pdodT=.6;
     G.fx.push({kind:'impact',x:src.x,y:src.y,t:0,dur:.2});
     slowmo(.26,.3);trauma(.32);}}
 function doArt(){P.ki=0;P.artT=.5;slowmo(.5,.2);AU.ki();G.flash=.5;G.wash=.35;trauma(.5);G.zp=.35;
+  if(G.run&&G.run.story===2&&window.STORY2){STORY2.doArt(); // 紅潮 — her tide, not the spin
+    for(const pr of G.projs)if(!pr.friendly)pr.dead=true;
+    inkBurst(P.x,P.y,30,RED2,1.4);splat(P.x,P.y,true);hitstop(.1);return;}
   G.fx.push({kind:'arts',t:0,dur:.55});
   const rng=(P.weapon==='naginata'?280:240)*P.st.range;
   G.slashes.push({ang:0,spread:TAU,range:rng,t:0,dur:.4,flip:false,art:true});
@@ -2255,8 +2281,8 @@ function spawnEnemy(type,x,y,elite){const md=G.run&&G.run.meido;let d=ENEMY[type
   if(md){d=Object.assign({},d);
     if(mdHas('peril'))d.peril=Math.min(.8,(d.peril||0)*2);
     if(mdHas('still'))d.rec=(d.rec||1)*1.2;}
-  const hsc=1.5*(md?(1+(G.run.milestone-1)*.09)*DIFFI().hp:(1+.3*(act-1))*DIFFI().hp); // every foe carries half again the flesh
-  const dsc=md?(1+(G.run.milestone-1)*.05)*DIFFI().dmg:(1+.18*(act-1))*DIFFI().dmg;
+  const hsc=1.5*(md?(1+(G.run.milestone-1)*.09)*DIFFI().hp:(1+.3*((G.run&&G.run.story===2?G.run.act:act)-1))*DIFFI().hp); // every foe carries half again the flesh
+  const dsc=md?(1+(G.run.milestone-1)*.05)*DIFFI().dmg:(1+.18*((G.run&&G.run.story===2?G.run.act:act)-1))*DIFFI().dmg;
   const e={type,def:d,x,y,vx:0,vy:0,kx:0,ky:0,r:d.r*(elite?1.2:1),facing:rnd(TAU),state:'seek',t:0,cd:rnd(.3,1),flash:0,stun:0,elite,
     hp:d.hp*hsc*(elite?2.4:1)*(md&&mdHas('armored')?1.4:1)*(G.run.abyss?1+G.run.wave*.03:1),maxhp:0,spd:d.spd*DIFFI().spd*(elite?1.12:1)*(md&&mdHas('frenzy')?1.25:1),dmg:d.dmg*dsc*(elite?1.25:1),
     bob:rnd(TAU),rotS:0,rotT:0,rotAcc:0,life:0,fireT:0,aim:0,chan:0,tpCd:0,side:0,healing:null,atkDone:false,dead:false,
@@ -2284,6 +2310,7 @@ function damageEnemy(e,dmg,opts={}){if(e.dead)return;dmg=Math.max(1,Math.round(d
     if(e.posture>=e.postureMax&&!e.broken)breakEnemy(e);}
   if(e.hp<=0)killEnemy(e);}
 function killEnemy(e){if(e.dead)return;e.dead=true;e.deadT=0;
+  if(e.def&&e.def.s2&&window.STORY2)STORY2.onKill(e); // the doro split, and whatever else the red road keeps
   splat(e.x,e.y,e.boss||e.elite);inkBurst(e.x,e.y,e.boss?60:16,INK,e.boss?2:1);
   for(let i=0;i<3;i++)addPart({x:e.x+rnd(-8,8),y:e.y-6,vx:rnd(-14,14),vy:rnd(-90,-40),life:rnd(.6,1),max:1,size:rnd(1.6,3),color:'rgba(74,68,60,0.8)',grav:-40,drag:.96});
   const ash=Math.round((e.def.ash||0)*(1+(G.run.abyss?G.run.wave*.05:G.run.gauntlet?1+G.gauntIdx*.15:G.run.meido?1+G.run.milestone*.18:G.run.act*.25))*(1+G.style.rank*.25)*(1+SAVE.meta.fortune*.1)*(e.elite?3:1)*(mdHas('grace')?2:1));
@@ -2364,6 +2391,8 @@ function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.fla
     else if(dp<kd-30)move(P.x,P.y,-.8*back);
     else{const ta=angP+PI/2*(e.side||(e.side=Math.random()<.5?1:-1));
       e.vx=lerp(e.vx,Math.cos(ta)*e.spd*.5,1-Math.exp(-4*dt));e.vy=lerp(e.vy,Math.sin(ta)*e.spd*.5,1-Math.exp(-4*dt));}};
+  // story 2's cast runs its own state machine — same bodies, new ideas
+  if(e.def.s2&&window.STORY2&&STORY2.updateEnemy(e,dt,dp,angP,move,keepDist))return;
   switch(e.state){
   case 'seek':
     if(e.type==='ronin'){
@@ -2602,6 +2631,7 @@ wave:{start(b){b.mt=0;b.sub=0;},
  up(b,dt){if(b.sub===0&&b.mt>.85){b.sub=1;b.mt=0;
    G.rings.push({x:b.x,y:b.y,r:50,spd:175,w:30,dmg:16*b.dmgS,max:980,pHit:false});AU.roar();trauma(.4);}
   if(b.mt>1.4)bossEnd(b);}}};
+if(window.STORY2)Object.assign(BOSSMOVES,STORY2.bossMoves); // story 2: the new mechanics;
 
 function updateBoss(b,dt){b.t+=dt;b.bob+=dt*2;if(b.flash>0)b.flash-=dt;b.touchCd-=dt;
   if(b.hitT>0)b.hitT-=dt;
@@ -2636,14 +2666,14 @@ function spawnBoss(id){const d=BOSSES[id];const act=curAct();
   const md=G.run&&G.run.meido;
   const hs=1.5*(duel?DIFFI().hp*(md?1+(G.run.milestone-1)*.05:1):
     (md?(1+(G.run.milestone-1)*.13)*DIFFI().hp:
-    (1+.22*(act-1))*(G.run.abyss?1+G.run.wave*.04:1)*(G.run.gauntlet?1+G.gauntIdx*.07:1)*DIFFI().hp));
+    (1+.22*((G.run&&G.run.story===2?G.run.act:act)-1))*(G.run.abyss?1+G.run.wave*.04:1)*(G.run.gauntlet?1+G.gauntIdx*.07:1)*DIFFI().hp));
   const introT=duel?1.3:2.4;
   const b={boss:true,id,def:d,def0:d,name:d.name,x:RW/2,y:RH*.3,vx:0,vy:0,r:d.r,
-    hp:d.hp*hs,maxhp:d.hp*hs,spd:d.spd*DIFFI().spd,dmgS:(1+.18*(act-1))*DIFFI().dmg,
+    hp:d.hp*hs,maxhp:d.hp*hs,spd:d.spd*DIFFI().spd,dmgS:(1+.18*((G.run&&G.run.story===2?G.run.act:act)-1))*DIFFI().dmg,
     facing:PI/2,state:'intro',stateT:introT,sub:0,mt:0,move:null,lastMove:null,phase2:false,flash:0,stun:0,
     touchCd:0,hist:[],t:0,bob:0,h:0,kanji:d.kanji,tx:RW/2,ty:RH*.3,fireT:0,spir:0,hidden:false,
     hitP:false,dead:false,elite:false,life:0,perilDash:false,duel,
-    posture:0,postureMax:0,broken:false,brokenT:0,pLastHit:0};
+    posture:0,postureMax:0,broken:false,brokenT:0,pLastHit:0,orbs:null};
   b.postureMax=45+b.maxhp*.045;
   G.boss=b;G.enemies.push(b);G.bossIntroT=introT;codexMeet(id,b.x,b.y);
   if(duel){AU.taiko(.45);addFloat(RW/2,RH*.3,'DUEL',RED,22);}
@@ -2820,7 +2850,14 @@ function renderArmory(){const ashEl=$('#ash-armory');if(ashEl)ashEl.textContent=
     else if(SAVE.lastWeapon===id){btn.textContent='in hand';btn.disabled=true;}
     else{btn.textContent='take it';btn.onclick=()=>{SAVE.lastWeapon=id;persist();AU.ui();renderArmory();};}
     row.appendChild(btn);list.appendChild(row);});}
-function renderActs(){const strip=$('#act-strip');if(!strip)return;strip.innerHTML='';
+function renderActs(){const body=$('#roads-body');if(!body)return;body.innerHTML='';
+  const section=(kan,name,sub,s2)=>{const h=document.createElement('div');
+    h.className='story-head'+(s2?' s2':'');
+    h.innerHTML=`<span class="sk">${kan}</span><span class="sn">${name}</span><span class="ss">${sub}</span>`;
+    body.appendChild(h);
+    const strip=document.createElement('div');strip.className='act-strip';body.appendChild(strip);return strip;};
+  // the first road: ink — the ronin's seven acts
+  const s1=section('墨','THE INK ROAD','the nameless blade · seven acts');
   ACTS.forEach((a,i)=>{const act=i+1,locked=act>SAVE.unlockedAct;
     const d=document.createElement('div');d.className='act-node'+(locked?' locked':'')+(act===SAVE.unlockedAct?' cur':'');
     let dots='';for(let j=0;j<a.stages.length;j++)dots+='<i'+(act<SAVE.unlockedAct?' class="done"':'')+'></i>';
@@ -2828,28 +2865,45 @@ function renderActs(){const strip=$('#act-strip');if(!strip)return;strip.innerHT
       <div class="a-tag">act ${act}${a.stages.some(s=>s.duel)?' · duel':''}</div>
       <div class="a-dots">${dots}</div>`+
       (locked?`<div class="lock"><span>封</span></div>`:'');
-    if(!locked)d.onclick=()=>{AU.ui();startRun(act,false);};
-    strip.appendChild(d);});
+    if(!locked)d.onclick=()=>{AU.ui();startRun(act,false,false,1);};
+    s1.appendChild(d);});
+  // the second road: vermilion — akane's six (update 2.0)
+  if(window.STORY2){
+    const s2=section('朱','THE VERMILION ROAD','akane the brush-dancer · six acts · a different hand',true);
+    const unlocked=SAVE.unlockedAct2||1;
+    STORY2.acts.forEach((a,i)=>{const act=i+1,locked=act>unlocked;
+      const d=document.createElement('div');d.className='act-node s2'+(locked?' locked':'')+(act===unlocked?' cur':'');
+      let dots='';for(let j=0;j<a.stages.length;j++)dots+='<i'+(act<unlocked?' class="done"':'')+'></i>';
+      d.innerHTML=`<div class="a-kan">${a.kanji}</div><div class="a-name">${a.name}</div>
+        <div class="a-tag">act ${act}${a.stages.some(s=>s.duel)?' · duel':''}</div>
+        <div class="a-dots">${dots}</div>`+
+        (locked?`<div class="lock"><span>封</span></div>`:'');
+      if(!locked)d.onclick=()=>{AU.ui();startRun(act,false,false,2);};
+      s2.appendChild(d);});}
+  // the side roads: every bonus mode, one shelf
+  const sb=section('寄','THE SIDE ROADS','bonus modes · where finished blades go');
   const nodes=[];
   nodes.push({kan:'無',name:'The Abyss',tag:'endless · bosses every 6th',best:SAVE.abyssBest?'best wave '+SAVE.abyssBest:'',fn:()=>startRun(1,true)});
   if(SAVE.gauntletUnlocked)nodes.push({kan:'連',name:'The Gauntlet',tag:'ten duels, one page',best:SAVE.gauntletBest?'best '+fmtT(SAVE.gauntletBest):'',fn:()=>startGauntlet()});
-  else nodes.push({kan:'連',name:'The Gauntlet',tag:'finish the story first',best:'',fn:null,lock:'封'});
+  else nodes.push({kan:'連',name:'The Gauntlet',tag:'finish the ink road first',best:'',fn:null,lock:'封'});
   if(SAVE.abyssUnlocked){
     nodes.push({kan:'冥',name:'The Night Road',tag:'nine marks · reshuffled every run',best:SAVE.meidoBest?'deepest mark '+SAVE.meidoBest:'',fn:()=>startMeido(false)});
     nodes.push({kan:'日',name:'Rite of the Day',tag:'one seed, shared by every blade',best:'',fn:()=>startMeido(true)});}
+  else nodes.push({kan:'冥',name:'The Night Road',tag:'reach act 3 of the ink road',best:'',fn:null,lock:'封'});
   for(const n of nodes){const d=document.createElement('div');
     d.className='act-node side-node'+(n.fn?'':' locked');
     d.innerHTML=`<div class="a-kan">${n.kan}</div><div class="a-name">${n.name}</div><div class="a-tag">${n.tag}</div>`+
       (n.best?`<div class="a-tag" style="color:var(--gold)">${n.best}</div>`:'')+
       (n.lock?`<div class="lock"><span>${n.lock}</span></div>`:'');
     if(n.fn)d.onclick=()=>{AU.ui();n.fn();};
-    strip.appendChild(d);}}
+    sb.appendChild(d);}}
 
-function startRun(act,abyss=false,keepBook=false){G.run={act,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,abyss,wave:1,bossDead:null,gauntlet:false};
+function startRun(act,abyss=false,keepBook=false,story=1){G.run={act,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,abyss,wave:1,bossDead:null,gauntlet:false,story};
   if(!keepBook)G.codexSeen=new Set(); // a fresh run re-introduces the cast
   G.codexQ.length=0;G.codexCur=null;G.grantQ.length=0;G.grantShow=null;
   P=newPlayer();P.ownedWeapons=WKEYS.filter(w=>SAVE.weapons[w]);
-  if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon='katana';
+  if(story===2&&window.STORY2){STORY2.setupPlayer(P);SAVE.lastWeapon=P.weapon;persist();}
+  if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon=P.ownedWeapons[0]||'katana';
   P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;P.gourd=P.st.gourdMax;
   for(let i=0;i<SAVE.meta.discipline;i++)grantBlessing(choice(BLESS),true);
   startStage();}
@@ -2899,10 +2953,11 @@ function meidoWaves(){
   const ec=mdHas('bones')?1:m*.07;
   const mk=n=>{const a=[];for(let i=0;i<n;i++)a.push({t:pool[(r()*pool.length)|0],e:r()<ec});return a;};
   return[mk(Math.ceil(cnt*.6)),mk(Math.max(2,Math.floor(cnt*.4)))];}
+const ACTS_OF=()=>(G.run&&G.run.story===2&&window.STORY2)?STORY2.acts:ACTS; // which road is being walked
 function currentStageDef(){if(G.run.gauntlet)return{n:'Duel '+(G.gauntIdx+1)+' of '+GAUNTLET.length,w:null};
   if(G.run.meido)return{n:G.run.milestone===5?'The Fifth Mark — a duel':(G.run.milestone===MEIDO_LEN?'The Gate':'Mark '+G.run.milestone),w:null};
   if(G.run.abyss)return{n:'Wave '+G.run.wave,w:null};
-  return ACTS[G.run.act-1].stages[G.run.stage-1];}
+  return ACTS_OF()[G.run.act-1].stages[G.run.stage-1];}
 function startStage(){const run=G.run;
   G.enemies=[];G.projs=[];G.teles=[];G.rings=[];G.marks=[];G.pickups=[];G.slashes=[];G.ghosts=[];G.fx=[];
   G.boss=null;run.bossDead=null;
@@ -2980,6 +3035,11 @@ function stageClear(){if(G.clearing||!G.run)return;G.clearing=1;slowmo(.4,.5);AU
       else if(boss)actClear();
       else showClear('STAGE CLEARED','bless');}});}
 function actClear(){const act=G.run.act;
+  if(G.run.story===2){ // the vermilion road remembers its own progress
+    if(act<6)SAVE.unlockedAct2=Math.max(SAVE.unlockedAct2||1,act+1);
+    persist();
+    if(act===6){showVictory2();return;}
+    showClear('ACT '+ACTS_OF()[act-1].kanji+' CLEARED','act');return;}
   if(act<7)SAVE.unlockedAct=Math.max(SAVE.unlockedAct,act+1);
   if(act===3)SAVE.abyssUnlocked=true;
   persist();
@@ -3049,11 +3109,20 @@ function showClear(title,kind){$('#clear-title').textContent=title;
   persist();setMode('clear');AU.stamp();AU.taiko(.35);}
 function startRunKeep(){G.run.ashEarned=0;G.run.kills=0;G.run.revived=false;startStage();}
 function showVictory(){SAVE.gauntletUnlocked=true;persist();
-  $('#victory-stats').innerHTML=`kills <b>${SAVE.stats.kills}</b> · deaths <b>${SAVE.stats.deaths}</b> · the abyss and the gauntlet await`;
+  $('#victory-stats').innerHTML=`kills <b>${SAVE.stats.kills}</b> · deaths <b>${SAVE.stats.deaths}</b> · the red road is open — and the abyss awaits`;
   $('#victory-rec').textContent='';
-  victoryButtons([['Descend into the Abyss',()=>startRun(1,true)],['The Gauntlet 連',()=>startGauntlet()],['The Roads',()=>toMenu('acts')]]);
+  victoryButtons([['Walk the Vermilion Road 朱',()=>startRun(1,false,false,2)],['Descend into the Abyss',()=>startRun(1,true)],['The Gauntlet 連',()=>startGauntlet()],['The Roads',()=>toMenu('acts')]]);
   setMode('victory');AU.roar();AU.taiko(.55);G.lbxT=1.4;
   lbSubmit('story','victory-rec','victory');}
+// the second road's own ending: the stamp that said yes, declined
+function showVictory2(){SAVE.achieved2=true;persist();
+  const t=Math.round(G.run.totalTime+G.run.time);
+  $('#victory-stats').innerHTML=
+    `the seal is refused · <b class="mono">${fmtT(t)}</b> · kills <b>${G.run.kills}</b> · best combo <b>${G.run.bestCombo}</b><br>the blank page keeps your mark — the red road remembers who made it.`;
+  $('#victory-rec').textContent='';
+  victoryButtons([['The Ink Road, Again',()=>startRun(1)],['The Vermilion Road, Again',()=>startRun(1,false,false,2)],['The Roads',()=>toMenu('acts')]]);
+  setMode('victory');AU.roar();AU.taiko(.6);G.lbxT=1.4;
+  lbSubmit('story2','victory-rec','victory');}
 function showDeath(){const t=G.run.time;
   G.run.totalTime=(G.run.totalTime||0)+t;
   SAVE.stats.deaths++;G.run.deaths++;
@@ -3061,19 +3130,22 @@ function showDeath(){const t=G.run.time;
   $('#death-line').textContent='"'+choice(DEATHLINES)+'"';
   const where=G.run.gauntlet?'the gauntlet · duel '+(G.gauntIdx+1)+' of '+GAUNTLET.length:
     (G.run.meido?'the night road · mark '+G.run.milestone+' · seed '+G.run.seed:
-    (G.run.abyss?'the abyss · wave '+G.run.wave:'act '+ACTS[G.run.act-1].kanji+' · stage '+G.run.stage));
+    (G.run.abyss?'the abyss · wave '+G.run.wave:
+    (G.run.story===2?'朱 · act '+ACTS_OF()[G.run.act-1].kanji+' · stage '+G.run.stage:
+    'act '+ACTS[G.run.act-1].kanji+' · stage '+G.run.stage)));
   $('#death-stats').innerHTML=`${where} · kills <b>${G.run.kills}</b> · time <b>${fmtT(t)}</b> · ash kept <b>${G.run.ashEarned}</b>`;
   $('#death-rec').textContent='';
   if(G.run.abyss)lbSubmit('abyss','death-rec');
   else if(G.run.gauntlet)lbSubmit('gauntlet','death-rec');
   else if(G.run.meido)lbSubmit('meido','death-rec');
+  else if(G.run.story===2)lbSubmit('story2','death-rec');
   const btns=$('#death-btns');btns.innerHTML='';
   const add=(label,fn)=>{const b=document.createElement('button');b.className='mbtn';
     b.innerHTML=`<span class="idx">◆</span>${label}`;b.onclick=()=>{AU.ui();fn();};btns.appendChild(b);};
-  add('Walk Again',()=>G.run.gauntlet?startGauntlet(true):(G.run.meido?startMeido(G.run.daily,true):startRun(G.run.act,G.run.abyss,true)));
+  add('Walk Again',()=>G.run.gauntlet?startGauntlet(true):(G.run.meido?startMeido(G.run.daily,true):startRun(G.run.act,G.run.abyss,true,G.run.story||1)));
   add('The Shrine',()=>toMenu('shrine'));
   add('The Roads',()=>toMenu('acts'));
-  if(!G.run.gauntlet&&!G.run.meido&&G.run.deaths>=3&&SAVE.difficulty>0)add('Accept Mercy (lower difficulty)',()=>{SAVE.difficulty--;persist();startRun(G.run.act,G.run.abyss,true);});
+  if(!G.run.gauntlet&&!G.run.meido&&G.run.deaths>=3&&SAVE.difficulty>0)add('Accept Mercy (lower difficulty)',()=>{SAVE.difficulty--;persist();startRun(G.run.act,G.run.abyss,true,G.run.story||1);});
   setMode('death');AU.stamp();}
 
 // ---- records: etched server-side when the server exists, and always copied -----
@@ -3099,7 +3171,7 @@ async function lbApi(url,opts){
 function lbEntry(mode){
   const run=G.run;if(!run)return null;
   return {name:SAVE.recordsName,mode,
-    wave:mode==='abyss'?Math.max(0,run.wave-1):(mode==='gauntlet'?G.gauntIdx:(mode==='meido'?Math.max(0,run.milestone-1):7)),
+    wave:mode==='abyss'?Math.max(0,run.wave-1):(mode==='gauntlet'?G.gauntIdx:(mode==='meido'?Math.max(0,run.milestone-1):(mode==='story2'?6:7))),
     kills:run.kills,timeSec:Math.max(1,Math.round(run.totalTime)),difficulty:SAVE.difficulty,at:Date.now()};}
 async function lbSubmit(mode,elId='death-rec',ret='death'){
   if(!SAVE.recordsName){pendingMode=mode;pendingRet=ret;openSubmit();return;}
@@ -3149,12 +3221,12 @@ async function loadRecords(m){
     if(!list)return;
     if(!rows.length){list.innerHTML=`<div class="rec-empty">${alone?'no names in this page\u2019s ledger yet':'no names yet — the page is still blank'}</div>`;}
     else{
-      let html=`<div class="rec-h"><span>RANK</span><span>NAME</span><span>${m==='abyss'?'WAVE':(m==='meido'?'MARKS':'DUELS')}</span><span>KILLS</span><span>TIME</span><span>DIFF</span></div>`;
+      let html=`<div class="rec-h"><span>RANK</span><span>NAME</span><span>${m==='abyss'?'WAVE':(m==='meido'?'MARKS':((m==='story'||m==='story2')?'ACTS':'DUELS'))}</span><span>KILLS</span><span>TIME</span><span>DIFF</span></div>`;
       const DFK=['静','嵐','狱'];
       rows.forEach((r,i)=>{
         const me=r.name===SAVE.recordsName;
         html+=`<div class="rec-r${me?' me':''}"><span class="pos">${i+1}</span><span class="nm">${escapeHtml(r.name)}</span>`+
-          `<span class="dim mono">${m==='abyss'?('w'+r.wave):(m==='meido'?('m'+r.wave):(r.wave+'/10'))}</span><span class="dim mono">${r.kills}</span>`+
+          `<span class="dim mono">${m==='abyss'?('w'+r.wave):(m==='meido'?('m'+r.wave):((m==='story'||m==='story2')?(r.wave+'/'+(m==='story2'?'6':'7')):(r.wave+'/10')))}</span><span class="dim mono">${r.kills}</span>`+
           `<span class="dim mono">${fmtT(r.timeSec)}</span><span class="dim">${DFK[r.difficulty]||'嵐'}</span></div>`;});
       if(alone)html+=`<div class="rec-empty">the wider records are beyond this page\u2019s reach — these names live in its own ledger</div>`;
       list.innerHTML=html;}
@@ -3163,7 +3235,8 @@ async function loadRecords(m){
       if(m==='abyss')own.textContent=SAVE.abyssUnlocked?(SAVE.abyssBest?'your deepest wave: '+SAVE.abyssBest:'you have not descended yet'):'';
       else if(m==='meido')own.textContent=SAVE.abyssUnlocked?(SAVE.meidoBest?'your deepest mark: '+SAVE.meidoBest:'you have not walked the night yet'):'';
       else if(m==='gauntlet')own.textContent=SAVE.gauntletBest?('your best gauntlet: '+fmtT(SAVE.gauntletBest)):'';
-      else own.textContent=SAVE.gauntletUnlocked?'the story is finished':'finish act 7 to be counted';}
+      else if(m==='story')own.textContent=SAVE.gauntletUnlocked?'the ink road is finished':'finish act 7 to be counted';
+      else if(m==='story2')own.textContent=SAVE.achieved2?'the vermilion road is finished':'refuse the seal to be counted';}
   }catch(e){
     if(list)list.innerHTML='<div class="rec-empty">the records are beyond this page\u2019s reach</div>';}}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -3191,7 +3264,7 @@ function renderHelp(){
   const grid=$('#help-controls');if(!grid)return;
   const rows=IS_TOUCH?[
     ['left thumb (lower half)','move'],['斬 big button','attack — hold works'],['弾','deflect — the ring shows its cooldown'],['走','dash — pips are charges'],['絶','ki art — the ring fills with ki'],['酒 top right','drink the gourd'],['tap a weapon tag (top left)','swap blade'],['停 top right','pause'],['two fingers at once','move and cut together']]:
-    [['W A S D / arrows','move'],['left click','attack (hold works)'],['right click','deflect'],['space','dash'],['E','ki art (needs full ki)'],['Q','drink the gourd'],['1 – 5','swap blade (or click a tag)'],['Esc','pause'],['M','mute']];
+    [['W A S D / arrows','move'],['left click','attack (hold works)'],['right click','deflect'],['space','dash'],['E','ki art (needs full ki)'],['Q','drink the gourd'],['1 – 6','swap blade (or click a tag)'],['Esc','pause'],['M','mute']];
   grid.innerHTML='<div class="helpcol"><h4>THE HAND</h4>'+
     rows.map(r=>`<div class="hrow"><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')+'</div>';
   const besti=$('#help-besti');if(!besti)return;
@@ -3206,6 +3279,14 @@ function renderHelp(){
 
 const CHTAG={new:'新',fix:'修',vis:'絵',cbt:'戦',eco:'社',base:'基'};
 const CHRONICLE=[
+  {v:'2.0',kan:'朱',name:'update 2.0 — the vermilion road',note:'a second story, a second hand, and the page learned to be deep',items:[
+    ['new','THE VERMILION ROAD 朱 — a whole second campaign: six acts, its own sky, its own ground, and a new ending; the first story is now named — 墨 THE INK ROAD, and both roads hang side by side on the roads page'],
+    ['new','AKANE 茜, the brush-dancer — the second hand: faster and lighter than the ronin, her great brush sweeping wide vermilion arcs; momentum is her edge (朱勢 — speed itself sharpens her strokes, and a red ring shows how much), and her ki spends as 紅潮, a crimson tide of ink across the field instead of the spin'],
+    ['new','eight new foes with ideas the first road never taught: foxes that sidestep your swing, wisps that argue in ember cones, mud golems that split on death, darts that chase you, cats that hunt invisible, a dancer whose blades orbit her, and guardian drums that cross the field in force'],
+    ['new','six new keepers — Kodama-hime, Akari of the Lantern River, Kurogane the Iron Brush (a duel), Ginro of the Silver Grass, Hibana of the Ashfall, and at the end, THE SEAL-MASTER 印 — every one of them fights with mechanics the first road never drew: gravity wells, crossing lines of force, orbiting blades, seeking shards, chained stamp-falls'],
+    ['new','the codex grows to thirty-five cards — the whole second road gets its first-sight introductions, pips, and field notes'],
+    ['vis','the world is deeper everywhere: cloud-shadows drift over every battlefield, a bloom follows each act\u2019s key light, lanterns float down the red river, spirit wisps cross the hollow, the silver grass breathes in combs of light — and all of it is drawn for free, stateless on the clock'],
+    ['new','the roads page: two stories and a shelf of side roads; the title menu sheds its bonus buttons and keeps only the doors that matter']]},
   {v:'v8',kan:'犬',name:'the hound edition',note:'the dogs learned restraint, and the world learned to breathe',items:[
     ['cbt','the hounds no longer take their own lives — they hunt, they bite, and every bite can be turned with the blade; only blood lights the powder now: wound a hound and a red ring counts down to its bloom — break off the ring, or herd the dog into its pack and let the chain do your killing'],
     ['cbt','one clean killing stroke, landed whole before the fuse burns deep, stills the powder where it sleeps — mastery skips the fire entirely'],
@@ -3398,7 +3479,7 @@ function update(dt){G.t+=dt;G.windT+=dt;
       if(e.deadT>.5)G.enemies.splice(i,1);continue;}
     if(e.boss)updateBoss(e,dt);else updateEnemy(e,dt);}
   // the drowned bridge remembers every footfall — rings where the living walk
-  if(curAct()===2&&G.ripples){const tick=(G.t*3.4|0);
+  if((curAct()===2||curAct()===12)&&G.ripples){const tick=(G.t*3.4|0);
     if(tick!==G._ripT){G._ripT=tick;
       if(!P.dead&&Math.hypot(P.vx,P.vy)>70)addRipple(P.x,P.y+8);
       for(const e of G.enemies)if(!e.dead&&!e.hidden&&Math.hypot(e.vx||0,e.vy||0)>60)addRipple(e.x,e.y+6);}}
@@ -3426,6 +3507,10 @@ function update(dt){G.t+=dt;G.windT+=dt;
   for(let i=G.projs.length-1;i>=0;i--){const pr=G.projs[i];
     if(pr.dead){G.projs.splice(i,1);continue;}
     pr.x+=pr.vx*dt;pr.y+=pr.vy*dt;pr.ttl-=dt;pr.spin+=dt*7;
+    if(pr.hom&&!pr.friendly&&!P.dead){ // seeking ink bends toward its target
+      const ta=Math.atan2(P.y-pr.y,P.x-pr.x),ca=Math.atan2(pr.vy,pr.vx);
+      const na=ca+clamp(angDiff(ca,ta),-2.3*dt,2.3*dt),sp=Math.hypot(pr.vx,pr.vy);
+      if(sp>1){pr.vx=Math.cos(na)*sp;pr.vy=Math.sin(na)*sp;}}
     if(pr.ttl<=0||pr.x<WALL-20||pr.x>RW-WALL+20||pr.y<WALL-20||pr.y>RH-WALL+20){G.projs.splice(i,1);continue;}
     if(pr.friendly){for(const e of G.enemies){if(e.dead)continue;
       if(dist(pr.x,pr.y,e.x,e.y)<pr.r+e.r){damageEnemy(e,pr.dmg,{ang:Math.atan2(pr.vy,pr.vx),knock:120,posture:8});
@@ -3524,6 +3609,7 @@ function render(){ctx.setTransform(DPR,0,0,DPR,0,0);
   const inGame=(G.mode==='game'||G.mode==='bless'||G.mode==='pause'||G.mode==='death'||G.mode==='clear'||G.mode==='victory'||G.mode==='submit'||G.mode==='codex')&&G.floorC&&G.run;
   if(inGame)renderWorld();else drawTitleScene();
   if(inGame)ctx.drawImage(gradeLayer(),0,0,W,H);
+  if(inGame&&window.AMBI2)AMBI2.onScreen(); // the bloom that follows the key light
   if(inGame&&G.run&&G.run.meido&&mdHas('mist')&&fogC){ // the sea of fog closes in
     ctx.globalAlpha=.85;ctx.drawImage(fogC,0,0,W,H);ctx.globalAlpha=1;}
   if(inGame)drawFgPetals(); // the near air — petals between you and the world
@@ -3556,6 +3642,7 @@ function renderWorld(){
   ctx.scale(zp,zp);ctx.translate(-G.cam.x,-G.cam.y);
   ctx.drawImage(G.floorC,0,0);
   const act=curAct();
+  if(window.AMBI2)AMBI2.onFloor(act); // heavy ambience: cloud-shadows, ground life
   if(act===1||act===3||act===7){ // dawn light leans through in living shafts
     ctx.save();ctx.globalCompositeOperation='lighter';
     for(let i=0;i<3;i++){
@@ -3661,6 +3748,7 @@ function renderWorld(){
   ctx.globalAlpha=1;ctx.textAlign='left';
   drawWeather();
   drawGusts();
+  if(window.AMBI2)AMBI2.overWorld(act); // heavy ambience: foreground depth, drifting bodies
   ctx.restore();}
 
 function drawWater(){ctx.strokeStyle='#9db4d8';
@@ -3824,6 +3912,7 @@ function drawGusts(){
     ctx.stroke();}
   ctx.globalAlpha=1;}
 function drawWeather(){const act=curAct();
+  if(act>=11&&window.STORY2)return STORY2.drawWeather(act);
   const n=Math.round((act===5?46:(act===4?30:(act===1?12:(act===6?18:(act===3?10:(act===7?10:(act===9?16:14)))))))*(IS_TOUCH?.6:1));
   for(let i=0;i<n;i++){
     const seed=i*1.618;
@@ -3968,6 +4057,12 @@ function drawProj(pr){
     ctx.beginPath();ctx.arc(pr.x,pr.y,5.4,0,TAU);ctx.fill();
     ctx.fillStyle='rgba(246,241,226,0.7)';
     ctx.beginPath();ctx.arc(pr.x-1.5,pr.y-1.5,1.8,0,TAU);ctx.fill();}
+  else if(pr.kind==='ember'){ // vermilion sparks: glow + red core
+    ctx.drawImage(glowRed,pr.x-16,pr.y-16,32,32);
+    ctx.fillStyle=pr.friendly?GOLD2:'#c9762e';
+    ctx.beginPath();ctx.arc(pr.x,pr.y,4.6,0,TAU);ctx.fill();
+    ctx.fillStyle='#f0d27a';
+    ctx.beginPath();ctx.arc(pr.x-1.2,pr.y-1.2,1.7,0,TAU);ctx.fill();}
   else if(pr.kind==='arrow'){
     ctx.save();ctx.translate(pr.x,pr.y);ctx.rotate(a);
     ctx.globalAlpha=.4;ctx.strokeStyle='#3a3430';ctx.lineWidth=1.6;
@@ -3992,8 +4087,8 @@ function shadowBlob(x,y,r,squash=1){
 
 // feet for the grounded types — the walk cycle lives here, not in the bake.
 // hovers (wraith, mirror, sorc, broker) and the webbed kappa skip it.
-const FOOTCOL={oni:'#6b4438',tengu:'#b98c2e',kame:'#2c3428',hound:'#26221e'};
-const NOFEET={kappa:1,wraith:1,mirror:1,sorc:1,broker:1};
+const FOOTCOL={oni:'#6b4438',tengu:'#b98c2e',kame:'#2c3428',hound:'#26221e',kitsune:'#8a5a30',doro:'#544536',doroko:'#544536',suzume:'#6b4e2e',nekomata:'#2b241d',shishi:'#5a4a36'};
+const NOFEET={kappa:1,wraith:1,mirror:1,sorc:1,broker:1,wisp:1};
 function drawFeet(e){
   const quad=e.type==='hound';
   const moving=Math.hypot(e.vx,e.vy)>20;
@@ -4025,7 +4120,7 @@ function drawEnemy(e){ctx.save();
   if(e.boss&&e.id==='orochi')drawSerpentBody(e);
   shadowBlob(e.x,e.y,e.r,1+(e.state==='windup'?-.12:0));
   if(!NOFEET[e.type]&&!e.boss)drawFeet(e);
-  const hover=e.type==='wraith'||e.type==='mirror'?5+Math.sin(e.bob*.7)*3:0;
+  const hover=(e.type==='wraith'||e.type==='mirror'||e.type==='wisp')?5+Math.sin(e.bob*.7)*3:0;
   ctx.translate(e.x,e.y-(e.boss?e.h||0:0)+hover-((e.state==='windup'||e.state==='aim')?4:0));
   const bob=Math.sin(e.bob)*1.6;
   if(e.stun>0||e.fused)ctx.rotate(Math.sin(G.t*(e.fused?34:22))*.14);
@@ -4037,7 +4132,7 @@ function drawEnemy(e){ctx.save();
   ctx.scale(lunge*punch,(2-lunge)/punch);
   const kit=e.boss?BSPR[e.id]:ESPR[e.type];
   const img=e.flash>0?kit.f:kit.n;
-  let alpha=e.type==='wraith'||e.type==='mirror'?.9:1;
+  let alpha=(e.type==='wraith'||e.type==='mirror')?.9:(e.type==='wisp'?.82:1);
   if(mdHas('mist'))alpha*=clamp(1.35-dist(e.x,e.y,P.x,P.y)/620,.14,1); // the fog eats the far ones
   ctx.globalAlpha=alpha;
   const S=kit.s;
@@ -4076,6 +4171,7 @@ function drawEnemy(e){ctx.save();
     ctx.globalAlpha=.8;
     ctx.beginPath();ctx.arc(0,0,e.r+7,0,TAU);ctx.stroke();
     ctx.setLineDash([]);ctx.globalAlpha=1;}
+  if(window.STORY2)STORY2.drawExtra(e); // the red road's own jewelry: orbits, shimmers, glows
   if(e.boss&&e.id==='raijin'){
     for(let i=0;i<3;i++){const a=G.t*1.6+i*TAU/3;
       const dx=Math.cos(a)*(e.r+20),dy=Math.sin(a)*(e.r+20);
@@ -4140,11 +4236,13 @@ function drawPlayer(){
   const bob=Math.sin(P.walk*2.3)*(moving?2.2:.7);
   ctx.translate(0,bob*.35);
   // cloak: two ragged brushes that follow motion and wind
+  const s2h=!!(G.run&&G.run.story===2&&window.STORY2);
+  const pal=s2h?STORY2.palette():null;
   const back=fa+PI;
   const flap=Math.sin(G.t*9+P.walk)*.25+(moving?.35:.12);
   const wind=G.wind*.3+clamp((P.clx||0)*.03,-.55,.55); // cloth lags a step behind
   for(const[rad,alpha]of[[24,.5],[18,.92]]){
-    ctx.fillStyle=`rgba(32,28,24,${alpha})`;
+    ctx.fillStyle=s2h?`${pal.cloakA}${alpha})`:`rgba(32,28,24,${alpha})`;
     ctx.beginPath();
     ctx.moveTo(Math.cos(back+.7)*7,Math.sin(back+.7)*7);
     ctx.lineTo(Math.cos(back+flap*.9+wind)*rad*.82,Math.sin(back+flap*.9+wind)*rad*.82);
@@ -4154,12 +4252,12 @@ function drawPlayer(){
     ctx.closePath();ctx.fill();}
   // torso: dark kimono, one sheen toward the light, red obi across the waist
   const rimA=GRAD?Math.atan2(GRAD.ly,GRAD.lx):fa-PI/4;
-  ctx.fillStyle=P.invuln>.45&&Math.sin(G.t*40)>0?RED2:INK;
+  ctx.fillStyle=P.invuln>.45&&Math.sin(G.t*40)>0?RED2:(s2h?pal.torso:INK);
   ctx.beginPath();ctx.ellipse(0,0,10.5,9,fa,0,TAU);ctx.fill();
   ctx.strokeStyle='rgba(246,241,226,0.18)';ctx.lineWidth=2.2;
   ctx.beginPath();ctx.ellipse(0,0,8.8,7.4,fa,rimA-fa-.7,rimA-fa+.4);ctx.stroke();
   const ob=fa+PI/2;
-  ctx.strokeStyle=RED;ctx.lineWidth=3.6;
+  ctx.strokeStyle=s2h?pal.obi:RED;ctx.lineWidth=s2h?pal.obiW:3.6;
   ctx.beginPath();
   ctx.moveTo(Math.cos(ob)*8,Math.sin(ob)*8);
   ctx.lineTo(Math.cos(ob+PI)*8,Math.sin(ob+PI)*8);
@@ -4175,7 +4273,8 @@ function drawPlayer(){
   const hx=Math.cos(ba)*10,hy=Math.sin(ba)*10;
   const tx=Math.cos(ba)*(10+bl),ty=Math.sin(ba)*(10+bl);
   const gold=P.dmgBuffT>0;
-  if(P.weapon==='kanabo'){
+  if(P.weapon==='fude'&&window.STORY2){STORY2.drawFude(ctx,{ba,bl,gold,hx,hy,tx,ty});}
+  else if(P.weapon==='kanabo'){
     const nx=-Math.sin(ba),ny=Math.cos(ba);
     ctx.fillStyle='#241f1c';
     ctx.beginPath();
@@ -4243,7 +4342,9 @@ function drawPlayer(){
     ctx.beginPath();ctx.moveTo(Math.cos(ba-.75)*bl*.6,Math.sin(ba-.75)*bl*.6);
     ctx.lineTo(Math.cos(ba-.35)*bl*.78,Math.sin(ba-.35)*bl*.78);ctx.stroke();
     ctx.globalAlpha=baseA;}
-  // the straw kasa goes on last — woven rings, brim toward the light
+  // the head goes on last: her hair and ribbon, or the straw kasa
+  if(s2h&&window.STORY2){STORY2.drawHead(ctx,fa,rimA);}
+  else{
   const kx=Math.cos(fa)*2.6,ky=Math.sin(fa)*2.6;
   ctx.fillStyle='#6b5b3a';
   ctx.beginPath();ctx.ellipse(kx,ky,13.5,11.5,fa,0,TAU);ctx.fill();
@@ -4253,6 +4354,7 @@ function drawPlayer(){
   ctx.beginPath();ctx.ellipse(kx+Math.cos(fa)*1.8,ky+Math.sin(fa)*1.8,6,5,fa,0,TAU);ctx.fill();
   ctx.strokeStyle='rgba(246,241,226,0.32)';ctx.lineWidth=1.6;
   ctx.beginPath();ctx.ellipse(kx,ky,12.4,10.4,fa,rimA-fa-.6,rimA-fa+.6);ctx.stroke();
+  }
   if(P.swapT>0){ctx.strokeStyle=PAPER3;ctx.globalAlpha=P.swapT*4*baseA;
     ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,15+(0.22-P.swapT)*40,0,TAU);ctx.stroke();
     ctx.globalAlpha=baseA;}
@@ -4279,6 +4381,11 @@ function drawPlayer(){
     ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,18+(0.6-P.pdodT)*30,0,TAU);ctx.stroke();ctx.globalAlpha=baseA;}
   if(P.artT>0){ctx.globalAlpha=P.artT*1.6;
     ctx.drawImage(glowWhite,-40,-40,80,80);ctx.globalAlpha=baseA;}
+  // 朱勢 — her momentum reads as a filling vermilion ring at her feet
+  if(s2h&&window.STORY2&&!P.dead){const mom=STORY2.momentum();
+    if(mom>.06){ctx.strokeStyle=RED;ctx.globalAlpha=baseA*mom*.6;ctx.lineWidth=2.4;
+      ctx.beginPath();ctx.arc(0,0,16,-PI/2,-PI/2+mom*TAU);ctx.stroke();
+      ctx.globalAlpha=baseA;}}
   ctx.restore();}
 
 function drawLetterbox(){
@@ -4537,6 +4644,7 @@ function drawHUD(){
   if(run.gauntlet)ctx.fillText(`THE GAUNTLET 連 · duel ${G.gauntIdx+1}/${GAUNTLET.length} · ${sd.n}${ashTag}`,W/2,rlY);
   else if(run.meido)ctx.fillText(`THE NIGHT ROAD 冥 · mark ${run.milestone}${run.daily?' · daily rite':''} · seed ${run.seed}${ashTag}`,W/2,rlY);
   else if(run.abyss)ctx.fillText(`THE ABYSS · wave ${run.wave} · deepest ${SAVE.abyssBest+1}${ashTag}`,W/2,rlY);
+  else if(run.story===2)ctx.fillText(`朱 VERMILION · AKANE 茜 · act ${run.act}/6 · stage ${run.stage}/${ACTS_OF()[run.act-1].stages.length} · ${sd.n||''}${ashTag}`,W/2,rlY);
   else{const act=ACTS[run.act-1];
     ctx.fillText(`ACT ${act.kanji} · stage ${run.stage}/${act.stages.length} · ${sd.n||''}${ashTag}`,W/2,rlY);
     const nWaves=G.waves.length;
@@ -4547,7 +4655,7 @@ function drawHUD(){
   // stage intro
   if(G.introT>0){const a=clamp(G.introT/1.7,0,1);const aa=a>.8?(1-a)/.2:(a<.25?a/.25:1);
     ctx.globalAlpha=aa;ctx.textAlign='center';
-    const act=(!G.run.abyss&&!G.run.gauntlet)?ACTS[G.run.act-1]:null;
+    const act=(!G.run.abyss&&!G.run.gauntlet)?ACTS_OF()[G.run.act-1]:null;
     if(act&&G.run.stage===1){ctx.font='400 17px "Shippori Mincho"';
       ctx.fillText(act.intro[0],W/2,H*.42);ctx.fillText(act.intro[1],W/2,H*.42+28);ctx.fillText(act.intro[2],W/2,H*.42+56);}
     ctx.font='700 24px "Shippori Mincho"';

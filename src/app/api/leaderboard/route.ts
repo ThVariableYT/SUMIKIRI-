@@ -3,7 +3,7 @@ import { db } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
-const MODES = ['abyss', 'gauntlet', 'meido', 'story'] as const
+const MODES = ['abyss', 'gauntlet', 'meido', 'story', 'story2'] as const
 type Mode = (typeof MODES)[number]
 
 const isMode = (v: string): v is Mode => (MODES as readonly string[]).includes(v)
