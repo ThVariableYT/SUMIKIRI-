@@ -42,6 +42,9 @@ export default function Home() {
 
   return (
     <div style={{ position: 'fixed', inset: 0, overflow: 'hidden' }}>
+      {/* the game owns the whole page: keep Next's dev indicator (and its
+          bottom-left hit area) off the joystick pasture */}
+      <style>{`nextjs-portal{display:none!important}`}</style>
       <iframe
         ref={frameRef}
         id="game-frame"

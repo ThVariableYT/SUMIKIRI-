@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>SUMIKIRI 墨斬 — ink &amp; steel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -17,7 +20,7 @@ body{font-family:"Shippori Mincho",serif;color:var(--ink);-webkit-user-select:no
 #cv{position:fixed;inset:0;display:block;touch-action:none}
 body.playing #cv{cursor:none}
 #ui{position:fixed;inset:0;pointer-events:none}
-.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;
+.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;justify-content:safe center;pointer-events:auto;
   background:rgba(233,225,205,.72);-webkit-backdrop-filter:blur(9px) saturate(.92);backdrop-filter:blur(9px) saturate(.92);
   overflow-y:auto;padding:20px 0;animation:fadein .22s ease both}
 .screen.on{display:flex}
@@ -277,6 +280,115 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   .t-side h1{letter-spacing:.18em}
   .rec-h,.rec-r{grid-template-columns:36px 1.3fr 58px 52px 72px 38px;font-size:12px;padding:6px 8px}
 }
+
+/* ---- the phone carries its own page: fat thumbs, small window, no hover ---- */
+*{-webkit-tap-highlight-color:transparent}
+@media (pointer:coarse){
+  .mbtn{padding:11px 2px;min-height:46px}
+  .mbtn:active{transform:translateX(8px);color:var(--red)}
+  .mbtn:active .idx{color:var(--red)}
+  .buy{min-height:46px}
+  .buy:active:not(:disabled){background:var(--red);border-color:var(--red);color:var(--paper2);transform:none;box-shadow:2px 2px 0 rgba(140,43,31,.35)}
+  .tgl{min-height:46px}
+  .tgl:active{background:var(--ink);border-color:var(--ink);color:var(--paper2)}
+  .seg button{min-height:46px;padding:7px 16px}
+  .seg button:active{background:var(--ink);color:var(--paper2)}
+  .recs-tabs button{min-height:46px;padding:9px 16px;font-size:14px}
+  .recs-tabs button:active{background:var(--ink);color:var(--paper2)}
+  .scroll:active .sc-paper{transform:translateY(-4px)}
+  input[type=range]{width:170px}
+  input[type=range]::-webkit-slider-thumb{width:22px;height:22px}
+  .rkan{font-size:84px}
+}
+.setrow.hapt{display:none}
+@media (pointer:coarse){.setrow.hapt{display:flex}}
+
+@media (max-width:620px){
+  /* the title kneels: kanji in a row, menu centered beneath */
+  .title-wrap{flex-direction:column;gap:12px;padding-top:1vh}
+  .t-kanji{display:flex;align-items:flex-start;font-size:min(15vh,19vw);line-height:1}
+  .t-kanji span{display:inline-block}
+  .t-kanji span:last-child{transform:rotate(-1.2deg)}
+  .title-seal{font-size:inherit;width:.34em;height:.34em;margin:.1em 0 0 .14em;box-shadow:0 2px 0 rgba(60,16,10,.25)}
+  .t-side{display:flex;flex-direction:column;align-items:center;text-align:center}
+  .t-side .tag{padding-bottom:10px;margin-bottom:14px;letter-spacing:.1em}
+  nav.menu{align-items:center;gap:6px}
+  .mbtn{letter-spacing:.1em;font-size:17px}
+  .corner-note{display:none}
+  .footline{position:static;transform:none;margin-top:10px;font-size:11px;text-align:center;letter-spacing:.08em}
+  .screen{padding:14px 0}
+  .rkan{font-size:76px}
+}
+/* short portraits (menu + kanji must fit without a scroll): tighter rows */
+@media (max-width:620px) and (max-height:820px){
+  .t-kanji{font-size:min(11vh,15vw)}
+  nav.menu{gap:4px}
+  .mbtn{min-height:40px;padding:8px 2px}
+  .t-side .tag{padding-bottom:8px;margin-bottom:10px}
+}
+@media (max-width:560px){
+  .page{width:min(880px,94vw);max-height:86vh;max-height:86dvh}
+  .page-head h2{letter-spacing:.12em;font-size:20px}
+  .page-head .sub{font-size:10.5px}
+  /* shrine/armory rows stack: kanji beside the words, the price below */
+  .row{display:grid;grid-template-columns:44px 1fr;gap:2px 12px;padding:14px 2px}
+  .row .kan{grid-row:1;font-size:28px;width:44px}
+  .row .mid{grid-column:2}
+  .row .mid b{font-size:15.5px}
+  .row .mid p{font-size:12px}
+  .row .buy{grid-column:1/-1;justify-self:stretch;margin-top:8px;text-align:center}
+  .pips{margin-top:2px}
+  /* blessings: two scrolls abreast on a narrow page */
+  #bless-wrap{gap:3.4vw;padding:3vh 0 2vh}
+  .scroll{width:min(210px,44vw)}
+  .sc-paper{min-height:236px;padding:14px 10px 12px}
+  .b-kan{font-size:46px}
+  .b-name{font-size:15px}
+  .b-desc{font-size:12px;max-width:100%}
+  .b-div{margin:8px auto 8px}
+  .b-key{font-size:9.5px;padding-top:8px}
+  .rar{font-size:10.5px;letter-spacing:.2em;padding:2px 8px}
+  /* records: four honest columns fit where six jostle */
+  .rec-h,.rec-r{grid-template-columns:30px 1.6fr 48px 58px;font-size:11.5px;gap:4px;padding:7px 6px}
+  .rec-h span:nth-child(4),.rec-r span:nth-child(4){display:none} /* kills fold into the story */
+  .rec-h span:nth-child(6),.rec-r span:nth-child(6){display:none} /* difficulty reads in the rank */
+  /* the roads: two nodes abreast */
+  .act-strip{gap:10px}
+  .act-node{width:44vw;max-width:175px;padding:12px 8px 10px}
+  .act-node .a-kan{font-size:36px}
+  .act-node .a-name{min-height:32px;font-size:11.5px}
+  .helpgrid{grid-template-columns:1fr}
+  .besti{grid-template-columns:1fr}
+  .setrow{flex-wrap:wrap;row-gap:10px}
+  .seg{width:100%;display:flex}
+  .seg button{flex:1}
+  .chrono{width:96vw}
+  .chrono-paper{max-height:72vh;max-height:72dvh;padding:16px 14px 12px}
+  .ch-item{font-size:12.5px}
+  #s-submit input{width:min(300px,86vw);font-size:21px}
+}
+@media (max-width:560px) and (max-height:760px){
+  .big-kan{font-size:clamp(72px,14vh,120px)}
+  .sc-paper{min-height:210px}
+}
+/* landscape phones: short windows kneel the title down to size */
+@media (max-height:520px) and (min-width:561px){
+  .title-wrap{gap:3vw;align-items:center}
+  .t-kanji{font-size:min(13vh,9vw)}
+  .title-seal{margin-top:-1em}
+  .t-side h1{font-size:clamp(20px,2.6vw,30px);letter-spacing:.2em;margin-bottom:2px}
+  .t-side .tag{font-size:11px;padding-bottom:8px;margin-bottom:14px}
+  nav.menu{gap:5px}
+  .mbtn{font-size:clamp(14px,1.7vh,17px);padding:3px 0;min-height:0}
+  .footline{display:none}
+  .corner-note{bottom:8px;right:14px;font-size:10px}
+  .page{max-height:92vh;max-height:92dvh}
+  .big-kan{font-size:clamp(64px,16vh,110px)}
+  .death-line{font-size:14px;max-width:92vw}
+  .stat-line{font-size:12px;margin:4px 0 14px}
+  .btnrow{gap:6px}
+  .screen{padding:12px 0}
+}
 </style>
 </head>
 <body>
@@ -288,7 +400,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="t-kanji"><span>墨</span><span>斬</span><span class="seal title-seal">印</span></div>
     <div class="t-side">
       <h1>SUMIKIRI</h1>
-      <div class="tag">a hack &amp; slash painted in ink · v6 「花 edition」</div>
+      <div class="tag">a hack &amp; slash painted in ink · v8 「犬 edition」</div>
       <nav class="menu">
         <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Road</button>
         <button class="mbtn" id="btn-abyss" data-go="abyss"><span class="idx">二</span>The Abyss <small class="mono" id="ab-best" style="font-size:12px;color:var(--ink2)"></small></button>
@@ -380,6 +492,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
       <div class="setrow"><div class="lab">Screen shake<small>weight of the blade</small></div><button class="tgl" id="set-shake">shake</button></div>
       <div class="setrow"><div class="lab">Damage numbers<small>numbers on the page</small></div><button class="tgl" id="set-nums">numbers</button></div>
       <div class="setrow"><div class="lab">First-sight cards<small>the codex pauses new foes</small></div><button class="tgl" id="set-cdx">cards</button></div>
+      <div class="setrow hapt"><div class="lab">Haptics<small>the phone answers the blade</small></div><button class="tgl" id="set-hap">touch</button></div>
       <div class="setrow"><div class="lab">Difficulty<small>静 calm · 嵐 storm · 狱 tempest</small></div>
         <div class="seg" id="diff-seg">
           <button data-diff="0">静</button><button data-diff="1">嵐</button><button data-diff="2">狱</button>
@@ -402,6 +515,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <div class="screen" id="s-pause">
   <div class="big-kan">停</div>
   <div class="stat-line">the ink waits. it is patient.</div>
+  <div class="stat-line" id="pause-bless" style="margin:0 0 18px"></div>
   <div class="btnrow">
     <button class="mbtn" data-go="resume"><span class="idx">◆</span>Resume</button>
     <button class="mbtn" data-go="settings"><span class="idx">◆</span>Settings</button>
@@ -500,7 +614,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </div>
 <div id="rotate">
   <div class="rkan">回</div>
-  <p>turn your device —<br>the road is wide</p>
+  <p>turn your phone sideways —<br>the road is wide</p>
+  <p class="mono" style="font-size:11px;opacity:.65">fullscreen (in settings) locks it there</p>
   <button class="mbtn" id="rotate-dismiss"><span class="idx">◆</span>Play anyway</button>
 </div>
 <script>
@@ -531,7 +646,7 @@ const store={
 const SAVE_KEY='sumikiri_v1';
 const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0,ki:0,mirror:0,stance:0,step:0,edge:0,rhythm:0,gourd:0},
   weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
-  difficulty:1,shake:true,numbers:true,codex:true,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
+  difficulty:1,shake:true,numbers:true,codex:true,haptic:true,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
 let SAVE=defaultSave();
 (function(){
   const s=store.get(SAVE_KEY);if(!s)return;
@@ -542,6 +657,8 @@ let SAVE=defaultSave();
     SAVE.weapons=Object.assign({katana:true},p.weapons||{});
   }catch(e){SAVE=defaultSave();}})();
 function persist(){store.set(SAVE_KEY,JSON.stringify(SAVE));}
+// haptics: the phone's small answer to the blade. nothing on desktop, nothing if muted
+function vib(p){if(!IS_TOUCH||!SAVE.haptic)return;try{if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
 const DIFFI=()=>[
   {dmg:.85,hp:.95,spd:.96,wind:1.15,rec:1.15},
   {dmg:1.15,hp:1.25,spd:1.08,wind:.85,rec:.8},
@@ -627,7 +744,23 @@ const keys={},once={};const mouse={x:innerWidth/2,y:innerHeight/2,down:false};le
 const IN={atk:false,atkT:false,par:false,dash:false,art:false,drink:false,weap:-1};
 const joy={id:-1,ox:0,oy:0,x:0,y:0,mag:0,ang:0};
 const btnHeld={},TBP={},WSLOTS=[];
-let rotateDismiss=false;
+const JOYR=78; // the stick's pasture — bigger than a key, smaller than a thumb
+let rotateDismiss=false,lastTouchT=-1e9;
+const freshTouch=()=>performance.now()-lastTouchT<600; // synthetic mouse events never count as a mouse
+
+// notches and home bars eat the edges of a phone — measure what's left
+const SAFE={l:0,r:0,t:0,b:0};
+function measureSafe(){
+  try{
+    const el=document.createElement('div');
+    el.style.cssText='position:fixed;top:0;left:0;visibility:hidden;pointer-events:none;width:1px;height:1px;'+
+      'padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);'+
+      'padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);';
+    document.body.appendChild(el);
+    const cs=getComputedStyle(el);
+    SAFE.l=parseFloat(cs.paddingLeft)||0;SAFE.r=parseFloat(cs.paddingRight)||0;
+    SAFE.t=parseFloat(cs.paddingTop)||0;SAFE.b=parseFloat(cs.paddingBottom)||0;
+    el.remove();}catch(e){}}
 
 addEventListener('keydown',e=>{
   if(!keys[e.code])once[e.code]=true;keys[e.code]=true;
@@ -639,8 +772,12 @@ addEventListener('keydown',e=>{
 addEventListener('keyup',e=>{keys[e.code]=false;once.KeyMhandled=false;});
 addEventListener('blur',()=>{for(const k in keys)keys[k]=false;mouse.down=false;
   if(G.mode==='game')setMode('pause');});
-addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;mouseSeen=true;});
-addEventListener('mousedown',e=>{AU.init();if(e.button===0){mouse.down=true;mouseOnceL=true;}if(e.button===2)once.RMB=true;});
+addEventListener('mousemove',e=>{if(freshTouch())return;mouse.x=e.clientX;mouse.y=e.clientY;mouseSeen=true;});
+addEventListener('mousedown',e=>{if(freshTouch())return;AU.init();
+  // a click on a weapon tag swaps the blade instead of swinging it
+  if(G.mode==='game'&&e.button===0){
+    for(const s of WSLOTS)if(mouse.x>=s.x-6&&mouse.x<=s.x+s.s+6&&mouse.y>=s.y-6&&mouse.y<=s.y+s.s+6){IN.weap=s.i;return;}}
+  if(e.button===0){mouse.down=true;mouseOnceL=true;}if(e.button===2)once.RMB=true;});
 addEventListener('mouseup',e=>{if(e.button===0)mouse.down=false;});
 addEventListener('contextmenu',e=>e.preventDefault());
 function jp(code){if(once[code]){once[code]=false;return true;}return false;}
@@ -649,45 +786,58 @@ function jr(){if(once.RMB){once.RMB=false;return true;}return false;}
 
 function touchButtons(){
   const s=clamp(Math.min(W,H)/760,.82,1.15);
+  const sx=W-SAFE.r,sy=H-SAFE.b;
   return[
-    {id:'pause',x:W-40,y:44,r:24,kan:'停'},
-    {id:'atk',x:W-96*s,y:H-112*s,r:62*s,kan:'斬'},
-    {id:'par',x:W-214*s,y:H-78*s,r:44*s,kan:'弾'},
-    {id:'dash',x:W-84*s,y:H-232*s,r:44*s,kan:'走'},
-    {id:'art',x:W-208*s,y:H-196*s,r:36*s,kan:'絶'},
-    {id:'drink',x:W-312*s,y:H-128*s,r:38*s,kan:'酒'}];}
+    {id:'pause',x:sx-42,y:SAFE.t+42,r:25,kan:'停'},
+    {id:'drink',x:sx-42,y:SAFE.t+114,r:34,kan:'酒'},
+    {id:'atk',x:sx-98*s,y:sy-108*s,r:60*s,kan:'斬'},
+    {id:'par',x:sx-226*s,y:sy-74*s,r:45*s,kan:'弾'},
+    {id:'dash',x:sx-92*s,y:sy-244*s,r:46*s,kan:'走'},
+    {id:'art',x:sx-226*s,y:sy-196*s,r:38*s,kan:'絶'}];}
+function clearTouchInput(){
+  joy.id=-1;joy.x=joy.y=joy.mag=0;
+  for(const k in btnHeld){TBP[btnHeld[k]]=false;delete btnHeld[k];}
+  IN.atk=false;IN.atkT=false;IN.par=false;IN.dash=false;IN.art=false;IN.drink=false;}
 function onTS(e){
   AU.init();
+  lastTouchT=performance.now();
+  mouse.down=false;mouseOnceL=false;mouseSeen=false; // a finger is never a mouse — kills the phantom-aim bug
   if(G.mode!=='game')return;
+  if(e.target!==cv)return; // overlays (the rotate card) keep their own taps
   e.preventDefault();
   for(const t of e.changedTouches){
     const x=t.clientX,y=t.clientY;
     const bs=touchButtons();
     let hit=null;
-    for(let i=0;i<bs.length;i++)if(bs[i].id!=='atk'&&dist(x,y,bs[i].x,bs[i].y)<bs[i].r*1.3){hit=bs[i];break;}
+    for(let i=0;i<bs.length;i++)if(bs[i].id!=='atk'&&dist(x,y,bs[i].x,bs[i].y)<bs[i].r*1.25){hit=bs[i];break;}
     if(hit){
-      if(hit.id==='pause'){setMode('pause');return;}
+      if(hit.id==='pause'){clearTouchInput();setMode('pause');return;}
       btnHeld[t.identifier]=hit.id;TBP[hit.id]=true;
-      if(hit.id==='par')IN.par=true;else if(hit.id==='dash')IN.dash=true;else if(hit.id==='art')IN.art=true;else if(hit.id==='drink')IN.drink=true;
+      if(hit.id==='par'){IN.par=true;vib(6);}
+      else if(hit.id==='dash'){IN.dash=true;vib(6);}
+      else if(hit.id==='art'){IN.art=true;vib(8);}
+      else if(hit.id==='drink'){IN.drink=true;vib(8);}
       continue;}
-    if(x<W*0.45&&joy.id===-1){joy.id=t.identifier;joy.ox=x;joy.oy=y;joy.x=joy.y=joy.mag=0;continue;}
+    // weapon tags answer before the road does — they live above the stick's pasture
     for(const s of WSLOTS){
-      if(x>=s.x-10&&x<=s.x+s.s+10&&y>=s.y-10&&y<=s.y+s.s+10){IN.weap=s.i;hit=true;break;}}
+      if(s.s>0&&x>=s.x-8&&x<=s.x+s.s+8&&y>=s.y-8&&y<=s.y+s.s+8){IN.weap=s.i;vib(8);hit=true;break;}}
     if(hit)continue;
-    if(dist(x,y,bs[1].x,bs[1].y)<bs[1].r*1.25){
-      btnHeld[t.identifier]='atk';TBP.atk=true;IN.atk=true;IN.atkT=true;}}}
+    if(x<W*0.45&&joy.id===-1){joy.id=t.identifier;joy.ox=x;joy.oy=y;joy.x=joy.y=joy.mag=0;continue;}
+    const atkB=bs.find(b=>b.id==='atk');
+    if(atkB&&dist(x,y,atkB.x,atkB.y)<atkB.r*1.25){
+      btnHeld[t.identifier]='atk';TBP.atk=true;IN.atk=true;IN.atkT=true;vib(5);}}}
 function onTM(e){
   if(G.mode!=='game')return;
   e.preventDefault();
   for(const t of e.changedTouches){
     if(t.identifier===joy.id){
       let dx=t.clientX-joy.ox,dy=t.clientY-joy.oy;const d=Math.hypot(dx,dy);
-      if(d>64){dx=dx/d*64;dy=dy/d*64;}
-      joy.x=dx/64;joy.y=dy/64;joy.mag=Math.min(1,d/64);
+      if(d>JOYR){dx=dx/d*JOYR;dy=dy/d*JOYR;}
+      joy.x=dx/JOYR;joy.y=dy/JOYR;joy.mag=Math.min(1,d/JOYR);
       if(joy.mag>.01)joy.ang=Math.atan2(dy,dx);}}}
 function onTE(e){
-  if(G.mode!=='game')return;
-  e.preventDefault();
+  if(G.mode==='game'&&e.target===cv)e.preventDefault();
+  // always release, whatever mode we landed in — a held finger must never haunt the run
   for(const t of e.changedTouches){
     if(t.identifier===joy.id){joy.id=-1;joy.x=joy.y=joy.mag=0;}
     const b=btnHeld[t.identifier];
@@ -705,6 +855,7 @@ function checkOrient(){
 function resize(){DPR=Math.min(IS_TOUCH?1.5:2,devicePixelRatio||1);W=innerWidth;H=innerHeight;
   cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';
   Z=clamp(Math.min(W/1350,H/860),.62,1.5);
+  measureSafe();
   vigC=mkCanvas(W,H);
   const c=vigC.getContext('2d');
   const g=c.createRadialGradient(W/2,H/2,Math.min(W,H)*.38,W/2,H/2,Math.max(W,H)*.74);
@@ -715,16 +866,19 @@ function resize(){DPR=Math.min(IS_TOUCH?1.5:2,devicePixelRatio||1);W=innerWidth;
   const fg2=fc.createRadialGradient(W/2,H/2,Math.min(W,H)*.16,W/2,H/2,Math.max(W,H)*.62);
   fg2.addColorStop(0,'rgba(226,230,238,0)');fg2.addColorStop(.55,'rgba(200,208,222,0.16)');fg2.addColorStop(1,'rgba(58,66,88,0.52)');
   fc.fillStyle=fg2;fc.fillRect(0,0,W,H);
-  gradeC=null;_vigHurt=null;}
+  gradeC=null;_vigHurt=null;
+  checkOrient();}
 addEventListener('resize',resize);
+if(window.visualViewport)visualViewport.addEventListener('resize',()=>resize()); // the url-bar's slow breathing
+addEventListener('orientationchange',()=>setTimeout(resize,120));
 const RW=1700,RH=1000,WALL=56;
 
 const G={mode:'title',run:null,enemies:[],projs:[],parts:[],floats:[],slashes:[],teles:[],rings:[],marks:[],pickups:[],ghosts:[],fx:[],
   cam:{x:RW/2,y:RH/2},trauma:0,hitstop:0,slowT:0,ts:1,flash:0,flashCol:'#f6f1e2',wash:0,hurtV:0,musicLevel:.15,
   floorC:null,decalC:null,dctx:null,waveIdx:-1,waves:[],spawnQ:[],spawnT:0,waveGap:0,clearing:0,introT:0,bossIntroT:0,shakeX:0,shakeY:0,
   style:{pts:0,rank:0,combo:0,t:9,anim:0},hints:null,tutMoved:false,tutHit:false,tutDash:false,tutParry:false,tutDrink:false,
-  ambience:[],t:0,boss:null,blessPicks:null,prevMode:null,
-  wind:0,windT:0,gusts:[],lbx:0,lbxT:0,zp:0,wipe:null,boltT:6,lightningAt:0,props:[],fireflies:[],gauntIdx:0,
+  ambience:[],t:0,boss:null,blessPicks:null,prevMode:null,grantQ:[],grantShow:null,
+  wind:0,windT:0,gusts:[],lbx:0,lbxT:0,zp:0,wipe:null,boltT:6,lightningAt:0,props:[],fireflies:[],ripples:[],gauntIdx:0,
   crows:[],crowsT:7,hurtA:0,hurtAT:0,
   codexQ:[],codexSeen:null,codexCur:null,codexT:0,zpC:0,codexArm:0};
 let P=null;
@@ -893,7 +1047,7 @@ const BESTIARY={
   wraith:'Often strikes in 危 peril. Never block what carries the red kanji — dash through it.',
   kame:'A wall with a spear. Guard-break it (kanabō or posture) or walk around the problem.',
   broker:'Heals its neighbors. The lantern burns brightest — put it out first.',
-  hound:'Charges and detonates. It always detonates; the only question is where.',
+  hound:'It only bites until you draw blood. The first wound lights the fuse — strike, then break off the ring.',
   sorc:'Teleports when cornered, summons imps while safe. Interrupt the channel with reach.',
   mirror:'A copy of you, thrown by Yuki. It has no ideas of its own — only your posture.',
   ronin:'A swordsman who remembers training. Chains three cuts; the gold windup can be deflected.',
@@ -941,9 +1095,9 @@ const CODEX={
     a:[['Mend Rite','channels healing into wounded allies — silence the light first',''],
       ['Paper Dance','no strike of its own; it simply refuses to be where you swing','']]},
   hound:{no:'07',cls:'BEAST · BLAST',st:[5,3,1],
-    d:'A shrine dog that swallowed its own fire. It has one argument and it ends in a blast — the only question is where.',
-    a:[['Ignition Charge','locks on and charges — the red line always detonates; step off it','p'],
-      ['Timed Bloom','given time it detonates anyway — do not linger near the barking','p']]},
+    d:'A shrine dog that swallowed its own fire. Unwounded it only bites — but the first cut you land lights the fuse. Break off the ring after you strike, or bait it into the pack.',
+    a:[['Snap Charge','locks on and lunges to bite — deflect it or step off the line','d'],
+      ['Wounded Bloom','your first wound arms its fire; outrun the ring, or end it clean in one stroke','p']]},
   sorc:{no:'08',cls:'SORCERER · SUMMONER',st:[1,1,3],
     d:'A hood full of bad arithmetic. It counts your steps, blinks when cornered, and pays kappa to die in its place.',
     a:[['Imp Channel','summons imps while you are far — interrupt with reach or a returned fan',''],
@@ -1755,8 +1909,9 @@ function buildProps(act){
     pr.push({x,y,ph:hash01(i*7.3)*TAU,h:kind==='bamboo'?rnd(80,140):rnd(18,44),kind});}
   G.props=pr;
   G.fireflies=[];
+  G.ripples=[];
   if(act===3||act===1||act===8||act===9){
-    for(let i=0;i<7;i++)G.fireflies.push({x:rnd(WALL,RW-WALL),y:rnd(WALL,RH-WALL),ph:rnd(TAU),sp:rnd(.4,1)});}}
+    for(let i=0;i<(IS_TOUCH?5:7);i++)G.fireflies.push({x:rnd(WALL,RW-WALL),y:rnd(WALL,RH-WALL),ph:rnd(TAU),sp:rnd(.4,1)});}}
 function drawProps(){
   const w=G.wind;
   for(const p of G.props){
@@ -1863,7 +2018,7 @@ function drawTitleScene(){
   ctx.font='800 28px "Shippori Mincho"';ctx.fillText('印',0,2);ctx.restore();
   ctx.restore();
   // petals and slow birds
-  if(G.ambience.length<26&&Math.random()<.14)
+  if(G.ambience.length<(IS_TOUCH?15:26)&&Math.random()<.14)
     G.ambience.push({x:rnd(W),y:-20,vy:rnd(20,50),ph:rnd(TAU),r:rnd(2,5),red:Math.random()<.3,bird:Math.random()<.1});
   for(let i=G.ambience.length-1;i>=0;i--){const p=G.ambience[i];
     p.y+=p.vy*.016;p.x+=Math.sin(G.t*.7+p.ph)*.5+G.wind*.3;
@@ -1878,7 +2033,7 @@ function drawTitleScene(){
       ctx.beginPath();ctx.ellipse(0,0,p.r,p.r*.55,0,0,TAU);ctx.fill();}
     ctx.restore();}
   // fireflies hold the dusk meadow — small gold breaths below the ridges
-  if(TFF.length<9&&Math.random()<.06)
+  if(TFF.length<(IS_TOUCH?6:9)&&Math.random()<.06)
     TFF.push({x:rnd(W),y:H*(.62+Math.random()*.34),ph:rnd(TAU),sp:rnd(.4,1.1)});
   for(let i=TFF.length-1;i>=0;i--){const f=TFF[i];
     f.x+=Math.sin(G.t*f.sp+f.ph)*.55;f.y+=Math.cos(G.t*f.sp*.8+f.ph*2)*.4-.05;
@@ -1895,7 +2050,8 @@ function drawTitleScene(){
 function trauma(n){G.trauma=Math.min(1,G.trauma+n);}
 function hitstop(t){G.hitstop=Math.max(G.hitstop,t);}
 function slowmo(t,ts=.25){G.slowT=Math.max(G.slowT,t);G.ts=ts;}
-function addPart(o){if(G.parts.length>650)G.parts.splice(0,G.parts.length-600);
+function addPart(o){const cap=IS_TOUCH?380:650; // a phone's fill-rate is honest but small — the page trims its ink
+  if(G.parts.length>cap)G.parts.splice(0,G.parts.length-(cap-50));
   G.parts.push(Object.assign({life:.5,max:.5,size:3,color:INK,vx:0,vy:0,grav:0,drag:1},o));}
 function addRing(x,y,r1,col){G.parts.push({ring:true,x,y,r0:6,r1,life:.35,max:.35,size:2.5,color:col||INK,vx:0,vy:0,grav:0,drag:1});}
 function inkBurst(x,y,n,col,pow=1){for(let i=0;i<n;i++){const a=rnd(TAU),s=rnd(60,340)*pow;
@@ -1924,6 +2080,10 @@ function teleHitPlayer(t){
 
 // ---- the player --------------------------------------------------------------
 
+function swapWeaponTo(w){ // one honest place for a blade change — touch, key, and click all meet here
+  if(!P||!w||!P.ownedWeapons.includes(w)||w===P.weapon)return false;
+  P.weapon=w;SAVE.lastWeapon=w;P.swapT=.22;P.comboIdx=0;P.swing=null;recalc();persist();AU.ui();vib(10);
+  return true;}
 function newPlayer(){return{x:RW/2,y:RH*.68,vx:0,vy:0,r:13,hp:100,maxhp:100,facing:0,weapon:SAVE.lastWeapon,
   comboIdx:0,comboT:0,swing:null,bufT:0,dashT:0,dashDir:0,dashCharges:2,dashRe:0,wbArm:false,
   ki:0,parryT:0,parryCd:0,parryGrace:0,invuln:0,dead:false,deadT:0,mantle:0,veng:false,artT:0,swapT:0,walk:0,
@@ -1988,7 +2148,7 @@ function doSwingHit(){const w=WEAPONS[P.weapon];const rng=w.range*P.st.range+P.r
   else if(blocked)AU.hit();}
 
 // the kill every posture bar begs for. letterbox, zoom, kanji, ink everywhere.
-function deathblow(e){slowmo(.5,.18);G.flash=.28;G.flashCol='#f6f1e2';AU.stamp();AU.crit();
+function deathblow(e){slowmo(.5,.18);G.flash=.28;G.flashCol='#f6f1e2';AU.stamp();AU.crit();vib([30,40,60]);
   G.lbxT=.75;G.zp=.5;
   addFloat(e.x,e.y-34,'DEATHBLOW',RED,16);
   G.fx.push({kind:'kanji',txt:'死',x:e.x,y:e.y,t:0,dur:.7});
@@ -2002,7 +2162,7 @@ function deathblow(e){slowmo(.5,.18);G.flash=.28;G.flashCol='#f6f1e2';AU.stamp()
 function tryParry(){if(P.parryCd>0)return;P.parryT=P.st.parryW;P.parryGrace=0;P.parryCd=.45;}
 const parryUp=()=>P.parryT>0||P.parryGrace>0; // the window, plus a hair of forgiveness after it
 function parrySuccess(src){P.parryT=0;P.parryGrace=0;P.parryCd=.18;slowmo(.3,.25);hitstop(.09);G.flash=.3;G.flashCol='#f6f1e2';
-  P.ki=Math.min(100,P.ki+20*P.st.kiGain);trauma(.3);AU.parry();
+  P.ki=Math.min(100,P.ki+20*P.st.kiGain);trauma(.3);AU.parry();vib([14,26,14]);
   if(bl('thirdeye'))P.hp=Math.min(P.maxhp,P.hp+4*bl('thirdeye'));
   if(bl('thunder')){shockRing(P.x,P.y,18*P.st.dmg,380,170);
     addFloat(P.x,P.y-44,'雷',GOLD2,18);}
@@ -2020,7 +2180,7 @@ function parrySuccess(src){P.parryT=0;P.parryGrace=0;P.parryCd=.18;slowmo(.3,.25
     for(const o of[-.42,0,.42])fproj(P.x,P.y,a+o,470,14*P.st.dmg,{r:10});
     AU.deflect();}}
 function breakEnemy(e){
-  e.broken=true;e.brokenT=e.boss?2.6:2.3;e.posture=e.postureMax;e.peril=false;
+  e.broken=true;e.brokenT=e.boss?2.6:2.3;e.posture=e.postureMax;e.peril=false;vib(20);
   addRing(e.x,e.y,48,GOLD);
   G.fx.push({kind:'spark',x:e.x,y:e.y,t:0,dur:.3});
   if(e.boss){e.move=null;e.state='idle';e.stateT=.6;
@@ -2073,7 +2233,7 @@ function damagePlayer(dmg,src){if(!P||P.dead)return false;
   if(P.dashT>0){perfectDodge(src);return false;}
   if(P.invuln>0)return false;
   const d=Math.max(1,Math.round(dmg*(1-P.st.armor)));
-  P.hp-=d;P.invuln=.7;G.hurtV=.6;trauma(.4);AU.hurt();splat(P.x,P.y,false);
+  P.hp-=d;P.invuln=.7;G.hurtV=.6;trauma(.4);AU.hurt();vib(26);splat(P.x,P.y,false);
   if(src&&src.x!==undefined)G.hurtA=angTo(P.x,P.y,src.x,src.y);G.hurtAT=.5; // the page points at what bit you
   addFloat(P.x,P.y-24,d,RED2,15);
   G.style.pts=Math.max(0,G.style.pts-35);G.style.combo=0;
@@ -2107,6 +2267,7 @@ function spawnEnemy(type,x,y,elite){const md=G.run&&G.run.meido;let d=ENEMY[type
   e.postureMax=(12+e.hp*.2)*(elite?1.4:1);
   G.enemies.push(e);inkBurst(x,y,10,INK,.8);return e;}
 function damageEnemy(e,dmg,opts={}){if(e.dead)return;dmg=Math.max(1,Math.round(dmg));
+  if(e.type==='hound'&&!e.fused)armHoundFuse(e); // every wound lights the fuse — the blast answers the blade
   e.hp-=dmg;e.flash=.09;e.hitT=.18;e.hitAng=opts.ang||0;
   if(opts.crit){G.fx.push({kind:'impact',x:e.x,y:e.y,t:0,dur:.14});
     addFloat(e.x,e.y-10,dmg+'!',RED,17);AU.crit();addRing(e.x,e.y,26,RED);}
@@ -2143,9 +2304,35 @@ function bossDefeated(b){slowmo(1.1,.4);G.flash=.3;G.wash=.35;trauma(.9);AU.roar
 function lerp2(a,b,t){return a+angDiff(a,b)*Math.min(1,t);}
 function spawnMark(type,x,y,elite){G.marks.push({type,x,y,elite,t:0,dur:.65});codexMeet(type,x,y);}
 function countMinions(){let n=0;for(const e of G.enemies)if(!e.dead&&e.type==='kappa'&&e.life<6)n++;return n;}
-function houndBoom(e){e.dead=true;splat(e.x,e.y,false);inkBurst(e.x,e.y,26,RED2,1.4);trauma(.35);AU.kill();AU.zap();
+// the mechanic the shrine dog always begged for: it only bursts when blood is
+// drawn. any wound arms a short fuse — the dog stands very still, the ring
+// swells, then the fire it swallowed answers the blade that woke it.
+function armHoundFuse(e,delay=.48){
+  if(e.dead||e.fused)return;
+  e.fused=true;e.fuseT=delay;e.fuseMax=delay;e.peril=false;e.atkDone=true;
+  e.vx*=.25;e.vy*=.25;
+  addFloat(e.x,e.y-e.r-20,'爆',RED,16);
+  AU.tone(660,1320,.22,'square',.07);vib(12);}
+function houndBoom(e){if(e.dead)return;
+  e.dead=true;e.deadT=0;e.fused=false;
+  splat(e.x,e.y,e.elite);inkBurst(e.x,e.y,26,RED2,1.4);trauma(.35);AU.kill();AU.zap();
   G.fx.push({kind:'boom',x:e.x,y:e.y,t:0,dur:.3,r:95});
-  if(dist(e.x,e.y,P.x,P.y)<95+P.r)damagePlayer(e.dmg*1.6,e);}
+  if(!P.dead&&dist(e.x,e.y,P.x,P.y)<95+P.r)damagePlayer(e.dmg*1.6,e);
+  // the fire answers every wound: it sears the pack, and wakes other hounds
+  for(const o of G.enemies){
+    if(o===e||o.dead)continue;
+    if(dist(o.x,o.y,e.x,e.y)<95+o.r){
+      if(o.type==='hound'&&!o.fused)armHoundFuse(o,.14);
+      else damageEnemy(o,26*P.st.dmg,{ang:angTo(e.x,e.y,o.x,o.y),knock:170,posture:5});}}
+  // the kill belongs to the blade that drew blood — ash and ledger agree
+  const ash=Math.round((e.def.ash||0)*(1+(G.run.abyss?G.run.wave*.05:G.run.gauntlet?1+G.gauntIdx*.15:G.run.meido?1+G.run.milestone*.18:G.run.act*.25))*(1+G.style.rank*.25)*(1+SAVE.meta.fortune*.1)*(e.elite?3:1)*(mdHas('grace')?2:1));
+  if(ash>0){const drops=Math.min(6,2+Math.ceil(ash/6));
+    for(let i=0;i<drops;i++)G.pickups.push({kind:'ash',x:e.x+rnd(-14,14),y:e.y+rnd(-14,14),vx:rnd(-40,40),vy:rnd(-60,-20),val:Math.ceil(ash/drops),t:0});}
+  G.run.kills++;SAVE.stats.kills++;
+  G.style.t=0;G.style.pts=Math.min(300,G.style.pts+6);
+  if(bl('sake'))P.hp=Math.min(P.maxhp,P.hp+3);
+  if(bl('drums'))P.dashRe=Math.max(0,P.dashRe-.4);
+  hitstop(e.elite?.08:.05);}
 
 function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.flash-=dt;
   if(e.hitT>0)e.hitT-=dt;
@@ -2157,6 +2344,13 @@ function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.fla
     if(e.rotT<=0){e.rotS--;e.rotT=3;}
     if(e.hp<=0){killEnemy(e);return;}}
   e.x+=e.kx*dt;e.y+=e.ky*dt;e.kx*=Math.exp(-8*dt);e.ky*=Math.exp(-8*dt);
+  // a wounded hound stands very still — the swallowed fire has the floor now.
+  // the fuse burns through stuns and posture alike; only a clean kill outpaces it.
+  if(e.fused){e.fuseT-=dt;e.vx*=Math.exp(-7*dt);e.vy*=Math.exp(-7*dt);
+    e.x+=e.vx*dt;e.y+=e.vy*dt;
+    e.x=clamp(e.x,WALL+e.r,RW-WALL-e.r);e.y=clamp(e.y,WALL+e.r,RH-WALL-e.r);
+    if(e.fuseT<=0){houndBoom(e);return;}
+    return;}
   if(e.broken){e.brokenT-=dt;e.vx*=Math.exp(-5*dt);e.vy*=Math.exp(-5*dt);
     if(e.brokenT<=0){e.broken=false;e.posture=0;}
     e.x=clamp(e.x,WALL+e.r,RW-WALL-e.r);e.y=clamp(e.y,WALL+e.r,RH-WALL-e.r);
@@ -2198,8 +2392,8 @@ function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.fla
     else if(e.def.atk==='volley'){keepDist(e.def.keep);e.facing=lerp2(e.facing,angP,dt*6);
       if(dp<e.def.rng&&e.cd<=0){e.state='windup';e.t=e.def.wind*e.wMul;e.peril=false;}}
     else if(e.def.atk==='boom'){move(P.x,P.y,e.life>5?1.4:1);e.facing=lerp2(e.facing,angP,dt*8);
-      if(e.life>7){e.state='boomwind';e.t=.6;e.peril=true;}
-      else if(dp<e.def.rng&&e.cd<=0){e.state='aim';e.t=e.def.wind*e.wMul;e.aim=angP;e.peril=true;}}
+      // no more suicide: unwounded, the dog closes and bites like a dog
+      if(dp<e.def.rng&&e.cd<=0){e.state='aim';e.t=e.def.wind*e.wMul;e.aim=angP;e.atkDone=false;e.peril=false;}}
     else{move(P.x,P.y);e.facing=lerp2(e.facing,angP,dt*6);
       if(dp<e.def.rng&&e.cd<=0){e.state='windup';e.chainN=0;e.chainLeft=e.def.chain||0;
         e.peril=Math.random()<(e.def.peril||0);
@@ -2253,14 +2447,22 @@ function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.fla
       else{e.state='seek';e.cd=e.def.rec*DIFFI().rec+rnd(.15);}}
     break;
   case 'aim':e.vx*=Math.exp(-8*dt);e.vy*=Math.exp(-8*dt);
-    if(e.t>e.def.wind*.4)e.aim=lerp2(e.aim,angP,dt*4);
-    e.t-=dt;if(e.t<=0){e.state='charging';e.t=1.1;AU.dash();}
+    if(e.t>e.def.wind*.4){e.aim=lerp2(e.aim,angP,dt*4);e.facing=lerp2(e.facing,e.aim,dt*6);}
+    e.t-=dt;if(e.t<=0){e.state='charging';e.t=1.1;e.atkDone=false;AU.dash();}
     break;
   case 'charging':e.vx=Math.cos(e.aim)*560;e.vy=Math.sin(e.aim)*560;
-    if(!e.atkDone&&dist(e.x,e.y,P.x,P.y)<e.r+P.r+10){e.atkDone=true;houndBoom(e);return;}
-    if(e.x<WALL+e.r||e.x>RW-WALL-e.r||e.y<WALL+e.r||e.y>RH-WALL-e.r||e.t<=0){houndBoom(e);return;}
+    e.x+=e.vx*dt;e.y+=e.vy*dt;
+    if(!e.atkDone&&!P.dead&&dist(e.x,e.y,P.x,P.y)<e.r+P.r+10){ // the bite: honest, deflectable, survivable
+      e.atkDone=true;e.state='recover';e.t=e.def.rec*DIFFI().rec+rnd(.2);e.cd=e.def.rec*DIFFI().rec;
+      e.vx*=.2;e.vy*=.2;
+      if(parryUp())parrySuccess(e);
+      else damagePlayer(e.dmg,e);
+      break;}
+    if(e.x<WALL+e.r||e.x>RW-WALL-e.r||e.y<WALL+e.r||e.y>RH-WALL-e.r||e.t<=0){
+      // the stride is spent, not the fire — it turns and comes again
+      e.state='recover';e.t=e.def.rec*DIFFI().rec+rnd(.2);e.cd=e.def.rec*DIFFI().rec;
+      e.vx*=.2;e.vy*=.2;break;}
     e.t-=dt;break;
-  case 'boomwind':e.vx*=Math.exp(-8*dt);e.vy*=Math.exp(-8*dt);e.t-=dt;if(e.t<=0)houndBoom(e);return;
   case 'channel':
     keepDist(e.def.keep);e.chan-=dt;
     if(e.chan<=0){e.state='seek';e.cd=e.def.rec*DIFFI().rec;
@@ -2459,7 +2661,12 @@ function abyssWaves(w){const pool=['kappa','oni','tengu','wraith','hound','kame'
 
 const SCREENS=['s-title','s-acts','s-shrine','s-armory','s-help','s-settings','s-bless','s-pause','s-death','s-clear','s-victory','s-records','s-chrono','s-submit','s-codex'];
 function setMode(m){G.mode=m;document.body.classList.toggle('playing',m==='game');
+  if(m!=='game')clearTouchInput();
   for(const s of SCREENS){const el=document.getElementById(s);if(el)el.classList.toggle('on',s==='s-'+m);}
+  if(m==='pause'&&G.run){const pb=$('#pause-bless');
+    if(pb){const ids=Object.keys(G.run.blessings);
+      pb.innerHTML=ids.length?'inkmarks carried: '+ids.map(id=>{const b=BLESS.find(x=>x.id===id);
+        return `<b style="color:var(--gold2)">${b.k}</b>${G.run.blessings[id]>1?'×'+G.run.blessings[id]:''}`;}).join(' · '):'';}}
   if(m!=='game')G.lbxT=0;
   checkOrient();}
 function handleEscape(){
@@ -2640,7 +2847,7 @@ function renderActs(){const strip=$('#act-strip');if(!strip)return;strip.innerHT
 
 function startRun(act,abyss=false,keepBook=false){G.run={act,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,abyss,wave:1,bossDead:null,gauntlet:false};
   if(!keepBook)G.codexSeen=new Set(); // a fresh run re-introduces the cast
-  G.codexQ.length=0;G.codexCur=null;
+  G.codexQ.length=0;G.codexCur=null;G.grantQ.length=0;G.grantShow=null;
   P=newPlayer();P.ownedWeapons=WKEYS.filter(w=>SAVE.weapons[w]);
   if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon='katana';
   P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;P.gourd=P.st.gourdMax;
@@ -2648,7 +2855,7 @@ function startRun(act,abyss=false,keepBook=false){G.run={act,stage:1,blessings:{
   startStage();}
 function startGauntlet(keepBook=false){G.run={act:7,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,gauntlet:true,wave:1,bossDead:null,abyss:false};
   if(!keepBook)G.codexSeen=new Set();
-  G.codexQ.length=0;G.codexCur=null;
+  G.codexQ.length=0;G.codexCur=null;G.grantQ.length=0;G.grantShow=null;
   P=newPlayer();P.ownedWeapons=WKEYS.filter(w=>SAVE.weapons[w]);
   if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon='katana';
   P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;P.gourd=P.st.gourdMax;
@@ -2662,7 +2869,7 @@ function startMeido(daily,keepBook=false){
   G.run={act:9,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,
     meido:true,daily:!!daily,seed,rng:mulberry(seed),milestone:1,mut:null,lastC:'',gauntlet:false,abyss:false,wave:1,bossDead:null};
   if(!keepBook)G.codexSeen=new Set();
-  G.codexQ.length=0;G.codexCur=null;
+  G.codexQ.length=0;G.codexCur=null;G.grantQ.length=0;G.grantShow=null;
   P=newPlayer();P.ownedWeapons=WKEYS.filter(w=>SAVE.weapons[w]);
   if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon='katana';
   P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;P.gourd=P.st.gourdMax;
@@ -2741,7 +2948,7 @@ function startStage(){const run=G.run;
 function nextWave(){G.waveIdx++;
   if(G.waveIdx>=G.waves.length){stageClear();return;}
   G.spawnQ=G.waves[G.waveIdx].slice();G.spawnT=.25;}
-function stageClear(){if(G.clearing||!G.run)return;G.clearing=1;slowmo(.4,.5);AU.stamp();
+function stageClear(){if(G.clearing||!G.run)return;G.clearing=1;slowmo(.4,.5);AU.stamp();vib(22);
   G.run.totalTime+=G.run.time;G.run.stageTime=G.run.time;SAVE.stats.playTime+=G.run.time;G.run.time=0;
   G.projs.length=0;G.teles.length=0;G.rings.length=0;
   const boss=!!G.run.bossDead;
@@ -2804,7 +3011,8 @@ function victoryButtons(list){const row=$('#victory-btns');if(!row)return;
     b.innerHTML=`<span class="idx">◆</span>${label}`;b.onclick=()=>{AU.ui();fn();};row.appendChild(b);}}
 function grantBlessing(b,silent){G.run.blessings[b.id]=(G.run.blessings[b.id]||0)+1;recalc();
   if(b.id==='inkwell')P.hp=Math.min(P.maxhp,P.hp+25);
-  if(!silent)AU.buy();}
+  if(!silent)AU.buy();
+  G.grantQ.push(b);} // every inkmark gets its stamp on the page — nothing is granted in silence
 function offerBlessings(){const picks=[];const pool=BLESS.slice();
   // the night road deals from its seeded deck, so a rite can be walked again
   const R=(G.run&&G.run.meido&&G.run.rng)?G.run.rng:Math.random;
@@ -2982,8 +3190,8 @@ document.addEventListener('click',e=>{
 function renderHelp(){
   const grid=$('#help-controls');if(!grid)return;
   const rows=IS_TOUCH?[
-    ['left thumb','move'],['right thumb — 斬','attack (hold works)'],['弾','deflect'],['走','dash'],['絶','ki art (needs full ki)'],['酒','drink the gourd'],['tap weapon tag','swap blade'],['停','pause']]:
-    [['W A S D / arrows','move'],['left click','attack (hold works)'],['right click','deflect'],['space','dash'],['E','ki art (needs full ki)'],['Q','drink the gourd'],['1 – 4','swap blade'],['Esc','pause'],['M','mute']];
+    ['left thumb (lower half)','move'],['斬 big button','attack — hold works'],['弾','deflect — the ring shows its cooldown'],['走','dash — pips are charges'],['絶','ki art — the ring fills with ki'],['酒 top right','drink the gourd'],['tap a weapon tag (top left)','swap blade'],['停 top right','pause'],['two fingers at once','move and cut together']]:
+    [['W A S D / arrows','move'],['left click','attack (hold works)'],['right click','deflect'],['space','dash'],['E','ki art (needs full ki)'],['Q','drink the gourd'],['1 – 5','swap blade (or click a tag)'],['Esc','pause'],['M','mute']];
   grid.innerHTML='<div class="helpcol"><h4>THE HAND</h4>'+
     rows.map(r=>`<div class="hrow"><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')+'</div>';
   const besti=$('#help-besti');if(!besti)return;
@@ -2998,6 +3206,18 @@ function renderHelp(){
 
 const CHTAG={new:'新',fix:'修',vis:'絵',cbt:'戦',eco:'社',base:'基'};
 const CHRONICLE=[
+  {v:'v8',kan:'犬',name:'the hound edition',note:'the dogs learned restraint, and the world learned to breathe',items:[
+    ['cbt','the hounds no longer take their own lives — they hunt, they bite, and every bite can be turned with the blade; only blood lights the powder now: wound a hound and a red ring counts down to its bloom — break off the ring, or herd the dog into its pack and let the chain do your killing'],
+    ['cbt','one clean killing stroke, landed whole before the fuse burns deep, stills the powder where it sleeps — mastery skips the fire entirely'],
+    ['fix','inkmarks bought at the shrine now speak their name where nothing swallows them: a gold stamp across the page, a badge above the arm, and the pause screen keeps the list of what the run carries'],
+    ['vis','the lanterns of the bamboo court breathe their warm light and shed slow sparks; the drowned bridge answers every footfall with rings, and the rain finally lands somewhere you can see'],
+    ['vis','snow glitters under the white gale; stars keep their own clocks over the night road, and now and then a wish crosses the page']]},
+  {v:'v7',kan:'指',name:'the thumb edition',note:'the page fits the hand that holds it',items:[
+    ['new','a phone now holds the game honestly: safe-area aware controls, a fatter stick, bigger buttons with their own gauges — the parry ring counts its cooldown, the art ring fills with ki, the gourd button wears its remaining sips'],
+    ['fix','the phantom-aim mends — a tap on a menu used to leave a ghost of the mouse behind, so every swing went the wrong way; the blade now turns to the nearest foe'],
+    ['fix','weapon tags answer a tap again (the stick had claimed their corner of the page), and a held finger releases cleanly through pause and cards'],
+    ['cbt','haptics — the phone answers the blade: deflects stutter the glass, wounds knock, deathblows land; a settings row quiets it'],
+    ['vis','the phone’s HUD breathes: style rank and curse chips move out of the thumb’s way, ash rides the road line, screens kneel to portrait']]},
   {v:'v6',kan:'花',name:'「花 edition」',note:'petals, and a ledger that travels',items:[
     ['fix','the records now travel with the page — when the ink-server is beyond reach, every run is carved into the page\u2019s own local ledger and ranked there, so the records stand even where the page stands alone'],
     ['new','the Chronicle 巻 — this very scroll, hung on the title menu beneath the records'],
@@ -3067,6 +3287,13 @@ function update(dt){G.t+=dt;G.windT+=dt;
   if(G.zpC>0&&!G.codexCur)G.zpC=Math.max(0,G.zpC-dt*4);
   if(G.codexCur){codexUpdate(dt);return;}
   if(G.codexQ.length&&G.mode==='game'&&G.introT<1.35)openCodex();
+  // inkmark grants keep their own queue: they wait out the intro and any codex
+  // cards first, then the shrine's gifts are said out loud where nothing swallows them
+  if(G.grantQ){
+    if(!G.grantShow&&G.grantQ.length&&G.introT<=0&&!G.codexCur&&!G.codexQ.length){
+      G.grantShow={b:G.grantQ.shift(),t:0,dur:2.4};AU.pluck(392,.1);}
+    if(G.grantShow){G.grantShow.t+=dt;
+      if(G.grantShow.t>G.grantShow.dur)G.grantShow=null;}}
   const run=G.run;if(!run||!P)return;
   run.time+=dt;
   if(G.wash>0)G.wash-=dt*1.2;
@@ -3123,9 +3350,8 @@ function update(dt){G.t+=dt;G.windT+=dt;
     const dashTap=jp('Space')||IN.dash;IN.dash=false;
     const artTap=jp('KeyE')||IN.art;IN.art=false;
     const drinkTap=jp('KeyQ')||IN.drink;IN.drink=false;
-    if(IN.weap>=0){const w=WKEYS[IN.weap];
-      if(w&&P.ownedWeapons.includes(w)&&w!==P.weapon){
-        P.weapon=w;SAVE.lastWeapon=w;P.swapT=.22;P.comboIdx=0;P.swing=null;recalc();persist();AU.ui();}
+    if(IN.weap<0){for(let i=0;i<WKEYS.length;i++)if(jp('Digit'+(i+1))){IN.weap=i;break;}} // 1–5 answer on keys too
+    if(IN.weap>=0){swapWeaponTo(WKEYS[IN.weap]);
       IN.weap=-1;}
     if(dashTap&&P.dashCharges>0&&P.dashT<=0){P.dashCharges--;
       if(P.dashRe<=0)P.dashRe=1.9;
@@ -3171,6 +3397,11 @@ function update(dt){G.t+=dt;G.windT+=dt;
     if(e.dead){e.deadT=(e.deadT||0)+dt; // the ink takes a half-second to let go
       if(e.deadT>.5)G.enemies.splice(i,1);continue;}
     if(e.boss)updateBoss(e,dt);else updateEnemy(e,dt);}
+  // the drowned bridge remembers every footfall — rings where the living walk
+  if(curAct()===2&&G.ripples){const tick=(G.t*3.4|0);
+    if(tick!==G._ripT){G._ripT=tick;
+      if(!P.dead&&Math.hypot(P.vx,P.vy)>70)addRipple(P.x,P.y+8);
+      for(const e of G.enemies)if(!e.dead&&!e.hidden&&Math.hypot(e.vx||0,e.vy||0)>60)addRipple(e.x,e.y+6);}}
   const es=G.enemies;
   for(let i=0;i<es.length;i++)for(let j=i+1;j<es.length;j++){const a=es[i],b=es[j];
     if(a.hidden||b.hidden)continue;
@@ -3337,8 +3568,12 @@ function renderWorld(){
       ctx.restore();}
     drawRayMotes();
     ctx.restore();}
-  if(act===2)drawWater();
+  drawStars(); // the night road keeps a sky: slow stars, and the occasional wish
+  if(act===2){drawWater();drawRipples();drawRainSplashes();}
+  else if(act===5)drawRainSplashes(); // the storm's rain lands somewhere now
   drawProps();
+  drawLanterns(); // the bamboo court's lanterns breathe
+  drawSnowGlints(); // the white gale glitters
   drawFireflies();
   ctx.globalAlpha=.92;ctx.drawImage(G.decalC,0,0);ctx.globalAlpha=1;
   ctx.globalAlpha=.15;
@@ -3436,6 +3671,106 @@ function drawWater(){ctx.strokeStyle='#9db4d8';
     ctx.lineWidth=1.4;
     ctx.beginPath();ctx.ellipse(x,y,r,r*.32,0,0,TAU);ctx.stroke();}
   ctx.globalAlpha=1;}
+// the night road keeps a sky over its indigo: stars that breathe on their own
+// slow clocks, and once in a while a wish crosses the page. stateless, like
+// all the weather — pure functions of the clock, nothing to store.
+function drawStars(){
+  if(curAct()!==9)return;
+  const n=IS_TOUCH?14:22;
+  for(let i=0;i<n;i++){
+    const seed=i*4.7+2.3;
+    const x=hash01(seed*7)*RW,y=hash01(seed*3)*RH;
+    const tw=.5+.5*Math.sin(G.t*(.7+hash01(seed)*1.3)+seed*9);
+    if(tw<.35)continue;
+    ctx.globalAlpha=.12+.34*tw*tw;ctx.fillStyle='#e8edf6';
+    ctx.beginPath();ctx.arc(x,y,.7+hash01(seed*5),0,TAU);ctx.fill();}
+  const per=13,ph=G.t%per; // the wish: one crossing every thirteen breaths
+  if(ph<1.1){const p=ph/1.1;
+    const x=RW*.14+p*RW*.52,y=RH*.08+p*RH*.3;
+    const a=Math.sin(p*PI)*.7;
+    ctx.save();ctx.globalCompositeOperation='lighter';
+    ctx.globalAlpha=a*.5;ctx.drawImage(glowWhite,x-26,y-26,52,52);
+    ctx.globalAlpha=a;ctx.strokeStyle='#f0f3f8';ctx.lineWidth=1.6;ctx.lineCap='round';
+    const dl=Math.hypot(.52,.3),ux=.52/dl,uy=.3/dl;
+    ctx.beginPath();ctx.moveTo(x-120*ux,y-120*uy);ctx.lineTo(x,y);ctx.stroke();
+    ctx.restore();}
+  ctx.globalAlpha=1;}
+// the drowned bridge answers every footfall: rings spread where the living
+// walk, spawned by update(), aged by the clock, gone inside a second.
+function addRipple(x,y){
+  if(G.ripples.length>48)G.ripples.shift();
+  G.ripples.push({x,y,t0:G.t});}
+function drawRipples(){
+  for(let i=G.ripples.length-1;i>=0;i--){const r=G.ripples[i];
+    const p=(G.t-r.t0)/.9;
+    if(p>=1){G.ripples[i]=G.ripples[G.ripples.length-1];G.ripples.pop();continue;}
+    const a=(1-p);
+    ctx.strokeStyle='#7d97b8';ctx.lineWidth=2.1;
+    ctx.globalAlpha=a*.68;
+    ctx.beginPath();ctx.ellipse(r.x,r.y,6+p*26,(6+p*26)*.38,0,0,TAU);ctx.stroke();
+    if(p<.55){ // the fresh ring keeps a second, tighter echo
+      ctx.globalAlpha=a*.45;ctx.strokeStyle='#5f7a9e';ctx.lineWidth=1.4;
+      ctx.beginPath();ctx.ellipse(r.x,r.y,3+p*13,(3+p*13)*.38,0,0,TAU);ctx.stroke();}
+    else{ // the old ring fades into a wash
+      ctx.globalAlpha=a*.12;ctx.fillStyle='#7d97b8';
+      ctx.beginPath();ctx.ellipse(r.x,r.y,(6+p*26)*.9,(6+p*26)*.34,0,0,TAU);ctx.fill();}}
+  ctx.globalAlpha=1;}
+// rain lands: small ticks of impact ringing off the ground, keyed to the
+// same clocks as the rain itself so nothing needs remembering
+function drawRainSplashes(){
+  const n=IS_TOUCH?9:14;
+  for(let i=0;i<n;i++){
+    const seed=i*2.7+3.3;
+    const cyc=.5+hash01(seed)*.55;
+    const p=((G.t+cyc*hash01(seed*3))%cyc)/cyc;
+    if(p>.42)continue;
+    const x=hash01(seed*7)*RW+Math.sin(G.t*.4+seed)*30,y=hash01(seed*11)*RH;
+    const q=p/.42;
+    ctx.globalAlpha=(1-q)*.35;ctx.strokeStyle='#a8bcd8';ctx.lineWidth=1.2;
+    ctx.beginPath();ctx.ellipse(x,y,1+q*7.5,(1+q*7.5)*.42,0,0,TAU);ctx.stroke();}
+  ctx.globalAlpha=1;}
+// the bamboo court's lanterns were painted still — now they breathe: a
+// flickering pool of warm light and a slow drift of sparks off each wick.
+// their positions are recomputed from the very seeds that painted them.
+function drawLanterns(){
+  if(curAct()!==3)return;
+  const seed=57*3;
+  for(let i=0;i<3;i++){
+    const x=hash01(seed+90+i*17)*RW,y=hash01(seed+91+i*23)*RH;
+    if(Math.abs(x-G.cam.x)>W/Z/2+240||Math.abs(y-G.cam.y)>H/Z/2+240)continue;
+    const fl=.8+.16*Math.sin(G.t*6.5+x*.13)+.06*Math.sin(G.t*21+y*.7);
+    ctx.save();ctx.globalCompositeOperation='lighter';
+    const r=130*fl;
+    const g=ctx.createRadialGradient(x,y-24,0,x,y-24,r);
+    g.addColorStop(0,'rgba(232,168,80,0.15)');g.addColorStop(1,'rgba(232,168,80,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y-24,r,0,TAU);ctx.fill();
+    ctx.restore();
+    for(let j=0;j<3;j++){ // sparks climb off the wick and fade as they rise
+      const ph=(G.t*(7+hash01(x+j*1.3)*6)+hash01(y+j*2.1)*56)%56;
+      ctx.globalAlpha=(1-ph/56)*.4*(.7+.3*fl);
+      ctx.fillStyle='#e0a452';
+      ctx.beginPath();ctx.arc(x+Math.sin(G.t*1.6+j*2.1+x*.1)*11,y-26-ph*.85,.9+hash01(j*3.1+x),0,TAU);ctx.fill();}
+    ctx.globalAlpha=1;}}
+// the white gale glitters: snow catching some far light, each glint waking
+// on its own slow clock — small brush-crosses, so they belong to the page.
+function drawSnowGlints(){
+  if(curAct()!==4)return;
+  const n=IS_TOUCH?10:16;
+  for(let i=0;i<n;i++){
+    const seed=i*3.1+7.7;
+    const tw=Math.sin(G.t*(.9+hash01(seed)*1.4)+seed*9);
+    if(tw<.88)continue;
+    const a=(tw-.88)/.12;
+    const x=hash01(seed*7)*RW,y=hash01(seed*3)*RH;
+    if(Math.abs(x-G.cam.x)>W/Z/2+60||Math.abs(y-G.cam.y)>H/Z/2+60)continue;
+    const s=2.4+hash01(seed*5)*2.6;
+    ctx.save();ctx.translate(x,y);ctx.rotate(.785+G.t*.3+seed);
+    ctx.globalAlpha=a*.7;ctx.strokeStyle='#ffffff';ctx.lineWidth=1.1;
+    ctx.beginPath();ctx.moveTo(-s,0);ctx.lineTo(s,0);ctx.moveTo(0,-s);ctx.lineTo(0,s);ctx.stroke();
+    ctx.globalAlpha=a*.3;ctx.fillStyle='#ffffff';
+    ctx.beginPath();ctx.arc(0,0,s*.45,0,TAU);ctx.fill();
+    ctx.restore();}
+  ctx.globalAlpha=1;}
 // light needs something to land on: pale motes sinking slowly through the
 // shafts, keyed to the same wind the props obey. drawn additively, so they
 // only exist where the dawn already is.
@@ -3456,7 +3791,7 @@ function drawFgPetals(){
   const act=curAct();
   if(act!==1&&act!==3&&act!==7)return;
   const pick=act===1?[0,0,2]:(act===3?[1,1,2]:[2]);
-  const n=act===7?4:5;
+  const n=(act===7?4:5)-(IS_TOUCH?1:0);
   for(let i=0;i<n;i++){
     const seed=i*3.7+11.3;
     const t=(G.t*(24+hash01(seed)*22)+hash01(seed*3)*(H+260))%(H+260);
@@ -3489,7 +3824,7 @@ function drawGusts(){
     ctx.stroke();}
   ctx.globalAlpha=1;}
 function drawWeather(){const act=curAct();
-  const n=act===5?46:(act===4?30:(act===1?12:(act===6?18:(act===3?10:(act===7?10:(act===9?16:14))))));
+  const n=Math.round((act===5?46:(act===4?30:(act===1?12:(act===6?18:(act===3?10:(act===7?10:(act===9?16:14)))))))*(IS_TOUCH?.6:1));
   for(let i=0;i<n;i++){
     const seed=i*1.618;
     if(act===1){ // petals on the dusk wind
@@ -3691,13 +4026,13 @@ function drawEnemy(e){ctx.save();
   shadowBlob(e.x,e.y,e.r,1+(e.state==='windup'?-.12:0));
   if(!NOFEET[e.type]&&!e.boss)drawFeet(e);
   const hover=e.type==='wraith'||e.type==='mirror'?5+Math.sin(e.bob*.7)*3:0;
-  ctx.translate(e.x,e.y-(e.boss?e.h||0:0)+hover-((e.state==='windup')?4:0));
+  ctx.translate(e.x,e.y-(e.boss?e.h||0:0)+hover-((e.state==='windup'||e.state==='aim')?4:0));
   const bob=Math.sin(e.bob)*1.6;
-  if(e.stun>0)ctx.rotate(Math.sin(G.t*22)*.14);
+  if(e.stun>0||e.fused)ctx.rotate(Math.sin(G.t*(e.fused?34:22))*.14);
   if(e.hitT>0)ctx.rotate(Math.sin((e.hitT/.18)*PI)*.16*((Math.cos(e.hitAng)>=0)?1:-1)); // struck flesh flinches aside
   ctx.save();ctx.rotate(e.facing);
   if(Math.abs(angDiff(0,e.facing))>PI/2)ctx.scale(1,-1);
-  const lunge=e.state==='active'?1.14:(e.state==='windup'?.9:1);
+  const lunge=(e.state==='active'||e.state==='charging')?1.14:((e.state==='windup'||e.state==='aim')?.9:1);
   const punch=1+(e.hitT>0?e.hitT*.5:0);
   ctx.scale(lunge*punch,(2-lunge)/punch);
   const kit=e.boss?BSPR[e.id]:ESPR[e.type];
@@ -3710,7 +4045,7 @@ function drawEnemy(e){ctx.save();
   ctx.restore();
   ctx.globalAlpha=1;
   // the steel announces itself: gold if the cut can be turned, red if it cannot
-  if(e.state==='windup'&&!e.boss){
+  if((e.state==='windup'||e.state==='aim')&&!e.boss){
     const k=clamp(1-e.t/((e.def.wind||.5)*e.wMul),0,1);
     const pu=.55+.45*Math.sin(G.t*26);
     const tip=e.r*1.8;
@@ -3723,6 +4058,20 @@ function drawEnemy(e){ctx.save();
     if(!e.peril){ctx.globalAlpha=.3*pu*(.4+k*.6);ctx.lineWidth=1.6;
       ctx.beginPath();ctx.arc(0,0,tip*.78,e.facing-.55,e.facing+.55);ctx.stroke();}
     ctx.globalAlpha=1;}
+  if(e.fused){ // the fuse ring is honest about the blast's reach — break off
+    const k=clamp(e.fuseT/(e.fuseMax||.48),0,1);
+    const pu=.5+.5*Math.sin(G.t*(24+(1-k)*26));
+    ctx.strokeStyle=RED;ctx.lineWidth=2.4;
+    ctx.setLineDash([10,7]);ctx.lineDashOffset=-G.t*70;
+    ctx.globalAlpha=.3+pu*.5;
+    ctx.beginPath();ctx.arc(0,0,95*(.4+.6*(1-k)),0,TAU);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.globalAlpha=.2+pu*.3;
+    ctx.drawImage(glowRed,-36,-36,72,72);
+    ctx.globalAlpha=.65+pu*.35;
+    ctx.font='800 15px "Shippori Mincho"';ctx.textAlign='center';ctx.fillStyle=RED;
+    ctx.fillText('爆',0,-e.r-14);
+    ctx.globalAlpha=1;ctx.textAlign='left';}
   if(e.elite){ctx.strokeStyle=RED;ctx.lineWidth=2;ctx.setLineDash([7,6]);ctx.lineDashOffset=G.t*26;
     ctx.globalAlpha=.8;
     ctx.beginPath();ctx.arc(0,0,e.r+7,0,TAU);ctx.stroke();
@@ -3973,7 +4322,7 @@ function drawHUD(){
   const run=G.run;
   HUD.hpGhost=Math.max(P.hp,lerp(HUD.hpGhost,P.hp,.055));
   // health: a brushstroke with tick marks every 25
-  const bx=26,by=30,bw=Math.min(340,W*.3),bh=15;
+  const bx=26+SAFE.l,by=30+SAFE.t,bw=Math.min(340,W*.3),bh=15;
   ctx.fillStyle='rgba(29,26,22,0.16)';ctx.fillRect(bx-3,by-3,bw+6,bh+6);
   ctx.fillStyle='rgba(242,236,217,0.6)';ctx.fillRect(bx,by,bw,bh);
   ctx.fillStyle=RED2;ctx.fillRect(bx,by,bw*clamp(HUD.hpGhost/P.maxhp,0,1),bh);
@@ -4023,72 +4372,141 @@ function drawHUD(){
       ctx.restore();}
     if(P.drinkT>0){ctx.strokeStyle=GOLD2;ctx.globalAlpha=.7;ctx.lineWidth=1.6;
       ctx.beginPath();ctx.arc(gx+8+(P.gourd)*13-4,gy,Math.max(1,8+(0.55-P.drinkT)*22),0,TAU);ctx.stroke();ctx.globalAlpha=1;}}
-  // style: the right page holds your rank
+  // style: the page marks how you carry the blade. touch keeps it top-left, out of the thumb's way
   const st=G.style;
   if(st.rank>0){
-    const sx=W-72,sy=H*.42;
     const pu=st.anim>0?1+st.anim*.5:1;
-    ctx.save();ctx.translate(sx,sy);ctx.scale(pu,pu);
-    if(st.anim>0){ctx.strokeStyle=GOLD2;ctx.globalAlpha=st.anim;
-      ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,34+st.anim*26,0,TAU);ctx.stroke();ctx.globalAlpha=1;}
-    ctx.font=`800 ${38+st.rank*9}px "Shippori Mincho"`;
-    ctx.fillStyle=st.rank>=4?RED:INK;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(RANKS[st.rank],0,0);
-    ctx.font='600 10px "IBM Plex Mono"';ctx.fillStyle=INK2;
-    ctx.fillText(RANKL[st.rank],0,34);
-    ctx.restore();
-    ctx.fillStyle='rgba(29,26,22,0.18)';ctx.fillRect(sx-34,sy+48,68,4);
-    ctx.fillStyle=GOLD;ctx.fillRect(sx-34,sy+48,68*clamp(st.pts/RANKT[st.rank],0,1),4);
-    ctx.textAlign='left';ctx.textBaseline='alphabetic';}
-  // the night stamps its mood in the corner: curses red, boons gold
+    if(IS_TOUCH){
+      const sx=26+SAFE.l,sy=182+SAFE.t;
+      const kw=26+st.rank*7;
+      ctx.save();ctx.translate(sx,sy);ctx.scale(pu,pu);
+      if(st.anim>0){ctx.strokeStyle=GOLD2;ctx.globalAlpha=st.anim;
+        ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(kw*.6,0,kw+st.anim*18,0,TAU);ctx.stroke();ctx.globalAlpha=1;}
+      ctx.font=`800 ${kw}px "Shippori Mincho"`;
+      ctx.fillStyle=st.rank>=4?RED:INK;ctx.textAlign='left';ctx.textBaseline='middle';
+      ctx.fillText(RANKS[st.rank],0,0);
+      ctx.font='600 9px "IBM Plex Mono"';ctx.fillStyle=INK2;
+      ctx.fillText(RANKL[st.rank],kw+10,1);
+      ctx.textBaseline='alphabetic';ctx.restore();
+      ctx.fillStyle='rgba(29,26,22,0.18)';ctx.fillRect(sx,sy+kw*.6+6,118,4);
+      ctx.fillStyle=GOLD;ctx.fillRect(sx,sy+kw*.6+6,118*clamp(st.pts/RANKT[st.rank],0,1),4);}
+    else{
+      const sx=W-72-SAFE.r,sy=H*.42;
+      ctx.save();ctx.translate(sx,sy);ctx.scale(pu,pu);
+      if(st.anim>0){ctx.strokeStyle=GOLD2;ctx.globalAlpha=st.anim;
+        ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,34+st.anim*26,0,TAU);ctx.stroke();ctx.globalAlpha=1;}
+      ctx.font=`800 ${38+st.rank*9}px "Shippori Mincho"`;
+      ctx.fillStyle=st.rank>=4?RED:INK;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(RANKS[st.rank],0,0);
+      ctx.font='600 10px "IBM Plex Mono"';ctx.fillStyle=INK2;
+      ctx.fillText(RANKL[st.rank],0,34);
+      ctx.restore();
+      ctx.fillStyle='rgba(29,26,22,0.18)';ctx.fillRect(sx-34,sy+48,68,4);
+      ctx.fillStyle=GOLD;ctx.fillRect(sx-34,sy+48,68*clamp(st.pts/RANKT[st.rank],0,1),4);
+      ctx.textAlign='left';ctx.textBaseline='alphabetic';}}
+  // the night stamps its mood: curses red, boons gold. touch lays them in a quiet row under the boss bar
   if(run.meido&&run.mut){
-    let cy=30;
-    const chip=(k,col,name)=>{const cx=W-30;
+    const chips=[];
+    for(const c of run.mut.cs)chips.push({k:c.k,col:RED2,n:c.n});
+    if(run.mut.b)chips.push({k:run.mut.b.k,col:GOLD,n:run.mut.b.n});
+    const drawChip=(k,col,name,cx,cy,nameSide)=>{
       ctx.save();ctx.translate(cx,cy);ctx.rotate(PI/4);
       ctx.fillStyle=col;ctx.fillRect(-8,-8,16,16);
       ctx.strokeStyle='rgba(242,236,217,0.7)';ctx.lineWidth=1;ctx.strokeRect(-8,-8,16,16);
       ctx.restore();
       ctx.font='700 12px "Shippori Mincho"';ctx.fillStyle=PAPER2;ctx.textAlign='center';ctx.textBaseline='middle';
       ctx.fillText(k,cx,cy+1);
-      ctx.font='600 7.5px "IBM Plex Mono"';ctx.fillStyle=INK2;ctx.textAlign='right';
-      ctx.fillText(name,cx-13,cy+1);
-      ctx.textAlign='left';ctx.textBaseline='alphabetic';
-      cy+=27;};
-    for(const c of run.mut.cs)chip(c.k,RED2,c.n.toUpperCase());
-    if(run.mut.b)chip(run.mut.b.k,GOLD,run.mut.b.n.toUpperCase());}
-  // weapons: scroll tags bottom-left
+      ctx.font='600 7.5px "IBM Plex Mono"';ctx.fillStyle=INK2;ctx.textAlign=nameSide;
+      ctx.fillText(name.toUpperCase(),nameSide==='right'?cx+14:cx-14,cy+1);
+      ctx.textAlign='left';ctx.textBaseline='alphabetic';};
+    if(IS_TOUCH){
+      const cw=102,cy=SAFE.t+86;
+      let cx=W/2-chips.length*cw/2+cw/2;
+      for(const c of chips){drawChip(c.k,c.col,c.n,cx,cy,'right');cx+=cw;}}
+    else{
+      let cy=30+SAFE.t;
+      for(const c of chips){drawChip(c.k,c.col,c.n,W-30-SAFE.r,cy,'left');cy+=27;}}}
+  // inkmarks carried: gold seals above the health stroke — always on the page,
+  // so no codex card or ceremony can ever swallow what the run has given you
+  {
+    const ids=Object.keys(run.blessings);
+    let bx2=26+SAFE.l,by2=SAFE.t+9;
+    const maxN=IS_TOUCH?9:12;
+    for(let i=0;i<Math.min(ids.length,maxN);i++){
+      const b=BLESS.find(x=>x.id===ids[i]);if(!b)continue;
+      const n=run.blessings[ids[i]];
+      ctx.save();ctx.translate(bx2+7,by2+7);ctx.rotate(PI/4);
+      ctx.fillStyle=n>1?RED2:GOLD;ctx.fillRect(-6.5,-6.5,13,13);
+      ctx.strokeStyle='rgba(242,236,217,0.75)';ctx.lineWidth=1;ctx.strokeRect(-6.5,-6.5,13,13);
+      ctx.restore();
+      ctx.font='700 10px "Shippori Mincho"';ctx.fillStyle=PAPER2;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(b.k,bx2+7,by2+8);
+      ctx.textBaseline='alphabetic';
+      if(n>1){ctx.font='700 8px "IBM Plex Mono"';ctx.fillStyle=INK;
+        ctx.fillText('×'+n,bx2+15,by2+14);}
+      ctx.textAlign='left';
+      bx2+=n>1?25:17;}
+    if(ids.length>maxN){ctx.font='600 9px "IBM Plex Mono"';ctx.fillStyle=INK2;
+      ctx.fillText('+'+(ids.length-maxN),bx2+1,by2+14);}}
+  // the grant, said out loud: the kanji, the name — a stamp the codex cannot eat
+  if(G.grantShow){
+    const gs=G.grantShow,p=gs.t/gs.dur;
+    const aa=p<.1?p/.1:(p>.84?(1-p)/.16:1);
+    const cy=IS_TOUCH?SAFE.t+170:SAFE.t+78;
+    ctx.save();ctx.globalAlpha=clamp(aa,0,1);
+    ctx.translate(W/2,cy);
+    const sc=p<.1?1.5-p*5:1;
+    ctx.scale(sc,sc);
+    ctx.font='700 24px "Shippori Mincho"';ctx.fillStyle=GOLD2;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(gs.b.k,0,-7);
+    ctx.font='600 11px "IBM Plex Mono"';ctx.fillStyle=INK2;
+    ctx.fillText('INKMARK — '+gs.b.n.toUpperCase(),0,13);
+    ctx.strokeStyle=GOLD;ctx.globalAlpha=clamp(aa,0,1)*.7;ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(-86,0);ctx.lineTo(-58,0);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(58,0);ctx.lineTo(86,0);ctx.stroke();
+    ctx.textAlign='left';ctx.textBaseline='alphabetic';
+    ctx.restore();ctx.globalAlpha=1;}
+  // weapons: scroll tags. desktop hangs them bottom-left; touch keeps them high,
+  // above the stick's pasture — a swap is a choice, not an accident
   WSLOTS.length=0;
-  const wy=H-(IS_TOUCH?170:58);
-  WKEYS.forEach((id,i)=>{
-    const wx=26+i*52;
-    WSLOTS.push({x:wx,y:wy,s:44,i});
+  const drawWSlot=(wx,wy,sw,sh,i,id)=>{
+    WSLOTS.push({x:wx,y:wy,s:sw,i});
     const owned=P.ownedWeapons.includes(id),active=P.weapon===id;
     ctx.globalAlpha=owned?1:.32;
     ctx.fillStyle=active?'#221f1b':'rgba(242,236,217,0.85)';
-    ctx.fillRect(wx,wy,44,50);
+    ctx.fillRect(wx,wy,sw,sh);
     ctx.strokeStyle=active?RED:'rgba(29,26,22,0.55)';ctx.lineWidth=active?2.5:1.5;
-    ctx.strokeRect(wx,wy,44,50);
+    ctx.strokeRect(wx,wy,sw,sh);
     ctx.font='700 20px "Shippori Mincho"';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillStyle=active?PAPER2:INK;
-    ctx.fillText(WEAPONS[id].kanji,wx+22,wy+20);
-    ctx.font='600 8px "IBM Plex Mono"';
+    ctx.fillText(WEAPONS[id].kanji,wx+sw/2,wy+sh*.4);
+    ctx.font='600 7.5px "IBM Plex Mono"';
     ctx.fillStyle=active?PAPER2:INK2;
-    ctx.fillText(String(i+1),wx+22,wy+40);
+    ctx.fillText(IS_TOUCH?'SWAP':String(i+1),wx+sw/2,wy+sh-11);
     if(active){ctx.fillStyle=RED;
-      ctx.save();ctx.translate(wx+36,wy+8);ctx.rotate(.3);
+      ctx.save();ctx.translate(wx+sw-8,wy+8);ctx.rotate(.3);
       ctx.fillRect(-5,-5,10,10);ctx.restore();}
-    ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.globalAlpha=1;});
+    ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.globalAlpha=1;};
+  if(IS_TOUCH){
+    let tx=26+SAFE.l;
+    WKEYS.forEach((id,i)=>{
+      if(!P.ownedWeapons.includes(id)){WSLOTS.push({x:-1e4,y:-1e4,s:0,i});return;}
+      drawWSlot(tx,96+SAFE.t,46,54,i,id);
+      tx+=50;});}
+  else{
+    WKEYS.forEach((id,i)=>drawWSlot(26+SAFE.l+i*52,H-58,44,50,i,id));}
   // ash
-  ctx.font='700 15px "Shippori Mincho"';ctx.fillStyle=INK;
-  ctx.fillText('灰',26,wy-14);
-  ctx.font='600 13px "IBM Plex Mono"';ctx.fillStyle=INK2;
-  ctx.fillText(String(SAVE.ash),46,wy-14);
+  if(!IS_TOUCH){
+    ctx.font='700 15px "Shippori Mincho"';ctx.fillStyle=INK;
+    ctx.fillText('灰',26+SAFE.l,H-72);
+    ctx.font='600 13px "IBM Plex Mono"';ctx.fillStyle=INK2;
+    ctx.fillText(String(SAVE.ash),46+SAFE.l,H-72);}
   // boss bar
   if(G.boss&&!G.boss.dead&&!G.boss.hidden){
     const b=G.boss;
     b.hpG=b.hpG===undefined?b.hp:Math.max(b.hp,lerp(b.hpG,b.hp,.04));
     const bw=Math.min(b.duel?W*.44:W*.58,b.duel?440:560);
-    const bxx=(W-bw)/2,byy=b.duel?22:26;
+    const bxx=(W-bw)/2,byy=(b.duel?22:26)+SAFE.t;
     const bh=b.duel?10:13;
     ctx.fillStyle='rgba(233,225,205,0.55)';ctx.fillRect(bxx-4,byy-4,bw+8,bh+22);
     ctx.font='700 15px "Shippori Mincho"';
@@ -4111,18 +4529,20 @@ function drawHUD(){
     if(b.broken){ctx.font='800 18px "Shippori Mincho"';ctx.fillStyle=RED;
       ctx.globalAlpha=.6+.4*Math.sin(G.t*9);
       ctx.fillText('死 — STRIKE',pxx-10,byy+30+bh);ctx.globalAlpha=1;}}
-  // the road line, bottom center
+  // the road line, bottom center. touch carries the ash here — no second column on a narrow page
   ctx.font='600 11px "IBM Plex Mono"';ctx.fillStyle=INK2;ctx.textAlign='center';
   const sd=currentStageDef();
-  if(run.gauntlet)ctx.fillText(`THE GAUNTLET 連 · duel ${G.gauntIdx+1}/${GAUNTLET.length} · ${sd.n}`,W/2,H-16);
-  else if(run.meido)ctx.fillText(`THE NIGHT ROAD 冥 · mark ${run.milestone}${run.daily?' · daily rite':''} · seed ${run.seed}`,W/2,H-16);
-  else if(run.abyss)ctx.fillText(`THE ABYSS · wave ${run.wave} · deepest ${SAVE.abyssBest+1}`,W/2,H-16);
+  const ashTag=IS_TOUCH?` · 灰 ${SAVE.ash}`:'';
+  const rlY=H-16-SAFE.b;
+  if(run.gauntlet)ctx.fillText(`THE GAUNTLET 連 · duel ${G.gauntIdx+1}/${GAUNTLET.length} · ${sd.n}${ashTag}`,W/2,rlY);
+  else if(run.meido)ctx.fillText(`THE NIGHT ROAD 冥 · mark ${run.milestone}${run.daily?' · daily rite':''} · seed ${run.seed}${ashTag}`,W/2,rlY);
+  else if(run.abyss)ctx.fillText(`THE ABYSS · wave ${run.wave} · deepest ${SAVE.abyssBest+1}${ashTag}`,W/2,rlY);
   else{const act=ACTS[run.act-1];
-    ctx.fillText(`ACT ${act.kanji} · stage ${run.stage}/${act.stages.length} · ${sd.n||''}`,W/2,H-16);
+    ctx.fillText(`ACT ${act.kanji} · stage ${run.stage}/${act.stages.length} · ${sd.n||''}${ashTag}`,W/2,rlY);
     const nWaves=G.waves.length;
     for(let i=0;i<nWaves;i++){const dx=W/2+nWaves*7-i*14;
       ctx.fillStyle=i<=G.waveIdx?RED:'rgba(74,68,60,0.4)';
-      ctx.beginPath();ctx.arc(dx,H-36,3,0,TAU);ctx.fill();}}
+      ctx.beginPath();ctx.arc(dx,rlY-20,3,0,TAU);ctx.fill();}}
   ctx.textAlign='left';
   // stage intro
   if(G.introT>0){const a=clamp(G.introT/1.7,0,1);const aa=a>.8?(1-a)/.2:(a<.25?a/.25:1);
@@ -4157,7 +4577,9 @@ function drawHUD(){
   if(G.hints){let txt=null;
     for(const h of G.hints)if(!h.cond()){txt=h.t;break;}
     if(txt){ctx.textAlign='center';ctx.font='600 13px "IBM Plex Mono"';ctx.fillStyle=INK2;
-      ctx.globalAlpha=.85;ctx.fillText(txt,W/2,H-140);ctx.globalAlpha=1;ctx.textAlign='left';}}
+      ctx.globalAlpha=.85;
+      const hy=IS_TOUCH?H-192:H-140; // on a phone it hangs above the stick, clear of both thumbs
+      ctx.fillText(txt,W/2,hy);ctx.globalAlpha=1;ctx.textAlign='left';}}
   if(P.hp<P.maxhp*.3&&!P.dead){ctx.globalAlpha=.2+.15*Math.sin(G.t*6);
     ctx.drawImage(vigHurt(),0,0,W,H);ctx.globalAlpha=1;}}
 
@@ -4174,37 +4596,62 @@ function drawCursor(){const pr=P.parryCd<=0;
   ctx.stroke();}
 
 function drawTouchUI(){
+  // the stick: a ring born wherever the thumb lands
   if(joy.id!==-1){
     ctx.globalAlpha=.22;ctx.strokeStyle=INK;ctx.lineWidth=2;
-    ctx.beginPath();ctx.arc(joy.ox,joy.oy,58,0,TAU);ctx.stroke();
+    ctx.beginPath();ctx.arc(joy.ox,joy.oy,66,0,TAU);ctx.stroke();
     ctx.globalAlpha=.3;ctx.fillStyle=INK;
-    ctx.beginPath();ctx.arc(joy.ox+joy.x*58,joy.oy+joy.y*58,26,0,TAU);ctx.fill();ctx.globalAlpha=1;}
-  else{ctx.globalAlpha=.1;ctx.strokeStyle=INK;ctx.lineWidth=2;
-    ctx.beginPath();ctx.arc(90,H-120,52,0,TAU);ctx.stroke();ctx.globalAlpha=1;}
+    ctx.beginPath();ctx.arc(joy.ox+joy.x*66,joy.oy+joy.y*66,30,0,TAU);ctx.fill();ctx.globalAlpha=1;}
+  else{ // resting hint, low and out of the way
+    const hx=78+SAFE.l,hy=H-128;
+    ctx.globalAlpha=.1;ctx.strokeStyle=INK;ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(hx,hy,54,0,TAU);ctx.stroke();
+    ctx.globalAlpha=.05;ctx.fillStyle=INK;
+    ctx.beginPath();ctx.arc(hx,hy,20,0,TAU);ctx.fill();ctx.globalAlpha=1;}
   const bs=touchButtons();
   for(const b of bs){
     if(b.id==='pause'){
-      ctx.globalAlpha=.75;ctx.strokeStyle=INK;ctx.lineWidth=1.5;
-      ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,TAU);ctx.stroke();
+      ctx.globalAlpha=.82;ctx.strokeStyle=INK;ctx.lineWidth=1.5;
+      ctx.fillStyle='rgba(242,236,217,0.72)';
+      ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,TAU);ctx.fill();ctx.stroke();
       ctx.font='700 16px "Shippori Mincho"';ctx.fillStyle=INK;ctx.textAlign='center';ctx.textBaseline='middle';
       ctx.fillText(b.kan,b.x,b.y+1);ctx.textBaseline='alphabetic';ctx.textAlign='left';ctx.globalAlpha=1;continue;}
-    const ready=(b.id!=='art'||P.ki>=100)&&(b.id!=='drink'||P.gourd>0);
     const pressed=TBP[b.id];
-    if(ready&&b.id==='art')ctx.drawImage(glowGold,b.x-b.r,b.y-b.r,b.r*2,b.r*2);
-    if(ready&&b.id==='par'&&P.parryCd<=0)ctx.drawImage(glowGold,b.x-b.r,b.y-b.r,b.r*2,b.r*2);
-    if(b.id==='drink'&&P.gourd>0&&P.hp<P.maxhp*.55)ctx.drawImage(glowRed,b.x-b.r,b.y-b.r,b.r*2,b.r*2);
-    ctx.globalAlpha=ready?.85:.3;
+    const ready=b.id!=='art'||P.ki>=100;
+    const pr=pressed?1.09:1;
+    ctx.save();ctx.translate(b.x,b.y);ctx.scale(pr,pr);
+    if(b.id==='drink'){
+      if(P.gourd>0&&P.hp<P.maxhp*.55)ctx.drawImage(glowRed,-b.r,-b.r,b.r*2,b.r*2);}
+    else{
+      if(ready&&b.id==='art')ctx.drawImage(glowGold,-b.r,-b.r,b.r*2,b.r*2);
+      if(ready&&b.id==='par'&&P.parryCd<=0)ctx.drawImage(glowGold,-b.r,-b.r,b.r*2,b.r*2);}
+    ctx.globalAlpha=ready?.88:.32;
     ctx.fillStyle=pressed?RED:'rgba(242,236,217,0.66)';
-    ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,TAU);ctx.fill();
+    ctx.beginPath();ctx.arc(0,0,b.r,0,TAU);ctx.fill();
     ctx.strokeStyle=pressed?RED:INK;ctx.lineWidth=2;ctx.stroke();
+    // gauges written on the face: ki fills the ring, parry counts its own cooldown down
+    if(b.id==='art'){const kf=clamp(P.ki/100,0,1);
+      ctx.strokeStyle='rgba(29,26,22,0.3)';ctx.lineWidth=3;
+      ctx.beginPath();ctx.arc(0,0,b.r-5,0,TAU);ctx.stroke();
+      if(kf>.02){ctx.strokeStyle=kf>=1?GOLD2:GOLD;ctx.lineCap='round';ctx.globalAlpha=ready?.95:.5;
+        ctx.beginPath();ctx.arc(0,0,b.r-5,-PI/2,-PI/2+kf*TAU);ctx.stroke();ctx.lineCap='butt';}}
+    if(b.id==='par'&&P.parryCd>0){const cf=1-clamp(P.parryCd/.45,0,1);
+      ctx.strokeStyle=RED;ctx.lineWidth=3;ctx.globalAlpha=.75;
+      ctx.beginPath();ctx.arc(0,0,b.r-5,-PI/2,-PI/2+cf*TAU);ctx.stroke();}
+    ctx.globalAlpha=ready?.92:.38;
     ctx.font=`800 ${b.r*.62|0}px "Shippori Mincho"`;
     ctx.fillStyle=pressed?PAPER2:INK;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(b.kan,b.x,b.y+2);
+    ctx.fillText(b.kan,0,2);
     ctx.textBaseline='alphabetic';ctx.textAlign='left';
     if(b.id==='dash'){for(let i=0;i<P.st.dashMax;i++){
       ctx.fillStyle=i<P.dashCharges?INK:'rgba(29,26,22,.2)';
-      ctx.beginPath();ctx.arc(b.x-b.r+10+i*13,b.y+b.r+12,4,0,TAU);ctx.fill();}}
-    ctx.globalAlpha=1;}}
+      ctx.beginPath();ctx.arc(-b.r+10+i*13,b.r+12,4,0,TAU);ctx.fill();}}
+    if(b.id==='drink'){for(let i=0;i<P.st.gourdMax;i++){
+      ctx.save();ctx.translate(-b.r+11+i*11,b.r+10);ctx.rotate(.5);
+      ctx.fillStyle=i<P.gourd?RED:'rgba(29,26,22,.2)';
+      ctx.beginPath();ctx.moveTo(0,-4.2);ctx.quadraticCurveTo(3.7,.6,0,4.2);ctx.quadraticCurveTo(-3.7,.6,0,-4.2);
+      ctx.fill();ctx.restore();}}
+    ctx.restore();ctx.globalAlpha=1;}}
 
 // ---- settings ---------------------------------------------------------------------
 
@@ -4212,14 +4659,17 @@ function drawTouchUI(){
   const el=$('#set-vol');if(el)el.value=Math.round(AU.vol*100);})();
 const volEl=$('#set-vol');
 if(volEl)volEl.addEventListener('input',e=>{const v=+e.target.value/100;AU.setVol(v);store.set('sumikiri_vol',v);});
-function syncTgl(){const sh=$('#set-shake'),nm=$('#set-nums'),cd=$('#set-cdx');if(sh)sh.classList.toggle('on',SAVE.shake);
+function syncTgl(){const sh=$('#set-shake'),nm=$('#set-nums'),cd=$('#set-cdx'),hp=$('#set-hap');if(sh)sh.classList.toggle('on',SAVE.shake);
   if(nm)nm.classList.toggle('on',SAVE.numbers);
   if(cd)cd.classList.toggle('on',SAVE.codex);
+  if(hp)hp.classList.toggle('on',SAVE.haptic);
   document.querySelectorAll('[data-diff]').forEach(b=>b.classList.toggle('on',+b.dataset.diff===SAVE.difficulty));}
 const shBtn=$('#set-shake');if(shBtn)shBtn.onclick=()=>{SAVE.shake=!SAVE.shake;persist();syncTgl();AU.ui();};
 const nmBtn=$('#set-nums');if(nmBtn)nmBtn.onclick=()=>{SAVE.numbers=!SAVE.numbers;persist();syncTgl();AU.ui();};
 const cdxBtn=$('#set-cdx');if(cdxBtn)cdxBtn.onclick=()=>{SAVE.codex=!SAVE.codex;persist();syncTgl();AU.ui();
   if(!SAVE.codex)G.codexQ.length=0;}; // anything still waiting in the book goes quiet too
+const hapBtn=$('#set-hap');
+if(hapBtn)hapBtn.onclick=()=>{SAVE.haptic=!SAVE.haptic;persist();syncTgl();AU.ui();vib(12);};
 document.querySelectorAll('[data-diff]').forEach(b=>b.onclick=()=>{SAVE.difficulty=+b.dataset.diff;persist();syncTgl();AU.ui();});
 const backBtn=$('#set-back');if(backBtn)backBtn.onclick=()=>{AU.ui();leaveSettings();};
 const fsBtn=$('#set-fs');

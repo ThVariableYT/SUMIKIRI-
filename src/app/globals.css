@@ -120,3 +120,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* the game owns the whole page: keep Next's dev indicator (and its hit area)
+   from squatting on the bottom-left corner where the joystick lives */
+nextjs-portal {
+  display: none !important;
+}
