@@ -163,6 +163,59 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 .rec-empty{padding:26px 0;text-align:center;color:var(--ink2);font-size:14px;letter-spacing:.06em}
 #rec-own{font-size:12.5px;color:var(--gold);letter-spacing:.08em;margin:12px 0 0;text-align:center;min-height:18px}
 
+/* the paper pages get a little life: slow mist that drifts behind the
+   content, and brushed corner-marks hung at boot. none of it is clickable */
+.page{position:relative}
+.page::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(340px 130px at 24% 30%,rgba(120,96,60,.06),transparent 70%),
+    radial-gradient(420px 150px at 68% 74%,rgba(120,96,60,.06),transparent 70%);
+  animation:pagemist 52s linear infinite alternate}
+@keyframes pagemist{from{transform:translateX(-70px)}to{transform:translateX(70px)}}
+.pg-corner{position:absolute;pointer-events:none;opacity:.55;z-index:-1}
+.pg-corner.tl{top:2px;left:2px}
+.pg-corner.br{bottom:2px;right:2px;transform:rotate(180deg)}
+
+/* the chronicle: a makimono that unrolls — ink rods above and below,
+   the paper breathing between them */
+.chrono{width:min(700px,94vw);display:flex;flex-direction:column;
+  animation:chronodrop .55s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes chronodrop{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:none}}
+.chrono .rod{height:15px;background:var(--ink);border-radius:8px;flex:none;position:relative;
+  box-shadow:0 4px 10px rgba(29,26,22,.42)}
+.chrono .rod::before,.chrono .rod::after{content:"";position:absolute;top:-3.5px;width:22px;height:22px;
+  border-radius:50%;background:var(--ink2);box-shadow:0 2px 5px rgba(29,26,22,.35)}
+.chrono .rod::before{left:-7px}
+.chrono .rod::after{right:-7px}
+.chrono .rod.top{border-bottom:3px solid var(--red2)}
+.chrono-paper{background:var(--paper3);padding:24px 28px 16px;display:flex;flex-direction:column;max-height:74vh;
+  box-shadow:inset 0 0 44px rgba(120,100,60,.16),0 10px 26px rgba(29,26,22,.32);position:relative}
+.chrono-head{text-align:center;margin-bottom:10px;flex:none}
+.chrono-head h2{font-size:clamp(22px,2.6vw,30px);font-weight:800;letter-spacing:.2em}
+.chrono-head .sub{font-size:12px;color:var(--ink2);letter-spacing:.16em;margin-top:4px}
+.chrono-body{overflow-y:auto;padding:2px 6px 6px;scrollbar-width:thin;scrollbar-color:rgba(74,68,60,.5) transparent}
+.chrono-body::-webkit-scrollbar{width:5px}
+.chrono-body::-webkit-scrollbar-thumb{background:rgba(74,68,60,.5);border-radius:3px}
+.ch-ver{margin:6px 0 20px}
+.ch-vhead{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.ch-vhead .ch-kan{width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;
+  background:var(--red);color:var(--paper2);font-weight:800;font-size:21px;border-radius:4px;transform:rotate(-4deg);
+  box-shadow:2px 2px 0 rgba(60,16,10,.25)}
+.ch-vname{font-size:16.5px;font-weight:800;letter-spacing:.08em;line-height:1.3}
+.ch-vname small{display:block;font-size:11.5px;color:var(--ink2);font-weight:400;letter-spacing:.05em}
+.ch-vline{flex:1;height:2px;background:var(--ink);opacity:.72;min-width:24px}
+.ch-item{display:flex;gap:11px;padding:7px 2px;border-bottom:1px dotted rgba(74,68,60,.28);font-size:13px;
+  color:var(--ink2);line-height:1.6}
+.ch-item:last-child{border-bottom:none}
+.ch-tag{flex:none;width:36px;height:22px;margin-top:2px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:12.5px;border:1.5px solid;letter-spacing:.02em}
+.ch-tag.t-new{color:var(--red);border-color:var(--red)}
+.ch-tag.t-fix{color:var(--gold);border-color:var(--gold)}
+.ch-tag.t-vis{color:var(--gold2);border-color:var(--gold2)}
+.ch-tag.t-cbt{color:var(--ink);border-color:var(--ink)}
+.ch-tag.t-eco{color:var(--red2);border-color:var(--red2)}
+.ch-tag.t-base{color:var(--ink2);border-color:var(--ink2)}
+
 #s-submit .field{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:8px}
 #s-submit input{font-family:inherit;font-size:24px;font-weight:700;text-align:center;letter-spacing:.1em;width:min(340px,80vw);
   background:var(--paper3);border:none;border-bottom:3px solid var(--ink);padding:10px 8px;color:var(--ink);outline:none}
@@ -235,7 +288,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="t-kanji"><span>墨</span><span>斬</span><span class="seal title-seal">印</span></div>
     <div class="t-side">
       <h1>SUMIKIRI</h1>
-      <div class="tag">a hack &amp; slash painted in ink · v3 「月 edition」</div>
+      <div class="tag">a hack &amp; slash painted in ink · v6 「花 edition」</div>
       <nav class="menu">
         <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Road</button>
         <button class="mbtn" id="btn-abyss" data-go="abyss"><span class="idx">二</span>The Abyss <small class="mono" id="ab-best" style="font-size:12px;color:var(--ink2)"></small></button>
@@ -243,6 +296,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
         <button class="mbtn" id="btn-meido" data-go="meido"><span class="idx">四</span>The Night Road <small class="mono" id="md-best" style="font-size:12px;color:var(--ink2)"></small></button>
         <button class="mbtn" id="btn-meido-daily" data-go="meidoDaily"><span class="idx">五</span>Rite of the Day <small class="mono" id="md-daily" style="font-size:12px;color:var(--ink2)"></small></button>
         <button class="mbtn" data-go="records"><span class="idx">六</span>Records of Ink</button>
+        <button class="mbtn" data-go="chrono" aria-label="The Chronicle — every change the ink has taken"><span class="idx" style="display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:block"><path d="M5 4.6h14"/><path d="M5 19.4h14"/><path d="M7 6.2h10V17c-1.7-.9-3.3-.9-5 0-1.7.9-3.3.9-5 0z"/><path d="M9.7 9.4h4.6"/><path d="M9.7 12.4h4.6"/></svg></span>The Chronicle</button>
         <button class="mbtn" data-go="shrine"><span class="idx">七</span>The Shrine</button>
         <button class="mbtn" data-go="armory"><span class="idx">八</span>The Armory</button>
         <button class="mbtn" data-go="help"><span class="idx">九</span>How to Hold a Blade</button>
@@ -392,6 +446,23 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
         <button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="screen" id="s-chrono">
+  <div class="chrono">
+    <div class="rod top"></div>
+    <div class="chrono-paper">
+      <div class="chrono-head">
+        <h2>THE CHRONICLE 巻</h2>
+        <div class="sub">every change the ink has taken, newest first</div>
+      </div>
+      <div class="chrono-body" id="chrono-body"></div>
+      <div class="btnrow" style="margin-top:12px">
+        <button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button>
+      </div>
+    </div>
+    <div class="rod"></div>
   </div>
 </div>
 
@@ -1033,6 +1104,26 @@ for(let i=0;i<3;i++){const S=256,c=mkCanvas(S,S),g=c.getContext('2d');
   for(let j=0;j<d.data.length;j+=4){const v=Math.random()*255|0;
     d.data[j]=v;d.data[j+1]=v;d.data[j+2]=v;d.data[j+3]=26;}
   g.putImageData(d,0,0);GRP.push(g.createPattern(c,'repeat'));}
+
+// the near air: a petal, a bamboo leaf, a paper scrap — big, soft, drawn in
+// screen space after the world, so they hang between you and the field.
+// depth for the price of five sprites.
+const FGPETAL=[];
+{const c=mkCanvas(30,30),g=c.getContext('2d');
+  g.translate(15,15);g.rotate(.5);
+  g.fillStyle='rgba(179,55,42,0.6)';g.beginPath();g.ellipse(0,0,9.5,5.2,0,0,TAU);g.fill();
+  g.fillStyle='rgba(140,43,31,0.42)';g.beginPath();g.ellipse(-2.6,-1.2,5.4,2.8,.5,0,TAU);g.fill();
+  FGPETAL.push(c);}
+{const c=mkCanvas(30,30),g=c.getContext('2d');
+  g.translate(15,15);g.rotate(-.4);
+  g.fillStyle='rgba(92,122,76,0.55)';g.beginPath();g.ellipse(0,0,9,4.4,0,0,TAU);g.fill();
+  g.fillStyle='rgba(70,100,64,0.4)';g.beginPath();g.ellipse(-2,-1,5,2.4,.4,0,TAU);g.fill();
+  FGPETAL.push(c);}
+{const c=mkCanvas(30,30),g=c.getContext('2d');
+  g.translate(15,15);g.rotate(.9);
+  g.fillStyle='rgba(250,247,236,0.6)';g.beginPath();g.ellipse(0,0,8.6,5,0,0,TAU);g.fill();
+  g.fillStyle='rgba(226,218,198,0.45)';g.beginPath();g.ellipse(-2.2,-1,4.6,2.6,.5,0,TAU);g.fill();
+  FGPETAL.push(c);}
 
 // fighters are baked once at 2.2x and drawn at 1x — the supersample keeps
 // edges crisp on dense screens. the kit below is shared by enemies, bosses
@@ -1726,7 +1817,7 @@ function drawProps(){
     ctx.restore();}}
 
 // the title backdrop: a ukiyo-e print — ridges, a low sun, mist, birds.
-const TMT=[];
+const TMT=[],TFF=[];
 function bakeTitle(){
   TMT.length=0;
   const layers=[
@@ -1785,7 +1876,19 @@ function drawTitleScene(){
     else{ctx.rotate(Math.sin(G.t+p.ph));
       ctx.globalAlpha=.32;ctx.fillStyle=p.red?RED:INK2;
       ctx.beginPath();ctx.ellipse(0,0,p.r,p.r*.55,0,0,TAU);ctx.fill();}
-    ctx.restore();}}
+    ctx.restore();}
+  // fireflies hold the dusk meadow — small gold breaths below the ridges
+  if(TFF.length<9&&Math.random()<.06)
+    TFF.push({x:rnd(W),y:H*(.62+Math.random()*.34),ph:rnd(TAU),sp:rnd(.4,1.1)});
+  for(let i=TFF.length-1;i>=0;i--){const f=TFF[i];
+    f.x+=Math.sin(G.t*f.sp+f.ph)*.55;f.y+=Math.cos(G.t*f.sp*.8+f.ph*2)*.4-.05;
+    if(f.x>W+30)f.x=-30;if(f.x<-30)f.x=W+30;
+    if(f.y<H*.42){TFF[i]=TFF[TFF.length-1];TFF.pop();continue;}
+    const a=.3+.42*Math.sin(G.t*2.2+f.ph);
+    if(a<=.04)continue;
+    ctx.globalAlpha=a;ctx.drawImage(glowGold,f.x-13,f.y-13,26,26);
+    ctx.fillStyle=GOLD2;ctx.beginPath();ctx.arc(f.x,f.y,1.5,0,TAU);ctx.fill();}
+  ctx.globalAlpha=1;}
 
 // ---- feel plumbing -----------------------------------------------------------
 
@@ -2354,7 +2457,7 @@ function abyssWaves(w){const pool=['kappa','oni','tengu','wraith','hound','kame'
   const mk=(lo,count)=>{const a=[];for(let i=0;i<count;i++)a.push({t:choice(pool.slice(lo,10)),e:w>4&&Math.random()<.25});return a;};
   return[mk(0,n1),mk(2+Math.min(4,Math.floor(w/3)),n2)];}
 
-const SCREENS=['s-title','s-acts','s-shrine','s-armory','s-help','s-settings','s-bless','s-pause','s-death','s-clear','s-victory','s-records','s-submit','s-codex'];
+const SCREENS=['s-title','s-acts','s-shrine','s-armory','s-help','s-settings','s-bless','s-pause','s-death','s-clear','s-victory','s-records','s-chrono','s-submit','s-codex'];
 function setMode(m){G.mode=m;document.body.classList.toggle('playing',m==='game');
   for(const s of SCREENS){const el=document.getElementById(s);if(el)el.classList.toggle('on',s==='s-'+m);}
   if(m!=='game')G.lbxT=0;
@@ -2365,7 +2468,7 @@ function handleEscape(){
   else if(G.mode==='pause')setMode('game');
   else if(G.mode==='settings')leaveSettings();
   else if(G.mode==='records')setMode('title');
-  else if(['shrine','armory','help','acts'].includes(G.mode))setMode('title');}
+  else if(['shrine','armory','help','acts','chrono'].includes(G.mode))setMode('title');}
 function leaveSettings(){const p=G.prevMode==='pause'?'pause':'title';G.prevMode=null;toMenu(p);}
 function toMenu(m){if(m==='acts')renderActs();if(m==='shrine')renderShrine();if(m==='armory')renderArmory();
   if(m==='title')renderTitleStats();setMode(m);}
@@ -2765,23 +2868,43 @@ function showDeath(){const t=G.run.time;
   if(!G.run.gauntlet&&!G.run.meido&&G.run.deaths>=3&&SAVE.difficulty>0)add('Accept Mercy (lower difficulty)',()=>{SAVE.difficulty--;persist();startRun(G.run.act,G.run.abyss,true);});
   setMode('death');AU.stamp();}
 
-// ---- records: etched server-side, so the names outlive the page ---------------
+// ---- records: etched server-side when the server exists, and always copied -----
+// ---- to a local ledger, so the page never loses a name when it travels alone --
 
 let pendingMode=null,pendingRet=null;
-async function lbSubmit(mode,elId='death-rec',ret='death'){
+const LB_KEY='sumikiri_lb_v1';
+function lbDepth(m){return m==='abyss'||m==='meido';}
+function lbRead(){try{const a=JSON.parse(localStorage.getItem(LB_KEY)||'[]');return Array.isArray(a)?a:[];}catch(e){return[];}}
+function lbWrite(rows){try{localStorage.setItem(LB_KEY,JSON.stringify(rows.slice(-160)));}catch(e){}}
+function lbBetter(a,b){return lbDepth(a.mode)?(a.wave>b.wave||(a.wave===b.wave&&a.timeSec<b.timeSec)):a.timeSec<b.timeSec;}
+function lbRank(rec){return lbRead().filter(r=>r.mode===rec.mode&&lbBetter(r,rec)).length+1;}
+// the page may be stood up anywhere — a static host, a thumb-drive, offline.
+// the api is tried first; anything that is not clean json counts as absent.
+async function lbApi(url,opts){
   try{
-    if(!SAVE.recordsName){pendingMode=mode;pendingRet=ret;openSubmit();return;}
-    const run=G.run;if(!run)return;
-    const body={name:SAVE.recordsName,mode,
-      wave:mode==='abyss'?Math.max(0,run.wave-1):(mode==='gauntlet'?G.gauntIdx:(mode==='meido'?Math.max(0,run.milestone-1):7)),
-      kills:run.kills,timeSec:Math.max(1,Math.round(run.totalTime)),difficulty:SAVE.difficulty};
-    const res=await fetch('/api/leaderboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const data=await res.json();
-    const el=$('#'+elId);
-    if(el)el.textContent=(data&&data.ok)?`etched into the records — rank #${data.rank}`:'the records did not take';
-  }catch(e){
-    const el=$('#'+elId);
-    if(el)el.textContent='the records are beyond this page\u2019s reach';}}
+    const res=await fetch(url,opts);
+    if(!res.ok)return null;
+    const ct=res.headers.get('content-type')||'';
+    if(ct.indexOf('json')<0)return null;
+    return await res.json();
+  }catch(e){return null;}}
+function lbEntry(mode){
+  const run=G.run;if(!run)return null;
+  return {name:SAVE.recordsName,mode,
+    wave:mode==='abyss'?Math.max(0,run.wave-1):(mode==='gauntlet'?G.gauntIdx:(mode==='meido'?Math.max(0,run.milestone-1):7)),
+    kills:run.kills,timeSec:Math.max(1,Math.round(run.totalTime)),difficulty:SAVE.difficulty,at:Date.now()};}
+async function lbSubmit(mode,elId='death-rec',ret='death'){
+  if(!SAVE.recordsName){pendingMode=mode;pendingRet=ret;openSubmit();return;}
+  const rec=lbEntry(mode);
+  const el=$('#'+elId);
+  if(!rec){if(el)el.textContent='';return;}
+  // the local ledger always takes the entry — the page's own memory is cheap
+  const rows=lbRead();rows.push(rec);lbWrite(rows);
+  const data=await lbApi('/api/leaderboard',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)});
+  if(!el)return;
+  if(data&&data.ok)el.textContent=`etched into the records — rank #${data.rank}`;
+  else if(data)el.textContent='the records did not take';
+  else el.textContent=`the wider records are beyond this page — kept in the local ledger, rank #${lbRank(rec)}`;}
 function openSubmit(){const inp=$('#submit-name');
   if(inp)inp.value=SAVE.recordsName||'';
   // deferred one breath so whatever screen is mid-assembly (death, victory)
@@ -2808,11 +2931,15 @@ async function loadRecords(m){
   const list=$('#rec-list');
   if(list)list.innerHTML='<div class="rec-empty">gathering the pages…</div>';
   try{
-    const res=await fetch('/api/leaderboard?mode='+m+'&limit=20');
-    const data=await res.json();
-    const rows=(data&&data.rows)||[];
+    const data=await lbApi('/api/leaderboard?mode='+m+'&limit=20');
+    let rows=(data&&data.rows)||null;
+    const alone=!rows; // no server behind this page — the local ledger speaks
+    if(alone){
+      rows=lbRead().filter(r=>r.mode===m)
+        .sort((a,b)=>{if(lbBetter(a,b))return -1;if(lbBetter(b,a))return 1;return b.at-a.at;})
+        .slice(0,20);}
     if(!list)return;
-    if(!rows.length){list.innerHTML='<div class="rec-empty">no names yet — the page is still blank</div>';}
+    if(!rows.length){list.innerHTML=`<div class="rec-empty">${alone?'no names in this page\u2019s ledger yet':'no names yet — the page is still blank'}</div>`;}
     else{
       let html=`<div class="rec-h"><span>RANK</span><span>NAME</span><span>${m==='abyss'?'WAVE':(m==='meido'?'MARKS':'DUELS')}</span><span>KILLS</span><span>TIME</span><span>DIFF</span></div>`;
       const DFK=['静','嵐','狱'];
@@ -2821,6 +2948,7 @@ async function loadRecords(m){
         html+=`<div class="rec-r${me?' me':''}"><span class="pos">${i+1}</span><span class="nm">${escapeHtml(r.name)}</span>`+
           `<span class="dim mono">${m==='abyss'?('w'+r.wave):(m==='meido'?('m'+r.wave):(r.wave+'/10'))}</span><span class="dim mono">${r.kills}</span>`+
           `<span class="dim mono">${fmtT(r.timeSec)}</span><span class="dim">${DFK[r.difficulty]||'嵐'}</span></div>`;});
+      if(alone)html+=`<div class="rec-empty">the wider records are beyond this page\u2019s reach — these names live in its own ledger</div>`;
       list.innerHTML=html;}
     const own=$('#rec-own');
     if(own){
@@ -2848,6 +2976,7 @@ document.addEventListener('click',e=>{
   else if(go==='meido')startMeido(false);
   else if(go==='meidoDaily')startMeido(true);
   else if(go==='records'){loadRecords(recMode);setMode('records');}
+  else if(go==='chrono'){renderChronicle();setMode('chrono');}
   else toMenu(go);});
 
 function renderHelp(){
@@ -2864,6 +2993,54 @@ function renderHelp(){
   for(const k in all)
     html+=`<div class="brow"><div class="bk">${all[k].k}</div><div><div class="bn">${all[k].name}</div><div class="bd">${BESTIARY[k]||''}</div></div></div>`;
   besti.innerHTML=html;}
+
+// ---- the chronicle: the scroll of changes, hung beside the records -------------
+
+const CHTAG={new:'新',fix:'修',vis:'絵',cbt:'戦',eco:'社',base:'基'};
+const CHRONICLE=[
+  {v:'v6',kan:'花',name:'「花 edition」',note:'petals, and a ledger that travels',items:[
+    ['fix','the records now travel with the page — when the ink-server is beyond reach, every run is carved into the page\u2019s own local ledger and ranked there, so the records stand even where the page stands alone'],
+    ['new','the Chronicle 巻 — this very scroll, hung on the title menu beneath the records'],
+    ['vis','dust rides the dawn light-shafts; large foreground petals drift between you and the field, giving the page depth'],
+    ['vis','fireflies keep the dusk meadow on the title; the paper pages breathe with slow-drifting mist and brushed corner-marks']]},
+  {v:'v5',kan:'酒',name:'the gourd update',note:'the drink, and the answer to the red flash',items:[
+    ['new','the Gourd 酒 — drink with Q: three charges a stage, a slow honest sip that leaves you open, refilled at every clear. Deep Gourd ranks at the shrine'],
+    ['new','Peril Return 危返 — dash INTO the red flash to shatter the attacker\u2019s posture; red attacks become openings'],
+    ['cbt','deathblows stitch +12 HP and feed +14 ki — the posture loop now sustains the one who walks it'],
+    ['vis','a red brushmark at the screen\u2019s rim points at whoever bit you; crow flocks cross the sky of acts 1, 6 and 7; perfect dodges earn a breath of slow']]},
+  {v:'v4',kan:'弾',name:'the posture rework',note:'the blade turned honest',items:[
+    ['fix','the Abyss opens — the crash at its gate is mended, and the seal reads true'],
+    ['cbt','bosses fight with their full codex kit — blink strikes, ice lances, storm bolts, peril sweeps, mirage splits'],
+    ['cbt','all inkmen carry 50% more flesh; the posture bar breaks honestly now — deflects shred it, and the deathblow is the fast path, not the footnote'],
+    ['fix','melee deflects land: the parry window reads the blade as well as the arrow'],
+    ['eco','the shrine grew to thirteen rows with honest cost curves (520–2600 ash) — ash earned now has somewhere to go'],
+    ['new','the Iron Kasa 傘 — a shed roof on a haft: +30% deflect window, and every deflect answers with a three-wave fan of ink'],
+    ['vis','the dawn light-shafts returned — breathing, drifting, cheap to draw; the stage-clear flash is gone'],
+    ['fix','first-sight cards pause the fight once per run, not on every retry — with a toggle in settings']]},
+  {v:'v3',kan:'月',name:'「月 edition」',note:'where the page began',items:[
+    ['base','seven acts of the road, the Abyss below, the Gauntlet of ten duels, and the Night Road with its daily rite'],
+    ['base','posture, deflect, deathblow — combat that rewards the turned blade over the fast one'],
+    ['base','the codex of first sights, ash and the shrine, the armory\u2019s four answers, and records etched in ink']]}];
+function renderChronicle(){
+  const el=$('#chrono-body');if(!el)return;
+  let html='';
+  for(const c of CHRONICLE){
+    html+=`<div class="ch-ver"><div class="ch-vhead"><span class="ch-kan">${c.kan}</span>`+
+      `<span class="ch-vname">${c.v} · ${c.name}<small>${c.note}</small></span><span class="ch-vline"></span></div>`+
+      c.items.map(it=>`<div class="ch-item"><i class="ch-tag t-${it[0]}">${CHTAG[it[0]]||'・'}</i><span>${escapeHtml(it[1])}</span></div>`).join('')+
+      '</div>';}
+  el.innerHTML=html;}
+
+// brushed corner-marks, hung once on every paper page at boot
+(function(){
+  const svg=`<svg width="72" height="72" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+    <path d="M12 68 Q8 20 62 10" stroke="#4a443c" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/>
+    <path d="M24 72 Q19 34 70 22" stroke="#4a443c" stroke-opacity=".14" stroke-width="3" stroke-linecap="round"/>
+    <path d="M18 58 Q15 26 58 16" stroke="#b3372a" stroke-opacity=".18" stroke-width="2" stroke-linecap="round"/></svg>`;
+  document.querySelectorAll('.page').forEach(pg=>{
+    for(const pos of ['tl','br']){
+      const d=document.createElement('div');
+      d.className='pg-corner '+pos;d.innerHTML=svg;pg.appendChild(d);}});})();
 
 // ---- the frame -----------------------------------------------------------------
 
@@ -3118,6 +3295,7 @@ function render(){ctx.setTransform(DPR,0,0,DPR,0,0);
   if(inGame)ctx.drawImage(gradeLayer(),0,0,W,H);
   if(inGame&&G.run&&G.run.meido&&mdHas('mist')&&fogC){ // the sea of fog closes in
     ctx.globalAlpha=.85;ctx.drawImage(fogC,0,0,W,H);ctx.globalAlpha=1;}
+  if(inGame)drawFgPetals(); // the near air — petals between you and the world
   if(G.slowT>0&&G.ts<.4&&inGame){ // time kneels: grade everything down a touch
     ctx.save();ctx.globalAlpha=.06;ctx.fillStyle='#f2ecd9';ctx.fillRect(0,0,W,H);ctx.restore();}
   if(G.wash>0){const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.2,W/2,H/2,Math.max(W,H)*.7);
@@ -3157,6 +3335,7 @@ function renderWorld(){
       ctx.rotate(Math.sin(G.t*.24+i*1.9)*.07); // and lean as they go
       ctx.globalAlpha=a;ctx.drawImage(RAYS[i],-180,0,360,580);
       ctx.restore();}
+    drawRayMotes();
     ctx.restore();}
   if(act===2)drawWater();
   drawProps();
@@ -3256,6 +3435,38 @@ function drawWater(){ctx.strokeStyle='#9db4d8';
     ctx.globalAlpha=.05+.04*Math.sin(G.t+i);
     ctx.lineWidth=1.4;
     ctx.beginPath();ctx.ellipse(x,y,r,r*.32,0,0,TAU);ctx.stroke();}
+  ctx.globalAlpha=1;}
+// light needs something to land on: pale motes sinking slowly through the
+// shafts, keyed to the same wind the props obey. drawn additively, so they
+// only exist where the dawn already is.
+function drawRayMotes(){
+  for(let i=0;i<26;i++){
+    const seed=i*2.6;
+    const t=(G.t*(7+hash01(seed)*6)+hash01(seed*3)*RH*2)%(RH+40);
+    const x=hash01(seed*7)*RW+Math.sin(G.t*.5+seed)*30+G.wind*22;
+    const a=.09+.09*Math.sin(G.t*2+seed);
+    if(a<=.02)continue;
+    ctx.globalAlpha=a;
+    ctx.fillStyle='#f4ecd0';
+    ctx.beginPath();ctx.arc(x,RH-t,.8+hash01(seed*2)*1.1,0,TAU);ctx.fill();}
+  ctx.globalAlpha=1;}
+// the depth layer proper: stateless — every petal's place is a pure function
+// of time, so they never freeze (codex cards included) and never need storage
+function drawFgPetals(){
+  const act=curAct();
+  if(act!==1&&act!==3&&act!==7)return;
+  const pick=act===1?[0,0,2]:(act===3?[1,1,2]:[2]);
+  const n=act===7?4:5;
+  for(let i=0;i<n;i++){
+    const seed=i*3.7+11.3;
+    const t=(G.t*(24+hash01(seed)*22)+hash01(seed*3)*(H+260))%(H+260);
+    const x=hash01(seed*7)*W+Math.sin(G.t*.55+seed)*64+G.wind*46;
+    ctx.save();ctx.translate(x,t-130);
+    ctx.rotate((G.t*(.7+hash01(seed*2)*.7)+seed)*((i%2)?1:-1));
+    const s=1.5+hash01(seed*5)*1.1;ctx.scale(s,s);
+    ctx.globalAlpha=.2+.12*hash01(seed*9);
+    ctx.drawImage(FGPETAL[pick[i%pick.length]],-15,-15);
+    ctx.restore();}
   ctx.globalAlpha=1;}
 function drawFireflies(){
   for(const f of G.fireflies){
