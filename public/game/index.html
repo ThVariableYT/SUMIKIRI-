@@ -414,7 +414,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="t-kanji"><span>墨</span><span>斬</span><span class="seal title-seal">印</span></div>
     <div class="t-side">
       <h1>SUMIKIRI</h1>
-      <div class="tag">a hack &amp; slash painted in ink · update 2.1 「灯」 the painted light</div>
+      <div class="tag">a hack &amp; slash painted in ink · update 2.2 「影」 the lit figures</div>
       <nav class="menu">
         <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Roads <small class="mono" style="font-size:11px;color:var(--ink2)">· two stories</small></button>
         <button class="mbtn" data-go="records"><span class="idx">二</span>Records of Ink</button>
@@ -506,6 +506,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
       <div class="setrow"><div class="lab">Difficulty<small>静 calm · 嵐 storm · 狱 tempest</small></div>
         <div class="seg" id="diff-seg">
           <button data-diff="0">静</button><button data-diff="1">嵐</button><button data-diff="2">狱</button>
+        </div>
+      </div>
+      <div class="setrow"><div class="lab">Paint quality<small>墨 quiet paper · 絵 the lit page · 華 everything</small></div>
+        <div class="seg" id="gfx-seg">
+          <button data-gfx="0">墨</button><button data-gfx="1">絵</button><button data-gfx="2">華</button>
         </div>
       </div>
       <div class="setrow"><div class="lab">Fullscreen<small>fill the whole page</small></div><button class="buy" id="set-fs">enter</button></div>
@@ -631,6 +636,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <script src="story2.js"></script>
 <script src="ambient2.js"></script>
 <script src="gfx.js"></script>
+<script src="models.js"></script>
 <script src="menufx.js"></script>
 <script>
 'use strict';
@@ -660,7 +666,7 @@ const store={
 const SAVE_KEY='sumikiri_v1';
 const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0,ki:0,mirror:0,stance:0,step:0,edge:0,rhythm:0,gourd:0},
   weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,unlockedAct2:1,achieved2:false,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
-  difficulty:1,shake:true,numbers:true,codex:true,haptic:true,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
+  difficulty:1,shake:true,numbers:true,codex:true,haptic:true,gfx:1,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
 let SAVE=defaultSave();
 (function(){
   const s=store.get(SAVE_KEY);if(!s)return;
@@ -2782,15 +2788,15 @@ function drawCodexPortrait(q){
   g.fillText(B?B.kanji:E.k,0,0);g.restore();
   // the figure itself, large, facing up-right like a sketch pinned to the page
   const kit=B?BSPR[q.type]:ESPR[q.type];
-  const img=kit.n,S=kit.s;
-  let k=Math.min(WC,HC)*.78/S;
+  const img=kit.n,S=kit.s,Pp=kit.p||0;
+  let k=Math.min(WC,HC)*.78/(S+2*Pp);
   if(B)k*=1.16; // bosses crowd the frame on purpose
   g.save();g.translate(WC/2,HC*.54);
   g.fillStyle='rgba(29,26,22,0.16)';
   g.beginPath();g.ellipse(0,S*k*.38,S*k*.3,S*k*.12,0,0,TAU);g.fill();
   g.rotate(-1.02);g.scale(k,k);
   if(q.type==='wraith'||q.type==='mirror')g.globalAlpha=.92;
-  g.drawImage(img,-S/2,-S/2,S,S);
+  g.drawImage(img,-S/2-Pp,-S/2-Pp,S+2*Pp,S+2*Pp);
   g.restore();
   // wind streaks and the ink frame
   g.strokeStyle='rgba(74,68,60,0.35)';g.lineWidth=2;g.lineCap='round';
@@ -2801,7 +2807,9 @@ function drawCodexPortrait(q){
   g.lineWidth=2;g.strokeRect(16,16,WC-32,HC-32);
   g.strokeStyle=RED;g.globalAlpha=.8;g.lineWidth=5;
   g.beginPath();g.moveTo(WC*.7,HC*.06);g.quadraticCurveTo(WC*.8,HC*.1,WC*.94,HC*.05);g.stroke();
-  g.globalAlpha=1;}
+  g.globalAlpha=1;
+  if(window.MODELS)MODELS.portraitFX(g,WC,HC,q.type); // raking light, vignette, motes
+  }
 const codexScr=$('#s-codex');
 if(codexScr)codexScr.addEventListener('pointerdown',()=>{if(G.mode==='codex'&&G.t>G.codexArm)closeCodex();});
 function drawCodexFocus(){
@@ -3283,6 +3291,12 @@ function renderHelp(){
 
 const CHTAG={new:'新',fix:'修',vis:'絵',cbt:'戦',eco:'社',base:'基'};
 const CHRONICLE=[
+  {v:'2.2',kan:'影',name:'update 2.2 — the lit figures',note:'the cast learned light, and the page answers the brush you hold',items:[
+    ['vis','THE LIT FIGURES — every inkman, keeper and fox of both roads is painted with real light: bodies shade from the page’s sun, slopes away sink into cool shadow, edges facing the light carry a warm rim, near-white steel takes specular, and red eyes / gold hardware / vermilion cloth keep a low ember — a soft contact shadow is blurred beneath each body, so every figure stands ON the page instead of printed on it'],
+    ['vis','the light is alive: each body leans a rim arc toward its act’s real key light, a glint rides every blade tip — gold when the cut can be turned, red when it cannot — and the heroine’s steel takes a sheen gradient with a glint that travels the edge and leads the cut'],
+    ['vis','華 — fast bodies drag white brush-ghosts, elites and keepers orbit gold dust, and lamp-light pools spill around every shadow on the ground'],
+    ['vis','the codex portraits are pinned under raking light: a warm sweep, a ground glow, drifting gold motes and a vignette at the corners — the sketches look lit, not printed'],
+    ['new','PAINT QUALITY 絵 — a settings row with three brushes: 墨 sumi (the quiet page: flat figures, dimmed bloom), 絵 e (the lit page, the new default), 華 hana (everything, brightest)']]} ,
   {v:'2.1',kan:'灯',name:'update 2.1 — the painted light',note:'the cast of the red road walks, and every page learned to glow',items:[
     ['fix','the vermilion road’s whole cast stood rooted — every foe painted speed its body never spent; they walk now, all eight: foxes weave, cats pounce the full length of their dash, mud closes, and the keepers’ summons answer the call'],
     ['vis','THE PAINTED LIGHT — a true glow pass over every frame: vermilion and gold halate softly where the ink is thick, in two radii (a tight halo and a wide dream of one), while pale paper stays crisp; slashes, telegraphs, embers, fireflies and auras all carry their own light now'],
@@ -4129,16 +4143,20 @@ function drawEnemy(e){ctx.save();
       const sc=1+q*.4;ctx.scale(sc,sc);
       ctx.globalAlpha=1-q;
       const kit=e.boss?BSPR[e.id]:ESPR[e.type];
-      ctx.drawImage(kit.n,-kit.s/2,-kit.s/2,kit.s,kit.s);
+      const dImg=(window.MODELS&&MODELS.lo())?(kit.o||kit.n):kit.n;
+      const dS=kit.s,dP=kit.p||0;
+      ctx.drawImage(dImg,-dS/2-dP,-dS/2-dP,dS+2*dP,dS+2*dP);
       ctx.globalAlpha=(1-q)*.4;ctx.strokeStyle=INK;ctx.lineWidth=1.5;
       ctx.beginPath();ctx.arc(0,0,e.r+q*24,0,TAU);ctx.stroke();}
     ctx.restore();return;}
   if(e.boss&&e.id==='orochi')drawSerpentBody(e);
+  if(window.MODELS)MODELS.pool(e); // 華: light spills around the shadow
   shadowBlob(e.x,e.y,e.r,1+(e.state==='windup'?-.12:0));
   if(!NOFEET[e.type]&&!e.boss)drawFeet(e);
   const hover=(e.type==='wraith'||e.type==='mirror'||e.type==='wisp')?5+Math.sin(e.bob*.7)*3:0;
   ctx.translate(e.x,e.y-(e.boss?e.h||0:0)+hover-((e.state==='windup'||e.state==='aim')?4:0));
   const bob=Math.sin(e.bob)*1.6;
+  if(window.MODELS)MODELS.ghosts(e); // 華: fast bodies drag white brush-ghosts
   if(e.stun>0||e.fused)ctx.rotate(Math.sin(G.t*(e.fused?34:22))*.14);
   if(e.hitT>0)ctx.rotate(Math.sin((e.hitT/.18)*PI)*.16*((Math.cos(e.hitAng)>=0)?1:-1)); // struck flesh flinches aside
   ctx.save();ctx.rotate(e.facing);
@@ -4147,12 +4165,13 @@ function drawEnemy(e){ctx.save();
   const punch=1+(e.hitT>0?e.hitT*.5:0);
   ctx.scale(lunge*punch,(2-lunge)/punch);
   const kit=e.boss?BSPR[e.id]:ESPR[e.type];
-  const img=e.flash>0?kit.f:kit.n;
+  const lo=window.MODELS&&MODELS.lo();
+  const img=e.flash>0?(lo?(kit.of||kit.f):kit.f):(lo?(kit.o||kit.n):kit.n);
   let alpha=(e.type==='wraith'||e.type==='mirror')?.9:(e.type==='wisp'?.82:1);
   if(mdHas('mist'))alpha*=clamp(1.35-dist(e.x,e.y,P.x,P.y)/620,.14,1); // the fog eats the far ones
   ctx.globalAlpha=alpha;
-  const S=kit.s;
-  ctx.drawImage(img,-S/2,-S/2,S,S);
+  const S=kit.s,Pp=kit.p||0;
+  ctx.drawImage(img,-S/2-Pp,-S/2-Pp,S+2*Pp,S+2*Pp);
   ctx.restore();
   ctx.globalAlpha=1;
   // the steel announces itself: gold if the cut can be turned, red if it cannot
@@ -4188,6 +4207,7 @@ function drawEnemy(e){ctx.save();
     ctx.beginPath();ctx.arc(0,0,e.r+7,0,TAU);ctx.stroke();
     ctx.setLineDash([]);ctx.globalAlpha=1;}
   if(window.STORY2)STORY2.drawExtra(e); // the red road's own jewelry: orbits, shimmers, glows
+  if(window.MODELS)MODELS.entityFX(e); // the lit figure: rim toward the sun, glint on the steel
   if(e.boss&&e.id==='raijin'){
     for(let i=0;i<3;i++){const a=G.t*1.6+i*TAU/3;
       const dx=Math.cos(a)*(e.r+20),dy=Math.sin(a)*(e.r+20);
@@ -4234,6 +4254,7 @@ function drawSerpentBody(e){const h=e.hist;if(!h)return;
 function drawPlayer(){
   if(!P)return;
   ctx.save();
+  if(window.MODELS)MODELS.heroPool(); // 華: her lamp pools on the ground
   shadowBlob(P.x,P.y,P.r*1.1);
   const baseA=P.dead?Math.max(0,1-P.deadT*.8):(P.invuln>.45&&Math.sin(G.t*40)>0?.45:1);
   ctx.globalAlpha=baseA;
@@ -4338,6 +4359,8 @@ function drawPlayer(){
     ctx.beginPath();ctx.ellipse(hx,hy,3,2.1,ba,0,TAU);ctx.fill();
     steel(ctx,hx,hy,tx,ty,2.6);}
   if(gold)caps(ctx,hx,hy,tx*.98,ty*.98,1.1,'#c9932a');
+  if(window.MODELS)MODELS.bladeFX(ctx,{hx,hy,tx,ty,
+    prog:P.swing?easeOutQ(clamp(P.swing.t/P.swing.dur,0,1)):null,baseA,gold});
   // the arms themselves
   caps(ctx,Math.cos(fa+.85)*4,Math.sin(fa+.85)*4,hx*.9,hy*.9,3.2,'#241f1b');
   if(P.weapon==='twin'){ // the second blade mirrors the first
@@ -4371,6 +4394,7 @@ function drawPlayer(){
   ctx.strokeStyle='rgba(246,241,226,0.32)';ctx.lineWidth=1.6;
   ctx.beginPath();ctx.ellipse(kx,ky,12.4,10.4,fa,rimA-fa-.6,rimA-fa+.6);ctx.stroke();
   }
+  if(window.MODELS)MODELS.bodyRim(ctx,rimA,baseA); // her own rim, toward the page's sun
   if(P.swapT>0){ctx.strokeStyle=PAPER3;ctx.globalAlpha=P.swapT*4*baseA;
     ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,15+(0.22-P.swapT)*40,0,TAU);ctx.stroke();
     ctx.globalAlpha=baseA;}
@@ -4787,7 +4811,11 @@ function syncTgl(){const sh=$('#set-shake'),nm=$('#set-nums'),cd=$('#set-cdx'),h
   if(nm)nm.classList.toggle('on',SAVE.numbers);
   if(cd)cd.classList.toggle('on',SAVE.codex);
   if(hp)hp.classList.toggle('on',SAVE.haptic);
-  document.querySelectorAll('[data-diff]').forEach(b=>b.classList.toggle('on',+b.dataset.diff===SAVE.difficulty));}
+  document.querySelectorAll('[data-diff]').forEach(b=>b.classList.toggle('on',+b.dataset.diff===SAVE.difficulty));
+  const gq=SAVE.gfx===undefined?1:SAVE.gfx;
+  document.querySelectorAll('[data-gfx]').forEach(b=>b.classList.toggle('on',+b.dataset.gfx===gq));
+  if(window.GFX)GFX.q=(gq===0?.55:(gq===2?1.15:1)); // the bloom answers the brush
+}
 const shBtn=$('#set-shake');if(shBtn)shBtn.onclick=()=>{SAVE.shake=!SAVE.shake;persist();syncTgl();AU.ui();};
 const nmBtn=$('#set-nums');if(nmBtn)nmBtn.onclick=()=>{SAVE.numbers=!SAVE.numbers;persist();syncTgl();AU.ui();};
 const cdxBtn=$('#set-cdx');if(cdxBtn)cdxBtn.onclick=()=>{SAVE.codex=!SAVE.codex;persist();syncTgl();AU.ui();
@@ -4795,6 +4823,7 @@ const cdxBtn=$('#set-cdx');if(cdxBtn)cdxBtn.onclick=()=>{SAVE.codex=!SAVE.codex;
 const hapBtn=$('#set-hap');
 if(hapBtn)hapBtn.onclick=()=>{SAVE.haptic=!SAVE.haptic;persist();syncTgl();AU.ui();vib(12);};
 document.querySelectorAll('[data-diff]').forEach(b=>b.onclick=()=>{SAVE.difficulty=+b.dataset.diff;persist();syncTgl();AU.ui();});
+document.querySelectorAll('[data-gfx]').forEach(b=>b.onclick=()=>{SAVE.gfx=+b.dataset.gfx;persist();syncTgl();AU.ui();});
 const backBtn=$('#set-back');if(backBtn)backBtn.onclick=()=>{AU.ui();leaveSettings();};
 const fsBtn=$('#set-fs');
 function syncFs(){if(fsBtn)fsBtn.textContent=document.fullscreenElement?'exit':'enter';}
@@ -4819,6 +4848,7 @@ if(rotBtn)rotBtn.onclick=()=>{AU.ui();rotateDismiss=true;checkOrient();};
 
 bakeEnemies();
 bakeBosses();
+if(window.MODELS)MODELS.afterBake(); // update 2.2: every figure learns light
 bakeTitle();
 renderHelp();
 renderTitleStats();
@@ -4844,7 +4874,9 @@ function frame(now){requestAnimationFrame(frame);
     render();
   }catch(err){console.error('frame error:',err);}}
 if(document.fonts&&document.fonts.load){
-  document.fonts.load('800 100px "Shippori Mincho"').then(()=>{bakeTitle();bakeEnemies();bakeBosses();});}
+  document.fonts.load('800 100px "Shippori Mincho"').then(()=>{bakeTitle();bakeEnemies();bakeBosses();
+    if(window.MODELS)MODELS.afterBake(); // the re-bake gets re-lit too
+  });}
 requestAnimationFrame(frame);
 // one small window for the shell (and for debugging) to reach the brush
 window.SUMI={get G(){return G;},get P(){return P;},get SAVE(){return SAVE;},

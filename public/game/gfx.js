@@ -107,6 +107,8 @@ A.beginCapture=function(){
 
 // ---- POST: feed the rest of the light, blur, composite --------------------------
 
+A.q=1; // paint quality answers the brush: 墨 .55 · 絵 1 · 華 1.15 (set by settings)
+
 A.post=function(){
   A.__cap=false;                    // nothing after this point feeds the bloom
   if(!bA||document.hidden)return;
@@ -203,12 +205,13 @@ A.post=function(){
   bBC.drawImage(bA,0,0,bB.width,bB.height);
 
   // composite: light added back over the world
+  const Q=(typeof A.q==='number'&&A.q>0)?A.q:1;
   ctx.save();
   ctx.imageSmoothingEnabled=true;
   ctx.globalCompositeOperation='lighter';
-  ctx.globalAlpha=bright?.32:dark?.46:.38;
+  ctx.globalAlpha=(bright?.32:dark?.46:.38)*Q;
   ctx.drawImage(bA,0,0,W,H);
-  ctx.globalAlpha=bright?.2:dark?.34:.26;
+  ctx.globalAlpha=(bright?.2:dark?.34:.26)*Q;
   ctx.drawImage(bB,0,0,W,H);
   ctx.restore();
   ctx.globalAlpha=1;
