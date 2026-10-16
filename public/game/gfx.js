@@ -29,7 +29,8 @@
 //   GFX.entityShadows()  inside renderWorld, before the entity queue (world space)
 //   GFX.night() GFX.atmos()  screen space, right after the grade layer
 //   GFX.post()           after the petals / after the title scene — the bloom
-//   GFX.titleFX()        the last breath of drawTitleScene
+//   GFX.titleFX()        inside drawTitleScene, right after the sun — the rays
+//                        live in the sky, behind the ridges
 // ============================================================================
 
 window.GFX=(function(){
@@ -56,7 +57,7 @@ let bB=null,bBC=null;        // wide halo, ~1/12 res
 let lightC=null,lightCC=null;// night light-map, 1/2 res
 let atmosC=null,atmosAct=-1; // cached depth haze
 let shadowC=null;            // contact shadow sprite
-let rayC=null;               // title god-ray sprite
+let rayC=null,rayCore=null;    // title god-ray sprites (shaft + hot core)
 
 // ---- CAPTURE: mirroring the engine's own glow sprites --------------------------
 // The engine already paints its lamps as radial glow sprites. While the world
@@ -109,6 +110,21 @@ A.beginCapture=function(){
 
 A.q=1; // paint quality answers the brush: 墨 .55 · 絵 1 · 華 1.15 (set by settings)
 
+// update 2.3 「疾」: every glow is a cached sprite, one per color — the old
+// pipeline built (and threw away) a fresh radial gradient for every light,
+// every frame; at a deathblow that churn could pause the page mid-cinema
+const glowCache=new Map();
+function glowSpr(col){
+  let c=glowCache.get(col);
+  if(!c){c=mk(64,64);const g=c.getContext('2d');
+    const gr=g.createRadialGradient(32,32,0,32,32,32);
+    gr.addColorStop(0,`rgba(${col},1)`);
+    gr.addColorStop(.55,`rgba(${col},.38)`);
+    gr.addColorStop(1,`rgba(${col},0)`);
+    g.fillStyle=gr;g.beginPath();g.arc(32,32,32,0,TAU);g.fill();
+    glowCache.set(col,c);}
+  return c;}
+
 A.post=function(){
   A.__cap=false;                    // nothing after this point feeds the bloom
   if(!bA||document.hidden)return;
@@ -124,15 +140,13 @@ A.post=function(){
     if(budget--<=0)return;
     const rr=Math.max(1.5,r*s);
     if(x<-rr||x>W+rr||y<-rr||y>H+rr)return;
-    const gr=bAC.createRadialGradient(x*s,y*s,0,x*s,y*s,rr);
-    gr.addColorStop(0,`rgba(${col},${a})`);
-    gr.addColorStop(.55,`rgba(${col},${a*.4})`);
-    gr.addColorStop(1,`rgba(${col},0)`);
-    bAC.fillStyle=gr;
-    bAC.beginPath();bAC.arc(x*s,y*s,rr,0,TAU);bAC.fill();};
+    bAC.globalAlpha=Math.min(1,a);
+    bAC.drawImage(glowSpr(col),x*s-rr,y*s-rr,rr*2,rr*2);};
 
   if(inGame){
-    const zp=Z*(1+(G.zp+(G.codexCur?G.zpC:0))*.32);
+    // update 2.7 「映」: the light-passes read the page's own published zoom —
+    // the cinematic breath and the codex lean carry through to every glow
+    const zp=(G&&G.zw)?G.zw:Z*(1+((G.zp||0)+((G.codexCur?G.zpC:0)||0))*.32);
     const toS=(wx,wy)=>[(wx-G.cam.x)*zp+W/2+G.shakeX,(wy-G.cam.y)*zp+H/2+G.shakeY];
     const warm=(G.run&&G.run.story===2);
 
@@ -193,13 +207,17 @@ A.post=function(){
       if(f.kind==='kanji')feed(f.x,f.y,110,'179,55,42',.3);
       else if(f.kind==='pring')feed(f.x,f.y,120,'234,196,120',.24);
       else if(f.kind==='spark')feed(f.x,f.y,90,'234,196,120',.22);
-      else if(f.kind==='boom')feed(f.x,f.y,(f.r||140)*1.1,'214,70,50',.26);}
+      else if(f.kind==='boom')feed(f.x,f.y,(f.r||140)*1.1,'214,70,50',.26);
+      else if(f.kind==='glint')feed(f.x,f.y,f.crit?42:26,f.crit?'214,150,60':'246,241,226',f.crit?.22:.14);} // update 2.7: steel meeting flesh is light
   }else{
     // the title: the low sun is already sprite-captured; warm the whole dusk
-    feed(W*.68,H*.30,Math.max(W,H)*.5,'224,146,72',.14);
+    // (update 2.7: the warmth follows the parallaxed sun, wherever the hand has leaned it)
+    const par=(typeof G!=='undefined'&&G)?{x:G.parX||0,y:G.parY||0}:{x:0,y:0};
+    feed(W*.68+par.x*-20,H*.30+par.y*-12,Math.max(W,H)*.5,'224,146,72',.14);
   }
 
   // blur chain: the wide halo is the tight glow, downscaled and dreamed
+  bAC.globalAlpha=1;
   bBC.setTransform(1,0,0,1,0,0);
   bBC.clearRect(0,0,bB.width,bB.height);
   bBC.drawImage(bA,0,0,bB.width,bB.height);
@@ -208,6 +226,7 @@ A.post=function(){
   const Q=(typeof A.q==='number'&&A.q>0)?A.q:1;
   ctx.save();
   ctx.imageSmoothingEnabled=true;
+  try{ctx.imageSmoothingQuality='high';}catch(e){} // update 2.4: the bloom breathes without stepping
   ctx.globalCompositeOperation='lighter';
   ctx.globalAlpha=(bright?.32:dark?.46:.38)*Q;
   ctx.drawImage(bA,0,0,W,H);
@@ -236,62 +255,63 @@ A.night=function(){
   g.fillStyle=amb;g.fillRect(0,0,lw,lh);
   g.globalCompositeOperation='lighter';
 
-  const zp=Z*(1+(G.zp+(G.codexCur?G.zpC:0))*.32);
+  const zp=(G&&G.zw)?G.zw:Z*(1+((G.zp||0)+((G.codexCur?G.zpC:0)||0))*.32);
   const toS=(wx,wy)=>[((wx-G.cam.x)*zp+W/2+G.shakeX)*k,((wy-G.cam.y)*zp+H/2+G.shakeY)*k];
-  let budget=26; // gradients are cheap, but not infinite
-  const light=(x,y,r,col)=>{
+  let budget=26; // lights are cheap now, but still not infinite
+  const light=(x,y,r,col,a)=>{ // update 2.3: sprites, never fresh gradients
     if(budget--<=0||x<-r||x>lw+r||y<-r||y>lh+r)return;
-    const gr=g.createRadialGradient(x,y,0,x,y,r);
-    gr.addColorStop(0,col);gr.addColorStop(1,'rgba(0,0,0,0)');
-    g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,TAU);g.fill();};
+    g.globalAlpha=Math.min(1,a);
+    g.drawImage(glowSpr(col),x-r,y-r,r*2,r*2);};
 
   // the act's key light: moon, or the lantern river's paper sky
   const gr0=GRADE[act]||GRADE[1];
   light(clamp(gr0.lx,0,1)*lw,clamp(gr0.ly,0,1)*lh*.8,Math.max(lw,lh)*.62,
-    act===12?'rgba(232,178,110,0.5)':'rgba(198,208,232,0.42)');
+    act===12?'232,178,110':'198,208,232',act===12?.5:.42);
 
   // the hero's lamp — a brush-dancer carries warm vermilion, the ronin cool paper
   if(P&&!P.dead&&P.x!==undefined){
     const [x,y]=toS(P.x,P.y);
     const fl=.92+.08*Math.sin(G.t*9.3)+.04*Math.sin(G.t*23.7);
     light(x,y,(158+26*Math.sin(G.t*1.3))*zp*k*fl,
-      (G.run&&G.run.story===2)?'rgba(255,168,116,0.72)':'rgba(255,226,178,0.8)');}
+      (G.run&&G.run.story===2)?'255,168,116':'255,226,178',(G.run&&G.run.story===2)?.72:.8);}
 
   // fireflies are embers of the meadow
   if(G.fireflies)for(const f of G.fireflies){
     const br=.5+.5*Math.sin(G.t*2.2+f.ph);if(br<.28)continue;
-    const [x,y]=toS(f.x,f.y);light(x,y,30*zp*k,`rgba(255,214,120,${.5*br})`);}
+    const [x,y]=toS(f.x,f.y);light(x,y,30*zp*k,'255,214,120',.5*br);}
 
   // projectiles carry their own weather
   if(G.projs)for(const pr of G.projs){
     if(pr.dead)continue;
     const [x,y]=toS(pr.x,pr.y);
-    if(pr.kind==='ember')light(x,y,46*zp*k,'rgba(255,150,70,0.55)');
-    else if(pr.kind==='orb')light(x,y,38*zp*k,'rgba(196,140,255,0.42)');
-    else if(pr.friendly)light(x,y,42*zp*k,'rgba(179,55,42,0.5)');
-    else if(pr.kind==='shard')light(x,y,26*zp*k,'rgba(232,200,120,0.3)');}
+    if(pr.kind==='ember')light(x,y,46*zp*k,'255,150,70',.55);
+    else if(pr.kind==='orb')light(x,y,38*zp*k,'196,140,255',.42);
+    else if(pr.friendly)light(x,y,42*zp*k,'179,55,42',.5);
+    else if(pr.kind==='shard')light(x,y,26*zp*k,'232,200,120',.3);}
 
   // ash orbs, wisps, bosses
   if(G.pickups)for(const pk of G.pickups)if(pk.kind==='orb'){
-    const [x,y]=toS(pk.x,pk.y);light(x,y,58*zp*k,'rgba(255,90,70,0.5)');}
+    const [x,y]=toS(pk.x,pk.y);light(x,y,58*zp*k,'255,90,70',.5);}
   if(G.enemies)for(const en of G.enemies){
     if(en.dead||en.hidden)continue;
-    if(en.type==='wisp'){const [x,y]=toS(en.x,en.y);light(x,y,62*zp*k,'rgba(255,160,80,0.5)');}
-    else if(en.boss){const [x,y]=toS(en.x,en.y);light(x,y,118*zp*k,'rgba(255,110,80,0.28)');}}
+    if(en.type==='wisp'){const [x,y]=toS(en.x,en.y);light(x,y,62*zp*k,'255,160,80',.5);}
+    else if(en.boss){const [x,y]=toS(en.x,en.y);light(x,y,118*zp*k,'255,110,80',.28);}}
 
   // telegraphs must stay legible in the dark — they are honest light
   if(G.teles)for(const t of G.teles){
     if(t.t<0)continue;
     const [x,y]=toS(t.x,t.y);
-    light(x,y,(t.r||60)*zp*k,t.peril?'rgba(255,80,60,0.22)':'rgba(255,220,140,0.15)');}
+    light(x,y,(t.r||60)*zp*k,t.peril?'255,80,60':'255,220,140',t.peril?.22:.15);}
 
   // a swing is a flash of the page
   if(P&&P.swing&&P.x!==undefined){
     const [x,y]=toS(P.x,P.y);
-    light(x,y,140*zp*k,(G.run&&G.run.story===2)?'rgba(255,140,100,0.45)':'rgba(240,234,216,0.36)');}
+    light(x,y,140*zp*k,(G.run&&G.run.story===2)?'255,140,100':'240,234,216',(G.run&&G.run.story===2)?.45:.36);}
+  g.globalAlpha=1;
 
   ctx.save();
   ctx.imageSmoothingEnabled=true;
+  try{ctx.imageSmoothingQuality='high';}catch(e){}
   ctx.globalCompositeOperation='multiply';
   ctx.drawImage(lightC,0,0,W,H);
   ctx.restore();
@@ -338,9 +358,13 @@ A.entityShadows=function(){
     gr.addColorStop(.8,'rgba(29,24,20,0.1)');
     gr.addColorStop(1,'rgba(29,24,20,0)');
     g.fillStyle=gr;g.beginPath();g.arc(32,32,30,0,TAU);g.fill();}
+  // update 2.6 動: a shadow outside the eye's rectangle is not cast — the
+  // page skips it (and every draw on top of it) until the camera returns
+  const v=(typeof G!=='undefined'&&G.view)?G.view:null;
   ctx.save();
   for(const en of G.enemies){
     if(en.hidden||en.dead)continue;
+    if(v&&(en.x<v.x0||en.x>v.x1||en.y<v.y0||en.y>v.y1))continue;
     const w=(en.r||14)*(en.boss?2.9:2.5);
     const air=en.h?clamp(1-en.h/240,0,1):1;   // a leaping boss sheds its shadow
     ctx.globalAlpha=(en.boss?.6:.52)*air;
@@ -354,36 +378,87 @@ A.entityShadows=function(){
 
 // ---- TITLE: god-rays leaning out of the low sun ----------------------------------
 
+function bakeRays(){
+  // the shaft: soft across its whole width, feathered at both ends so the
+  // light is born at the sun and dies before the paper's edge — never cut
+  rayC=mk(220,900);
+  {const g=rayC.getContext('2d');
+    const across=g.createLinearGradient(0,0,220,0);
+    across.addColorStop(0,'rgba(244,196,120,0)');
+    across.addColorStop(.3,'rgba(244,196,120,0.42)');
+    across.addColorStop(.5,'rgba(250,216,152,0.58)');
+    across.addColorStop(.7,'rgba(244,196,120,0.42)');
+    across.addColorStop(1,'rgba(244,196,120,0)');
+    g.fillStyle=across;g.fillRect(0,0,220,900);
+    g.globalCompositeOperation='destination-in';
+    const down=g.createLinearGradient(0,0,0,900);
+    down.addColorStop(0,'rgba(0,0,0,0)');
+    down.addColorStop(.16,'rgba(0,0,0,.85)');
+    down.addColorStop(.74,'rgba(0,0,0,.5)');
+    down.addColorStop(1,'rgba(0,0,0,0)');
+    g.fillStyle=down;g.fillRect(0,0,220,900);
+    g.globalCompositeOperation='source-over';}
+  // the hot thread: a narrow brighter heart some shafts carry — the core
+  // of light a woodblock prints down the middle of its rays
+  rayCore=mk(90,900);
+  {const g=rayCore.getContext('2d');
+    const across=g.createLinearGradient(0,0,90,0);
+    across.addColorStop(0,'rgba(252,226,170,0)');
+    across.addColorStop(.5,'rgba(252,226,170,0.7)');
+    across.addColorStop(1,'rgba(252,226,170,0)');
+    g.fillStyle=across;g.fillRect(0,0,90,900);
+    g.globalCompositeOperation='destination-in';
+    const down=g.createLinearGradient(0,0,0,900);
+    down.addColorStop(0,'rgba(0,0,0,0)');
+    down.addColorStop(.2,'rgba(0,0,0,.9)');
+    down.addColorStop(.8,'rgba(0,0,0,.4)');
+    down.addColorStop(1,'rgba(0,0,0,0)');
+    g.fillStyle=down;g.fillRect(0,0,90,900);
+    g.globalCompositeOperation='source-over';}}
+
 A.titleFX=function(){
-  if(!rayC){
-    rayC=mk(300,640);
-    const g=rayC.getContext('2d');
-    const gr=g.createLinearGradient(0,0,0,640);
-    gr.addColorStop(0,'rgba(224,146,72,0.5)');
-    gr.addColorStop(.5,'rgba(224,146,72,0.16)');
-    gr.addColorStop(1,'rgba(224,146,72,0)');
-    g.fillStyle=gr;
-    g.beginPath();g.moveTo(150,0);g.lineTo(300,0);g.lineTo(30,640);g.lineTo(-30,640);g.closePath();g.fill();
-    // a brighter core thread down the middle
-    const gr2=g.createLinearGradient(0,0,0,640);
-    gr2.addColorStop(0,'rgba(250,196,120,0.5)');gr2.addColorStop(1,'rgba(250,196,120,0)');
-    g.fillStyle=gr2;
-    g.beginPath();g.moveTo(150,0);g.lineTo(210,0);g.lineTo(90,640);g.lineTo(50,640);g.closePath();g.fill();}
-  const sx=W*.68,sy=H*.30;
+  if(!rayC)bakeRays();
+  // update 2.7 「映」: the rays answer the same parallax their sun does — the
+  // fan is born wherever the disk has drifted to, so light and source agree
+  const par=(typeof G!=='undefined'&&G)?{x:G.parX||0,y:G.parY||0}:{x:0,y:0};
+  const sx=W*.68+par.x*-20,sy=H*.30+par.y*-12;
   ctx.save();
   ctx.globalCompositeOperation='lighter';
-  for(let i=0;i<5;i++){
-    const ph=G.t*.05+i*1.257;
-    const lean=.34*Math.sin(ph)+.18;                 // slow honest sway
-    const a=.05+.035*Math.sin(G.t*.31+i*2.1);
+  const NR=12;
+  for(let i=0;i<NR;i++){
+    const seed=i*3.3;
+    // the fan: seeded angles from steep-left to shallow-right, leaning out
+    // of the low sun across the whole page
+    const base=-.60+hash01(seed)*1.24;
+    const sway=.055*Math.sin(G.t*.16+seed*4.1);   // each shaft breathes on its own clock
+    const a=(.075+.05*hash01(seed*7))*(1+.5*Math.sin(G.t*.23+seed*2.7));
     if(a<=.004)continue;
+    const len=H*(.75+.5*hash01(seed*3.9));
+    const wid=80+170*hash01(seed*5.3);
     ctx.save();
     ctx.translate(sx,sy);
-    ctx.rotate(lean+i*.19-.38);
+    ctx.rotate(base+sway);
+    ctx.globalAlpha=a*.45; // a wide dream of the shaft beneath it — the volume
+    ctx.drawImage(rayC,-wid*.95,-len*.1,wid*1.9,len*.96);
     ctx.globalAlpha=a;
-    const len=H*(.9+.1*hash01(i*7.7));
-    ctx.drawImage(rayC,-80-i*30,-40,160+i*60,len);
+    ctx.drawImage(rayC,-wid/2,-len*.12,wid,len);
+    if(i%3===0){ // one in three carries the hot thread down its heart
+      ctx.globalAlpha=a*1.9;
+      ctx.drawImage(rayCore,-wid*.14,-len*.16,wid*.28,len*.9);}
     ctx.restore();}
+  // dust rides the light: motes drift slowly outward along the fan and glow
+  // only while a shaft breathes bright — the volume that sells the ray
+  for(let i=0;i<16;i++){
+    const seed=i*2.17+5.9;
+    const ang=-.55+hash01(seed)*1.15;
+    const dist=H*(.08+((G.t*(.02+.05*hash01(seed*3.1))+hash01(seed*7.7))%.8));
+    const x=sx+Math.sin(-ang)*dist+Math.sin(G.t*.4+seed)*9;
+    const y=sy+Math.cos(ang)*dist;
+    const a=.14+.12*Math.sin(G.t*1.7+seed*3.3);
+    if(a<=.02)continue;
+    ctx.globalAlpha=a;
+    ctx.fillStyle='#f6e8c4';
+    ctx.beginPath();ctx.arc(x,y,.7+hash01(seed*2)*1.2,0,Math.PI*2);ctx.fill();}
   ctx.restore();
   ctx.globalAlpha=1;
 };

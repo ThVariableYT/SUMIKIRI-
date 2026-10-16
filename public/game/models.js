@@ -83,7 +83,10 @@ function bakeLight(kit,boss){
   if(!kit||!kit.n||kit.o)return; // already lit, or nothing to light
   try{
     const src=kit.n,S=src.width;
-    const PAD=8,PS=S+PAD*2;
+    // update 2.4: the sprite bake went dense (SS 2.2→3.2 on paper) — the pad
+    // keeps its WORLD size by scaling with the sprite, so the contact shadow
+    // never clips no matter how finely the cast is carved
+    const PAD=Math.max(8,Math.ceil(S*.055)),PS=S+PAD*2;
     // the lit canvas (padded so the contact shadow never clips)
     const lit=mk(PS,PS),lg=lit.getContext('2d');
     lg.drawImage(src,PAD,PAD);
@@ -265,7 +268,24 @@ A.ghosts=function(e){
 
 // ---- a pool of light spilling around the shadow (華) ----------------------------
 // called in world space, before the engine's shadowBlob
+// update 2.3 「疾」: light pools are cached sprites, keyed by color and
+// strength — no gradient is built while the game runs
+const POOLSPR={};
+function poolSpr(col,a0,a1){
+  const key=col+'|'+a0+'|'+a1;
+  let c=POOLSPR[key];
+  if(!c){c=document.createElement('canvas');c.width=64;c.height=64;
+    const g=c.getContext('2d');
+    const gr=g.createRadialGradient(32,32,0,32,32,32);
+    gr.addColorStop(0,`rgba(${col},${a0})`);
+    gr.addColorStop(.6,`rgba(${col},${a1})`);
+    gr.addColorStop(1,`rgba(${col},0)`);
+    g.fillStyle=gr;g.beginPath();g.arc(32,32,32,0,Math.PI*2);g.fill();
+    POOLSPR[key]=c;}
+  return c;}
+
 A.pool=function(e){
+  // a gradient per enemy per frame was churn the page did not need
   if(Q()<2||!e||e.dead||e.hidden)return;
   const r=e.r||14;
   const boss=!!e.boss,s2=e.def&&e.def.s2;
@@ -273,11 +293,7 @@ A.pool=function(e){
   const col=boss?'255,124,74':(s2?'255,172,102':'255,216,152');
   ctx.save();
   ctx.globalCompositeOperation='lighter';
-  const gr=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,rr);
-  gr.addColorStop(0,'rgba('+col+','+(boss?.09:.055)+')');
-  gr.addColorStop(1,'rgba('+col+',0)');
-  ctx.fillStyle=gr;
-  ctx.beginPath();ctx.ellipse(e.x,e.y,rr,rr*.6,0,0,TAU);ctx.fill();
+  ctx.drawImage(poolSpr(col,boss?.09:.055,boss?.028:.017),e.x-rr,e.y-rr*.6,rr*2,rr*1.2);
   ctx.restore();};
 
 // ============================================================================
@@ -294,12 +310,7 @@ A.heroPool=function(){
     const col=warm?'255,168,116':'255,226,178';
     ctx.save();
     ctx.globalCompositeOperation='lighter';
-    const gr=ctx.createRadialGradient(P.x,P.y,0,P.x,P.y,rr);
-    gr.addColorStop(0,'rgba('+col+','+(warm?.14:.10)+')');
-    gr.addColorStop(.6,'rgba('+col+','+(warm?.05:.04)+')');
-    gr.addColorStop(1,'rgba('+col+',0)');
-    ctx.fillStyle=gr;
-    ctx.beginPath();ctx.ellipse(P.x,P.y,rr,rr*.62,0,0,TAU);ctx.fill();
+    ctx.drawImage(poolSpr(col,warm?.14:.10,warm?.05:.04),P.x-rr,P.y-rr*.62,rr*2,rr*1.24);
     ctx.restore();}
   catch(e){}};
 

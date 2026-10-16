@@ -68,6 +68,10 @@ nav.menu{display:flex;flex-direction:column;gap:11px;align-items:flex-start}
 .pip{width:9px;height:9px;border:1.5px solid var(--ink2);transform:rotate(45deg);opacity:.55}
 .pip.f{background:var(--red);border-color:var(--red);opacity:1}
 .wstats{font-size:12px;color:var(--ink2);letter-spacing:.02em}
+/* update 2.3: the shelf between steel and arts — a vermilion rule with its chip */
+.arm-sec{display:flex;align-items:center;gap:10px;margin:22px 0 4px;padding-bottom:6px;border-bottom:1.5px solid rgba(179,55,42,.45)}
+.arm-sec .sk{font-size:19px;font-weight:800;color:var(--red);transform:rotate(-4deg)}
+.arm-sec span:last-child{font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--ink2)}
 .buy{font-family:inherit;font-weight:700;font-size:16px;background:var(--paper3);border:1.5px solid var(--ink);color:var(--ink);
   padding:8px 18px;cursor:pointer;letter-spacing:.1em;box-shadow:2px 2px 0 rgba(29,26,22,.28);flex:none;transition:all .12s ease}
 .buy:hover:not(:disabled){background:var(--red);border-color:var(--red);color:var(--paper2);transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(140,43,31,.35)}
@@ -85,34 +89,97 @@ nav.menu{display:flex;flex-direction:column;gap:11px;align-items:flex-start}
 .setrow{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 8px;border-bottom:1px dashed rgba(74,68,60,.35)}
 .setrow .lab{font-size:17px;font-weight:600;letter-spacing:.08em}
 .setrow .lab small{display:block;font-weight:400;font-size:12px;color:var(--ink2);letter-spacing:.05em}
+/* update 2.3 「鍵」: the mapable hand — a two-column ledger of the keyboard */
+.kb-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:22px 0 0;padding:10px 8px 8px;border-bottom:1.5px solid rgba(179,55,42,.45)}
+.kb-head .lab{font-size:17px;font-weight:600;letter-spacing:.08em}
+.kb-head .lab small{display:block;font-weight:400;font-size:12px;color:var(--ink2);letter-spacing:.05em}
+.kb-head .buy{padding:5px 14px;font-size:13px}
+.keymap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 22px;padding:2px 0}
+.kb-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 8px;border-bottom:1px dashed rgba(74,68,60,.25)}
+.kb-row .klab{font-size:14px;font-weight:600;letter-spacing:.06em}
+.kb-row .klab small{display:block;font-weight:400;font-size:11px;color:var(--ink2);letter-spacing:.03em}
+.kbtn{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:13px;min-width:86px;text-align:center;background:var(--paper3);
+  border:1.5px solid var(--ink);color:var(--ink);padding:6px 10px;cursor:pointer;letter-spacing:.08em;box-shadow:2px 2px 0 rgba(29,26,22,.22);transition:all .12s ease;flex:none}
+.kbtn:hover{border-color:var(--red);transform:translate(-1px,-1px)}
+.kbtn.listening{background:var(--red);border-color:var(--red);color:var(--paper2);animation:kbpulse .7s ease-in-out infinite}
+@keyframes kbpulse{0%,100%{box-shadow:2px 2px 0 rgba(140,43,31,.4)}50%{box-shadow:2px 2px 0 rgba(140,43,31,.9);transform:translate(-1px,-1px)}}
+@media (max-width:560px){.keymap{grid-template-columns:1fr}.kb-head{flex-wrap:wrap}}
 input[type=range]{-webkit-appearance:none;appearance:none;width:200px;height:3px;background:var(--ink2);outline:none}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--red);border-radius:50%;border:2px solid var(--paper3);cursor:pointer;box-shadow:0 1px 3px rgba(29,26,22,.4)}
 
 #s-bless{background:rgba(29,26,22,.44);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 #bless-wrap{display:flex;gap:4vw;padding:4vh 0 3vh;flex-wrap:wrap;justify-content:center}
-.scroll{display:flex;flex-direction:column;width:min(220px,26vw);cursor:pointer;position:relative;
-  animation:scdrop .5s cubic-bezier(.2,1.4,.4,1) both}
-.scroll:nth-child(2){animation-delay:.08s}
-.scroll:nth-child(3){animation-delay:.16s}
-@keyframes scdrop{from{opacity:0;transform:translateY(-46px) rotate(-1.5deg)}to{opacity:1;transform:rotate(0)}}
-.rod{height:16px;background:var(--ink);border-radius:3px;box-shadow:0 3px 6px rgba(29,26,22,.4);flex:none}
-.rod:first-child{border-bottom:3px solid var(--red2)}
-.sc-paper{background:var(--paper3);padding:20px 14px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;min-height:300px;
-  box-shadow:inset 0 0 34px rgba(120,100,60,.14), 0 6px 14px rgba(29,26,22,.35);position:relative;transition:transform .16s ease,box-shadow .16s ease}
-.scroll:hover .sc-paper{transform:translateY(-6px);box-shadow:inset 0 0 34px rgba(120,100,60,.14), 0 14px 22px rgba(29,26,22,.45)}
-.rar{font-size:12px;font-weight:800;letter-spacing:.3em;padding:2px 10px;margin-bottom:10px}
-.rar.r0{color:var(--ink2);border:1px solid var(--ink2)}
-.rar.r1{color:var(--gold);border:1px solid var(--gold)}
-.rar.r2{color:var(--paper3);background:var(--red);border:1px solid var(--red)}
-.b-kan{font-size:64px;font-weight:800;line-height:1;margin:6px 0 4px}
+/* ---- update 2.4 「印」: the inkmark hangs as a kakejiku — hook, cord, rod with
+   jiku caps, brocade cloth, gold ichimonji, deckled paper, a carved hanko ---- */
+.kake{display:flex;flex-direction:column;width:min(224px,26vw);cursor:pointer;position:relative;
+  animation:kdrop .62s cubic-bezier(.22,1.18,.36,1) both;transform-origin:50% -20px;transition:transform .34s ease}
+.kake:nth-child(2){animation-delay:.08s}
+.kake:nth-child(3){animation-delay:.16s}
+@keyframes kdrop{0%{opacity:0;transform:translateY(-56px) rotate(-2.2deg)}
+  62%{opacity:1;transform:translateY(4px) rotate(.9deg)}
+  100%{opacity:1;transform:rotate(0)}}
+.kake:hover{transform:rotate(.7deg)}
+.kake:hover .k-paper{box-shadow:inset 0 0 46px rgba(120,100,60,.17),0 16px 26px rgba(29,26,22,.5)}
+.k-hook{position:relative;height:20px;flex:none}
+.k-hook i{position:absolute;top:0;width:2px;height:21px;background:linear-gradient(#4a3f2e,#211c15);transform-origin:bottom center}
+.k-hook i:first-child{left:calc(50% - 12px);transform:rotate(13deg)}
+.k-hook i:last-child{left:calc(50% + 10px);transform:rotate(-13deg)}
+.k-hook::after{content:'';position:absolute;left:calc(50% - 3px);top:-3px;width:6px;height:6px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#5a4a34,#241d14);box-shadow:0 1px 1px rgba(0,0,0,.4)}
+.k-rod{display:flex;align-items:center;height:13px;margin:0 -15px;flex:none;filter:drop-shadow(0 3px 3px rgba(29,26,22,.45))}
+.k-rod .cap{flex:none;width:9px;height:13px;border-radius:3px;background:linear-gradient(90deg,#221b12,#4a3a26 45%,#241c12)}
+.k-rod .bar{flex:1;height:9px;background:linear-gradient(180deg,#3a2e1d,#5a4630 40%,#2c2316);border-radius:1px}
+.k-rod.bot{height:10px;margin:0 -12px}
+.k-rod.bot .cap{width:7px;height:10px}
+.k-rod.bot .bar{height:7px}
+.k-ten,.k-chi{flex:none;border-left:2px solid #0e0b08;border-right:2px solid #0e0b08;
+  background-color:#241d16;
+  background-image:
+    linear-gradient(45deg,rgba(201,147,42,.16) 25%,transparent 25%,transparent 75%,rgba(201,147,42,.16) 75%),
+    linear-gradient(-45deg,rgba(201,147,42,.16) 25%,transparent 25%,transparent 75%,rgba(201,147,42,.16) 75%);
+  background-size:13px 13px;
+  box-shadow:inset 0 3px 6px rgba(0,0,0,.55),inset 0 -3px 6px rgba(0,0,0,.5)}
+.k-ten{height:46px}
+.k-chi{height:26px}
+.k-ichi{flex:none;height:5px;border-left:2px solid #0e0b08;border-right:2px solid #0e0b08;
+  background:linear-gradient(90deg,#8f6d1f,#c9932a 18%,#e0b04c 50%,#c9932a 82%,#8f6d1f)}
+.k-paper{position:relative;flex:none;background:var(--paper3);padding:24px 18px 32px;display:flex;flex-direction:column;align-items:center;text-align:center;min-height:288px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.40 0 0 0 0 0.32 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23w)'/%3E%3C/svg%3E");
+  border-left:2px solid #0e0b08;border-right:2px solid #0e0b08;
+  box-shadow:inset 0 0 44px rgba(120,100,60,.16),inset 0 1px 0 rgba(255,255,255,.22),0 7px 16px rgba(29,26,22,.38);
+  transition:box-shadow .2s ease}
+.k-tate{position:absolute;left:8px;top:20px;writing-mode:vertical-rl;text-orientation:upright;
+  font-size:10px;font-weight:800;letter-spacing:.3em;color:var(--ink2);opacity:.72}
+.k-tate.r1{color:var(--gold)}
+.k-tate.r2{color:var(--red)}
+.k-seal{position:absolute;right:11px;bottom:10px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  font-family:"Shippori Mincho",serif;font-weight:800;font-size:19px;border-radius:4px;transform:rotate(-5deg);
+  box-shadow:0 1px 2px rgba(29,26,22,.28)}
+.k-seal::after{content:'';position:absolute;inset:2.5px;border:1.5px solid currentColor;border-radius:2px;opacity:.5}
+.k-seal.r0{color:var(--ink2);border:2px solid var(--ink2);background:rgba(251,247,236,.55)}
+.k-seal.r1{color:var(--paper3);border:2px solid #a87c22;background:linear-gradient(160deg,#d8a437,#b3842a)}
+.k-seal.r2{color:var(--paper3);border:2px solid var(--red2);background:linear-gradient(160deg,#c4432f,#9a2c1f);
+  box-shadow:0 1px 2px rgba(29,26,22,.28),inset 0 0 6px rgba(20,8,6,.4)}
+.b-kan{font-size:62px;font-weight:800;line-height:1.06;margin:6px 0 2px;transform:rotate(-1.4deg)}
 .b-name{font-size:18px;font-weight:700;letter-spacing:.08em}
-.b-div{width:56%;height:2px;background:var(--ink);margin:12px auto 10px;opacity:.7}
+.b-brush{width:66%;height:9px;margin:11px auto 9px;overflow:visible}
+.b-brush path{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;opacity:.8}
+.b-brush path.thin{stroke-width:.9;opacity:.4}
+.b-brush circle{fill:var(--ink);opacity:.45}
 .b-desc{font-size:13px;color:var(--ink2);line-height:1.65;max-width:200px}
 .b-key{margin-top:auto;padding-top:14px;font-size:11px;color:var(--ink2);letter-spacing:.14em}
 #bless-owned{color:rgba(242,236,217,.85);font-size:13px;letter-spacing:.08em}
-#bless-owned i{font-style:normal;color:var(--gold2);font-weight:700;margin-right:2px}
+#bless-owned i{font-style:normal;font-family:"Shippori Mincho",serif;font-weight:800;font-size:11.5px;
+  display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 3px;margin:0 5px 0 2px;
+  background:linear-gradient(160deg,#c4432f,#9a2c1f);color:var(--paper2);border-radius:2.5px;transform:rotate(-4deg);
+  box-shadow:inset 0 0 4px rgba(20,8,6,.45);vertical-align:-3px}
 #bless-head{color:var(--paper2);font-size:22px;font-weight:700;letter-spacing:.24em}
 #bless-sub{color:rgba(242,236,217,.6);font-size:12px;letter-spacing:.16em;margin-top:6px}
+/* the pause screen keeps its list as the same red paste */
+.stat-line b.mk{display:inline-flex;align-items:center;justify-content:center;min-width:19px;height:19px;padding:0 3px;
+  font-family:"Shippori Mincho",serif;font-weight:800;font-size:12px;color:var(--paper2);
+  background:linear-gradient(160deg,#c4432f,#9a2c1f);border-radius:3px;transform:rotate(-4deg);
+  box-shadow:inset 0 0 4px rgba(20,8,6,.45);margin:0 2px;vertical-align:-4px}
 
 .big-kan{font-size:clamp(90px,18vh,170px);font-weight:800;color:var(--red);line-height:1;margin:0 0 10px;
   transform:rotate(-7deg);animation:stamp .38s cubic-bezier(.25,1.6,.4,1) both}
@@ -236,16 +303,21 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 
 /* codex: the page stops when a stranger steps on it */
 #s-codex{background:rgba(29,26,22,.5);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+/* update 2.4 「印」: the codex sits on grained washi, sealed with carved paste */
 .codex-card{display:flex;width:min(820px,94vw);max-height:88vh;background:var(--paper3);border:2px solid var(--ink);
-  box-shadow:0 18px 46px rgba(20,16,12,.5),inset 0 0 60px rgba(120,100,60,.12);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.40 0 0 0 0 0.32 0 0 0 0.055 0'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23w)'/%3E%3C/svg%3E");
+  box-shadow:inset 0 0 60px rgba(120,100,60,.14),0 18px 40px rgba(29,26,22,.5);
   animation:cxin .34s cubic-bezier(.2,1.3,.4,1) both}
 @keyframes cxin{from{opacity:0;transform:translateY(26px) scale(.94) rotate(-.6deg)}to{opacity:1;transform:none}}
-.codex-left{flex:none;width:min(272px,40vw);position:relative;background:var(--paper2);border-right:2px solid var(--ink);display:flex}
+.codex-left{flex:none;width:min(272px,40vw);position:relative;background:var(--paper2);border-right:2px solid var(--ink);display:flex;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='w2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.40 0 0 0 0 0.32 0 0 0 0.055 0'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23w2)'/%3E%3C/svg%3E")}
 #codex-cv{width:100%;height:auto;display:block;margin:auto;animation:cxfloat 3.4s ease-in-out infinite}
 @keyframes cxfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.codex-seal{position:absolute;right:12px;bottom:10px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;
-  background:var(--red);color:var(--paper2);font-weight:800;font-size:20px;border-radius:3px;transform:rotate(-7deg);
-  box-shadow:0 2px 0 rgba(60,16,10,.3)}
+.codex-seal{position:absolute;right:14px;bottom:12px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#c4432f,#9a2c1f);color:var(--paper2);font-family:"Shippori Mincho",serif;font-weight:800;font-size:21px;
+  border-radius:5px;border:2px solid var(--red2);transform:rotate(-6deg);
+  box-shadow:0 2px 4px rgba(29,26,22,.35),inset 0 0 7px rgba(20,8,6,.45)}
+.codex-seal::after{content:'';position:absolute;inset:3px;border:1.5px solid rgba(242,236,217,.55);border-radius:3px}
 .codex-right{flex:1;min-width:0;padding:22px 28px 18px;display:flex;flex-direction:column}
 .cx-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:10px}
 .cx-kan{font-size:44px;font-weight:800;line-height:1;color:var(--ink);flex:none}
@@ -304,7 +376,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   .seg button:active{background:var(--ink);color:var(--paper2)}
   .recs-tabs button{min-height:46px;padding:9px 16px;font-size:14px}
   .recs-tabs button:active{background:var(--ink);color:var(--paper2)}
-  .scroll:active .sc-paper{transform:translateY(-4px)}
+  .kake:active .k-paper{box-shadow:inset 0 0 44px rgba(120,100,60,.16),0 4px 10px rgba(29,26,22,.35)}
   input[type=range]{width:170px}
   input[type=range]::-webkit-slider-thumb{width:22px;height:22px}
   .rkan{font-size:84px}
@@ -347,16 +419,20 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   .row .mid p{font-size:12px}
   .row .buy{grid-column:1/-1;justify-self:stretch;margin-top:8px;text-align:center}
   .pips{margin-top:2px}
-  /* blessings: two scrolls abreast on a narrow page */
+  /* blessings: two kakejiku abreast on a narrow page */
   #bless-wrap{gap:3.4vw;padding:3vh 0 2vh}
-  .scroll{width:min(210px,44vw)}
-  .sc-paper{min-height:236px;padding:14px 10px 12px}
+  .kake{width:min(212px,44vw)}
+  .k-paper{min-height:234px;padding:16px 12px 30px}
+  .k-ten{height:32px}
+  .k-chi{height:20px}
+  .k-rod{margin:0 -11px;height:11px}
+  .k-rod .cap{width:7px;height:11px}
   .b-kan{font-size:46px}
   .b-name{font-size:15px}
   .b-desc{font-size:12px;max-width:100%}
-  .b-div{margin:8px auto 8px}
   .b-key{font-size:9.5px;padding-top:8px}
-  .rar{font-size:10.5px;letter-spacing:.2em;padding:2px 8px}
+  .k-seal{width:29px;height:29px;font-size:16px;right:8px;bottom:8px}
+  .k-tate{left:6px;top:16px;font-size:9px}
   /* records: four honest columns fit where six jostle */
   .rec-h,.rec-r{grid-template-columns:30px 1.6fr 48px 58px;font-size:11.5px;gap:4px;padding:7px 6px}
   .rec-h span:nth-child(4),.rec-r span:nth-child(4){display:none} /* kills fold into the story */
@@ -382,7 +458,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 }
 @media (max-width:560px) and (max-height:760px){
   .big-kan{font-size:clamp(72px,14vh,120px)}
-  .sc-paper{min-height:210px}
+  .k-paper{min-height:208px}
+  .k-ten{height:26px}
 }
 /* landscape phones: short windows kneel the title down to size */
 @media (max-height:520px) and (min-width:561px){
@@ -414,15 +491,16 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="t-kanji"><span>墨</span><span>斬</span><span class="seal title-seal">印</span></div>
     <div class="t-side">
       <h1>SUMIKIRI</h1>
-      <div class="tag">a hack &amp; slash painted in ink · update 2.2 「影」 the lit figures</div>
+      <div class="tag">a hack &amp; slash painted in ink · update 2.7 「映」 the cinematic cut</div>
       <nav class="menu">
         <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Roads <small class="mono" style="font-size:11px;color:var(--ink2)">· two stories</small></button>
         <button class="mbtn" data-go="records"><span class="idx">二</span>Records of Ink</button>
         <button class="mbtn" data-go="chrono" aria-label="The Chronicle — every change the ink has taken"><span class="idx" style="display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:block"><path d="M5 4.6h14"/><path d="M5 19.4h14"/><path d="M7 6.2h10V17c-1.7-.9-3.3-.9-5 0-1.7.9-3.3.9-5 0z"/><path d="M9.7 9.4h4.6"/><path d="M9.7 12.4h4.6"/></svg></span>The Chronicle</button>
         <button class="mbtn" data-go="shrine"><span class="idx">三</span>The Shrine</button>
         <button class="mbtn" data-go="armory"><span class="idx">四</span>The Armory</button>
-        <button class="mbtn" data-go="help"><span class="idx">五</span>How to Hold a Blade</button>
-        <button class="mbtn" data-go="settings"><span class="idx">六</span>Settings</button>
+        <button class="mbtn" data-go="help"><span class="idx">五</span>How to Play</button>
+        <button class="mbtn" data-go="besti"><span class="idx">六</span>Bestiary</button>
+        <button class="mbtn" data-go="settings"><span class="idx">七</span>Settings</button>
       </nav>
     </div>
   </div>
@@ -453,7 +531,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 
 <div class="screen" id="s-armory">
   <div class="page">
-    <div class="page-head"><h2>THE ARMORY 器</h2><span class="sub">four answers to one question</span></div>
+    <div class="page-head"><h2>THE ARMORY 器</h2><span class="sub">steel for the hand · 絶 for the gauge</span></div>
     <div class="page-body">
       <div class="ashline">you carry <b class="mono" id="ash-armory">0</b> 灰 ash</div>
       <div id="armory-list"></div>
@@ -464,7 +542,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 
 <div class="screen" id="s-help">
   <div class="page">
-    <div class="page-head"><h2>HOW TO HOLD A BLADE</h2><span class="sub">deflect · break posture · deathblow</span></div>
+    <div class="page-head"><h2>HOW TO PLAY</h2><span class="sub">deflect · break posture · deathblow</span></div>
     <div class="page-body">
       <div class="helpgrid" id="help-controls"></div>
       <div class="helpcol"><h4>THE THREE LAWS</h4></div>
@@ -487,8 +565,16 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
           <div class="hrow"><b>Night Road 冥</b><span>curse-hung marks, reshuffled every run</span></div>
         </div>
       </div>
-      <div class="helpcol"><h4>BESTIARY — THE INKMEN</h4></div>
-      <div class="besti" id="help-besti"></div>
+      <div class="btnrow" style="margin-top:16px"><button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s-besti">
+  <div class="page">
+    <div class="page-head"><h2>BESTIARY 図</h2><span class="sub">every face the ink has worn · two roads</span></div>
+    <div class="page-body">
+      <div id="besti-body"></div>
       <div class="btnrow" style="margin-top:16px"><button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button></div>
     </div>
   </div>
@@ -513,6 +599,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
           <button data-gfx="0">墨</button><button data-gfx="1">絵</button><button data-gfx="2">華</button>
         </div>
       </div>
+      <div class="kb-head"><div class="lab">Controls 鍵<small>click a key, then press the one you mean · Esc cancels</small></div><button class="buy" id="kmap-reset">reset</button></div>
+      <div class="keymap" id="keymap"></div>
       <div class="setrow"><div class="lab">Fullscreen<small>fill the whole page</small></div><button class="buy" id="set-fs">enter</button></div>
       <div class="setrow"><div class="lab">Burn the notebook<small>erases all progress</small></div><button class="buy danger" id="set-wipe" style="border-color:var(--red);color:var(--red)">WIPE</button></div>
       <div class="btnrow" style="margin-top:16px"><button class="mbtn" id="set-back"><span class="idx">◆</span>Back</button></div>
@@ -608,7 +696,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <div class="screen" id="s-codex">
   <div class="codex-card">
     <div class="codex-left">
-      <canvas id="codex-cv" width="544" height="660"></canvas>
+      <canvas id="codex-cv" width="680" height="824"></canvas>
       <div class="codex-seal">初</div>
     </div>
     <div class="codex-right">
@@ -637,6 +725,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <script src="ambient2.js"></script>
 <script src="gfx.js"></script>
 <script src="models.js"></script>
+<script src="anim.js"></script>
 <script src="menufx.js"></script>
 <script>
 'use strict';
@@ -656,6 +745,13 @@ const $=q=>document.querySelector(q);
 const fmtT=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 const INK='#1d1a16',INK2='#4a443c',PAPER='#e9e1cd',PAPER2='#f2ecd9',PAPER3='#fbf7ec',RED='#b3372a',RED2='#8c2b1f',GOLD='#8f6d1f',GOLD2='#c9932a',AMBER='#c9932a';
 function mkCanvas(w,h){const c=document.createElement('canvas');c.width=Math.max(2,w|0);c.height=Math.max(2,h|0);return c;}
+// update 2.4: the seals are rounded paste — elders that never learned roundRect
+// still get to carve them
+if(!CanvasRenderingContext2D.prototype.roundRect)
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+    r=Math.min(typeof r==='number'?r:0,w/2,h/2);
+    this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);
+    this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();return this;};
 const IS_TOUCH=(()=>{try{return matchMedia('(pointer:coarse)').matches||'ontouchstart' in window;}catch(e){return false;}})();
 
 const store={
@@ -665,7 +761,7 @@ const store={
 
 const SAVE_KEY='sumikiri_v1';
 const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0,ki:0,mirror:0,stance:0,step:0,edge:0,rhythm:0,gourd:0},
-  weapons:{katana:true},lastWeapon:'katana',unlockedAct:1,unlockedAct2:1,achieved2:false,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
+  weapons:{katana:true},lastWeapon:'katana',arts:{en:true},art:'en',keys:{},unlockedAct:1,unlockedAct2:1,achieved2:false,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
   difficulty:1,shake:true,numbers:true,codex:true,haptic:true,gfx:1,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
 let SAVE=defaultSave();
 (function(){
@@ -675,6 +771,8 @@ let SAVE=defaultSave();
     SAVE.meta=Object.assign(defaultSave().meta,p.meta||{});
     SAVE.stats=Object.assign(defaultSave().stats,p.stats||{});
     SAVE.weapons=Object.assign({katana:true},p.weapons||{});
+    SAVE.arts=Object.assign({en:true},p.arts||{}); // update 2.3: old ledgers still know the wheel
+    SAVE.keys=Object.assign({},p.keys||{});
   }catch(e){SAVE=defaultSave();}})();
 function persist(){store.set(SAVE_KEY,JSON.stringify(SAVE));}
 // haptics: the phone's small answer to the blade. nothing on desktop, nothing if muted
@@ -703,12 +801,18 @@ tone(f0,f1,dur,type,vol,when=0){if(!this.ctx||this.muted)return;const t=this.ctx
   o.frequency.exponentialRampToValueAtTime(Math.max(1,f1),t+dur);g.gain.setValueAtTime(vol,t);
   g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(this.master);o.start(t);o.stop(t+dur+.02);},
 noise(dur,vol,fq,type='lowpass',slide=0,when=0){if(!this.ctx||this.muted)return;const t=this.ctx.currentTime+when;
-  const n=Math.ceil(this.ctx.sampleRate*dur),b=this.ctx.createBuffer(1,n,this.ctx.sampleRate),d=b.getChannelData(0);
-  for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
-  const s=this.ctx.createBufferSource();s.buffer=b;const f=this.ctx.createBiquadFilter();f.type=type;
+  // update 2.3 「疾」: one shared page of static, read from a random offset —
+  // deathblows and arts used to cut fresh paper for every crash, and the
+  // scissors could hitch the frame
+  if(!this.nbuf){const rate=this.ctx.sampleRate,len=Math.floor(rate*2.3);
+    this.nbuf=this.ctx.createBuffer(1,len,rate);
+    const dd=this.nbuf.getChannelData(0);for(let i=0;i<len;i++)dd[i]=Math.random()*2-1;}
+  const s=this.ctx.createBufferSource();s.buffer=this.nbuf;
+  const off=Math.random()*Math.max(1,this.nbuf.duration-dur-.05);
+  const f=this.ctx.createBiquadFilter();f.type=type;
   f.frequency.setValueAtTime(fq,t);if(slide)f.frequency.exponentialRampToValueAtTime(Math.max(40,fq+slide),t+dur);
   const g=this.ctx.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-  s.connect(f);f.connect(g);g.connect(this.master);s.start(t);s.stop(t+dur+.02);},
+  s.connect(f);f.connect(g);g.connect(this.master);s.start(t,off,dur+.02);},
 pluck(freq,vol,when=0){if(!this.ctx||this.muted)return;const key=Math.round(freq);
   if(!this.plucks.has(key)){const rate=this.ctx.sampleRate,N=Math.max(2,Math.round(rate/freq)),len=Math.floor(rate*1.1);
     const b=this.ctx.createBuffer(1,len,rate),d=b.getChannelData(0);
@@ -762,6 +866,28 @@ playStep(s,when){const lvl=(G&&G.mode==='game')?G.musicLevel:.15;
 
 const keys={},once={};const mouse={x:innerWidth/2,y:innerHeight/2,down:false};let mouseSeen=false,mouseOnceL=false;
 const IN={atk:false,atkT:false,par:false,dash:false,art:false,drink:false,weap:-1};
+
+// ---- the mapable hand (update 2.3 「鍵」) -------------------------------------
+// every keyboard action reads through this little ledger: SAVE.keys holds only
+// what the player chose; anything unbound falls back to the default, and the
+// arrow keys always answer for the legs. attack and parry may be bound to keys
+// here — the mouse keeps its own claim either way.
+const DEFK={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',dash:'Space',art:'KeyE',drink:'KeyQ',attack:'',parry:''};
+const kcode=a=>{const c=(SAVE.keys||{})[a];return c?c:DEFK[a];};
+const kd=a=>{const c=kcode(a);return c?!!keys[c]:false;};
+const kp=a=>{const c=kcode(a);return c?jp(c):false;};
+const kname=c=>{if(!c)return '—';
+  if(c==='Space')return 'SPACE';
+  if(c.startsWith('Key'))return c.slice(3);
+  if(c.startsWith('Digit'))return c.slice(5);
+  if(c.startsWith('Arrow'))return {ArrowUp:'↑',ArrowDown:'↓',ArrowLeft:'←',ArrowRight:'→'}[c];
+  if(c.startsWith('Shift'))return 'SHIFT';
+  if(c==='ControlLeft')return 'L-CTRL';
+  if(c==='ControlRight')return 'R-CTRL';
+  if(c==='AltLeft')return 'L-ALT';
+  if(c==='AltRight')return 'R-ALT';
+  return c.toUpperCase();};
+const KEYCAP={action:null,btn:null}; // while a settings row listens, the next key lands in the ledger
 const joy={id:-1,ox:0,oy:0,x:0,y:0,mag:0,ang:0};
 const btnHeld={},TBP={},WSLOTS=[];
 const JOYR=78; // the stick's pasture — bigger than a key, smaller than a thumb
@@ -783,6 +909,11 @@ function measureSafe(){
     el.remove();}catch(e){}}
 
 addEventListener('keydown',e=>{
+  if(KEYCAP.action){ // the settings row is listening — this press belongs to it, not the blade
+    e.preventDefault();
+    if(e.code!=='Escape'){SAVE.keys[KEYCAP.action]=e.code;persist();AU.ui();}
+    else AU.ui();
+    KEYCAP.action=null;KEYCAP.btn=null;renderKeys();return;}
   if(!keys[e.code])once[e.code]=true;keys[e.code]=true;
   if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();
   if(e.code==='KeyM'&&!once.KeyMhandled){once.KeyMhandled=true;AU.toggleMute();}
@@ -813,7 +944,7 @@ function touchButtons(){
     {id:'atk',x:sx-98*s,y:sy-108*s,r:60*s,kan:'斬'},
     {id:'par',x:sx-226*s,y:sy-74*s,r:45*s,kan:'弾'},
     {id:'dash',x:sx-92*s,y:sy-244*s,r:46*s,kan:'走'},
-    {id:'art',x:sx-226*s,y:sy-196*s,r:38*s,kan:'絶'}];}
+    {id:'art',x:sx-226*s,y:sy-196*s,r:38*s,kan:(typeof ARTS!=='undefined'&&ARTS[artId()])?ARTS[artId()].k:'絶'}];}
 function clearTouchInput(){
   joy.id=-1;joy.x=joy.y=joy.mag=0;
   for(const k in btnHeld){TBP[btnHeld[k]]=false;delete btnHeld[k];}
@@ -874,6 +1005,7 @@ function checkOrient(){
   el.classList.toggle('on',IS_TOUCH&&innerHeight>innerWidth*1.05&&G.mode==='game'&&!rotateDismiss);}
 function resize(){DPR=Math.min(IS_TOUCH?1.5:2,devicePixelRatio||1);W=innerWidth;H=innerHeight;
   cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';
+  try{ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';}catch(e){}
   Z=clamp(Math.min(W/1350,H/860),.62,1.5);
   measureSafe();
   vigC=mkCanvas(W,H);
@@ -887,7 +1019,12 @@ function resize(){DPR=Math.min(IS_TOUCH?1.5:2,devicePixelRatio||1);W=innerWidth;
   fg2.addColorStop(0,'rgba(226,230,238,0)');fg2.addColorStop(.55,'rgba(200,208,222,0.16)');fg2.addColorStop(1,'rgba(58,66,88,0.52)');
   fc.fillStyle=fg2;fc.fillRect(0,0,W,H);
   gradeC=null;_vigHurt=null;
+  // update 2.5: the title's ridges re-carve themselves when the page changes
+  // size, so they always bake at the window's own width — crisp, not stretched
+  if(titleRebakeT)clearTimeout(titleRebakeT);
+  titleRebakeT=setTimeout(()=>{titleRebakeT=null;bakeTitle();},250);
   checkOrient();}
+let titleRebakeT=null;
 addEventListener('resize',resize);
 if(window.visualViewport)visualViewport.addEventListener('resize',()=>resize()); // the url-bar's slow breathing
 addEventListener('orientationchange',()=>setTimeout(resize,120));
@@ -895,12 +1032,16 @@ const RW=1700,RH=1000,WALL=56;
 
 const G={mode:'title',run:null,enemies:[],projs:[],parts:[],floats:[],slashes:[],teles:[],rings:[],marks:[],pickups:[],ghosts:[],fx:[],
   cam:{x:RW/2,y:RH/2},trauma:0,hitstop:0,slowT:0,ts:1,flash:0,flashCol:'#f6f1e2',wash:0,hurtV:0,musicLevel:.15,
-  floorC:null,decalC:null,dctx:null,waveIdx:-1,waves:[],spawnQ:[],spawnT:0,waveGap:0,clearing:0,introT:0,bossIntroT:0,shakeX:0,shakeY:0,
+  floorC:null,floorMip:null,decalC:null,dctx:null,waveIdx:-1,waves:[],spawnQ:[],spawnT:0,waveGap:0,clearing:0,introT:0,bossIntroT:0,shakeX:0,shakeY:0,
   style:{pts:0,rank:0,combo:0,t:9,anim:0},hints:null,tutMoved:false,tutHit:false,tutDash:false,tutParry:false,tutDrink:false,
   ambience:[],t:0,boss:null,blessPicks:null,prevMode:null,grantQ:[],grantShow:null,
   wind:0,windT:0,gusts:[],lbx:0,lbxT:0,zp:0,wipe:null,boltT:6,lightningAt:0,props:[],fireflies:[],ripples:[],gauntIdx:0,
   crows:[],crowsT:7,hurtA:0,hurtAT:0,
-  codexQ:[],codexSeen:null,codexCur:null,codexT:0,zpC:0,codexArm:0};
+  codexQ:[],codexSeen:null,codexCur:null,codexT:0,zpC:0,codexArm:0,
+  // update 2.7 「映」: the eye that frames the fight — a slow cinematic zoom
+  // that leans in for duels and breathes out for crowds, plus the pointer's
+  // own hand on the title's layers (eased, never snapped)
+  zCine:1,zw:0,parX:0,parY:0};
 let P=null;
 const bl=id=>G.run?(G.run.blessings[id]||0):0;
 const curAct=()=>G.run?(G.run.meido?9:(G.run.abyss?Math.min(7,1+Math.floor(G.run.wave/4)):(G.run.gauntlet?7:(G.run.story===2?10+G.run.act:G.run.act)))):1;
@@ -914,6 +1055,15 @@ const WEAPONS={
   kasa:{name:'Iron Kasa',kanji:'傘',desc:'A shed roof on a haft. Heavy in the hand, generous to the parry — every deflect answers with a fan of ink.',dmg:[11,14,17],rate:.32,range:82,arc:2.2,knock:120,cost:2200,unique:'+30% deflect window · deflects counter with an ink fan'}};
 if(window.STORY2)Object.assign(WEAPONS,STORY2.weapons); // the brush joins the armory
 const WKEYS=Object.keys(WEAPONS);
+
+// ---- ink arts 絶 (update 2.3): how a full gauge is spent. the wheel is the
+// honest answer; the storm and the bird answer differently, and both are
+// bought with ash at the armory — a price that stings a little, never wounds.
+const ARTS={
+  en:{n:'Wheel Cut',k:'円',cost:0,d:'The honest answer. One full turn of the blade — everything within reach is cut, and every flying thing is swept from the page.'},
+  rai:{n:'Thunder Tread',k:'雷',cost:750,d:'Become the bolt: a single stride carries you through the whole field, cutting everything on the line — and for one breath, nothing can touch you.'},
+  ho:{n:'Phoenix Pinions',k:'鳳',cost:1250,d:'A ring of burning waves takes wing in every direction, far past the length of any blade — and the fire mends the hand that loosed it.'}};
+const artId=()=>SAVE.art&&ARTS[SAVE.art]?SAVE.art:'en';
 
 const BLESS=[
   {id:'vermilion',n:'Vermilion Edge',k:'朱',r:0,d:'+20% damage. Stacks.'},
@@ -1307,7 +1457,11 @@ const FGPETAL=[];
 // fighters are baked once at 2.2x and drawn at 1x — the supersample keeps
 // edges crisp on dense screens. the kit below is shared by enemies, bosses
 // and the codex portraits; only the assembly differs.
-const SS=2.2;
+// update 2.4 「印」: the cast is carved at the page's own pixel depth — a dense
+// screen samples Z×DPR≈3 device pixels per world unit, and the old 2.2 bake
+// softened every blade edge the moment the camera leaned in. phones keep the
+// lighter bake (their glass never asks for more).
+const SS=IS_TOUCH?2.2:3.2;
 function spr(S,fn){
   const C=Math.ceil(S*SS),c=mkCanvas(C,C),g=c.getContext('2d');
   g.translate(C/2,C/2);g.scale(SS,SS);fn(g);
@@ -1835,7 +1989,13 @@ function gradeLayer(){
       g.fillStyle='rgba(44,58,94,0.14)';g.beginPath();g.arc(mx+r*.45,my-r*.3,r*.24,0,TAU);g.fill();}}
   return gradeC;}
 
-function buildFloor(act){const c=mkCanvas(RW,RH),g=c.getContext('2d');
+function buildFloor(act){
+  // update 2.4 「印」: the page is painted at double density on dense glass — the
+  // floor is the largest surface the eye rests on, and at full zoom it was the
+  // first thing to soften. a phone keeps the honest single weave.
+  const FS=IS_TOUCH?1:2;
+  const c=mkCanvas(RW*FS,RH*FS),g=c.getContext('2d');
+  g.scale(FS,FS);
   const pat=g.createPattern(paperTile,'repeat');g.fillStyle=pat;g.fillRect(0,0,RW,RH);
   const seed=act*57;
   // each act gets a wash of its own weather
@@ -1905,6 +2065,34 @@ function buildFloor(act){const c=mkCanvas(RW,RH),g=c.getContext('2d');
     g.fillStyle=gr;g.beginPath();g.arc(x,y,170,0,TAU);g.fill();
     g.fillStyle='#3a3430';g.fillRect(x-5,y-34,10,20);g.fillStyle='#d8b04a';
     g.beginPath();g.ellipse(x,y-24,7,9,0,0,TAU);g.fill();}}
+  // ---- update 2.4 「印」: THE MATERIAL — the page learns what it is made of ----
+  // washi fiber veins: the paper's own skeleton, long faint hairlines
+  g.strokeStyle='rgba(74,68,60,0.05)';g.lineWidth=1;g.lineCap='round';
+  for(let i=0;i<26;i++){const x=hash01(seed+300+i*13)*RW,y=hash01(seed+301+i*29)*RH;
+    g.beginPath();g.moveTo(x-rnd(60,110),y+rnd(-8,8));
+    g.quadraticCurveTo(x,y+rnd(-24,24),x+rnd(90,190),y+rnd(-14,14));g.stroke();}
+  // broad sumi underwashes: tonal depth beneath the decor
+  for(let i=0;i<3;i++)inkBlob(g,RW*(.18+.32*i),RH*(.22+.28*i),rnd(240,420),'rgba(60,54,46,0.05)',seed+400+i);
+  // a scatter of stones — each keeps its own shadow, its own light, its crumbs
+  if(act!==7){
+    const stC=act===4?'204,210,222':act===9?'104,116,142':'108,100,86';
+    for(let i=0;i<34;i++){
+      const x=WALL+26+hash01(seed+500+i*11)*(RW-2*WALL-52),y=WALL+26+hash01(seed+501+i*17)*(RH-2*WALL-52);
+      const r=2.6+hash01(seed+502+i*7)*6.8,sq=.5+hash01(seed+503+i)*.34,an=hash01(seed+505+i)*TAU;
+      g.fillStyle='rgba(29,24,20,0.22)';
+      g.beginPath();g.ellipse(x+r*.35,y+r*.42,r*1.15,r*sq*.9,0,0,TAU);g.fill();
+      g.fillStyle='rgba('+stC+','+(.42+hash01(seed+504+i)*.26).toFixed(2)+')';
+      g.beginPath();g.ellipse(x,y,r,r*sq,an,0,TAU);g.fill();
+      g.strokeStyle='rgba(246,241,226,'+(.1+hash01(seed+506+i)*.1).toFixed(2)+')';
+      g.lineWidth=Math.max(.7,r*.13);
+      g.beginPath();g.ellipse(x-r*.14,y-r*.18*sq,r*.74,r*sq*.62,an,-2.7,-.5);g.stroke();
+      if((act===1||act===3)&&i%3===0){ // moss keeps the damp acts' stones
+        g.fillStyle='rgba(96,116,70,0.28)';
+        g.beginPath();g.ellipse(x+r*.4,y+r*.3,r*.7,r*sq*.5,an,0,TAU);g.fill();}
+      for(let j=0;j<3;j++){ // gravel crumbs the stone sheds
+        const ga=hash01(seed+507+i*5+j)*TAU,gd=r+rnd(2,7);
+        g.fillStyle='rgba('+stC+',0.3)';
+        g.beginPath();g.arc(x+Math.cos(ga)*gd,y+Math.sin(ga)*gd*sq,1+hash01(seed+508+i+j)*1.3,0,TAU);g.fill();}}}
   // the arena frame: two ink borders and a rough outer hatch
   g.strokeStyle=act===7?'#8a8894':INK;g.lineWidth=7;g.strokeRect(WALL-6,WALL-6,RW-WALL*2+12,RH-WALL*2+12);
   g.lineWidth=2.5;g.strokeRect(WALL-16,WALL-16,RW-WALL*2+32,RH-WALL*2+32);
@@ -1916,12 +2104,38 @@ function buildFloor(act){const c=mkCanvas(RW,RH),g=c.getContext('2d');
     else{x=RW-WALL+6+rnd(-8,8);y=rnd(WALL-20,RH-WALL+20);}
     g.lineWidth=rnd(2,6);g.beginPath();g.moveTo(x,y);g.lineTo(x+rnd(-6,6),y+rnd(-6,6));g.stroke();}
   g.globalAlpha=1;
+  // the walls lean their shade onto the page — a stage, not a print
+  {
+    const wd=64;
+    let grW=g.createLinearGradient(0,WALL,0,WALL+wd);
+    grW.addColorStop(0,'rgba(29,26,22,0.15)');grW.addColorStop(1,'rgba(29,26,22,0)');
+    g.fillStyle=grW;g.fillRect(WALL,WALL,RW-2*WALL,wd);
+    grW=g.createLinearGradient(0,RH-WALL,0,RH-WALL-wd);
+    grW.addColorStop(0,'rgba(29,26,22,0.15)');grW.addColorStop(1,'rgba(29,26,22,0)');
+    g.fillStyle=grW;g.fillRect(WALL,RH-WALL-wd,RW-2*WALL,wd);
+    grW=g.createLinearGradient(WALL,0,WALL+wd,0);
+    grW.addColorStop(0,'rgba(29,26,22,0.12)');grW.addColorStop(1,'rgba(29,26,22,0)');
+    g.fillStyle=grW;g.fillRect(WALL,WALL,wd,RH-2*WALL);
+    grW=g.createLinearGradient(RW-WALL,0,RW-WALL-wd,0);
+    grW.addColorStop(0,'rgba(29,26,22,0.12)');grW.addColorStop(1,'rgba(29,26,22,0)');
+    g.fillStyle=grW;g.fillRect(RW-WALL-wd,WALL,wd,RH-2*WALL);}
   if(act===7){g.save();g.globalAlpha=.06;g.font='800 380px "Shippori Mincho"';g.textAlign='center';g.textBaseline='middle';
     g.fillStyle='#333';g.fillText('空',RW/2,RH/2);g.restore();}
   if(G.run&&G.run.abyss){g.save();g.globalAlpha=.08;g.font='800 300px "Shippori Mincho"';g.textAlign='center';g.textBaseline='middle';
     g.fillStyle=RED2;g.fillText('無',RW/2,RH/2);g.restore();}
   if(G.run&&G.run.meido){g.save();g.globalAlpha=.09;g.font='800 300px "Shippori Mincho"';g.textAlign='center';g.textBaseline='middle';
     g.fillStyle='#2c3550';g.fillText('冥',RW/2,RH/2);g.restore();}
+  // the mip: a high-quality half-size print of the same page. at rest the eye
+  // samples ~1 device pixel per world unit, and the mip answers that exactly
+  // (supersampled, so its edges keep the double weave's teeth); the full 2×
+  // sheet is only blitted when zoom or dense glass actually asks for it —
+  // a software-rasterized machine never pays the big blit at rest
+  if(FS>1){
+    const mip=mkCanvas(RW,RH),mg=mip.getContext('2d');
+    mg.imageSmoothingEnabled=true;try{mg.imageSmoothingQuality='high';}catch(e){}
+    mg.drawImage(c,0,0,RW,RH);
+    G.floorMip=mip;}
+  else G.floorMip=null;
   G.floorC=c;}
 
 // live props that sway in the wind — grass, reeds, bamboo, embers' stalks.
@@ -2001,43 +2215,150 @@ function drawProps(){
       ctx.beginPath();ctx.arc(sway*10,-p.h,2,0,TAU);ctx.fill();}
     ctx.restore();}}
 
-// the title backdrop: a ukiyo-e print — ridges, a low sun, mist, birds.
-const TMT=[],TFF=[];
+// the title backdrop: a ukiyo-e print — real ridges, a low sun, mist, birds.
+// update 2.5 「山」: the mountains are carved, not waved — each ridge is a
+// seeded noise line with sharp crests and rolling shoulders, shaded faces,
+// a sunlit rim along the slopes that face the light, erosion striations on
+// the near hills, and one long high mountain the far horizon carries. the
+// layers stack behind interleaved mist so distance reads as air, not as
+// four flat paper cutouts.
+const TMT=[],TFF=[],TSUN=mkCanvas(340,340);
+function vnoise(x,seed){const i=Math.floor(x),f=x-i;
+  const a=hash01(i+seed*57.31),b=hash01(i+1+seed*57.31);
+  const u=f*f*(3-2*f);return a+(b-a)*u;}
+{ // the sun, baked: a woodblock disk with bokashi shading — heart light, rim
+  // deep — and a halo ring where the paper remembers the ink pooling
+  const g=TSUN.getContext('2d'),cx=170,cy=170,R=118;
+  const gr=g.createRadialGradient(cx-R*.2,cy-R*.28,R*.12,cx,cy,R);
+  gr.addColorStop(0,'#d0523c');gr.addColorStop(.6,'#bc4230');gr.addColorStop(1,'#9c2f24');
+  g.fillStyle=gr;g.beginPath();g.arc(cx,cy,R,0,TAU);g.fill();
+  g.strokeStyle='rgba(179,55,42,0.20)';g.lineWidth=9;
+  g.beginPath();g.arc(cx,cy,R*1.21,0,TAU);g.stroke();
+  g.strokeStyle='rgba(179,55,42,0.10)';g.lineWidth=5;
+  g.beginPath();g.arc(cx,cy,R*1.38,0,TAU);g.stroke();}
 function bakeTitle(){
   TMT.length=0;
+  const bw=Math.max(1920,Math.min(2880,(innerWidth+80)|0)),TH=400,sunBX=bw*.68;
+  // far → near: hazier and lighter far, darker and more detailed near
   const layers=[
-    {col:'rgba(120,110,100,0.28)',base:.52,amp:.10,sc:.0016},
-    {col:'rgba(100,92,84,0.42)',base:.62,amp:.08,sc:.0026},
-    {col:'rgba(70,64,58,0.6)',base:.72,amp:.07,sc:.004},
-    {col:'rgba(42,38,34,0.85)',base:.84,amp:.05,sc:.006}];
-  for(const L of layers){
-    const c=mkCanvas(1920,300),g=c.getContext('2d');
-    g.fillStyle=L.col;g.beginPath();g.moveTo(0,300);
-    for(let x=0;x<=1920;x+=8){
-      const y=140+Math.sin(x*L.sc+L.base*40)*46*L.amp*10+Math.sin(x*L.sc*3.1+L.base*9)*18*L.amp*10;
-      g.lineTo(x,y);}
-    g.lineTo(1920,300);g.closePath();g.fill();
+    {my:.40,amp:.105,seed:11,sharp:1.6,detail:.45,rim:.15,
+     top:'rgba(201,186,161,0.94)',mid:'rgba(186,171,148,0.9)',bot:'rgba(206,193,168,0)'},
+    {my:.45,amp:.125,seed:37,sharp:1.4,detail:.75,rim:.24,
+     top:'rgba(152,138,120,0.93)',mid:'rgba(132,119,103,0.92)',bot:'rgba(160,146,124,0)'},
+    {my:.50,amp:.145,seed:73,sharp:1.2,detail:1,rim:.32,
+     top:'rgba(99,89,77,0.95)',mid:'rgba(80,71,61,0.95)',bot:'rgba(108,97,83,0)'},
+    {my:.55,amp:.165,seed:101,sharp:.7,detail:1.35,rim:.4,
+     top:'rgba(49,43,36,0.97)',mid:'rgba(38,33,27,0.97)',bot:'rgba(66,58,48,0)'}];
+  for(let li=0;li<layers.length;li++){
+    const L=layers[li],s=L.seed;
+    const c=mkCanvas(bw,TH),g=c.getContext('2d');
+    // the ridgeline: one broad ridged octave for the massifs, a shoulder
+    // octave, a crest octave, and (near only) a scree octave
+    const step=3,n=bw/step|0,ys=new Float32Array(n+1);
+    for(let k=0;k<=n;k++){
+      const u=k/n,x=u*bw;
+      const n1=vnoise(u*2.4+s*.11,s);
+      const ridge=Math.pow(1-Math.abs(2*n1-1),L.sharp); // sharp crests, wide valleys
+      const n2=vnoise(u*7.3+s*.37,s*2.3);
+      const n3=vnoise(u*19+s*.83,s*5.1);
+      const n4=vnoise(u*44+s*1.3,s*8.7);
+      const n5=vnoise(u*110+s*2.1,s*11.3);
+      let h=.5*ridge+.26*n2+.2*n3+(li>1?.12*n4*L.detail:0)+(li===3?.05*n5:0);
+      let y=TH*L.my+TH*L.amp*(.5-h)*2;
+      if(li===0){ // the far horizon carries one long high mountain
+        const d=(u-.40)/.17;y-=TH*.17*Math.exp(-d*d);}
+      if(li===3){ // the nearest hills roll — a meadow's hem, not a wall
+        y+=TH*.05*Math.sin(u*8.5+s)+TH*.03*vnoise(u*11+s,s*4);}
+      ys[k]=clamp(y,24,TH-30);}
+    // the body: an atmospheric gradient — lit at the crest, sinking into
+    // haze at the hem, so each layer separates from the next by air
+    let yMin=1e9,yMax=-1e9;for(const y of ys){if(y<yMin)yMin=y;if(y>yMax)yMax=y;}
+    g.beginPath();g.moveTo(0,TH);
+    for(let k=0;k<=n;k++)g.lineTo(k*step,ys[k]);
+    g.lineTo(bw,TH);g.closePath();
+    const gr=g.createLinearGradient(0,yMin,0,TH);
+    gr.addColorStop(0,L.top);gr.addColorStop(.42,L.mid);gr.addColorStop(1,L.bot);
+    g.fillStyle=gr;g.fill();
+    g.save();g.clip(); // everything below only touches the mountain itself
+    if(li===0){ // snow-light on the high peak: a bokashi cap, cream over ink
+      const sg=g.createLinearGradient(0,yMin,0,yMin+TH*.14);
+      sg.addColorStop(0,'rgba(246,238,216,0.26)');sg.addColorStop(1,'rgba(246,238,216,0)');
+      g.fillStyle=sg;g.fillRect(0,yMin,bw,TH*.16);}
+    // erosion: gullies run down the faces — dark cuts, and pale combing on
+    // the sun side — only the near hills carry enough page to hold them
+    if(li>=2){
+      for(let k=0;k<=n;k+=6){
+        const x=k*step,y=ys[k];
+        if(y>TH*.72)continue;
+        const len=TH*(.14+.14*vnoise(k*.31,s*9.1));
+        const drift=(vnoise(k*.13,s*6.3)-.5)*len*.5;
+        g.strokeStyle=`rgba(18,15,12,${.05+.03*L.detail})`;g.lineWidth=1.3;
+        g.beginPath();g.moveTo(x,y+2);
+        g.quadraticCurveTo(x+drift*.4,y+len*.5,x+drift,y+len);g.stroke();
+        if(vnoise(k*.7,s*3.9)>.62){
+          g.strokeStyle='rgba(232,190,132,0.05)';g.lineWidth=1;
+          g.beginPath();g.moveTo(x+4,y+2);
+          g.quadraticCurveTo(x+4+drift*.3,y+len*.4,x+4+drift*.7,y+len*.8);g.stroke();}}}
+    g.restore();
+    // the crest line: a dark reading stroke underneath...
+    g.strokeStyle='rgba(20,17,14,0.14)';g.lineWidth=1.6;
+    g.beginPath();for(let k=0;k<=n;k++){const kx=k*step,ky=ys[k];k?g.lineTo(kx,ky):g.moveTo(kx,ky);}g.stroke();
+    // ...and a warm rim where the slopes face the low sun — the far rim is
+    // faint haze, the near rim is lit gold along its right shoulders
+    for(let k=0;k<n;k+=2){
+      const x0=k*step,x1=(k+2)*step,dy=ys[k+2]-ys[k];
+      const facing=(x0<sunBX)?(dy>0):(dy<0);
+      if(!facing)continue;
+      const near=clamp(1-Math.abs(x0-sunBX)/(bw*.85),.15,1);
+      const a=L.rim*near*clamp(Math.abs(dy)/4,.25,1);
+      if(a<=.02)continue;
+      g.strokeStyle=`rgba(240,186,120,${a.toFixed(3)})`;
+      g.lineWidth=2.2;
+      g.beginPath();g.moveTo(x0,ys[k]);g.lineTo(x1,ys[k+2]);g.stroke();}
     TMT.push(c);}}
 function drawTitleScene(){
   ctx.fillStyle=PAPER;ctx.fillRect(0,0,W,H);
-  // sun low behind the ridges
-  const sx=W*.68,sy=H*.30;
-  ctx.globalAlpha=.9;ctx.drawImage(glowRed,sx-260,sy-260,520,520);ctx.globalAlpha=1;
-  ctx.fillStyle='#b3372a';ctx.beginPath();ctx.arc(sx,sy,Math.min(W,H)*.13,0,TAU);ctx.fill();
-  ctx.fillStyle='rgba(179,55,42,0.25)';ctx.beginPath();ctx.arc(sx,sy,Math.min(W,H)*.155,0,TAU);ctx.fill();
-  // mist bands drift behind the ridges
-  ctx.globalAlpha=.5;
-  for(let i=0;i<3;i++){
+  // update 2.7 「映」: the title leans toward the hand — every layer by its own
+  // depth, eased so the mountain air drifts rather than snaps. without a mouse
+  // the page keeps its own slow sway (the time-drift each layer already had).
+  {
+    const ptx=mouseSeen?clamp((mouse.x-W/2)/W,-.5,.5):0;
+    const pty=mouseSeen?clamp((mouse.y-H/2)/H,-.5,.5):0;
+    G.parX+=(ptx-G.parX)*.05;G.parY+=(pty-G.parY)*.05;}
+  const pX=G.parX,pY=G.parY;
+  // sun low behind the ridges — a baked woodblock disk, halo and all
+  const sx=W*.68+pX*-20,sy=H*.30+pY*-12,SR=Math.min(W,H)*.13;
+  ctx.globalAlpha=.85;ctx.drawImage(glowRed,sx-260,sy-260,520,520);ctx.globalAlpha=1;
+  ctx.globalAlpha=.45;ctx.drawImage(glowRed,sx-460,sy-460,920,920);ctx.globalAlpha=1;
+  ctx.drawImage(TSUN,sx-SR*1.445,sy-SR*1.445,SR*2.89,SR*2.89);
+  // god-rays, carved and leaning — they live in the sky: the ridges stand
+  // in front of them, so the light reads as weather and not as a paper defect
+  if(window.GFX)GFX.titleFX();
+  // high mist drifts behind everything, thin and slow
+  ctx.globalAlpha=.42;
+  for(let i=0;i<2;i++){
     const mx=((G.t*(7+i*4)+i*700)%(W+900))-450;
-    ctx.drawImage(MIST[i%3],mx,H*(.34+i*.16)-90,520,260);}
+    ctx.drawImage(MIST[i%3],mx,H*(.30+i*.07)-90,520,260);}
   ctx.globalAlpha=1;
-  // ridges from far to near, slight parallax with time
+  // ridges from far to near, slight parallax with time — a mist band rides
+  // each far ridge's hem and the near hills breathe at their feet, so the
+  // layers stack in air instead of lying flat on each other
   for(let i=0;i<TMT.length;i++){
-    const par=Math.sin(G.t*.05+i)*8;
-    ctx.drawImage(TMT[i],-40+par,H*(.28+i*.115),W+80,H*.34);}
-  // calligraphy, breathing
+    const par=Math.sin(G.t*.05+i)*8+pX*(6+i*11)+pY*(2+i*4)*(i%2?1:-1);
+    ctx.drawImage(TMT[i],-40+par,H*(.28+i*.115)+pY*(3+i*5),W+80,H*.34);
+    if(i<2){
+      ctx.globalAlpha=.34;
+      const mx=((G.t*(9+i*5)+i*900)%(W+1200))-600;
+      ctx.drawImage(MIST[(i+1)%3],mx,H*(.34+i*.115),560,250);
+      ctx.globalAlpha=1;}
+    else{
+      ctx.globalAlpha=.18;
+      const mx=((G.t*5+i*500)%(W+900))-450;
+      ctx.drawImage(MIST[i%3],mx,H*(.40+i*.12),480,220);
+      ctx.globalAlpha=1;}}
+  // calligraphy, breathing — it sits nearest the eye, so it counters the far page
   ctx.save();
-  ctx.translate(W*.26,H*.44+Math.sin(G.t*.4)*7);
+  ctx.translate(W*.26+pX*-12,H*.44+Math.sin(G.t*.4)*7+pY*-9);
   ctx.rotate(Math.sin(G.t*.2)*.012);
   ctx.font='800 '+Math.min(W,H)*.30+'px "Shippori Mincho"';
   ctx.fillStyle='rgba(29,26,22,0.9)';ctx.textAlign='center';ctx.textBaseline='middle';
@@ -2066,15 +2387,14 @@ function drawTitleScene(){
   if(TFF.length<(IS_TOUCH?6:9)&&Math.random()<.06)
     TFF.push({x:rnd(W),y:H*(.62+Math.random()*.34),ph:rnd(TAU),sp:rnd(.4,1.1)});
   for(let i=TFF.length-1;i>=0;i--){const f=TFF[i];
-    f.x+=Math.sin(G.t*f.sp+f.ph)*.55;f.y+=Math.cos(G.t*f.sp*.8+f.ph*2)*.4-.05;
+    f.x+=Math.sin(G.t*f.sp+f.ph)*.55+pX*.6;f.y+=Math.cos(G.t*f.sp*.8+f.ph*2)*.4-.05+pY*.5;
     if(f.x>W+30)f.x=-30;if(f.x<-30)f.x=W+30;
     if(f.y<H*.42){TFF[i]=TFF[TFF.length-1];TFF.pop();continue;}
     const a=.3+.42*Math.sin(G.t*2.2+f.ph);
     if(a<=.04)continue;
     ctx.globalAlpha=a;ctx.drawImage(glowGold,f.x-13,f.y-13,26,26);
     ctx.fillStyle=GOLD2;ctx.beginPath();ctx.arc(f.x,f.y,1.5,0,TAU);ctx.fill();}
-  ctx.globalAlpha=1;
-  if(window.GFX)GFX.titleFX();} // the low sun leans its rays across the whole scene
+  ctx.globalAlpha=1;}
 
 // ---- feel plumbing -----------------------------------------------------------
 
@@ -2258,13 +2578,63 @@ function doArt(){P.ki=0;P.artT=.5;slowmo(.5,.2);AU.ki();G.flash=.5;G.wash=.35;tr
   if(G.run&&G.run.story===2&&window.STORY2){STORY2.doArt(); // 紅潮 — her tide, not the spin
     for(const pr of G.projs)if(!pr.friendly)pr.dead=true;
     inkBurst(P.x,P.y,30,RED2,1.4);splat(P.x,P.y,true);hitstop(.1);return;}
+  const art=artId();
+  if(art==='rai'){doArtRai();return;} // 雷走 — the stride of the storm
+  if(art==='ho'){doArtHo();return;} // 鳳翼 — the burning wings
+  // 円斬 — the wheel, the honest answer
   G.fx.push({kind:'arts',t:0,dur:.55});
+  G.fx.push({kind:'kanji',txt:'円',x:P.x,y:P.y-30,t:0,dur:.6});
   const rng=(P.weapon==='naginata'?280:240)*P.st.range;
   G.slashes.push({ang:0,spread:TAU,range:rng,t:0,dur:.4,flip:false,art:true});
   for(const e of G.enemies){if(e.dead)continue;if(dist(e.x,e.y,P.x,P.y)<rng+e.r)
     damageEnemy(e,65*P.st.dmg,{crit:Math.random()<P.st.crit+.15,ang:angTo(P.x,P.y,e.x,e.y),knock:380,posture:16});}
   for(const pr of G.projs)if(!pr.friendly)pr.dead=true;
   inkBurst(P.x,P.y,40,INK,1.6);splat(P.x,P.y,true);hitstop(.1);}
+// 雷走 Thunder Tread: one stride, the whole field — a capsule of damage along the
+// bolt, the body untouchable while the thunder is still loud
+function doArtRai(){
+  if(!mouseSeen)aimAssist(); // the bolt honors the nearest throat when no cursor guides it
+  const a=P.facing,len=440,hw=46;
+  const tx=clamp(P.x+Math.cos(a)*len,WALL+P.r,RW-WALL-P.r),ty=clamp(P.y+Math.sin(a)*len,WALL+P.r,RH-WALL-P.r);
+  G.fx.push({kind:'kanji',txt:'雷',x:P.x,y:P.y-30,t:0,dur:.6});
+  G.fx.push({kind:'rai',x0:P.x,y0:P.y,x1:tx,y1:ty,t:0,dur:.5});
+  G.fx.push({kind:'impact',x:tx,y:ty,t:0,dur:.26});
+  addRing(P.x,P.y,64,GOLD);addRing(tx,ty,84,GOLD);
+  const steps=8;
+  for(let i=0;i<=steps;i++){const bx=lerp(P.x,tx,i/steps),by=lerp(P.y,ty,i/steps);
+    if(i%2===0)splat(bx,by,false);
+    inkBurst(bx,by,4,i%2?INK:GOLD2,.9);
+    if(i<steps)G.ghosts.push({x:lerp(P.x,tx,(i+.5)/steps),y:lerp(P.y,ty,(i+.5)/steps),t:0,dur:.4,dir:a});}
+  for(const e of G.enemies){if(e.dead)continue;
+    const d=distToSeg(e.x,e.y,P.x,P.y,tx,ty);
+    if(d<hw+e.r)damageEnemy(e,95*P.st.dmg,{crit:Math.random()<P.st.crit+.15,ang:a,knock:420,posture:20});}
+  for(const pr of G.projs)if(!pr.friendly)pr.dead=true;
+  P.x=tx;P.y=ty;P.vx*=.2;P.vy*=.2;P.invuln=Math.max(P.invuln,.55);
+  addFloat(P.x,P.y-58,'雷走',GOLD2,15);
+  AU.zap();AU.stamp();hitstop(.09);trauma(.45);}
+// 鳳翼 Phoenix Pinions: a ring of burning waves takes wing in every direction,
+// and the fire mends the hand that loosed it
+function doArtHo(){
+  G.fx.push({kind:'kanji',txt:'鳳',x:P.x,y:P.y-30,t:0,dur:.6});
+  G.fx.push({kind:'pring',x:P.x,y:P.y,t:0,dur:.5});
+  const rng=(P.weapon==='naginata'?170:150)*P.st.range;
+  G.slashes.push({ang:0,spread:TAU,range:rng,t:0,dur:.35,flip:false,art:true});
+  const N=14;
+  for(let i=0;i<N;i++)fproj(P.x,P.y,i/N*TAU,440,17*P.st.dmg,{r:11,big:true});
+  for(const e of G.enemies){if(e.dead)continue;if(dist(e.x,e.y,P.x,P.y)<rng+e.r)
+    damageEnemy(e,26*P.st.dmg,{crit:Math.random()<P.st.crit+.15,ang:angTo(P.x,P.y,e.x,e.y),knock:300,posture:10});}
+  for(const pr of G.projs)if(!pr.friendly)pr.dead=true;
+  if(P.hp<P.maxhp){P.hp=Math.min(P.maxhp,P.hp+14);addFloat(P.x,P.y-58,'+14',RED,12);}
+  for(let i=0;i<18;i++)addPart({x:P.x+rnd(-12,12),y:P.y+rnd(-8,8),
+    vx:Math.cos(i/18*TAU)*rnd(80,220),vy:Math.sin(i/18*TAU)*rnd(80,220)-40,
+    life:rnd(.4,.9),max:.9,size:rnd(1.6,3.6),color:i%3?'rgba(201,147,42,0.85)':'rgba(179,55,42,0.8)',grav:-60,drag:.93});
+  splat(P.x,P.y,true);inkBurst(P.x,P.y,26,RED2,1.3);
+  addFloat(P.x,P.y-74,'鳳翼',RED2,15);
+  hitstop(.09);trauma(.5);}
+function distToSeg(px,py,x0,y0,x1,y1){const dx=x1-x0,dy=y1-y0,l2=dx*dx+dy*dy;
+  if(l2===0)return dist(px,py,x0,y0);
+  let t=((px-x0)*dx+(py-y0)*dy)/l2;t=clamp(t,0,1);
+  return dist(px,py,x0+t*dx,y0+t*dy);}
 function damagePlayer(dmg,src){if(!P||P.dead)return false;
   if(P.dashT>0){perfectDodge(src);return false;}
   if(P.invuln>0)return false;
@@ -2305,6 +2675,20 @@ function spawnEnemy(type,x,y,elite){const md=G.run&&G.run.meido;let d=ENEMY[type
 function damageEnemy(e,dmg,opts={}){if(e.dead)return;dmg=Math.max(1,Math.round(dmg));
   if(e.type==='hound'&&!e.fused)armHoundFuse(e); // every wound lights the fuse — the blast answers the blade
   e.hp-=dmg;e.flash=.09;e.hitT=.18;e.hitAng=opts.ang||0;
+  // update 2.7 「映」: the cut is directional — ink sprays along the steel's own
+  // line and off its sides, and one bright glint lives and dies at the exact
+  // point of contact. every hit lands somewhere now, not just the big ones.
+  {
+    const ca=opts.ang||0,gl={kind:'glint',x:e.x-Math.cos(ca)*e.r*.35,y:e.y-Math.sin(ca)*e.r*.35,t:0,dur:.15,crit:!!opts.crit};
+    G.fx.push(gl);
+    const n=opts.crit?9:4;
+    for(let i=0;i<n;i++){
+      const side=Math.random()<.5?PI/2:-PI/2; // the spray fans off the cut's edge
+      const a=ca+(Math.random()<.6?side*rnd(.25,1):rnd(-.55,.55));
+      const s=rnd(130,360)*(opts.crit?1.15:1);
+      addPart({x:e.x,y:e.y-3,vx:Math.cos(a)*s,vy:Math.sin(a)*s-40,
+        life:rnd(.22,.5),max:.5,size:rnd(1.4,3.2)*(opts.crit?1.2:1),
+        color:(opts.crit&&i<3)?RED2:INK,grav:460,drag:.9});}}
   if(opts.crit){G.fx.push({kind:'impact',x:e.x,y:e.y,t:0,dur:.14});
     addFloat(e.x,e.y-10,dmg+'!',RED,17);AU.crit();addRing(e.x,e.y,26,RED);}
   else addFloat(e.x,e.y-10,dmg,INK,12);
@@ -2320,6 +2704,7 @@ function damageEnemy(e,dmg,opts={}){if(e.dead)return;dmg=Math.max(1,Math.round(d
     if(e.posture>=e.postureMax&&!e.broken)breakEnemy(e);}
   if(e.hp<=0)killEnemy(e);}
 function killEnemy(e){if(e.dead)return;e.dead=true;e.deadT=0;
+  G.zp=Math.max(G.zp,e.boss?0:(e.elite?.16:.09)); // update 2.7 「映」: every kill lands a tiny cinematic pop
   if(e.def&&e.def.s2&&window.STORY2)STORY2.onKill(e); // the doro split, and whatever else the red road keeps
   splat(e.x,e.y,e.boss||e.elite);inkBurst(e.x,e.y,e.boss?60:16,INK,e.boss?2:1);
   for(let i=0;i<3;i++)addPart({x:e.x+rnd(-8,8),y:e.y-6,vx:rnd(-14,14),vy:rnd(-90,-40),life:rnd(.6,1),max:1,size:rnd(1.6,3),color:'rgba(74,68,60,0.8)',grav:-40,drag:.96});
@@ -2371,7 +2756,20 @@ function houndBoom(e){if(e.dead)return;
   if(bl('drums'))P.dashRe=Math.max(0,P.dashRe-.4);
   hitstop(e.elite?.08:.05);}
 
+// update 2.6 「動」: the movers the whole state machine shares — hoisted out
+// of updateEnemy so the per-tick closures the old code rebuilt for every foe
+// every frame (a couple thousand allocations a second) are built exactly once
+const EMC={e:0,dt:0,dp:0,angP:0};
+function emvMove(tx,ty,mult=1){const e=EMC.e,dt=EMC.dt;const a=angTo(e.x,e.y,tx,ty);const s=e.spd*mult*(e.desperate?1.25:1);
+  e.vx=lerp(e.vx,Math.cos(a)*s,1-Math.exp(-5*dt));e.vy=lerp(e.vy,Math.sin(a)*s,1-Math.exp(-5*dt));}
+function emvKeep(kd,back=1){const e=EMC.e,dt=EMC.dt,dp=EMC.dp,angP=EMC.angP;
+  if(dp>kd+40)emvMove(P.x,P.y);
+  else if(dp<kd-30)emvMove(P.x,P.y,-.8*back);
+  else{const ta=angP+PI/2*(e.side||(e.side=Math.random()<.5?1:-1));
+    e.vx=lerp(e.vx,Math.cos(ta)*e.spd*.5,1-Math.exp(-4*dt));e.vy=lerp(e.vy,Math.sin(ta)*e.spd*.5,1-Math.exp(-4*dt));}}
+
 function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.flash-=dt;
+  if(window.ANIM)ANIM.step(e,dt); // update 2.6: every body moves — stance, stride, strike
   if(e.hitT>0)e.hitT-=dt;
   if(e.pLastHit>0)e.pLastHit-=dt;
   if(e.posture>0&&!e.broken&&e.pLastHit<=0)e.posture=Math.max(0,e.posture-dt*5);
@@ -2395,12 +2793,8 @@ function updateEnemy(e,dt){e.life+=dt;e.bob+=dt*(6+e.spd*.01);if(e.flash>0)e.fla
   if(e.stun>0){e.stun-=dt;e.x+=e.vx*dt*.2;e.y+=e.vy*dt*.2;return;}
   e.cd-=dt;
   const dp=dist(e.x,e.y,P.x,P.y),angP=angTo(e.x,e.y,P.x,P.y);
-  const move=(tx,ty,mult=1)=>{const a=angTo(e.x,e.y,tx,ty);const s=e.spd*mult*(e.desperate?1.25:1);
-    e.vx=lerp(e.vx,Math.cos(a)*s,1-Math.exp(-5*dt));e.vy=lerp(e.vy,Math.sin(a)*s,1-Math.exp(-5*dt));};
-  const keepDist=(kd,back=1)=>{if(dp>kd+40)move(P.x,P.y);
-    else if(dp<kd-30)move(P.x,P.y,-.8*back);
-    else{const ta=angP+PI/2*(e.side||(e.side=Math.random()<.5?1:-1));
-      e.vx=lerp(e.vx,Math.cos(ta)*e.spd*.5,1-Math.exp(-4*dt));e.vy=lerp(e.vy,Math.sin(ta)*e.spd*.5,1-Math.exp(-4*dt));}};
+  EMC.e=e;EMC.dt=dt;EMC.dp=dp;EMC.angP=angP;
+  const move=emvMove,keepDist=emvKeep; // stable references — story 2 receives the same hand
   // story 2's cast runs its own state machine — same bodies, new ideas
   if(e.def.s2&&window.STORY2&&STORY2.updateEnemy(e,dt,dp,angP,move,keepDist))return;
   switch(e.state){
@@ -2644,6 +3038,7 @@ wave:{start(b){b.mt=0;b.sub=0;},
 if(window.STORY2)Object.assign(BOSSMOVES,STORY2.bossMoves); // story 2: the new mechanics;
 
 function updateBoss(b,dt){b.t+=dt;b.bob+=dt*2;if(b.flash>0)b.flash-=dt;b.touchCd-=dt;
+  if(window.ANIM)ANIM.step(b,dt); // update 2.6: keepers drop from the sky and step into their moves
   if(b.hitT>0)b.hitT-=dt;
   if(b.pLastHit>0)b.pLastHit-=dt;
   if(b.posture>0&&!b.broken&&b.pLastHit<=0)b.posture=Math.max(0,b.posture-dt*6.5);
@@ -2699,14 +3094,14 @@ function abyssWaves(w){const pool=['kappa','oni','tengu','wraith','hound','kame'
   const mk=(lo,count)=>{const a=[];for(let i=0;i<count;i++)a.push({t:choice(pool.slice(lo,10)),e:w>4&&Math.random()<.25});return a;};
   return[mk(0,n1),mk(2+Math.min(4,Math.floor(w/3)),n2)];}
 
-const SCREENS=['s-title','s-acts','s-shrine','s-armory','s-help','s-settings','s-bless','s-pause','s-death','s-clear','s-victory','s-records','s-chrono','s-submit','s-codex'];
+const SCREENS=['s-title','s-acts','s-shrine','s-armory','s-help','s-besti','s-settings','s-bless','s-pause','s-death','s-clear','s-victory','s-records','s-chrono','s-submit','s-codex'];
 function setMode(m){G.mode=m;document.body.classList.toggle('playing',m==='game');
   if(m!=='game')clearTouchInput();
   for(const s of SCREENS){const el=document.getElementById(s);if(el)el.classList.toggle('on',s==='s-'+m);}
   if(m==='pause'&&G.run){const pb=$('#pause-bless');
     if(pb){const ids=Object.keys(G.run.blessings);
       pb.innerHTML=ids.length?'inkmarks carried: '+ids.map(id=>{const b=BLESS.find(x=>x.id===id);
-        return `<b style="color:var(--gold2)">${b.k}</b>${G.run.blessings[id]>1?'×'+G.run.blessings[id]:''}`;}).join(' · '):'';}}
+        return `<b class="mk">${b.k}</b>${G.run.blessings[id]>1?'<span style="color:var(--gold2)">×'+G.run.blessings[id]+'</span>':''}`;}).join(' · '):'';}}
   if(m!=='game')G.lbxT=0;
   checkOrient();}
 function handleEscape(){
@@ -2715,9 +3110,13 @@ function handleEscape(){
   else if(G.mode==='pause')setMode('game');
   else if(G.mode==='settings')leaveSettings();
   else if(G.mode==='records')setMode('title');
-  else if(['shrine','armory','help','acts','chrono'].includes(G.mode))setMode('title');}
+  else if(['shrine','armory','help','besti','acts','chrono'].includes(G.mode))setMode('title');}
 function leaveSettings(){const p=G.prevMode==='pause'?'pause':'title';G.prevMode=null;toMenu(p);}
 function toMenu(m){if(m==='acts')renderActs();if(m==='shrine')renderShrine();if(m==='armory')renderArmory();
+  if(m==='chrono')renderChronicle(); // any door into the scroll renders it
+  if(m==='help')renderHelp(); // update 2.5: the page re-reads the hand every
+  // time it opens — remapped keys always arrive already spoken
+  if(m==='besti')renderBesti();
   if(m==='title')renderTitleStats();setMode(m);}
 
 // codex plumbing: queue → card → dismiss. the world freezes while the
@@ -2748,7 +3147,7 @@ function codexUpdate(dt){
   const q=G.codexCur;
   G.cam.x=lerp(G.cam.x,q.x,1-Math.exp(-3*dt));
   G.cam.y=lerp(G.cam.y,q.y,1-Math.exp(-3*dt));
-  const zpx=Z*(1+(G.zp+G.zpC)*.32),vw=W/zpx,vh=H/zpx;
+  const zpx=Z*(1+(G.zp+G.zpC)*.32)*G.zCine,vw=W/zpx,vh=H/zpx;
   if(RW>vw)G.cam.x=clamp(G.cam.x,vw/2,RW-vw/2);else G.cam.x=RW/2;
   if(RH>vh)G.cam.y=clamp(G.cam.y,vh/2,RH-vh/2);else G.cam.y=RH/2;}
 function paintCodex(q){
@@ -2777,6 +3176,7 @@ function drawCodexPortrait(q){
   const cv=$('#codex-cv');if(!cv)return;
   const g=cv.getContext('2d'),WC=cv.width,HC=cv.height;
   g.setTransform(1,0,0,1,0,0);
+  const seedOf=t=>{let h=7;for(let i=0;i<String(t).length;i++)h=(h*31+String(t).charCodeAt(i))&0xffff;return h;};
   g.fillStyle=PAPER2;g.fillRect(0,0,WC,HC);
   g.fillStyle=g.createPattern(paperTile,'repeat');g.fillRect(0,0,WC,HC);
   // the giant watermark kanji behind the figure
@@ -2792,7 +3192,10 @@ function drawCodexPortrait(q){
   let k=Math.min(WC,HC)*.78/(S+2*Pp);
   if(B)k*=1.16; // bosses crowd the frame on purpose
   g.save();g.translate(WC/2,HC*.54);
-  g.fillStyle='rgba(29,26,22,0.16)';
+  // update 2.4: a grounding shadow in two weights — the figure sits ON the page
+  g.fillStyle='rgba(29,26,22,0.10)';
+  g.beginPath();g.ellipse(0,S*k*.38,S*k*.36,S*k*.16,0,0,TAU);g.fill();
+  g.fillStyle='rgba(29,26,22,0.20)';
   g.beginPath();g.ellipse(0,S*k*.38,S*k*.3,S*k*.12,0,0,TAU);g.fill();
   g.rotate(-1.02);g.scale(k,k);
   if(q.type==='wraith'||q.type==='mirror')g.globalAlpha=.92;
@@ -2808,6 +3211,18 @@ function drawCodexPortrait(q){
   g.strokeStyle=RED;g.globalAlpha=.8;g.lineWidth=5;
   g.beginPath();g.moveTo(WC*.7,HC*.06);g.quadraticCurveTo(WC*.8,HC*.1,WC*.94,HC*.05);g.stroke();
   g.globalAlpha=1;
+  // update 2.4 「印」: shikishi corners — gold brackets pin the inner frame
+  g.strokeStyle='rgba(212,164,64,0.95)';g.lineWidth=5;g.lineCap='square';
+  const bn=44,brk=(x,y,sx,sy)=>{g.beginPath();g.moveTo(x+sx*bn,y);g.lineTo(x,y);g.lineTo(x,y+sy*bn);g.stroke();};
+  brk(17,17,1,1);brk(WC-17,17,-1,1);brk(17,HC-17,1,-1);brk(WC-17,HC-17,-1,-1);
+  g.strokeStyle='rgba(122,92,30,0.5)';g.lineWidth=1.6;
+  const bn2=52,brk2=(x,y,sx,sy)=>{g.beginPath();g.moveTo(x+sx*bn2,y);g.lineTo(x,y);g.lineTo(x,y+sy*bn2);g.stroke();};
+  brk2(17,17,1,1);brk2(WC-17,17,-1,1);brk2(17,HC-17,1,-1);brk2(WC-17,HC-17,-1,-1);
+  // washi fiber: the portrait's own paper skeleton, long faint hairlines
+  g.strokeStyle='rgba(74,68,60,0.06)';g.lineWidth=1;g.lineCap='round';
+  for(let i=0;i<14;i++){const x=hash01(i*3.1+seedOf(q.type))*WC,y=hash01(i*7.7+seedOf(q.type))*HC;
+    g.beginPath();g.moveTo(x-WC*.2,y+hash01(i)*20-10);
+    g.quadraticCurveTo(x,y+(hash01(i+9)*40-20),x+WC*.2,y+(hash01(i+5)*30-15));g.stroke();}
   if(window.MODELS)MODELS.portraitFX(g,WC,HC,q.type); // raking light, vignette, motes
   }
 const codexScr=$('#s-codex');
@@ -2861,7 +3276,22 @@ function renderArmory(){const ashEl=$('#ash-armory');if(ashEl)ashEl.textContent=
       btn.onclick=()=>{SAVE.ash-=w.cost;SAVE.weapons[id]=true;persist();AU.buy();renderArmory();};}
     else if(SAVE.lastWeapon===id){btn.textContent='in hand';btn.disabled=true;}
     else{btn.textContent='take it';btn.onclick=()=>{SAVE.lastWeapon=id;persist();AU.ui();renderArmory();};}
-    row.appendChild(btn);list.appendChild(row);});}
+    row.appendChild(btn);list.appendChild(row);});
+  // ---- INK ARTS 絶 (update 2.3): how a full gauge is spent — bought here, worn like steel
+  if(typeof ARTS!=='undefined'){
+    const head=document.createElement('div');head.className='arm-sec';
+    head.innerHTML='<span class="sk">絶</span><span>INK ARTS — what a full gauge becomes</span>';
+    list.appendChild(head);
+    Object.entries(ARTS).forEach(([id,a])=>{
+      const owned=!!(SAVE.arts&&SAVE.arts[id]);
+      const row=document.createElement('div');row.className='row';
+      row.innerHTML=`<div class="kan">${a.k}</div><div class="mid"><b>${a.n}</b><p>${a.d}</p></div>`;
+      const btn=document.createElement('button');btn.className='buy';
+      if(!owned){btn.textContent=`礼 ${a.cost}`;if(SAVE.ash<a.cost)btn.disabled=true;
+        btn.onclick=()=>{SAVE.ash-=a.cost;SAVE.arts[id]=true;SAVE.art=id;persist();AU.buy();renderArmory();};}
+      else if(artId()===id){btn.textContent='drawn';btn.disabled=true;}
+      else{btn.textContent='draw it';btn.onclick=()=>{SAVE.art=id;persist();AU.ui();renderArmory();};}
+      row.appendChild(btn);list.appendChild(row);});}}
 function renderActs(){const body=$('#roads-body');if(!body)return;body.innerHTML='';
   const section=(kan,name,sub,s2)=>{const h=document.createElement('div');
     h.className='story-head'+(s2?' s2':'');
@@ -2976,6 +3406,8 @@ function startStage(){const run=G.run;
   G.parts.length=0;G.floats.length=0;G.clearing=0;G.waveIdx=-1;G.waves=[];G.spawnQ=[];G.waveGap=0;
   G.hurtV=0;G.style.pts=0;G.style.combo=0;G.style.rank=0;
   buildFloor(curAct());buildProps(curAct());
+  // update 2.4 「印」: splats are soft ink — they keep the single weave (crispness
+  // buys nothing on a blot), drawn at world size whatever their backing
   G.decalC=mkCanvas(RW,RH);G.dctx=G.decalC.getContext('2d');
   P.x=RW/2;P.y=RH*.7;P.vx=P.vy=0;P.dead=false;P.deadT=0;
   G.cam.x=P.x;G.cam.y=P.y;HUD.hpGhost=P.hp;
@@ -3006,11 +3438,11 @@ function startStage(){const run=G.run;
       {t:'走 — dash through danger',cond:()=>G.tutDash},
       {t:'弾 — deflect the gold flash, never the 危',cond:()=>G.tutParry},
       {t:'酒 — drink the gourd, it refills each stage',cond:()=>G.tutDrink}]:[
-      {t:'W A S D — move',cond:()=>G.tutMoved},
-      {t:'left click — slash toward the cursor',cond:()=>G.tutHit},
-      {t:'space — dash through danger',cond:()=>G.tutDash},
-      {t:'right click — deflect the gold flash',cond:()=>G.tutParry},
-      {t:'Q — drink the gourd, it refills each stage',cond:()=>G.tutDrink}];}
+      {t:(kname(kcode('up'))+' '+kname(kcode('down'))+' '+kname(kcode('left'))+' '+kname(kcode('right'))).toLowerCase()+' — move',cond:()=>G.tutMoved},
+      {t:'left click'+(kcode('attack')?' / '+kname(kcode('attack')).toLowerCase():'')+' — slash toward the cursor',cond:()=>G.tutHit},
+      {t:kname(kcode('dash')).toLowerCase()+' — dash through danger',cond:()=>G.tutDash},
+      {t:'right click'+(kcode('parry')?' / '+kname(kcode('parry')).toLowerCase():'')+' — deflect the gold flash',cond:()=>G.tutParry},
+      {t:kname(kcode('drink')).toLowerCase()+' — drink the gourd, it refills each stage',cond:()=>G.tutDrink}];}
   else G.hints=null;}
 function nextWave(){G.waveIdx++;
   if(G.waveIdx>=G.waves.length){stageClear();return;}
@@ -3092,10 +3524,28 @@ function offerBlessings(){const picks=[];const pool=BLESS.slice();
     const cands=pool.filter(b=>b.r===t);const b=cands.length?cands[(R()*cands.length)|0]:pool[(R()*pool.length)|0];
     picks.push(b);pool.splice(pool.indexOf(b),1);}
   const wrap=$('#bless-wrap');wrap.innerHTML='';
-  picks.forEach((b,i)=>{const d=document.createElement('div');d.className='scroll';
-    d.innerHTML=`<div class="rod"></div><div class="sc-paper"><div class="rar r${b.r}">${RARK[b.r]}</div>
-      <div class="b-kan">${b.k}</div><div class="b-name">${b.n}</div><div class="b-div"></div>
-      <div class="b-desc">${b.d}</div><div class="b-key">${IS_TOUCH?'tap to take':'press '+(i+1)}</div></div><div class="rod"></div>`;
+  // update 2.4 「印」: the mark hangs as a kakejiku — hook and cord, rod with jiku
+  // caps, brocade ten/chi, gold ichimonji, grained paper, a carved hanko. the
+  // rarity is said twice the old way: vertical along the seam, and in the seal.
+  picks.forEach((b,i)=>{const d=document.createElement('div');d.className='kake';
+    d.innerHTML=`<div class="k-hook"><i></i><i></i></div>
+      <div class="k-rod"><i class="cap"></i><i class="bar"></i><i class="cap"></i></div>
+      <div class="k-ten"></div><div class="k-ichi"></div>
+      <div class="k-paper">
+        <div class="k-tate r${b.r}">${RARK[b.r]}印</div>
+        <div class="b-kan">${b.k}</div>
+        <div class="b-name">${b.n}</div>
+        <svg class="b-brush" viewBox="0 0 120 9" aria-hidden="true">
+          <path d="M2 5.4 C 22 3.2, 46 2.4, 62 3.1 C 80 3.8, 100 4.4, 118 3.2"/>
+          <path class="thin" d="M7 6.8 C 32 5.9, 72 5.4, 112 5.1"/>
+          <circle cx="113" cy="2.1" r=".7"/>
+        </svg>
+        <div class="b-desc">${b.d}</div>
+        <div class="k-seal r${b.r}">${RARK[b.r]}</div>
+        <div class="b-key">${IS_TOUCH?'tap to take':'press '+(i+1)}</div>
+      </div>
+      <div class="k-ichi"></div><div class="k-chi"></div>
+      <div class="k-rod bot"><i class="cap"></i><i class="bar"></i><i class="cap"></i></div>`;
     d.onclick=()=>pickBless(b);wrap.appendChild(d);});
   const owned=Object.entries(G.run.blessings).map(([id,n])=>{const b=BLESS.find(x=>x.id===id);return `<i>${b.k}</i>×${n}`;}).join(' · ');
   $('#bless-owned').innerHTML=owned?'inkmarks carried: '+owned:'';
@@ -3262,7 +3712,11 @@ document.addEventListener('click',e=>{
   AU.init();AU.ui();
   const go=t.dataset.go;
   if(go==='resume')setMode('game');
-  else if(go==='abandon'){G.run=null;toMenu('title');}
+  else if(go==='abandon'){ // update 2.5: leave the run clean — no frozen wipe,
+    // wound-wash, slow-breath or cinema may follow the hand back to the title
+    G.run=null;G.wipe=null;G.slowT=0;G.wash=0;G.flash=0;G.hurtV=0;G.hurtAT=0;G.lbx=0;
+    G.fx.length=0;G.codexQ.length=0;G.codexCur=null;
+    toMenu('title');}
   else if(go==='settings'){G.prevMode=G.mode;setMode('settings');}
   else if(go==='abyss')startRun(1,true);
   else if(go==='gauntlet')startGauntlet();
@@ -3274,23 +3728,65 @@ document.addEventListener('click',e=>{
 
 function renderHelp(){
   const grid=$('#help-controls');if(!grid)return;
+  // update 2.3: the ledger speaks — the help page reads whatever the hand now wears
+  const kk=a=>{const c=(SAVE.keys||{})[a];const code=c!==undefined?c:DEFK[a];return code?kname(code):null;};
   const rows=IS_TOUCH?[
-    ['left thumb (lower half)','move'],['斬 big button','attack — hold works'],['弾','deflect — the ring shows its cooldown'],['走','dash — pips are charges'],['絶','ki art — the ring fills with ki'],['酒 top right','drink the gourd'],['tap a weapon tag (top left)','swap blade'],['停 top right','pause'],['two fingers at once','move and cut together']]:
-    [['W A S D / arrows','move'],['left click','attack (hold works)'],['right click','deflect'],['space','dash'],['E','ki art (needs full ki)'],['Q','drink the gourd'],['1 – 6','swap blade (or click a tag)'],['Esc','pause'],['M','mute']];
+    ['left thumb (lower half)','move'],['斬 big button','attack — hold works'],['弾','deflect — the ring shows its cooldown'],['走','dash — pips are charges'],[(typeof ARTS!=='undefined'&&ARTS[artId()])?ARTS[artId()].k+' '+ARTS[artId()].n:'絶 ki art','needs a full gauge'],['酒 top right','drink the gourd'],['tap a weapon tag (top left)','swap blade'],['停 top right','pause'],['two fingers at once','move and cut together']]:
+    [[(kk('up')||'↑')+' '+(kk('down')||'↓')+' '+(kk('left')||'←')+' '+(kk('right')||'→')+' / arrows','move'],
+     [kk('attack')?('left click / '+kk('attack')):'left click','attack (hold works)'],
+     [kk('parry')?('right click / '+kk('parry')):'right click','deflect'],
+     [kk('dash')||'space','dash'],[kk('art')||'E','ki art (needs full ki)'],[kk('drink')||'Q','drink the gourd'],
+     ['1 – 6','swap blade (or click a tag)'],['Esc','pause'],['M','mute']];
   grid.innerHTML='<div class="helpcol"><h4>THE HAND</h4>'+
-    rows.map(r=>`<div class="hrow"><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')+'</div>';
-  const besti=$('#help-besti');if(!besti)return;
-  let html='';
-  const all=Object.assign({},ENEMY);
-  for(const id in BOSSES)all[id]={name:BOSSES[id].name,k:BOSSES[id].kanji};
-  for(const k in all)
-    html+=`<div class="brow"><div class="bk">${all[k].k}</div><div><div class="bn">${all[k].name}</div><div class="bd">${BESTIARY[k]||''}</div></div></div>`;
-  besti.innerHTML=html;}
+    rows.map(r=>`<div class="hrow"><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')+'</div>';}
+
+// update 2.5: the bestiary stands on its own page 図 — it left the how-to
+// when the how-to changed its name, and it reads the field notes of both
+// roads, each face filed under the road it walks
+function renderBesti(){
+  const body=$('#besti-body');if(!body)return;
+  const row=(def,k)=>`<div class="brow"><div class="bk">${def.k}</div><div><div class="bn">${def.name}</div><div class="bd">${BESTIARY[k]||''}</div></div></div>`;
+  const section=(title,sub,rows)=>`<div class="helpcol"><h4>${title} <small style="font-weight:600;color:var(--ink2)">${sub}</small></h4><div class="besti">${rows.join('')}</div></div>`;
+  const s1e=[],s1b=[],s2e=[],s2b=[];
+  for(const k in ENEMY){const e=ENEMY[k];if(!e)continue;
+    (e.s2?s2e:s1e).push(row(e,k));}
+  for(const k in BOSSES){const b=BOSSES[k];if(!b)continue;
+    (b.s2?s2b:s1b).push(row({name:b.name,k:b.kanji},k));}
+  body.innerHTML=
+    section('THE INK ROAD 墨','the first story',s1e.concat(s1b))+
+    section('THE VERMILION ROAD 朱','the second story',s2e.concat(s2b));}
 
 // ---- the chronicle: the scroll of changes, hung beside the records -------------
 
 const CHTAG={new:'新',fix:'修',vis:'絵',cbt:'戦',eco:'社',base:'基'};
 const CHRONICLE=[
+  {v:'2.7',kan:'映',name:'update 2.7 — the cinematic cut',note:'the camera learned to frame the fight, every cut learned to land somewhere, and the title leans toward your hand',items:[
+    ['vis','THE FRAMING EYE 映: the camera no longer merely follows — it leans into your own stride, keeps the nearest threat inside the shot (and lets a keeper OWN it), and breathes: a duel is held a breath closer, a crowd is given room, a keeper\u2019s entrance is honoured with a slow lean in. one zoom, eased at the pace of a held breath, shared honestly by the world, the light-passes and your own aim'],
+    ['vis','EVERY CUT LANDS: ink now sprays along the steel\u2019s own line, fanning off the cut\u2019s edge, and a short bright glint — six seeded rays, gold when the cut is deep — is born at the exact point of contact and feeds the page\u2019s light; every kill lands a tiny cinematic pop of zoom; the dash kicks the dust it leaves behind'],
+    ['vis','THE TITLE LEANS: the whole title scene answers the hand — sun, god-rays, ridges, mist and the calligraphy each drift by their own depth, eased so the mountain air glides; without a mouse the page keeps its own slow sway']]} ,
+  {v:'2.6',kan:'動',name:'update 2.6 — the living bodies',note:'every inkman and keeper on both roads learned to move, and the page learned to spend its paper only where the eye stands',items:[
+    ['vis','THE LIVING BODIES 動: every fighter now carries a real pose — idle breath at rest, a walk cycle whose frequency follows the body’s own measured speed (weight shifting with the stride, a little bound on each step), the coil of a windup that sinks back and rises and TREMBLES as it ripens, the committed lunge of the strike, the settle of recovery, the fold of a broken posture, the tremble of a lit fuse — and all of it eases with frame-rate-safe curves, so no lunge or crouch ever steps from one frame to the next again'],
+    ['vis','THE SWING HAS A GHOST: while a blade attack lands, two white after-images of the body sweep the arc behind it — the ink blur of a committed cut; shooters lean BACK into their releases; struck flesh is knocked back a hair along the blow before the flinch; and the striding foot itself lifts now, smaller as it rises, its dust kicking up where it plants'],
+    ['vis','THE KEEPERS ARRIVE: bosses drop out of the sky onto their mark — eased descent, a pop of scale as they land, dust where the mountain sets down — and every move they begin is announced by a committed step into the attack, while their idle bodies breathe and drift on slow clocks'],
+    ['fix','THE PAGE LEARNED ECONOMY: the brush only paints what the eye can see — bodies, ink, sparks, marks, telegraphs and weather outside the camera’s rectangle are skipped entirely (the world keeps simulating them; only the paint stops), the weather now knows where you stand, and the ambience’s lantern-flames, ember pools, wisps, grass-combs and key-light bloom are baked sprites and cached gradients instead of dozens of fresh ones every frame'],
+    ['fix','the movers the whole state machine shares were being rebuilt as closures for every foe, every tick — a couple thousand allocations a second of pure churn; they are built once now, and the feet speak the same phase the body sways on']]} ,
+  {v:'2.5',kan:'山',name:'update 2.5 — the far ridges',note:'the horizon learned to be mountains, the sun learned to carve its rays, and the title can no longer be broken by a leaving hand',items:[
+    ['vis','THE FAR RIDGES 山: the title\u2019s mountains are carved, not waved — each ridge is a seeded noise line with sharp crests, rolling shoulders and a scree octave for texture, its face shaded by an atmospheric gradient that sinks into haze, its sun-facing slopes carrying a warm rim, erosion gullies running down the near hills, and one long high mountain laid along the far horizon with a bokashi snow-cap. mist now rides BETWEEN the layers, so distance reads as air instead of four flat cutouts — and the ridges re-carve themselves at the window\u2019s own width whenever the page is resized'],
+    ['vis','THE CARVED RAYS: the sun\u2019s god-rays are recut — each shaft is soft across its whole width and feathered at both ends so the light is born at the sun and dies before the paper\u2019s edge, a third of them carry a hot thread down their heart, dust motes drift outward along the fan and glow only where a shaft breathes bright, and the rays live in the SKY now: the ridges stand in front of them, so the light reads as weather. the sun itself is a baked woodblock disk — heart light, rim deep, halo ringed'],
+    ['fix','the grey title is mended: pausing during a stage\u2019s wipe animation and abandoning the run used to leave the frozen transition bands owning the title screen (nothing ran to age them) — every combat overlay now answers only to the world, and a run left is a run swept clean: no wipe, wound-wash, slow-breath or cinema follows the hand home'],
+    ['new','the BESTIARY 図 stands on its own page — it left the how-to, which is now simply HOW TO PLAY, and it files every face of both roads under the road it walks: the inkmen of 墨 and the whole vermilion cast of 朱, keepers and duelists included'],
+    ['fix','the how-to page re-reads your hand every time it opens — remapped keys always arrive already spoken, so the page never again disagrees with the controls ledger']]} ,
+  {v:'2.4',kan:'印',name:'update 2.4 — the vermilion seal',note:'the inkmark hangs as a scroll — cord, cloth, gold and paste — and the page learned what it is made of',items:[
+    ['vis','THE INKMARK, RECUT 印: the mark you take now hangs before you as a true kakejiku — a hook and cord, a wooden rod with its jiku caps, patterned brocade mounting and gold ichimonji trim around a grained paper panel, with the rarity spoken twice the old way: written vertically along the seam, and carved again as a hanko pressed into the corner (並 a bare outline · 希 gold paste · 極 full vermilion). the seals you carry over your health, the grant that slams its paste across the page, the chips beneath the pick screen and the list the pause keeps are all cut from the same stone'],
+    ['vis','THE CRISP PAGE: the whole cast is now carved at the pixel depth of the glass itself — the sprite bake grew half again as dense on desktop, the floor and every splat on it are painted at double weave, and the page samples with high-quality filtering. blade edges, mask carvings and brush strokes keep their teeth at full zoom on dense screens, where before they softened the moment the camera leaned in'],
+    ['vis','THE GROUND LEARNS MATERIAL: every act\u2019s page now carries what paper is made of — long washi fiber veins under the decor, broad sumi underwashes for tonal depth, a scatter of stones each keeping its own shadow, its own light and the gravel it sheds (mossed where the damp acts keep them), and the arena walls leaning their shade onto the page so the ground reads as a stage rather than a print'],
+    ['vis','THE CODEX, PINNED: the info cards sit on grained washi, their frames pinned with gold shikishi corner brackets and sealed with a deeper-cut hanko; the portraits are carved from the same high-density sprites as the battlefield — raking light, gold motes and vignette as before, but every edge holds, and the figure now grounds on a two-weight shadow']]},
+  {v:'2.3',kan:'疾',name:'update 2.3 — the swift blade',note:'the lag died at the moment of the kill, the gauge learned new prayers, and the keys learned your name',items:[
+    ['fix','the stutter at the killing moment is gone: slow motion now runs its sixty small beats a second instead of a dozen giant ones — ink sprays glide through the deathblow and the art instead of stutter-stepping, and quick taps are never swallowed between updates'],
+    ['fix','the page stopped wasting its paper mid-cinema: every glow, light-pool and lamp was building a fresh radial gradient each frame (near a thousand a second), every kanji stamp re-resolved a 74px brush font every frame, and every crash cut a fresh buffer of static — all of it is now baked once and reused, so the dramatic moment is the cheapest frame on the page'],
+    ['new','INK ARTS 絶 at the armory — the full gauge is now a choice, not a habit: 雷走 THUNDER TREAD (礼 750), one stride as living lightning that cuts a line through the whole field and leaves you untouchable for a breath; 鳳翼 PHOENIX PINIONS (礼 1250), a ring of fourteen burning waves that takes wing past the reach of any blade and mends the hand that loosed it; the wheel 円斬 remains the honest answer, and the gauge now wears the kanji of whatever art you carry'],
+    ['new','THE MAPABLE HAND 鍵 — a controls ledger in settings: walk, attack, deflect, dash, art and sake may each wear any key you choose (click a row, press a key; Esc cancels; the mouse keeps its own claim, and the arrows always answer for the legs) — the help page and the first-minute tutor now speak in whatever keys you wear'],
+    ['vis','the deathblow kanji, the 酒 stamp, the 斬 of the shield-break and every keeper\u2019s last word now land with a soft second impression of ink behind them — baked, not paid for frame by frame']]},
   {v:'2.2',kan:'影',name:'update 2.2 — the lit figures',note:'the cast learned light, and the page answers the brush you hold',items:[
     ['vis','THE LIT FIGURES — every inkman, keeper and fox of both roads is painted with real light: bodies shade from the page’s sun, slopes away sink into cool shadow, edges facing the light carry a warm rim, near-white steel takes specular, and red eyes / gold hardware / vermilion cloth keep a low ember — a soft contact shadow is blurred beneath each body, so every figure stands ON the page instead of printed on it'],
     ['vis','the light is alive: each body leans a rim arc toward its act’s real key light, a glint rides every blade tip — gold when the cut can be turned, red when it cannot — and the heroine’s steel takes a sheen gradient with a glint that travels the edge and leads the cut'],
@@ -3371,7 +3867,7 @@ function renderChronicle(){
 
 // ---- the frame -----------------------------------------------------------------
 
-function screenToWorld(sx,sy){return{x:(sx-W/2)/Z+G.cam.x,y:(sy-H/2)/Z+G.cam.y};}
+function screenToWorld(sx,sy){const z=(G.zw||Z);return{x:(sx-W/2)/z+G.cam.x,y:(sy-H/2)/z+G.cam.y};}
 function update(dt){G.t+=dt;G.windT+=dt;
   G.wind=Math.sin(G.windT*.7)*.55+Math.sin(G.windT*.23)*.45;
   if(Math.random()<dt*(mdHas('gale')?.34:.12))G.gusts.push({x:-100,y:rnd(RH),t:0,dur:2.2,sp:rnd(500,760),w:rnd(60,150)});
@@ -3420,8 +3916,8 @@ function update(dt){G.t+=dt;G.windT+=dt;
     if(P.swapT>0)P.swapT-=dt;if(P.artT>0)P.artT-=dt;
     if(P.dashRe>0||P.dashCharges<P.st.dashMax){P.dashRe-=dt;
       if(P.dashRe<=0&&P.dashCharges<P.st.dashMax){P.dashCharges++;P.dashRe=1.9;}}
-    let ix=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);
-    let iy=(keys.KeyS||keys.ArrowDown?1:0)-(keys.KeyW||keys.ArrowUp?1:0);
+    let ix=(kd('right')||keys.ArrowRight?1:0)-(kd('left')||keys.ArrowLeft?1:0);
+    let iy=(kd('down')||keys.ArrowDown?1:0)-(kd('up')||keys.ArrowUp?1:0);
     if(joy.mag>.18){ix=joy.x;iy=joy.y;}
     if(ix||iy)G.tutMoved=true;
     const mag=Math.hypot(ix,iy)||1;ix/=mag;iy/=mag;
@@ -3451,12 +3947,12 @@ function update(dt){G.t+=dt;G.windT+=dt;
     if(mouseSeen){const w=screenToWorld(mouse.x,mouse.y);P.facing=angTo(P.x,P.y,w.x,w.y);}
     else if(joy.mag>.3)P.facing=joy.ang;
     else if(Math.hypot(P.vx,P.vy)>40)P.facing=Math.atan2(P.vy,P.vx);
-    const atkDown=mouse.down||IN.atk;
-    const atkTap=jm()||IN.atkT;IN.atkT=false;
-    const parTap=jr()||IN.par;IN.par=false;
-    const dashTap=jp('Space')||IN.dash;IN.dash=false;
-    const artTap=jp('KeyE')||IN.art;IN.art=false;
-    const drinkTap=jp('KeyQ')||IN.drink;IN.drink=false;
+    const atkDown=mouse.down||IN.atk||kd('attack');
+    const atkTap=jm()||IN.atkT||kp('attack');IN.atkT=false;
+    const parTap=jr()||IN.par||kp('parry');IN.par=false;
+    const dashTap=kp('dash')||IN.dash;IN.dash=false;
+    const artTap=kp('art')||IN.art;IN.art=false;
+    const drinkTap=kp('drink')||IN.drink;IN.drink=false;
     if(IN.weap<0){for(let i=0;i<WKEYS.length;i++)if(jp('Digit'+(i+1))){IN.weap=i;break;}} // 1–5 answer on keys too
     if(IN.weap>=0){swapWeaponTo(WKEYS[IN.weap]);
       IN.weap=-1;}
@@ -3464,6 +3960,11 @@ function update(dt){G.t+=dt;G.windT+=dt;
       if(P.dashRe<=0)P.dashRe=1.9;
       P.dashT=.18;P.dashDir=Math.hypot(ix,iy)>0?Math.atan2(iy,ix):P.facing;
       P.swing=null;G.tutDash=true;AU.dash();
+      // update 2.7 「映」: the dash kicks the dust it leaves — weight, not teleport
+      for(let i=0;i<5;i++)addPart({x:P.x+rnd(-9,9),y:P.y+rnd(-2,7),
+        vx:-Math.cos(P.dashDir)*rnd(90,240)+rnd(-30,30),vy:-Math.sin(P.dashDir)*rnd(90,240)*.4-rnd(6,42),
+        life:rnd(.24,.46),max:.46,size:rnd(1.4,3),color:'rgba(128,116,92,0.5)',grav:300,drag:.9});
+      addRing(P.x,P.y,30,'rgba(128,116,92,0.45)');
       if(bl('mantle'))P.mantle=1.5;}
     if(drinkTap&&P.drinkT<=0)doDrink();
     if(parTap){if(!mouseSeen)aimAssist();tryParry();}
@@ -3571,10 +4072,32 @@ function update(dt){G.t+=dt;G.windT+=dt;
   st.rank=nr;
   if(G.hints&&!SAVE.seenHelp0&&G.hints.every(h=>h.cond())){SAVE.seenHelp0=true;persist();}
   const vw=W/Z,vh=H/Z;let tx=P.x,ty=P.y;
-  if(mouseSeen){tx+=clamp((mouse.x-W/2)*.22,-130,130);ty+=clamp((mouse.y-H/2)*.22,-100,100);}
+  // update 2.7 「映」: the camera frames the fight, not just the fighter —
+  // it leans into its own velocity, keeps the nearest threat in the shot, and
+  // holds duels a breath closer while breathing out for crowds. every bias is
+  // clamped and eased, so the eye glides and never snaps.
+  tx+=clamp(P.vx*.12,-56,56);ty+=clamp(P.vy*.1,-44,44);
+  let thN=0,thX=0,thY=0;
+  if(!P.dead)for(const e of G.enemies){if(e.dead||e.hidden)continue;
+    const d=dist(e.x,e.y,P.x,P.y);
+    if(d<780){thN++;thX+=e.x;thY+=e.y;}}
+  if(thN>0){
+    let fx=thX/thN,fy=thY/thN;
+    if(G.boss&&!G.boss.dead){fx=(fx*2+G.boss.x)/3;fy=(fy*2+G.boss.y)/3;} // the keeper owns the shot
+    const bx=clamp((fx-P.x)*.22,-118,118),by=clamp((fy-P.y)*.2,-92,92);
+    tx+=bx;ty+=by;}
+  if(mouseSeen){tx+=clamp((mouse.x-W/2)*.16,-96,96);ty+=clamp((mouse.y-H/2)*.14,-74,74);}
   G.cam.x=lerp(G.cam.x,tx,1-Math.exp(-6*dt));G.cam.y=lerp(G.cam.y,ty,1-Math.exp(-6*dt));
   if(RW>vw)G.cam.x=clamp(G.cam.x,vw/2,RW-vw/2);else G.cam.x=RW/2;
   if(RH>vh)G.cam.y=clamp(G.cam.y,vh/2,RH-vh/2);else G.cam.y=RH/2;
+  // the cinematic zoom: a duel is held close, a crowd is given room, a keeper's
+  // entrance is honoured — all at the pace of a held breath, never a snap
+  let zt=1;
+  if(G.boss&&!G.boss.dead)zt=1.045;
+  else if(thN>=4)zt=.968;
+  else if(thN>0)zt=1.012;
+  if(G.bossIntroT>0)zt=Math.max(zt,1.055);
+  G.zCine=lerp(G.zCine,zt,1-Math.exp(-1.15*dt));
   G.trauma=Math.max(0,G.trauma-dt*1.6);shake();
   if(G.hurtV>0)G.hurtV-=dt*1.4;if(G.flash>0)G.flash-=dt*2.4;
   if(G.hurtAT>0)G.hurtAT-=dt;
@@ -3629,7 +4152,21 @@ function drawCrows(){
     ctx.restore();}
   ctx.globalAlpha=1;}
 
+// update 2.3 「疾」: kanji stamps bake once into their own paper — the font is
+// resolved a single time per glyph, never again mid-swing
+const KANSPR={};
+function kanSpr(txt){
+  let c=KANSPR[txt];
+  if(!c){c=document.createElement('canvas');c.width=160;c.height=160;
+    const g=c.getContext('2d');
+    g.font='800 74px "Shippori Mincho"';g.textAlign='center';g.textBaseline='middle';
+    g.fillStyle='rgba(140,43,31,0.32)';g.fillText(txt,84,86); // a breath of ink behind
+    g.fillStyle=RED;g.fillText(txt,80,80);
+    KANSPR[txt]=c;}
+  return c;}
+
 const HUD={hpGhost:100};
+let washC=null; // the cached wound-wash gradient (rebuilt only when the page resizes)
 function render(){ctx.setTransform(DPR,0,0,DPR,0,0);
   ctx.fillStyle=PAPER;ctx.fillRect(0,0,W,H);
   if(window.GFX)GFX.beginCapture(); // the glow mirror opens before the world paints
@@ -3644,20 +4181,27 @@ function render(){ctx.setTransform(DPR,0,0,DPR,0,0);
   if(inGame&&window.GFX)GFX.post(); // the painted light: bloom + ink bleed over everything seen
   if(G.slowT>0&&G.ts<.4&&inGame){ // time kneels: grade everything down a touch
     ctx.save();ctx.globalAlpha=.06;ctx.fillStyle='#f2ecd9';ctx.fillRect(0,0,W,H);ctx.restore();}
-  if(G.wash>0){const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.2,W/2,H/2,Math.max(W,H)*.7);
-    g.addColorStop(0,'rgba(179,55,42,0)');g.addColorStop(1,`rgba(140,43,31,${Math.min(.5,G.wash)})`);
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
-  if(G.flash>0){ctx.globalAlpha=Math.min(.85,G.flash);ctx.fillStyle=G.flashCol;ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;}
+  // update 2.5: every combat overlay below answers only to the world — the
+  // wound-wash, the flash, the hurt arcs, the art's slash-cinema, the
+  // letterbox and the stage wipe all kneel to inGame, so none of them can
+  // ever freeze over a menu (the grey title bug: pause during a stage's
+  // wipe, abandon the run, and the frozen bands owned the title screen,
+  // because update() no longer ran to age them)
+  if(inGame&&G.wash>0){ // update 2.3: the wash is one cached bruise, its strength carried by alpha
+    if(!washC||washC.w!==W||washC.h!==H){washC=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.2,W/2,H/2,Math.max(W,H)*.7);
+      washC.addColorStop(0,'rgba(179,55,42,0)');washC.addColorStop(1,'rgba(140,43,31,0.5)');washC.w=W;washC.h=H;}
+    ctx.globalAlpha=Math.min(1,G.wash*2);ctx.fillStyle=washC;ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;}
+  if(inGame&&G.flash>0){ctx.globalAlpha=Math.min(.85,G.flash);ctx.fillStyle=G.flashCol;ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;}
   ctx.globalAlpha=.05;
   const gp=GRP[(G.t*6|0)%3];
   ctx.save();ctx.translate(-((G.t*97)%256),-((G.t*61)%256));ctx.fillStyle=gp;ctx.fillRect(0,0,W+256,H+256);ctx.restore();
   ctx.globalAlpha=1;
-  if(G.hurtV>0){ctx.globalAlpha=Math.min(.55,G.hurtV);ctx.drawImage(vigHurt(),0,0,W,H);ctx.globalAlpha=1;}
-  if(G.hurtAT>0)drawHurtArc();
+  if(inGame&&G.hurtV>0){ctx.globalAlpha=Math.min(.55,G.hurtV);ctx.drawImage(vigHurt(),0,0,W,H);ctx.globalAlpha=1;}
+  if(inGame&&G.hurtAT>0)drawHurtArc();
   if(vigC)ctx.drawImage(vigC,0,0,W,H);
-  drawArtsSlash();
-  if(G.lbx>.01)drawLetterbox();
-  if(G.wipe)drawWipe();
+  if(inGame)drawArtsSlash();
+  if(inGame&&G.lbx>.01)drawLetterbox();
+  if(inGame&&G.wipe)drawWipe();
   if(G.mode==='game'||G.mode==='pause')drawHUD();
   if(G.mode==='game'&&IS_TOUCH)drawTouchUI();
   if(G.mode==='game'&&P&&!P.dead&&!IS_TOUCH)drawCursor();}
@@ -3665,11 +4209,30 @@ function render(){ctx.setTransform(DPR,0,0,DPR,0,0);
 const DRAWQ=[];let GRAD=null;
 function renderWorld(){
   GRAD=gradeOf();
-  const zp=Z*(1+(G.zp+(G.codexCur?G.zpC:0))*.32);
+  // update 2.7 「映」: the page's own zoom — the punch of a killing moment, the
+  // codex's lean toward a face, and the slow cinematic breath of the duel —
+  // all one number, published for the light-passes and the mouse's aim
+  const zp=Z*(1+(G.zp+(G.codexCur?G.zpC:0))*.32)*G.zCine;
+  G.zw=zp;
   ctx.save();ctx.translate(W/2+G.shakeX,H/2+G.shakeY);
   if(G.trauma>0)ctx.rotate(Math.sin(G.t*43)*G.trauma*.014); // the page flinches with you
   ctx.scale(zp,zp);ctx.translate(-G.cam.x,-G.cam.y);
-  ctx.drawImage(G.floorC,0,0);
+  // update 2.6 「動」: the page only paints what the eye can see — bodies, ink,
+  // sparks and marks outside the camera's own rectangle are skipped entirely
+  // (the world keeps simulating them; only the brush stops). one shared
+  // rectangle, generous margins, published for the FX layers too.
+  const _vm=170;
+  if(!G.view)G.view={x0:0,x1:0,y0:0,y1:0}; // one rectangle, reused forever
+  G.view.x0=G.cam.x-(W/2+80)/zp-_vm;G.view.x1=G.cam.x+(W/2+80)/zp+_vm;
+  G.view.y0=G.cam.y-(H/2+80)/zp-_vm;G.view.y1=G.cam.y+(H/2+80)/zp+_vm;
+  const _v=G.view;
+  // update 2.4 「印」: the floor's weave answers the eye's own demand — the mip
+  // serves the page at rest, the full double-density sheet only when zoom or
+  // dense glass asks for more than ~1.6 device pixels per world unit
+  {
+    const dem=zp*DPR;
+    const fsrc=(dem>1.6&&G.floorMip)?G.floorC:(G.floorMip||G.floorC);
+    ctx.drawImage(fsrc,0,0,RW,RH);}
   const act=curAct();
   if(window.AMBI2)AMBI2.onFloor(act); // heavy ambience: cloud-shadows, ground life
   if(act===1||act===3||act===7){ // dawn light leans through in living shafts
@@ -3691,23 +4254,29 @@ function renderWorld(){
   drawLanterns(); // the bamboo court's lanterns breathe
   drawSnowGlints(); // the white gale glitters
   drawFireflies();
-  ctx.globalAlpha=.92;ctx.drawImage(G.decalC,0,0);ctx.globalAlpha=1;
+  ctx.globalAlpha=.92;ctx.drawImage(G.decalC,0,0,RW,RH);ctx.globalAlpha=1;
   ctx.globalAlpha=.15;
   for(let i=0;i<4;i++){const mx=((hash01(i*9.7)*RW)+G.t*(6+i*3))%(RW+500)-250;
     const my=RH*(.18+.2*i)+Math.sin(G.t*.3+i*1.7)*16;ctx.drawImage(MIST[i%3],mx-200,my-100,400,200);}
   ctx.globalAlpha=1;
   drawCrows();
   for(const m of G.marks){const p=m.t/m.dur;
+    if(m.x<_v.x0||m.x>_v.x1||m.y<_v.y0||m.y>_v.y1)continue;
     ctx.strokeStyle=RED;ctx.globalAlpha=.5+.4*Math.sin(m.t*20);
     ctx.lineWidth=3;ctx.beginPath();ctx.arc(m.x,m.y,14+p*18,0,TAU);ctx.stroke();
     ctx.globalAlpha=.25;ctx.fillStyle=RED;ctx.beginPath();ctx.arc(m.x,m.y,p*14,0,TAU);ctx.fill();ctx.globalAlpha=1;}
   if(G.codexCur)drawCodexFocus();
   if(window.GFX)GFX.entityShadows(); // every body stands on the ground before it is drawn
-  for(const t of G.teles){if(t.t<0)continue;drawTele(t);}
-  for(const r of G.rings){ctx.strokeStyle=INK;ctx.globalAlpha=.8;ctx.lineWidth=r.w*.5;
+  for(const t of G.teles){if(t.t<0)continue;
+    if(t.x<_v.x0-160||t.x>_v.x1+160||t.y<_v.y0-160||t.y>_v.y1+160)continue; // off-page telegraphs stay honest
+    drawTele(t);}
+  for(const r of G.rings){
+    if(r.x<_v.x0-100||r.x>_v.x1+100||r.y<_v.y0-100||r.y>_v.y1+100)continue;
+    ctx.strokeStyle=INK;ctx.globalAlpha=.8;ctx.lineWidth=r.w*.5;
     ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,TAU);ctx.stroke();
     ctx.globalAlpha=.35;ctx.lineWidth=r.w;ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,TAU);ctx.stroke();ctx.globalAlpha=1;}
   for(const g of G.ghosts){const a=1-g.t/g.dur;
+    if(g.x<_v.x0||g.x>_v.x1||g.y<_v.y0||g.y>_v.y1)continue;
     ctx.save();ctx.translate(g.x,g.y);ctx.rotate(g.dir||0);ctx.globalAlpha=a*.3;ctx.fillStyle=INK;
     // a proper silhouette: cloak, body, head — not just two blobs
     ctx.beginPath();ctx.moveTo(-2,2);ctx.lineTo(-17,-9);ctx.lineTo(-6,-13);ctx.closePath();ctx.fill();
@@ -3717,6 +4286,7 @@ function renderWorld(){
     ctx.beginPath();ctx.arc(0,-11,6.5,0,TAU);ctx.stroke();
     ctx.restore();}
   for(const p of G.pickups){const bob=Math.sin(p.t*5)*3;
+    if(p.x<_v.x0||p.x>_v.x1||p.y<_v.y0||p.y>_v.y1)continue;
     if(p.kind==='orb'){ctx.drawImage(glowRed,p.x-26,p.y-26+bob,52,52);
       ctx.fillStyle=RED;ctx.beginPath();ctx.arc(p.x,p.y+bob,8,0,TAU);ctx.fill();
       ctx.fillStyle=PAPER2;ctx.beginPath();ctx.arc(p.x-2,p.y-2+bob,3,0,TAU);ctx.fill();}
@@ -3727,15 +4297,17 @@ function renderWorld(){
     ctx.beginPath();ctx.moveTo(e.x,e.y);ctx.lineTo(e.healing.x,e.healing.y);ctx.stroke();ctx.globalAlpha=1;}
   DRAWQ.length=0;
   for(let i=0;i<G.enemies.length;i++){const q=G.enemies[i];
-    if(!q.hidden&&(!q.dead||(q.deadT||0)<.42))DRAWQ.push(q);} // the dying still get drawn
+    if(!q.hidden&&(!q.dead||(q.deadT||0)<.42)&&
+       q.x>_v.x0&&q.x<_v.x1&&q.y>_v.y0&&q.y<_v.y1)DRAWQ.push(q);} // the dying still get drawn — if the eye can see them
   DRAWQ.sort((a,b)=>a.y-b.y);
   let drewP=false;
   for(let i=0;i<DRAWQ.length;i++){const e=DRAWQ[i];
     if(!drewP&&e.y>P.y){drawPlayer();drewP=true;}drawEnemy(e);}
   if(!drewP&&(!P.dead||P.deadT<1.2))drawPlayer();
-  for(const s of G.slashes)drawSlash(s);
-  for(const pr of G.projs)drawProj(pr);
+  for(const s of G.slashes)if(s.x>_v.x0&&s.x<_v.x1)drawSlash(s);
+  for(const pr of G.projs)if(pr.x>_v.x0&&pr.x<_v.x1&&pr.y>_v.y0&&pr.y<_v.y1)drawProj(pr);
   for(const p of G.parts){
+    if(p.x<_v.x0||p.x>_v.x1||p.y<_v.y0||p.y>_v.y1)continue; // off-page ink waits
     if(p.ring){const q=1-p.life/p.max;ctx.strokeStyle=p.color;ctx.globalAlpha=p.life/p.max;ctx.lineWidth=2.5;
       ctx.beginPath();ctx.arc(p.x,p.y,lerp(p.r0,p.r1,easeOutQ(q)),0,TAU);ctx.stroke();ctx.globalAlpha=1;continue;}
     const a=clamp(p.life/p.max,0,1);
@@ -3743,6 +4315,7 @@ function renderWorld(){
     ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-p.vx*.02,p.y-p.vy*.02);ctx.stroke();}
   ctx.globalAlpha=1;
   for(const f of G.fx){const p=f.t/f.dur;
+    if(f.x!==undefined&&(f.x<_v.x0||f.x>_v.x1||f.y<_v.y0||f.y>_v.y1))continue;
     if(f.kind==='pring'){ctx.strokeStyle=GOLD;ctx.globalAlpha=1-p;ctx.lineWidth=4;
       ctx.beginPath();ctx.arc(f.x,f.y,10+p*95,0,TAU);ctx.stroke();
       ctx.globalAlpha=(1-p)*.6;ctx.strokeStyle=PAPER3;ctx.lineWidth=2;
@@ -3752,13 +4325,30 @@ function renderWorld(){
         const r1=10+p*54,r2=r1+12*(1-p);
         ctx.beginPath();ctx.moveTo(f.x+Math.cos(a)*r1,f.y+Math.sin(a)*r1);
         ctx.lineTo(f.x+Math.cos(a)*r2,f.y+Math.sin(a)*r2);ctx.stroke();}}
-    else if(f.kind==='kanji'){const sc=lerp(2.1,1,easeOutC(Math.min(1,p*1.6)));
-      ctx.save();ctx.translate(f.x,f.y);ctx.scale(sc,sc);
+    else if(f.kind==='kanji'){ // update 2.3: the stamp is baked once per kanji —
+      // resolving a 74px brush font every frame is the kind of pause a deathblow should not have
+      const sc=lerp(2.1,1,easeOutC(Math.min(1,p*1.6)));
       ctx.globalAlpha=Math.min(1,p*3)*(p>.7?(1-(p-.7)/.3):1);
-      ctx.font='800 74px "Shippori Mincho"';ctx.textAlign='center';ctx.textBaseline='middle';
-      ctx.fillStyle=RED;ctx.fillText(f.txt,0,0);ctx.restore();}
+      const sz=160*sc;
+      ctx.drawImage(kanSpr(f.txt),f.x-sz/2,f.y-sz/2,sz,sz);}
     else if(f.kind==='boom'){ctx.strokeStyle=RED2;ctx.globalAlpha=1-p;ctx.lineWidth=6;
       ctx.beginPath();ctx.arc(f.x,f.y,f.r*(0.4+p*.7),0,TAU);ctx.stroke();}
+    else if(f.kind==='glint'){ // update 2.7 「映」: where steel meets flesh — one
+      // short bright star, six seeded rays, born at the contact and gone in a
+      // breath. crits burn gold; the rest read as the page's own paper-light.
+      const k=1-p;
+      ctx.save();
+      ctx.globalAlpha=Math.min(1,k*1.3);
+      ctx.strokeStyle=f.crit?'#d99a2c':'#f6f1e2';
+      ctx.lineWidth=2.3*k+.7;ctx.lineCap='round';
+      for(let i=0;i<6;i++){const a=i/6*TAU+hash01(i*4.1+f.x)*1.2;
+        const r1=4+hash01(i*7.3+f.y)*5,r2=r1+(11+hash01(i*3.9+f.x)*13)*k;
+        ctx.beginPath();ctx.moveTo(f.x+Math.cos(a)*r1,f.y+Math.sin(a)*r1);
+        ctx.lineTo(f.x+Math.cos(a)*r2,f.y+Math.sin(a)*r2);ctx.stroke();}
+      ctx.globalAlpha=Math.min(1,k*1.5);
+      ctx.fillStyle='#f6f1e2';
+      ctx.beginPath();ctx.arc(f.x,f.y,2.6*k+.6,0,TAU);ctx.fill();
+      ctx.restore();}
     else if(f.kind==='impact'){ // manga lines rushing at the moment of contact
       ctx.strokeStyle=INK;ctx.globalAlpha=(1-p)*.75;ctx.lineWidth=2.4;ctx.lineCap='round';
       for(let i=0;i<13;i++){const a=(i/13-.5)*2.2;
@@ -3769,9 +4359,29 @@ function renderWorld(){
       ctx.beginPath();let x=f.x,y=f.y-560;ctx.moveTo(x,y);
       for(let i=0;i<9;i++){y+=62;x+=hash01(i*3.7+f.x)*36-18;ctx.lineTo(x,y);}
       ctx.stroke();
-      ctx.globalAlpha=(1-p)*.6;ctx.drawImage(glowWhite,f.x-60,f.y-40,120,120);}}
+      ctx.globalAlpha=(1-p)*.6;ctx.drawImage(glowWhite,f.x-60,f.y-40,120,120);}
+    else if(f.kind==='rai'){ // 雷走 — the stride itself, drawn as a living bolt
+      const k=1-p;
+      ctx.save();
+      ctx.globalAlpha=k*.75;ctx.strokeStyle=GOLD;ctx.lineWidth=7*k+1;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(f.x0,f.y0);
+      const segs=7,dx=f.x1-f.x0,dy=f.y1-f.y0;
+      for(let i=1;i<segs;i++){const t=i/segs,ox=-dy,oy=dx;
+        const j=(hash01(i*9.7+f.x0)*2-1)*22*k;
+        ctx.lineTo(f.x0+dx*t+ox/Math.hypot(ox,oy)*j,f.y0+dy*t+oy/Math.hypot(ox,oy)*j);}
+      ctx.lineTo(f.x1,f.y1);ctx.stroke();
+      ctx.globalAlpha=k*.9;ctx.strokeStyle='#f6f1e2';ctx.lineWidth=2.4;
+      ctx.beginPath();ctx.moveTo(f.x0,f.y0);
+      for(let i=1;i<segs;i++){const t=i/segs,ox=-dy,oy=dx;
+        const j=(hash01(i*9.7+f.x0)*2-1)*22*k;
+        ctx.lineTo(f.x0+dx*t+ox/Math.hypot(ox,oy)*j,f.y0+dy*t+oy/Math.hypot(ox,oy)*j);}
+      ctx.lineTo(f.x1,f.y1);ctx.stroke();
+      const mx=(f.x0+f.x1)/2,my=(f.y0+f.y1)/2;
+      ctx.globalAlpha=k*.5;ctx.drawImage(glowGold,mx-90,my-90,180,180);
+      ctx.restore();}}
   ctx.globalAlpha=1;
   for(const f of G.floats){const a=1-Math.pow(f.t/f.dur,2);
+    if(f.x<_v.x0||f.x>_v.x1||f.y<_v.y0-60||f.y>_v.y1+60)continue; // unwitnessed words still land
     const pop=1+.6*Math.max(0,1-f.t*7); // numbers land like stamps
     ctx.globalAlpha=a;ctx.font=`600 ${Math.round(f.size*pop)}px "IBM Plex Mono"`;
     ctx.textAlign='center';ctx.fillStyle=f.color;ctx.fillText(f.text,f.x,f.y);}
@@ -3944,12 +4554,16 @@ function drawGusts(){
 function drawWeather(){const act=curAct();
   if(act>=11&&window.STORY2)return STORY2.drawWeather(act);
   const n=Math.round((act===5?46:(act===4?30:(act===1?12:(act===6?18:(act===3?10:(act===7?10:(act===9?16:14)))))))*(IS_TOUCH?.6:1));
+  // update 2.6 「動」: weather is honest about where the eye stands — the sky
+  // still falls everywhere, but the page only paints the flakes it can see
+  const v=G.view||{x0:-1e4,y0:-1e4,x1:1e4,y1:1e4};
   for(let i=0;i<n;i++){
     const seed=i*1.618;
     if(act===1){ // petals on the dusk wind
       const t=(G.t*(26+hash01(seed)*22)+hash01(seed*3)*RH*2)%(RH+80);
       const x=hash01(seed*7)*RW+Math.sin(G.t*.8+seed)*46+G.wind*40;
       const y=RH-t;
+      if(x<v.x0-40||x>v.x1+40||y<v.y0-40||y>v.y1+40)continue;
       ctx.save();ctx.translate(x,y);ctx.rotate(G.t*2+seed);
       ctx.globalAlpha=.4*(1-t/(RH+80));
       ctx.fillStyle=i%3?'#b89a5a':RED;
@@ -3958,44 +4572,58 @@ function drawWeather(){const act=curAct();
       const t=(G.t*(520+hash01(seed)*160)+hash01(seed*3)*2000)%2000;
       const x=hash01(seed*7)*RW-t*(act===5?.5:.28)+G.wind*30;
       const y=(hash01(seed*11)*RH+t)%RH;
+      if(x<v.x0-40||x>v.x1+40||y<v.y0-40||y>v.y1+40)continue;
       ctx.globalAlpha=act===5?.3:.45;ctx.strokeStyle=act===5?'#2c2438':'#8795a5';
       ctx.lineWidth=act===5?1.6:2;
       ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-(act===5?10:3)+G.wind*4,y+(act===5?20:6));ctx.stroke();}
     else if(act===3){ // bamboo leaves
       const t=(G.t*(20+hash01(seed)*16)+hash01(seed*3)*RH*2)%(RH+60);
       const x=hash01(seed*7)*RW+Math.sin(G.t*.6+seed)*38;
-      ctx.save();ctx.translate(x,RH-t);ctx.rotate(G.t*1.6+seed);
+      const y=RH-t;
+      if(x<v.x0-40||x>v.x1+40||y<v.y0-40||y>v.y1+40)continue;
+      ctx.save();ctx.translate(x,y);ctx.rotate(G.t*1.6+seed);
       ctx.globalAlpha=.4*(1-t/(RH+60));
       ctx.fillStyle=i%2?'#4c7a4c':'#6b9a5b';
       ctx.beginPath();ctx.ellipse(0,0,4,1.8,.6,0,TAU);ctx.fill();ctx.restore();}
     else if(act===4){ // snow, fat and slow
       const t=(G.t*(34+hash01(seed)*30)+hash01(seed*3)*RH*2)%(RH+40);
       const x=hash01(seed*7)*RW+Math.sin(G.t*.5+seed*2)*30+G.wind*56;
+      const y=RH-t;
+      if(x<v.x0-40||x>v.x1+40||y<v.y0-40||y>v.y1+40)continue;
       ctx.globalAlpha=.5+.3*hash01(seed);
       ctx.fillStyle='#f4f7fb';
-      ctx.beginPath();ctx.arc(x,RH-t,1.6+hash01(seed*2)*2.4,0,TAU);ctx.fill();}
+      ctx.beginPath();ctx.arc(x,y,1.6+hash01(seed*2)*2.4,0,TAU);ctx.fill();}
     else if(act===6){ // ash falls, embers rise
       if(i%3===0){const t=(G.t*(30+i)+hash01(seed*3)*1400)%1400;
+        const x=hash01(seed*7)*RW+Math.sin(G.t+seed)*24,y=RH-t;
+        if(x<v.x0-40||x>v.x1+40||y<v.y0-40||y>v.y1+40)continue;
         ctx.globalAlpha=.5*(1-t/1400);ctx.fillStyle=RED;
-        ctx.beginPath();ctx.arc(hash01(seed*7)*RW+Math.sin(G.t+seed)*24,RH-t,1.7,0,TAU);ctx.fill();}
+        ctx.beginPath();ctx.arc(x,y,1.7,0,TAU);ctx.fill();}
       else{const t=(G.t*(22+hash01(seed)*18)+hash01(seed*3)*RH*2)%(RH+40);
+        const x=hash01(seed*7)*RW+Math.sin(G.t*.4+seed)*24+G.wind*30,y=RH-t;
+        if(x<v.x0-40||x>v.x1+40||y<v.y0-40||y>v.y1+40)continue;
         ctx.globalAlpha=.34*(1-t/(RH+40));ctx.fillStyle='#6a655c';
-        ctx.beginPath();ctx.arc(hash01(seed*7)*RW+Math.sin(G.t*.4+seed)*24+G.wind*30,RH-t,1.4+hash01(seed)*1.8,0,TAU);ctx.fill();}}
+        ctx.beginPath();ctx.arc(x,y,1.4+hash01(seed)*1.8,0,TAU);ctx.fill();}}
     else if(act===7){ // the blank page breathes upward
       const t=(G.t*(18+hash01(seed)*14)+hash01(seed*3)*RH*2)%(RH+40);
+      const x=hash01(seed*7)*RW+Math.sin(G.t*.5+seed)*20,y=t-20;
+      if(x<v.x0-40||x>v.x1+40||y<v.y0-40||y>v.y1+40)continue;
       ctx.globalAlpha=.16+(1-t/(RH+40))*.14;
       ctx.fillStyle=INK;
-      ctx.beginPath();ctx.arc(hash01(seed*7)*RW+Math.sin(G.t*.5+seed)*20,t-20,1.2+hash01(seed)*1.6,0,TAU);ctx.fill();}
+      ctx.beginPath();ctx.arc(x,y,1.2+hash01(seed)*1.6,0,TAU);ctx.fill();}
     else if(act===9){ // pale motes rise where the spirits walk
       const t=(G.t*(13+hash01(seed)*9)+hash01(seed*3)*RH*2)%(RH+40);
-      const x=hash01(seed*7)*RW+Math.sin(G.t*.4+seed)*26+G.wind*26;
+      const x=hash01(seed*7)*RW+Math.sin(G.t*.4+seed)*26+G.wind*26,y=t-20;
+      if(x<v.x0-40||x>v.x1+40||y<v.y0-40||y>v.y1+40)continue;
       ctx.globalAlpha=.18+(1-t/(RH+40))*.22;
       ctx.fillStyle=i%3?'#9aa8c4':'#c8d2e4';
-      ctx.beginPath();ctx.arc(x,t-20,1.2+hash01(seed)*1.8,0,TAU);ctx.fill();}
+      ctx.beginPath();ctx.arc(x,y,1.2+hash01(seed)*1.8,0,TAU);ctx.fill();}
     else{ // abyss: red embers
       const t=(G.t*(26+i*2)+hash01(seed*3)*1400)%1400;
+      const x=hash01(seed*7)*RW+Math.sin(G.t*.8+seed)*30,y=RH-t;
+      if(x<v.x0-40||x>v.x1+40||y<v.y0-40||y>v.y1+40)continue;
       ctx.globalAlpha=.5*(1-t/1400);ctx.fillStyle=i%4===0?AMBER:RED;
-      ctx.beginPath();ctx.arc(hash01(seed*7)*RW+Math.sin(G.t*.8+seed)*30,RH-t,1.6,0,TAU);ctx.fill();}}
+      ctx.beginPath();ctx.arc(x,y,1.6,0,TAU);ctx.fill();}}
   ctx.globalAlpha=1;}
 
 function drawTele(t){const p=clamp(t.t/t.dur,0,1);
@@ -4104,6 +4732,9 @@ function drawProj(pr){
     ctx.restore();}
   else{ // wave
     ctx.save();ctx.translate(pr.x,pr.y);ctx.rotate(a);
+    if(pr.big){ // 鳳翼's pinions carry their own embers
+      ctx.globalAlpha=.55;ctx.drawImage(glowGold,-20,-20,40,40);}
+    if(pr.big)ctx.scale(1.9,1.9);
     ctx.globalAlpha=.85;ctx.fillStyle=pr.friendly?GOLD2:INK2;
     ctx.beginPath();ctx.moveTo(10,0);ctx.quadraticCurveTo(0,-8,-8,0);ctx.quadraticCurveTo(0,8,10,0);ctx.closePath();ctx.fill();
     ctx.strokeStyle=pr.friendly?GOLD:INK;ctx.lineWidth=1.5;ctx.stroke();
@@ -4119,20 +4750,28 @@ function shadowBlob(x,y,r,squash=1){
 // hovers (wraith, mirror, sorc, broker) and the webbed kappa skip it.
 const FOOTCOL={oni:'#6b4438',tengu:'#b98c2e',kame:'#2c3428',hound:'#26221e',kitsune:'#8a5a30',doro:'#544536',doroko:'#544536',suzume:'#6b4e2e',nekomata:'#2b241d',shishi:'#5a4a36'};
 const NOFEET={kappa:1,wraith:1,mirror:1,sorc:1,broker:1,wisp:1};
+// update 2.6 「動」: the stride is a real walk — feet advance on the same phase
+// the body sways on, diagonal pairs trot out of step for quads, the striding
+// foot lifts (a touch smaller as it rises), and the cycle's frequency follows
+// the body's real speed, eases off on stopping, and never freezes mid-stride
 function drawFeet(e){
+  const a=window.ANIM?ANIM.pose(e):null;
   const quad=e.type==='hound';
-  const moving=Math.hypot(e.vx,e.vy)>20;
-  const ph=Math.sin(e.bob)*(moving?1:0);
   const col=FOOTCOL[e.type]||'#2b241d';
   const perp=e.r*.5,fs=e.r*.3;
   const rows=quad?[.42,-.3]:[.05];
+  const ph=a?a.ph:e.bob;
+  const amp=a?a.fA:(Math.sqrt(e.vx*e.vx+e.vy*e.vy)>20?1:0);
   for(const o of rows)for(let s=-1;s<=1;s+=2){
     const side=e.facing+PI/2*s;
-    const step=ph*s*fs*(o<0?-1:1);
+    const sw=Math.sin(ph+(o<0?PI*.85:0));
+    const step=sw*s*fs*(o<0?-1:1)*amp;
+    const lift=Math.max(0,sw*s)*1.7*amp; // the striding foot rises
+    const fss=fs*(1-lift*.16);
     const fx=e.x+Math.cos(e.facing)*o*e.r+Math.cos(side)*perp+Math.cos(e.facing)*step;
-    const fy=e.y+Math.sin(e.facing)*o*e.r+Math.sin(side)*perp+Math.sin(e.facing)*step;
+    const fy=e.y+Math.sin(e.facing)*o*e.r+Math.sin(side)*perp+Math.sin(e.facing)*step-lift;
     ctx.fillStyle=col;
-    ctx.beginPath();ctx.ellipse(fx,fy,fs,fs*.62,side,0,TAU);ctx.fill();}}
+    ctx.beginPath();ctx.ellipse(fx,fy,fss,fss*.62,side,0,TAU);ctx.fill();}}
 
 function drawEnemy(e){ctx.save();
   if(e.dead){ // the ink lets go slowly: the body fades, lifts, and thins
@@ -4154,16 +4793,25 @@ function drawEnemy(e){ctx.save();
   shadowBlob(e.x,e.y,e.r,1+(e.state==='windup'?-.12:0));
   if(!NOFEET[e.type]&&!e.boss)drawFeet(e);
   const hover=(e.type==='wraith'||e.type==='mirror'||e.type==='wisp')?5+Math.sin(e.bob*.7)*3:0;
-  ctx.translate(e.x,e.y-(e.boss?e.h||0:0)+hover-((e.state==='windup'||e.state==='aim')?4:0));
+  // update 2.6 「動」: the pose is the ANIM layer's — stance lunges, windup
+  // coils, stride sway and boss entrances all arrive eased, never stepped
+  const a=window.ANIM?ANIM.pose(e):null;
+  ctx.translate(e.x+(a?Math.cos(e.facing)*a.swy:0),
+                e.y-(e.boss?e.h||0:0)+hover+(a?a.lift:0));
   const bob=Math.sin(e.bob)*1.6;
   if(window.MODELS)MODELS.ghosts(e); // 華: fast bodies drag white brush-ghosts
   if(e.stun>0||e.fused)ctx.rotate(Math.sin(G.t*(e.fused?34:22))*.14);
-  if(e.hitT>0)ctx.rotate(Math.sin((e.hitT/.18)*PI)*.16*((Math.cos(e.hitAng)>=0)?1:-1)); // struck flesh flinches aside
+  if(e.hitT>0){ // struck flesh flinches aside — and is knocked back a hair
+    if(a)ctx.translate(Math.cos(e.hitAng)*a.hk*4.5,Math.sin(e.hitAng)*a.hk*4.5);
+    ctx.rotate(Math.sin((e.hitT/.18)*PI)*.16*((Math.cos(e.hitAng)>=0)?1:-1));}
+  if(a&&a.tilt)ctx.rotate(a.tilt); // the stance's lean — weight shifting, coiling, committed
   ctx.save();ctx.rotate(e.facing);
   if(Math.abs(angDiff(0,e.facing))>PI/2)ctx.scale(1,-1);
-  const lunge=(e.state==='active'||e.state==='charging')?1.14:((e.state==='windup'||e.state==='aim')?.9:1);
   const punch=1+(e.hitT>0?e.hitT*.5:0);
-  ctx.scale(lunge*punch,(2-lunge)/punch);
+  const lgLunge=(e.state==='active'||e.state==='charging')?1.14:((e.state==='windup'||e.state==='aim')?.9:1); // the old hard step, kept as fallback
+  const sx=a?(a.lu*punch*a.sc):(lgLunge*punch);
+  const sy=a?(a.sq*a.sc/punch):((2-lgLunge)/punch);
+  ctx.scale(sx,sy);
   const kit=e.boss?BSPR[e.id]:ESPR[e.type];
   const lo=window.MODELS&&MODELS.lo();
   const img=e.flash>0?(lo?(kit.of||kit.f):kit.f):(lo?(kit.o||kit.n):kit.n);
@@ -4172,6 +4820,15 @@ function drawEnemy(e){ctx.save();
   ctx.globalAlpha=alpha;
   const S=kit.s,Pp=kit.p||0;
   ctx.drawImage(img,-S/2-Pp,-S/2-Pp,S+2*Pp,S+2*Pp);
+  // update 2.6 「動」: the swing drags its own after-image — two white ghosts
+  // of the body sweep the arc behind the strike, the ink blur of a committed cut
+  if(a&&a.smear>.03&&kit.f){
+    for(let i=1;i<=2;i++){
+      ctx.save();ctx.rotate(-i*.5*a.smear);
+      ctx.globalAlpha=alpha*a.smear*(.26-.09*i);
+      ctx.drawImage(kit.f,-S/2-Pp,-S/2-Pp,S+2*Pp,S+2*Pp);
+      ctx.restore();}
+    ctx.globalAlpha=alpha;}
   ctx.restore();
   ctx.globalAlpha=1;
   // the steel announces itself: gold if the cut can be turned, red if it cannot
@@ -4492,7 +5149,7 @@ function drawHUD(){
   ctx.beginPath();ctx.arc(kx,ky,kr,-PI/2,-PI/2+kf*TAU);ctx.stroke();
   ctx.font='700 15px "Shippori Mincho"';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillStyle=kf>=1?GOLD2:(kf>.6?INK:INK2);
-  ctx.fillText('絶',kx,ky+1);
+  ctx.fillText((typeof ARTS!=='undefined'&&ARTS[artId()])?ARTS[artId()].k:'絶',kx,ky+1); // the gauge wears the art it holds
   ctx.textAlign='left';ctx.textBaseline='alphabetic';
   // dash pips
   for(let i=0;i<P.st.dashMax;i++){
@@ -4573,8 +5230,10 @@ function drawHUD(){
     else{
       let cy=30+SAFE.t;
       for(const c of chips){drawChip(c.k,c.col,c.n,W-30-SAFE.r,cy,'left');cy+=27;}}}
-  // inkmarks carried: gold seals above the health stroke — always on the page,
-  // so no codex card or ceremony can ever swallow what the run has given you
+  // inkmarks carried: carved paste above the health stroke — always on the page,
+  // so no codex card or ceremony can ever swallow what the run has given you.
+  // update 2.4 「印」: every mark is a true hanko now — vermilion paste, a pale
+  // carved edge, the kanji cut to the paper; stacks deepen and speak in gold
   {
     const ids=Object.keys(run.blessings);
     let bx2=26+SAFE.l,by2=SAFE.t+9;
@@ -4582,20 +5241,23 @@ function drawHUD(){
     for(let i=0;i<Math.min(ids.length,maxN);i++){
       const b=BLESS.find(x=>x.id===ids[i]);if(!b)continue;
       const n=run.blessings[ids[i]];
-      ctx.save();ctx.translate(bx2+7,by2+7);ctx.rotate(PI/4);
-      ctx.fillStyle=n>1?RED2:GOLD;ctx.fillRect(-6.5,-6.5,13,13);
-      ctx.strokeStyle='rgba(242,236,217,0.75)';ctx.lineWidth=1;ctx.strokeRect(-6.5,-6.5,13,13);
+      ctx.save();ctx.translate(bx2+8,by2+8);ctx.rotate(-.08+((i%3)-1)*.045);
+      ctx.fillStyle=n>1?'#8c2b1f':'#b3372a';
+      ctx.beginPath();ctx.roundRect(-8.5,-8.5,17,17,2.5);ctx.fill();
+      ctx.strokeStyle='rgba(242,236,217,0.4)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.roundRect(-6.5,-6.5,13,13,1.5);ctx.stroke();
+      ctx.font='800 11px "Shippori Mincho"';ctx.fillStyle='#f2ecd9';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(b.k,0,.5);
       ctx.restore();
-      ctx.font='700 10px "Shippori Mincho"';ctx.fillStyle=PAPER2;ctx.textAlign='center';ctx.textBaseline='middle';
-      ctx.fillText(b.k,bx2+7,by2+8);
-      ctx.textBaseline='alphabetic';
-      if(n>1){ctx.font='700 8px "IBM Plex Mono"';ctx.fillStyle=INK;
-        ctx.fillText('×'+n,bx2+15,by2+14);}
+      if(n>1){ctx.font='700 8px "IBM Plex Mono"';ctx.fillStyle=GOLD2;
+        ctx.fillText('×'+n,bx2+17,by2+15);}
       ctx.textAlign='left';
       bx2+=n>1?25:17;}
     if(ids.length>maxN){ctx.font='600 9px "IBM Plex Mono"';ctx.fillStyle=INK2;
       ctx.fillText('+'+(ids.length-maxN),bx2+1,by2+14);}}
-  // the grant, said out loud: the kanji, the name — a stamp the codex cannot eat
+  // the grant, said out loud — update 2.4 「印」: the mark lands as a seal. the
+  // square of paste slams down with the kanji carved into it, the name spoken
+  // beneath in ink, the brush lines flanking. a stamp the codex cannot eat
   if(G.grantShow){
     const gs=G.grantShow,p=gs.t/gs.dur;
     const aa=p<.1?p/.1:(p>.84?(1-p)/.16:1);
@@ -4603,14 +5265,23 @@ function drawHUD(){
     ctx.save();ctx.globalAlpha=clamp(aa,0,1);
     ctx.translate(W/2,cy);
     const sc=p<.1?1.5-p*5:1;
-    ctx.scale(sc,sc);
-    ctx.font='700 24px "Shippori Mincho"';ctx.fillStyle=GOLD2;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(gs.b.k,0,-7);
+    ctx.scale(sc,sc);ctx.rotate(-.05);
+    // the paste
+    ctx.fillStyle='#b3372a';
+    ctx.beginPath();ctx.roundRect(-28,-26,56,52,4);ctx.fill();
+    ctx.fillStyle='rgba(20,8,6,0.22)';
+    ctx.beginPath();ctx.roundRect(-28,16,56,10,4);ctx.fill();
+    // the carved edge
+    ctx.strokeStyle='rgba(242,236,217,0.55)';ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.roundRect(-24,-22,48,44,2.5);ctx.stroke();
+    // the kanji, cut to the paper
+    ctx.font='800 25px "Shippori Mincho"';ctx.fillStyle='#f2ecd9';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(gs.b.k,0,-4);
     ctx.font='600 11px "IBM Plex Mono"';ctx.fillStyle=INK2;
-    ctx.fillText('INKMARK — '+gs.b.n.toUpperCase(),0,13);
+    ctx.fillText('INKMARK — '+gs.b.n.toUpperCase(),0,34);
     ctx.strokeStyle=GOLD;ctx.globalAlpha=clamp(aa,0,1)*.7;ctx.lineWidth=1.5;
-    ctx.beginPath();ctx.moveTo(-86,0);ctx.lineTo(-58,0);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(58,0);ctx.lineTo(86,0);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-88,0);ctx.lineTo(-60,0);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(60,0);ctx.lineTo(88,0);ctx.stroke();
     ctx.textAlign='left';ctx.textBaseline='alphabetic';
     ctx.restore();ctx.globalAlpha=1;}
   // weapons: scroll tags. desktop hangs them bottom-left; touch keeps them high,
@@ -4824,6 +5495,27 @@ const hapBtn=$('#set-hap');
 if(hapBtn)hapBtn.onclick=()=>{SAVE.haptic=!SAVE.haptic;persist();syncTgl();AU.ui();vib(12);};
 document.querySelectorAll('[data-diff]').forEach(b=>b.onclick=()=>{SAVE.difficulty=+b.dataset.diff;persist();syncTgl();AU.ui();});
 document.querySelectorAll('[data-gfx]').forEach(b=>b.onclick=()=>{SAVE.gfx=+b.dataset.gfx;persist();syncTgl();AU.ui();});
+// ---- the mapable hand (update 2.3): render + wire the controls ledger ------------
+function renderKeys(){
+  const wrap=$('#keymap');if(!wrap)return;
+  const acts=[['up','Walk up','arrows always answer too'],['down','Walk down','arrows always answer too'],
+    ['left','Walk left','arrows always answer too'],['right','Walk right','arrows always answer too'],
+    ['attack','Attack','hold works — the mouse keeps its claim'],['parry','Deflect','the gold flash — mouse keeps its claim'],
+    ['dash','Dash','through peril, into 見切'],['art','Ki art 絶','needs a full gauge'],['drink','Drink sake','slow, honest medicine']];
+  wrap.innerHTML='';
+  for(const [a,label,sub] of acts){
+    const row=document.createElement('div');row.className='kb-row';
+    row.innerHTML=`<div class="klab">${label}<small>${sub}</small></div>`;
+    const btn=document.createElement('button');btn.className='kbtn';btn.dataset.act=a;
+    const cur=(SAVE.keys||{})[a];
+    const code=cur!==undefined?cur:DEFK[a];
+    btn.textContent=KEYCAP.action===a?'press a key…':(code?kname(code):'—');
+    if(KEYCAP.action===a)btn.classList.add('listening');
+    btn.onclick=()=>{KEYCAP.action=(KEYCAP.action===a?null:a);KEYCAP.btn=btn;AU.ui();renderKeys();};
+    row.appendChild(btn);wrap.appendChild(row);}}
+const kresBtn=$('#kmap-reset');
+if(kresBtn)kresBtn.onclick=()=>{SAVE.keys={};persist();renderKeys();AU.ui();};
+renderKeys();
 const backBtn=$('#set-back');if(backBtn)backBtn.onclick=()=>{AU.ui();leaveSettings();};
 const fsBtn=$('#set-fs');
 function syncFs(){if(fsBtn)fsBtn.textContent=document.fullscreenElement?'exit':'enter';}
@@ -4862,9 +5554,14 @@ function frame(now){requestAnimationFrame(frame);
   try{
     if(G.mode==='game'||G.mode==='codex'){
       if(G.hitstop>0)G.hitstop-=dt;
-      else{acc+=dt*ts;let n=0;
-        while(acc>=STEP&&n<5){update(STEP);acc-=STEP;n++;}
-        acc=Math.min(acc,STEP);}}
+      else{ // update 2.3 「疾」: the step itself kneels with time — slow motion runs the
+        // same 60 beats a second, each one smaller, so the world glides instead of
+        // stutter-stepping through its own dramatic half-second (and quick taps are
+        // never swallowed between sparse updates)
+        acc+=dt*ts;let n=0;
+        const stp=Math.max(STEP*.05,STEP*ts);
+        while(acc>=stp&&n<5){update(stp);acc-=stp;n++;}
+        acc=Math.min(acc,stp);}}
     else if(G.mode==='bless'){
       if(jp('Digit1')&&G.blessPicks&&G.blessPicks[0])pickBless(G.blessPicks[0]);
       else if(jp('Digit2')&&G.blessPicks&&G.blessPicks[1])pickBless(G.blessPicks[1]);

@@ -22,6 +22,28 @@ const TAU=Math.PI*2;
 // where the camera is looking, in world coordinates, with margin
 function inView(x,y,m){return Math.abs(x-G.cam.x)<W/Z/2+(m||120)&&Math.abs(y-G.cam.y)<H/Z/2+(m||120);}
 
+// update 2.6 「動」: every glow this layer paints is a baked sprite, keyed
+// by its recipe — no radial or linear gradient is built while the game runs
+const SPRC={};
+function radSpr(key,stops){
+  let c=SPRC[key];
+  if(!c){c=document.createElement('canvas');c.width=128;c.height=128;
+    const g=c.getContext('2d');
+    const gr=g.createRadialGradient(64,64,0,64,64,64);
+    for(const s of stops)gr.addColorStop(s[0],s[1]);
+    g.fillStyle=gr;g.beginPath();g.arc(64,64,64,0,TAU);g.fill();
+    SPRC[key]=c;}
+  return c;}
+function linSpr(key,w,h,stops){
+  let c=SPRC[key];
+  if(!c){c=document.createElement('canvas');c.width=w;c.height=h;
+    const g=c.getContext('2d');
+    const gr=g.createLinearGradient(0,0,w,0);
+    for(const s of stops)gr.addColorStop(s[0],s[1]);
+    g.fillStyle=gr;g.fillRect(0,0,w,h);
+    SPRC[key]=c;}
+  return c;}
+
 // ---- cloud shadows: enormous soft shapes crossing the whole page --------------
 // drawn with multiply right over the floor, so the ground itself gains
 // weather that moves. six shadows, each on its own slow clock.
@@ -58,6 +80,7 @@ A.onFloor=function(act){
       ctx.beginPath();ctx.moveTo(x-5,y);ctx.lineTo(x+5,y);
       ctx.moveTo(x-2,y+2.5);ctx.lineTo(x+7,y+2.5);ctx.stroke();}}
   if(act===15){ // ember pools breathe under the ash
+    const spr=radSpr('ember',[[0,'rgba(201,118,46,0.5)'],[1,'rgba(201,118,46,0)']]);
     for(let i=0;i<4;i++){
       const seed=i*6.1+4.4;
       const x=hash01(seed*7)*RW,y=hash01(seed*3)*RH;
@@ -65,20 +88,17 @@ A.onFloor=function(act){
       const br=.5+.5*Math.sin(G.t*(1.2+hash01(seed))+seed);
       ctx.globalAlpha=.06+.07*br;
       const r=90+hash01(seed*5)*70;
-      const gr=ctx.createRadialGradient(x,y,0,x,y,r);
-      gr.addColorStop(0,'rgba(201,118,46,0.5)');gr.addColorStop(1,'rgba(201,118,46,0)');
-      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();}}
+      ctx.drawImage(spr,x-r,y-r,r*2,r*2);}}
   if(act===16){ // the blank page glows faintly where the seals dried
     ctx.save();ctx.globalCompositeOperation='lighter';
+    const spr=radSpr('seal',[[0,'rgba(179,55,42,0.4)'],[1,'rgba(179,55,42,0)']]);
     for(let i=0;i<5;i++){
       const seed=i*5.3+3.1;
       const x=hash01(seed*7)*RW,y=hash01(seed*3)*RH;
       if(!inView(x,y,140))continue;
       const br=.5+.5*Math.sin(G.t*.8+seed);
       ctx.globalAlpha=.05+.05*br;
-      const gr=ctx.createRadialGradient(x,y,0,x,y,110);
-      gr.addColorStop(0,'rgba(179,55,42,0.4)');gr.addColorStop(1,'rgba(179,55,42,0)');
-      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x,y,110,0,TAU);ctx.fill();}
+      ctx.drawImage(spr,x-110,y-110,220,220);}
     ctx.restore();}
   ctx.globalAlpha=1;};
 
@@ -102,6 +122,7 @@ A.overWorld=function(act){
   // floating lanterns over the river: paper bodies riding the current
   if(act===12){
     const n=IS_TOUCH?4:7;
+    const flSpr=radSpr('flame',[[0,'rgba(232,168,80,0.22)'],[1,'rgba(232,168,80,0)']]);
     for(let i=0;i<n;i++){
       const seed=i*4.9+7.7;
       const x=((hash01(seed*7)*RW+G.t*(16+hash01(seed)*10))%(RW+200))-100;
@@ -111,9 +132,7 @@ A.overWorld=function(act){
       // the light first — additive so it reads as a flame
       ctx.save();ctx.globalCompositeOperation='lighter';
       const fl=.7+.3*Math.sin(G.t*5+seed*3);
-      const gr=ctx.createRadialGradient(0,2,0,0,2,46*fl);
-      gr.addColorStop(0,'rgba(232,168,80,0.22)');gr.addColorStop(1,'rgba(232,168,80,0)');
-      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(0,2,46*fl,0,TAU);ctx.fill();
+      ctx.drawImage(flSpr,-46*fl,2-46*fl,92*fl,92*fl);
       ctx.restore();
       // the paper body
       ctx.fillStyle='#d8cbb0';
@@ -128,6 +147,9 @@ A.overWorld=function(act){
   // spirit wisps: pale orbs with tails, crossing the hollow and the blank
   if(act===13||act===16){
     const n=IS_TOUCH?4:6;
+    const wSpr=act===16?
+      radSpr('wispR',[[0,'rgba(214,120,110,0.6)'],[1,'rgba(0,0,0,0)']]):
+      radSpr('wispG',[[0,'rgba(190,220,190,0.6)'],[1,'rgba(0,0,0,0)']]);
     for(let i=0;i<n;i++){
       const seed=i*5.7+9.1;
       const t=(G.t*(10+hash01(seed)*8)+hash01(seed*3)*RH*2)%(RH+60);
@@ -137,10 +159,7 @@ A.overWorld=function(act){
       const br=.5+.5*Math.sin(G.t*1.6+seed*4);
       ctx.save();ctx.globalCompositeOperation='lighter';
       ctx.globalAlpha=.16+.2*br;
-      const col=act===16?'rgba(214,120,110,0.6)':'rgba(190,220,190,0.6)';
-      const gr=ctx.createRadialGradient(x,y,0,x,y,26);
-      gr.addColorStop(0,col);gr.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(x,y,26,0,TAU);ctx.fill();
+      ctx.drawImage(wSpr,x-26,y-26,52,52);
       // the tail: three fading echoes behind the drift
       for(let j=1;j<=3;j++){
         ctx.globalAlpha=(.16+.2*br)*(1-j*.3);
@@ -150,6 +169,7 @@ A.overWorld=function(act){
   if(act===14){
     ctx.save();ctx.globalCompositeOperation='lighter';
     const n=IS_TOUCH?5:8;
+    const comb=linSpr('grass',320,52,[[0,'rgba(240,234,216,0)'],[.5,'rgba(240,234,216,0.6)'],[1,'rgba(240,234,216,0)']]);
     for(let i=0;i<n;i++){
       const seed=i*4.1+6.6;
       const ph=((G.t*(.05+hash01(seed)*.04)+hash01(seed*3))%1);
@@ -158,31 +178,35 @@ A.overWorld=function(act){
       if(!inView(x,y,240))continue;
       const a=Math.sin(ph*PI)*.05;
       ctx.globalAlpha=a;
-      const gr=ctx.createLinearGradient(x-160,y,x+160,y);
-      gr.addColorStop(0,'rgba(240,234,216,0)');gr.addColorStop(.5,'rgba(240,234,216,0.6)');gr.addColorStop(1,'rgba(240,234,216,0)');
-      ctx.fillStyle=gr;
       ctx.save();ctx.translate(x,y);ctx.rotate(.1+hash01(seed)*.12);
-      ctx.fillRect(-160,-26,320,52);ctx.restore();}
+      ctx.drawImage(comb,-160,-26);
+      ctx.restore();}
     ctx.restore();}
   ctx.globalAlpha=1;};
 
 // ---- screen-space: the bloom that follows the key light -----------------------
+
+let osC=null,osKey=''; // cached key-light bloom (per act, per page size)
 
 A.onScreen=function(){
   const act=curAct();
   const gr=GRADE[act]||GRADE[1];
   if(!gr)return;
   const lx=clamp(gr.lx,0,1)*W,ly=clamp(gr.ly,0,1)*H*.8;
+  // update 2.6 動: the key-light bloom's gradient is cached per act and page
+  // size — the breathing was always just alpha, the gradient never changed
+  const key=act+'|'+W+'x'+H;
+  if(osKey!==key){osKey=key;
+    const r=Math.max(W,H)*.5;
+    osC=ctx.createRadialGradient(lx,ly,0,lx,ly,r);
+    const warm=act>=11;
+    osC.addColorStop(0,warm?'rgba(214,120,64,0.35)':'rgba(240,234,216,0.3)');
+    osC.addColorStop(1,'rgba(0,0,0,0)');}
   const br=.5+.5*Math.sin(G.t*.23); // a very slow breath
   ctx.save();
   ctx.globalCompositeOperation='lighter';
   ctx.globalAlpha=.05+.04*br;
-  const r=Math.max(W,H)*.5;
-  const gg=ctx.createRadialGradient(lx,ly,0,lx,ly,r);
-  const warm=act>=11;
-  gg.addColorStop(0,warm?'rgba(214,120,64,0.35)':'rgba(240,234,216,0.3)');
-  gg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=gg;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle=osC;ctx.fillRect(0,0,W,H);
   ctx.restore();
   ctx.globalAlpha=1;};
 
