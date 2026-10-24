@@ -26,7 +26,7 @@
 // Loaded BEFORE the engine; every engine global resolves at call time.
 // The engine calls:
 //   ANIM.step(e,dt)   at the very top of updateEnemy / updateBoss
-//   ANIM.pose(e)      lazily, from drawEnemy / drawFeet
+//   ANIM.pose(e)      lazily, from drawEnemy / drawLegs
 // ============================================================================
 
 window.ANIM=(function(){
@@ -38,12 +38,12 @@ function rr(a,b){return a+Math.random()*(b-a);}
 // which attacks swing a blade (get the arc smear) and which shoot (recoil)
 const SMEAR={melee:1,slam:1,poke:1,lunge:1,riposte:1,foxtackle:1,slamwave:1};
 const RECOIL={volley:1,arrow:1,spray:1};
-const HOVER={wraith:1,mirror:1,wisp:1};
+const HOVER={wraith:1,mirror:1,wisp:1,sorc:1,broker:1};
 
 // one small pose object per body — created once, mutated forever
 function pose(e){
   let a=e._a;
-  if(!a)a=e._a={lu:1,sq:1,swy:0,lift:0,tilt:0,sc:1,smear:0,ph:0,fA:0,imp:0,hk:0,
+  if(!a)a=e._a={lu:1,sq:1,swy:0,lift:0,tilt:0,sc:1,smear:0,ph:0,fA:0,imp:0,hk:0,spd:0,tr:0,
     seed:Math.random()*TAU};
   return a;}
 
@@ -69,6 +69,10 @@ function step(e,dt){
   // off on stopping, so feet finish their stride instead of freezing mid-air
   if(moving)a.ph+=dt*(1.9+spd*.0125);
   a.fA+=((moving?1:0)-a.fA)*(1-Math.exp(-9*dt));
+  // update 2.9 「歩」: the body's honest speed, published for the cloth that
+  // follows it — a rag eases in above a jog, eases out below it
+  a.spd=spd;
+  a.tr+=((spd>110?clamp((spd-110)/170,0,1):0)-a.tr)*(1-Math.exp(-4*dt));
 
   // ---- stance targets ------------------------------------------------------
   let tLu=1,tSq=1,tSwy=0,tLift=0,tTilt=0;
@@ -127,7 +131,8 @@ function step(e,dt){
   }
 
   // hover types drift with a gentle roll — spirits never quite stand
-  if(HOVER[e.type]){tTilt+=Math.sin(e.bob*.45+a.seed)*.045;tLift+=Math.sin(e.bob*.3)*1.5;}
+  if(HOVER[e.type]){tTilt+=Math.sin(e.bob*.45+a.seed)*.045;tLift+=Math.sin(e.bob*.3)*1.5;
+    if(e.type==='sorc')tLift+=2.5;} // the hem keeps its inch of quiet air
 
   // ---- the walk cycle rides on top of the stance ---------------------------
   if(a.fA>.02&&(st==='seek'||st==='idle'||st==='channel'||st==='recover')){

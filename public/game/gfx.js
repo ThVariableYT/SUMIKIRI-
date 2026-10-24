@@ -223,15 +223,25 @@ A.post=function(){
   bBC.drawImage(bA,0,0,bB.width,bB.height);
 
   // composite: light added back over the world
+  // update 2.9 「疾」: one composite instead of two — the wide halo folds back
+  // into the tight glow at its own exact alpha ratio (a2/a1, so the screen
+  // sees a1·A + a2·B, the arithmetic it always saw), and the page takes a
+  // single additive sheet per frame instead of two fullscreen passes
   const Q=(typeof A.q==='number'&&A.q>0)?A.q:1;
+  const a1=(bright?.32:dark?.46:.38)*Q;
+  const a2=(bright?.2:dark?.34:.26)*Q;
+  if(a1>0&&a2>0){
+    bAC.globalCompositeOperation='lighter';
+    bAC.globalAlpha=Math.min(1,a2/a1);
+    bAC.drawImage(bB,0,0,bA.width,bA.height);
+    bAC.globalCompositeOperation='source-over';
+    bAC.globalAlpha=1;}
   ctx.save();
   ctx.imageSmoothingEnabled=true;
   try{ctx.imageSmoothingQuality='high';}catch(e){} // update 2.4: the bloom breathes without stepping
   ctx.globalCompositeOperation='lighter';
-  ctx.globalAlpha=(bright?.32:dark?.46:.38)*Q;
+  ctx.globalAlpha=a1;
   ctx.drawImage(bA,0,0,W,H);
-  ctx.globalAlpha=(bright?.2:dark?.34:.26)*Q;
-  ctx.drawImage(bB,0,0,W,H);
   ctx.restore();
   ctx.globalAlpha=1;
 };

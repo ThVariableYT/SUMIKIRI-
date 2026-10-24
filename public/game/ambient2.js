@@ -59,7 +59,7 @@ A.onFloor=function(act){
     const a=.05+.04*Math.sin(G.t*.13+seed*2);
     if(a<=.005)continue;
     ctx.globalAlpha=a;
-    ctx.fillStyle=act>=11&&act!==14?'#6a5550':'#5c5850';
+    ctx.fillStyle=(act>=11&&act<=16&&act!==14)?'#6a5550':'#5c5850';
     ctx.beginPath();
     ctx.ellipse(cx,cy,w,h,hash01(seed*9),0,TAU);
     ctx.ellipse(cx+w*.55,cy+h*.3,w*.6,h*.7,0,0,TAU);
@@ -199,7 +199,7 @@ A.onScreen=function(){
   if(osKey!==key){osKey=key;
     const r=Math.max(W,H)*.5;
     osC=ctx.createRadialGradient(lx,ly,0,lx,ly,r);
-    const warm=act>=11;
+    const warm=act>=11&&act<=16; // update 3.0 終: the last page breathes white, not warm
     osC.addColorStop(0,warm?'rgba(214,120,64,0.35)':'rgba(240,234,216,0.3)');
     osC.addColorStop(1,'rgba(0,0,0,0)');}
   const br=.5+.5*Math.sin(G.t*.23); // a very slow breath

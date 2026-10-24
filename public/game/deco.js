@@ -765,6 +765,20 @@ D.buildFloor=function(act,g,seed){
     const[ix,iy]=farPos(act,0,2,seed+1061);pInkstone(g,ix,iy,1,seed+1);
     const[tx,ty]=farPos(act,1,2,seed+1063);pSketchTorii(g,tx,ty,.9,seed+2);
   }
+  else if(act===17){ // update 3.0 終 — the margin: a torii only half-committed to, a penciled fence
+    const[tx,ty]=farPos(act,0,3,seed+1071);pSketchTorii(g,tx,ty,.85,seed+1);
+    const[fx,fy]=farPos(act,1,3,seed+1073);pFence(g,fx,fy,1,5,seed+2);
+    const[hx,hy]=farPos(act,2,3,seed+1077);pHigan(g,hx,hy,1,4,seed+3);
+  }
+  else if(act===18){ // update 3.0 終 — the parade: stone lanterns lit for the procession, red flowers at the roadside
+    const[t1,t1y]=farPos(act,0,3,seed+1081);pToro(g,t1,t1y,1,seed+1,true);
+    const[t2,t2y]=farPos(act,1,3,seed+1083);pToro(g,t2,t2y,.9,seed+2,true);
+    const[hx,hy]=farPos(act,2,3,seed+1087);pHigan(g,hx,hy,1,6,seed+3);
+  }
+  else if(act===19){ // update 3.0 終 — the last page: the author's inkstone, and one wish left hanging
+    const[ix,iy]=farPos(act,0,2,seed+1091);pInkstone(g,ix,iy,1.05,seed+1);
+    const[ex,ey]=farPos(act,1,2,seed+1093);pEma(g,ex,ey,.95,seed+2);
+  }
   }catch(e){/* a dressed stage must never break the game */}};
 
 // ============================================================================
@@ -806,6 +820,13 @@ D.build=function(act){
         rx:60+hash01(i*4.4)*90,ry:26+hash01(i*6.6)*40,ph:hash01(i*9.9)*T2});}
   if(act===9){ // the night road's shrine lamp breathes
     live.push({k:'lpost',x:RW*.5+hash01(9.1)*200,y:RH*.3,h:120,ph:1.7});}
+  if(act>=17){ // update 3.0 終: the last page — unpainted banners, and paper prayers
+    const bn=act===18?2:1;
+    for(let i=0;i<bn;i++){const[x,y]=farPos(act,i+2,bn+1,act*77+i*4.4);
+      live.push({k:'sash',x,y,h:140+hash01(i*8.8)*36,
+        col:act===18?'#a03226':'#e8e2d2',ph:hash01(i*2.7)*T2});}
+    if(act===18)for(let i=0;i<2;i++){const[x,y]=farPos(act,i+6,3,act*77+i*6.2);
+      live.push({k:'shide',x,y,span:80+hash01(i*3.3)*30,n:5+(i%2),ph:hash01(i*5.5)*T2});}}
   G.live=live;
   // far and near bands are baked once per stage
   D.farBake(act);
@@ -1226,7 +1247,7 @@ function paintFar(g,act){
       if(hash01(seed+i*3)>.5)ln(g,x,y-h,x+9,y-h+6,3,'rgba(48,42,38,0.5)');}
     g.fillStyle=fade('rgba(110,102,94,0.3)');g.fillRect(0,H2*.5,W2,H2*.5);
   }
-  else{ // 16 — the sealed blank: a grid and a ghost of a mountain
+  else if(act===16){ // 16 — the sealed blank: a grid and a ghost of a mountain
     g.strokeStyle='rgba(70,70,84,0.07)';g.lineWidth=1;
     for(let i=0;i<9;i++){const x=(i+1)*W2/10;
       g.beginPath();g.moveTo(x,30);g.lineTo(x,H2*.7);g.stroke();}
@@ -1235,6 +1256,51 @@ function paintFar(g,act){
     g.quadraticCurveTo(W2*.5,96,W2*.88,120);g.stroke();
     g.fillStyle='rgba(179,55,42,0.10)';
     g.beginPath();g.arc(W2*.7,70,10,0,T2);g.fill();
+  }
+  else if(act===17){ // 17 — the unwritten margin: pencil ghosts of mountains
+    g.fillStyle='rgba(246,243,232,0.55)';g.fillRect(0,0,W2,H2);
+    for(let L=0;L<2;L++){ // two half-erased ridge lines, no fill
+      g.strokeStyle=L?'rgba(29,26,22,0.14)':'rgba(29,26,22,0.22)';
+      g.lineWidth=L?1.2:1.7;
+      g.beginPath();g.moveTo(0,116+L*24);
+      let pen=true;
+      for(let x=0;x<=W2;x+=90){
+        const y=116+L*24+vnoiseFar(x*.006+seed+L*7)*(24+L*10);
+        if(pen)g.lineTo(x,y);else g.moveTo(x+14,y);
+        pen=hash01(seed+x*.01+L)>.28; // the line forgets itself
+      }
+      g.stroke();}
+    g.strokeStyle='rgba(29,26,22,0.10)';g.lineWidth=1;
+    g.beginPath();g.moveTo(W2*.12,148);g.lineTo(W2*.44,148);g.stroke();
+    g.fillStyle='rgba(179,55,42,0.08)'; // one seal drying in the sky
+    g.beginPath();g.arc(W2*.82,54,8,0,T2);g.fill();
+  }
+  else if(act===18){ // 18 — the hundred parade: a dark procession line under dusk
+    g.fillStyle='rgba(38,34,52,0.34)';g.fillRect(0,0,W2,H2);
+    g.fillStyle='rgba(26,24,38,0.6)';
+    g.beginPath();g.moveTo(0,140);
+    for(let x=0;x<=W2;x+=140)g.lineTo(x,140+vnoiseFar(x*.005+seed)*22);
+    g.lineTo(W2,H2);g.lineTo(0,H2);g.closePath();g.fill();
+    // the walkers: a long line of small dark silhouettes, lanterns among them
+    for(let i=0;i<26;i++){
+      const x=(i*.05+.015)*W2+Math.sin(i*2.7)*6,y=136+vnoiseFar(i*3+seed)*16;
+      g.fillStyle='rgba(22,20,32,0.8)';
+      g.beginPath();g.arc(x,y,3.4,0,T2);g.fill();
+      g.beginPath();g.moveTo(x-3,y+2);g.lineTo(x+3,y+2);g.lineTo(x,y+14);g.closePath();g.fill();
+      if(i%5===2){g.drawImage(glowEmber,x-11,y-8,22,22);
+        g.fillStyle='#e8a854';g.beginPath();g.arc(x,y-8,1.8,0,T2);g.fill();}}
+    g.fillStyle=fade('rgba(38,34,52,0.35)');g.fillRect(0,H2*.5,W2,H2*.5);
+  }
+  else if(act===19){ // 19 — the last page: almost nothing, and one red verdict
+    g.fillStyle='rgba(250,248,240,0.7)';g.fillRect(0,0,W2,H2);
+    g.strokeStyle='rgba(70,70,84,0.06)';g.lineWidth=1;
+    for(let i=0;i<7;i++){const x=(i+1)*W2/8;
+      g.beginPath();g.moveTo(x,26);g.lineTo(x,H2*.6);g.stroke();}
+    g.strokeStyle='rgba(29,26,22,0.10)';g.lineWidth=1.4; // the unfinished enso
+    g.beginPath();g.arc(W2*.5,110,44,.6,5.4);g.stroke();
+    g.fillStyle='rgba(179,55,42,0.30)'; // the author's seal, waiting
+    g.save();g.translate(W2*.5,110);g.rotate(.3);
+    g.fillRect(-9,-9,18,18);g.restore();
   }
   g.restore();
   // every far scene ends in mist so the band never cuts the page
@@ -1350,6 +1416,19 @@ D.nearBake=function(act){
     g.strokeStyle='rgba(70,70,84,0.08)';g.lineWidth=1;
     for(let i=0;i<8;i++){const x=hash01(seed+i*11)*RW;
       g.beginPath();g.moveTo(x-6,NEARH-10);g.lineTo(x+6,NEARH-10);g.moveTo(x,NEARH-16);g.lineTo(x,NEARH-4);g.stroke();}}
+  else if(act===17){ // update 3.0 終: pencil grass at the margin's hem
+    for(let i=0;i<14;i++)tuft(WALL+30+hash01(seed+i*2.6)*(RW-60),'rgba(74,68,60,0.35)');
+    g.strokeStyle='rgba(29,26,22,0.16)';g.lineWidth=1.6;
+    g.beginPath();g.moveTo(RW*.1,NEARH-14);
+    g.quadraticCurveTo(RW*.5,NEARH-20,RW*.9,NEARH-12);g.stroke();}
+  else if(act===18){ // update 3.0 終: ink drips hang off the parade's hem
+    g.strokeStyle='rgba(22,20,32,0.5)';
+    for(let i=0;i<16;i++){const x=hash01(seed+i*4.1)*RW;
+      g.lineWidth=1.6+(hash01(seed+i)*2|0);
+      g.beginPath();g.moveTo(x,0);
+      g.quadraticCurveTo(x+(hash01(seed+i*3)-.5)*12,24,x+(hash01(seed+i*7)-.5)*16,38+hash01(seed+i*5)*22);g.stroke();
+      g.fillStyle='rgba(22,20,32,0.5)';
+      g.beginPath();g.arc(x+(hash01(seed+i*7)-.5)*16,40+hash01(seed+i*5)*22,1.6,0,T2);g.fill();}}
   // act 7 keeps a clean hem on purpose
   nearC=c;nearAct=act;
   }catch(e){nearC=null;}};

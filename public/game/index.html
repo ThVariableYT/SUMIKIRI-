@@ -217,6 +217,26 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 .act-node.side-node{border-style:dashed}
 .act-node.side-node .a-kan{color:var(--red)}
 
+/* update 3.0 「終」: the third road — the last page. it does not wear the
+   vermilion; it wears ink and the red seal, on the whitest paper */
+.story-head.s3{border-bottom:4px double var(--ink)}
+.story-head.s3 .sk{color:var(--red)}
+.act-node.s3{background:var(--paper3)}
+.act-node.s3 .a-kan{color:var(--red)}
+.s3-done{margin:14px 6px 0;padding:10px 12px;border:2px dashed var(--ink2);color:var(--ink2);font-size:11.5px;letter-spacing:.14em;display:flex;align-items:center;gap:10px}
+#hero-pick{display:none}
+#hero-pick.on{display:flex;flex-direction:column;gap:14px;margin:18px 0 8px;padding:20px 14px;border:2px solid var(--ink);background:var(--paper3);box-shadow:4px 4px 0 rgba(29,26,22,.24);animation:hp-in .18s ease}
+@keyframes hp-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hp-head{font-weight:800;letter-spacing:.18em;font-size:13.5px;text-align:center}
+.hp-cards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.hp-card{flex:1 1 170px;max-width:250px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 12px 16px;border:2px solid var(--ink);background:var(--paper2);cursor:pointer;font-family:inherit;box-shadow:3px 3px 0 rgba(29,26,22,.24);transition:transform .13s ease,box-shadow .13s ease,border-color .13s ease}
+.hp-card:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 rgba(179,55,42,.32);border-color:var(--red)}
+.hp-card .hk{font-size:34px;font-weight:800;line-height:1}
+.hp-card[data-hero="1"] .hk{color:var(--ink)}
+.hp-card[data-hero="2"] .hk{color:var(--red)}
+.hp-card .hn{font-weight:800;font-size:12.5px;letter-spacing:.1em}
+.hp-card .hs{font-size:10.5px;color:var(--ink2);line-height:1.55;text-align:center}
+
 .helpgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:6px 26px;padding:8px 2px}
 .helpcol h4{font-size:15px;font-weight:800;letter-spacing:.18em;border-bottom:1px solid var(--ink2);padding-bottom:6px;margin:12px 0 8px}
 .hrow{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);padding:4.5px 0;border-bottom:1px dotted rgba(74,68,60,.25)}
@@ -228,7 +248,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 .brow .bd{font-size:12px;color:var(--ink2);line-height:1.5}
 
 #s-pause .big-kan{color:var(--ink);transform:rotate(0)}
-.recs-tabs{display:flex;gap:8px;margin:8px 0 12px;justify-content:center}
+.recs-tabs{display:flex;gap:8px;margin:8px 0 12px;justify-content:center;flex-wrap:wrap}
 .recs-tabs button{font-family:inherit;font-size:15px;font-weight:700;letter-spacing:.14em;background:transparent;border:1.5px solid var(--ink);color:var(--ink);padding:7px 20px;cursor:pointer}
 .recs-tabs button.on{background:var(--ink);color:var(--paper2)}
 .rec-list{width:100%;max-width:640px}
@@ -491,9 +511,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="t-kanji"><span>墨</span><span>斬</span><span class="seal title-seal">印</span></div>
     <div class="t-side">
       <h1>SUMIKIRI</h1>
-      <div class="tag">a hack &amp; slash painted in ink · update 2.7 「映」 the cinematic cut</div>
+      <div class="tag">a hack &amp; slash painted in ink · update 3.0 「終」 the last page · the final edition</div>
       <nav class="menu">
-        <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Roads <small class="mono" style="font-size:11px;color:var(--ink2)">· two stories</small></button>
+        <button class="mbtn" data-go="acts"><span class="idx">一</span>Walk the Roads <small class="mono" style="font-size:11px;color:var(--ink2)">· three stories</small></button>
         <button class="mbtn" data-go="records"><span class="idx">二</span>Records of Ink</button>
         <button class="mbtn" data-go="chrono" aria-label="The Chronicle — every change the ink has taken"><span class="idx" style="display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:block"><path d="M5 4.6h14"/><path d="M5 19.4h14"/><path d="M7 6.2h10V17c-1.7-.9-3.3-.9-5 0-1.7.9-3.3.9-5 0z"/><path d="M9.7 9.4h4.6"/><path d="M9.7 12.4h4.6"/></svg></span>The Chronicle</button>
         <button class="mbtn" data-go="shrine"><span class="idx">三</span>The Shrine</button>
@@ -510,7 +530,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 
 <div class="screen" id="s-acts">
   <div class="page">
-    <div class="page-head"><h2>THE ROADS 路</h2><span class="sub">two stories · one page</span></div>
+    <div class="page-head"><h2>THE ROADS 路</h2><span class="sub">three stories · one page</span></div>
     <div class="page-body">
       <div id="roads-body"></div>
       <div class="btnrow" style="margin-top:14px"><button class="mbtn" data-go="title"><span class="idx">◆</span>Back</button></div>
@@ -643,7 +663,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 
 <div class="screen" id="s-victory">
   <div class="big-kan" style="color:var(--ink)">終</div>
-  <div class="death-line" style="font-size:19px;max-width:520px;line-height:1.8">The page is blank again.<br>It was never empty.</div>
+  <div class="death-line" id="victory-line" style="font-size:19px;max-width:520px;line-height:1.8">The page is blank again.<br>It was never empty.</div>
   <div class="stat-line" id="victory-stats"></div>
   <div class="rec-note" id="victory-rec"></div>
   <div class="btnrow" id="victory-btns"></div>
@@ -654,7 +674,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
     <div class="page-head"><h2>RECORDS OF INK 銘</h2><span class="sub">names carved by other hands</span></div>
     <div class="page-body">
       <div class="recs-tabs">
-        <button data-rec="abyss">ABYSS 無</button><button data-rec="meido">NIGHT 冥</button><button data-rec="gauntlet">GAUNTLET 連</button><button data-rec="story">INK 墨</button><button data-rec="story2">朱 VERMILION</button>
+        <button data-rec="abyss">ABYSS 無</button><button data-rec="meido">NIGHT 冥</button><button data-rec="gauntlet">GAUNTLET 連</button><button data-rec="story">INK 墨</button><button data-rec="story2">朱 VERMILION</button><button data-rec="story3">終 FINAL</button>
       </div>
       <div class="rec-list" id="rec-list"><div class="rec-empty">gathering the pages…</div></div>
       <div id="rec-own"></div>
@@ -722,10 +742,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   <button class="mbtn" id="rotate-dismiss"><span class="idx">◆</span>Play anyway</button>
 </div>
 <script src="story2.js"></script>
+<script src="story3.js"></script>
 <script src="ambient2.js"></script>
 <script src="gfx.js"></script>
 <script src="models.js"></script>
 <script src="anim.js"></script>
+<script src="deco.js"></script>
 <script src="menufx.js"></script>
 <script>
 'use strict';
@@ -761,7 +783,7 @@ const store={
 
 const SAVE_KEY='sumikiri_v1';
 const defaultSave=()=>({ash:0,meta:{vit:0,str:0,spd:0,fortune:0,discipline:0,rejuv:0,talisman:0,ki:0,mirror:0,stance:0,step:0,edge:0,rhythm:0,gourd:0},
-  weapons:{katana:true},lastWeapon:'katana',arts:{en:true},art:'en',keys:{},unlockedAct:1,unlockedAct2:1,achieved2:false,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
+  weapons:{katana:true},lastWeapon:'katana',arts:{en:true},art:'en',keys:{},unlockedAct:1,unlockedAct2:1,achieved:false,achieved2:false,achieved3:false,unlockedAct3:0,lastHero3:1,abyssUnlocked:false,abyssBest:0,gauntletUnlocked:false,gauntletBest:0,meidoBest:0,
   difficulty:1,shake:true,numbers:true,codex:true,haptic:true,gfx:1,seenHelp0:false,recordsName:'',stats:{kills:0,deaths:0,bestCombo:0,playTime:0}});
 let SAVE=defaultSave();
 (function(){
@@ -1032,7 +1054,7 @@ const RW=1700,RH=1000,WALL=56;
 
 const G={mode:'title',run:null,enemies:[],projs:[],parts:[],floats:[],slashes:[],teles:[],rings:[],marks:[],pickups:[],ghosts:[],fx:[],
   cam:{x:RW/2,y:RH/2},trauma:0,hitstop:0,slowT:0,ts:1,flash:0,flashCol:'#f6f1e2',wash:0,hurtV:0,musicLevel:.15,
-  floorC:null,floorMip:null,decalC:null,dctx:null,waveIdx:-1,waves:[],spawnQ:[],spawnT:0,waveGap:0,clearing:0,introT:0,bossIntroT:0,shakeX:0,shakeY:0,
+  floorC:null,floorMip:null,decalC:null,dctx:null,fctx:null,mctx:null,waveIdx:-1,waves:[],spawnQ:[],spawnT:0,waveGap:0,clearing:0,introT:0,bossIntroT:0,shakeX:0,shakeY:0,
   style:{pts:0,rank:0,combo:0,t:9,anim:0},hints:null,tutMoved:false,tutHit:false,tutDash:false,tutParry:false,tutDrink:false,
   ambience:[],t:0,boss:null,blessPicks:null,prevMode:null,grantQ:[],grantShow:null,
   wind:0,windT:0,gusts:[],lbx:0,lbxT:0,zp:0,wipe:null,boltT:6,lightningAt:0,props:[],fireflies:[],ripples:[],gauntIdx:0,
@@ -1044,7 +1066,13 @@ const G={mode:'title',run:null,enemies:[],projs:[],parts:[],floats:[],slashes:[]
   zCine:1,zw:0,parX:0,parY:0};
 let P=null;
 const bl=id=>G.run?(G.run.blessings[id]||0):0;
-const curAct=()=>G.run?(G.run.meido?9:(G.run.abyss?Math.min(7,1+Math.floor(G.run.wave/4)):(G.run.gauntlet?7:(G.run.story===2?10+G.run.act:G.run.act)))):1;
+const curAct=()=>G.run?(G.run.meido?9:(G.run.abyss?Math.min(7,1+Math.floor(G.run.wave/4)):(G.run.gauntlet?7:(G.run.story===2?10+G.run.act:(G.run.story===3?16+G.run.act:G.run.act))))):1;
+// update 3.0 「終」: the last page speaks in act numbers 17..19. the three
+// helpers every system below agrees on — which hand walks, how deep into a
+// story the page is (for flesh and harm), and whether the gate is open
+const heroIs2=()=>!!(G.run&&(G.run.story===2||G.run.hero===2));
+const storyAct=()=>G.run?(G.run.story===2?G.run.act:(G.run.story===3?G.run.act+5:G.run.act)):1;
+const finaleOpen=()=>!!((SAVE.achieved||SAVE.achieved2)||SAVE.unlockedAct>=7||(SAVE.unlockedAct2||1)>=6); // a road walked to its end opens the last page
 resize();
 
 const WEAPONS={
@@ -1136,6 +1164,7 @@ const BOSSES={
   hollow:{name:'The Hollow Daimyō',kanji:'灰',hp:1280,r:38,spd:92,touch:10,moves:['charge','volley','bolts','summon','nova','chainDash'],summon:'wraith'},
   kami:{name:'The Nameless Kami',kanji:'空',hp:1580,r:32,spd:100,touch:9,phased:true,moves:['rain','spiralBurst','summon','blinkVolley'],moves2:['mirrorDash','wave','clones','volley'],summon:'kappa'}};
 if(window.STORY2)Object.assign(BOSSES,STORY2.bosses); // story 2: the six keepers of 朱
+if(window.STORY3)Object.assign(BOSSES,STORY3.bosses); // story 3: the keepers of the last page 終
 const GAUNTLET=['uzu','goroki','zangetsu','orochi','jin','sojobo','yuki','raijin','hollow','kami'];
 
 // ---- the night road 冥 ------------------------------------------------------
@@ -1236,6 +1265,7 @@ const BESTIARY={
   hollow:'Act 4 of the spirit. Charges, volleys, calls the wraiths. Grey, but not empty.',
   kami:'Act 7. The painter\u2019s hand. At half it cracks and learns your tricks back.'};
 if(window.STORY2)Object.assign(BESTIARY,STORY2.bestiary); // story 2: field notes for the new road
+if(window.STORY3)Object.assign(BESTIARY,STORY3.bestiary); // story 3: field notes for the last page
 
 // ---- the codex: first-sight cards ---------------------------------------------
 // every foe gets one introduction per run. dying and walking again keeps the
@@ -1352,6 +1382,7 @@ const CODEX={
       ['Blink Barrage','arrives firing — deflect the shards','d'],
       ['Second Hand','past half: mirror dashes, your own clones, waves of ink — nothing you have not survived before','p']]}};
 if(window.STORY2)Object.assign(CODEX,STORY2.codex); // story 2: the vermilion codex
+if(window.STORY3)Object.assign(CODEX,STORY3.codex); // story 3: the last three cards the page will file
 
 // ---- the ink kitchen: everything you see is baked at boot on offscreen
 // canvases, with a few live layers (wind, weather, light) drawn per frame.
@@ -1493,457 +1524,656 @@ function kasa(g,x,y,rx,ry){ // woven straw hat, rings and brim light
   g.strokeStyle='rgba(246,241,226,0.28)';g.lineWidth=1.3;
   g.beginPath();g.ellipse(x,y,rx*.92,ry*.92,0,-.8,.5);g.stroke();}
 
+// ---- update 2.8 「威」: THE THREAT VOCABULARY — how ink says "predator" --------
+// the mask is the whole lesson: a thing that means to bite reads as a thing
+// that has bitten before. every fighter below speaks these three words:
+//   glare — slitted eyes under a heavy brow: intent, not decoration
+//   maw   — a fanged underbite breaking the head's front edge
+//   chips — steel that has met other steel and kept the scars
+function glare(g,x,y,s,col,dy){
+  const eDy=dy===undefined?s*2.1:dy;
+  for(const sgn of [-1,1]){
+    g.save();g.translate(x,y+sgn*eDy);g.rotate(-sgn*.42);
+    g.fillStyle=col;
+    g.beginPath();g.moveTo(-s*1.6,0);g.lineTo(s*1.4,-s*.62);g.lineTo(s*1.4,s*.62);g.closePath();g.fill();
+    g.strokeStyle='rgba(14,11,9,0.6)';g.lineWidth=Math.max(1,s*1.05);g.lineCap='round';
+    g.beginPath();g.moveTo(-s*1.9,-s*.05);g.lineTo(-s*.3,-s*.55);g.stroke();
+    g.restore();}}
+function maw(g,x,y,s,col){
+  // the jaw: a dark wedge breaking the head's own edge, fangs overlapping it
+  g.fillStyle=col||'#241f1c';
+  g.beginPath();g.moveTo(x,y-s*1.4);g.lineTo(x+s*2.2,y);g.lineTo(x,y+s*1.4);g.closePath();g.fill();
+  g.fillStyle='#e6dfcc';
+  for(const sgn of [-1,1]){
+    g.beginPath();g.moveTo(x+s*.25,y+sgn*s*.9);g.lineTo(x+s*1.15,y+sgn*s*.2);g.lineTo(x+s*.65,y+sgn*s*1.2);g.closePath();g.fill();}}
+function chips(g,x0,y0,x1,y1,seed){
+  // steel that has seen duty: little nicks bitten out of the bright edge
+  const dx=x1-x0,dy=y1-y0,l=Math.hypot(dx,dy)||1;
+  const nx=-dy/l,ny=dx/l;
+  g.fillStyle='#33302c';
+  for(let i=1;i<=3;i++){const t=.2+hash01((seed||7)+i*3.1)*.6;
+    const cx=x0+dx*t+nx*1.1,cy=y0+dy*t+ny*1.1;
+    g.beginPath();g.moveTo(cx,cy);g.lineTo(cx+dx/l*2.2,cy+dy/l*2.2);g.lineTo(cx+dx/l*.7,cy+dy/l*.7);g.closePath();g.fill();}}
+
 const ESPR={};
 function bakeEnemies(){
   const defs={
-    // kappa: river imp — shelled back, dish head, crooked blade
+    // kappa: river imp — hunched shell-back, knuckle-dragging claws, cracked dish
     kappa(g){
-      caps(g,-7,-6,-16,-11,3,'#3a4a38');caps(g,-7,6,-16,11,3,'#3a4a38');
-      oBlob(g,-4,0,13,11,'#41503c');
-      g.strokeStyle='#2c3a2c';g.lineWidth=1.1;
-      for(let i=1;i<=3;i++){g.beginPath();g.ellipse(-4,0,13-i*3,11-i*2.7,0,0,TAU);g.stroke();}
-      oBlob(g,5,0,8,6.5,'#4a5a44');sheen(g,5,-1,6.5,5);
-      caps(g,5,-4,13,-9,2.8,'#41503c');
-      steel(g,12,7,31,12,2.2);oBlob(g,12,7,3,2,'#3a3430');
-      caps(g,5,4,12,8,2.8,'#4a5a44');
-      oBlob(g,9,0,6.5,5.5,'#5a6a50');
-      g.fillStyle='#c8c3b0';g.beginPath();g.ellipse(14.5,0,4.6,2.2,0,0,TAU);g.fill();
-      g.strokeStyle='#8a8574';g.lineWidth=1.5;g.beginPath();g.arc(8,0,7,0,TAU);g.stroke();
-      g.strokeStyle='#33402e';g.lineWidth=1.8;
-      for(let i=-1;i<=1;i++)caps(g,8,i*3.4,4.5,i*5.2,1.6,'#33402e');
-      g.fillStyle=RED;g.beginPath();g.arc(10.5,-2.6,1.2,0,TAU);g.arc(10.5,2.6,1.2,0,TAU);g.fill();},
-    // oni: the proud slab of muscle — horns, mask, studded kanabō
+      caps(g,-8,-8,-20,-15,4.2,'#3a4a38');caps(g,-8,8,-20,15,4.2,'#3a4a38');
+      oBlob(g,-4,0,14,12,'#41503c');
+      g.strokeStyle='#242c22';g.lineWidth=1.2;
+      for(let i=1;i<=3;i++){g.beginPath();g.ellipse(-4,0,14-i*3.2,12-i*3,0,0,TAU);g.stroke();}
+      g.strokeStyle='#242c22';g.lineWidth=1.1; // an old wound in the shell
+      g.beginPath();g.moveTo(-13,-6);g.lineTo(-8,-2);g.lineTo(-12,3);g.stroke();
+      oBlob(g,5,0,9,7.5,'#4a5a44');sheen(g,5,-1,7,5.5);
+      caps(g,3,-9,17,-16,3.6,'#41503c');caps(g,3,9,17,16,3.6,'#41503c'); // arms that reach past the body
+      caps(g,15,-16,21,-19,1.5,'#c9c2ab');caps(g,16,-14,23,-15,1.5,'#c9c2ab'); // splayed knuckle claws
+      caps(g,15,16,21,19,1.5,'#c9c2ab');caps(g,16,14,23,15,1.5,'#c9c2ab');
+      oBlob(g,9,0,7,6,'#5a6a50');
+      g.fillStyle='#c8c3b0';g.beginPath();g.ellipse(14.5,0,5,2.4,0,0,TAU);g.fill();
+      g.strokeStyle='#8a8574';g.lineWidth=1.5;g.beginPath();g.arc(8,0,7.4,0,TAU);g.stroke();
+      g.strokeStyle='#33402e';g.lineWidth=1.8; // the crack across the bowl
+      g.beginPath();g.moveTo(12.5,-1.8);g.lineTo(10,.4);g.lineTo(13,1.6);g.stroke();
+      g.strokeStyle='#33402e';g.lineWidth=1.7;
+      for(let i=-1;i<=1;i++)caps(g,8,i*3.6,4.5,i*5.6,1.5,'#33402e');
+      glare(g,10,0,2,RED,2.9); // slits wide enough to read across the field
+      maw(g,12.5,0,2.2); // an imp's grin, all beak and teeth
+      steel(g,16,11,33,17,2.2);oBlob(g,16,11,3,2,'#3a3430');
+      chips(g,16,11,33,17,31); // the blade has met other blades
+      caps(g,11,8,16,13,2.4,'#4a5a44');},
+    // oni: the proud slab — muscle like geology, a club that has ended walls
     oni(g){
-      caps(g,-14,-13,-32,-19,6.5,'#4a2e28');caps(g,-14,13,-32,19,6.5,'#4a2e28');
-      oBlob(g,-6,0,24,20,'#5a3a34');sheen(g,-6,-5,20,16);
-      caps(g,-14,-8,-2,-11,1.5,'#7a4a40');caps(g,-16,4,-4,7,1.5,'#7a4a40');
-      oBlob(g,-14,-16,9,7,'#3d2721');oBlob(g,-14,16,9,7,'#3d2721');
-      oBlob(g,4,0,11,9,'#6b423a');
-      g.fillStyle='#e6dfcc';
-      g.beginPath();g.moveTo(8,-6);g.lineTo(20,-13);g.lineTo(11,-3);g.closePath();g.fill();
-      g.beginPath();g.moveTo(8,6);g.lineTo(20,13);g.lineTo(11,3);g.closePath();g.fill();
-      g.fillStyle='#ded7c2';g.beginPath();g.ellipse(11,0,7,6,0,0,TAU);g.fill();
-      g.fillStyle='#241f1c';
-      g.beginPath();g.moveTo(15,-4);g.lineTo(19,-3);g.lineTo(16,-1);g.closePath();g.fill();
-      g.beginPath();g.moveTo(15,4);g.lineTo(19,3);g.lineTo(16,1);g.closePath();g.fill();
-      g.fillStyle=RED;g.beginPath();g.arc(11,-3,1.8,0,TAU);g.arc(11,3,1.8,0,TAU);g.fill();
-      caps(g,8,-8,22,-16,6,'#5a3a34');caps(g,8,8,20,12,6,'#5a3a34');
+      caps(g,-16,-14,-37,-22,7.5,'#4a2e28');caps(g,-16,14,-37,22,7.5,'#4a2e28');
+      oBlob(g,-6,0,26,22,'#5a3a34');sheen(g,-6,-6,22,18);
+      g.strokeStyle='#3d2721';g.lineWidth=1.6; // gouged hide: old wounds in darker flesh
+      g.beginPath();g.moveTo(-19,-9);g.lineTo(-13,-5);g.lineTo(-18,0);g.stroke();
+      g.beginPath();g.moveTo(-9,10);g.lineTo(-4,14);g.lineTo(-10,15);g.stroke();
+      caps(g,-15,-9,-3,-12,1.5,'#7a4a40');caps(g,-17,4,-5,7,1.5,'#7a4a40');
+      oBlob(g,-14,-18,11,8.5,'#3d2721');oBlob(g,-14,18,11,8.5,'#3d2721'); // shoulder mounds
+      g.fillStyle='#d9d2bd'; // spikes breaking the silhouette
+      for(const sgn of [-1,1]){g.beginPath();g.moveTo(-20,sgn*24);g.lineTo(-25,sgn*33);g.lineTo(-15,sgn*25);g.closePath();g.fill();}
+      oBlob(g,4,0,12,10,'#6b423a');
+      g.fillStyle='#e6dfcc'; // the mask: a snarling oni-guin
+      g.beginPath();g.moveTo(9,-7);g.lineTo(22,-15);g.lineTo(12,-3);g.closePath();g.fill();
+      g.beginPath();g.moveTo(9,7);g.lineTo(22,15);g.lineTo(12,3);g.closePath();g.fill();
+      g.fillStyle='#ded7c2';g.beginPath();g.ellipse(12,0,7.5,6.5,0,0,TAU);g.fill();
+      maw(g,15,0,3.2); // the underbite
+      glare(g,11,0,2,RED,3.5);
+      caps(g,8,-9,24,-18,7,'#5a3a34');caps(g,8,9,23,16,7,'#5a3a34'); // arms like felled trees
       g.lineCap='butt';
-      g.strokeStyle='#241f1c';g.lineWidth=8;
-      g.beginPath();g.moveTo(20,12);g.lineTo(56,18);g.stroke();
-      g.lineWidth=11;g.beginPath();g.moveTo(52,17);g.lineTo(62,19);g.stroke();
+      g.strokeStyle='#241f1c';g.lineWidth=9;
+      g.beginPath();g.moveTo(20,13);g.lineTo(58,20);g.stroke();
+      g.lineWidth=13;g.beginPath();g.moveTo(50,18.4);g.lineTo(62,20.4);g.stroke();
       g.fillStyle='#3a3430';
-      for(let i=0;i<4;i++){const t=.55+i*.12;
-        g.beginPath();g.arc(20+36*t,12+6*t,2,0,TAU);g.fill();}
+      for(let i=0;i<5;i++){const t=.5+i*.11; // studded and cracked
+        g.beginPath();g.arc(20+38*t,13+7*t,2.2+hash01(i*3)*1.2,0,TAU);g.fill();}
       g.lineCap='round';},
-    // tengu: mountain scribe — feathered robes, long nose, war fan
+    // tengu: mountain scribe — ragged pinions, hooked beak, steel-ribbed gunbai
     tengu(g){
-      g.fillStyle='#221f28';
-      g.beginPath();g.moveTo(-4,-8);g.lineTo(-20,-16);g.lineTo(-14,-4);g.closePath();g.fill();
-      g.beginPath();g.moveTo(-4,8);g.lineTo(-20,16);g.lineTo(-14,4);g.closePath();g.fill();
+      g.fillStyle='#221f28'; // the mantle: torn feathers, points not hems
+      for(let i=0;i<5;i++){const w=.4+i*1.1;
+        g.beginPath();g.moveTo(-4,-8-i*1.4);
+        g.lineTo(-22-i*2.2,-12-i*3);g.lineTo(-15-i*1.5,-4-i*1.8);g.closePath();g.fill();
+        g.beginPath();g.moveTo(-4,8+i*1.4);
+        g.lineTo(-22-i*2.2,12+i*3);g.lineTo(-15-i*1.5,4+i*1.8);g.closePath();g.fill();}
       g.strokeStyle='#3a3542';g.lineWidth=1;
       for(let i=0;i<3;i++){caps(g,-6-i*4,-9-i*2,-16-i*3,-13-i*2,1,'#3a3542');
         caps(g,-6-i*4,9+i*2,-16-i*3,13+i*2,1,'#3a3542');}
-      oBlob(g,-1,0,14,12,'#2e2a33');sheen(g,-1,-3,11,9);
+      oBlob(g,-1,0,15,13,'#2e2a33');sheen(g,-1,-3,12,10);
       caps(g,-8,-8,2,-11,3.2,'#8c2b1f');caps(g,-8,8,2,11,3.2,'#8c2b1f');
-      oBlob(g,8,0,8,7,'#b3372a');
-      g.fillStyle='#c9932a';g.beginPath();g.moveTo(12,-2.5);g.lineTo(26,0);g.lineTo(12,2.5);g.closePath();g.fill();
-      g.fillStyle=INK;g.beginPath();g.arc(9,-3,1.6,0,TAU);g.arc(9,3,1.6,0,TAU);g.fill();
-      caps(g,2,-8,10,-12,2,'#c9932a');caps(g,2,8,10,12,2,'#c9932a');
+      oBlob(g,8,0,9,8,'#b3372a');
+      g.fillStyle='#c9932a'; // the beak: longer now, and hooked at the tip
+      g.beginPath();g.moveTo(12,-2.8);g.lineTo(28,0);g.lineTo(25,1.8);g.lineTo(12,2.8);g.closePath();g.fill();
+      g.fillStyle='#8c2b1f';g.beginPath();g.moveTo(24,.2);g.lineTo(29.4,-.9);g.lineTo(25,2);g.closePath();g.fill();
+      glare(g,9,0,2.1,INK,3.2);
+      caps(g,2,-8,10,-13,2,'#c9932a');caps(g,2,8,10,13,2,'#c9932a'); // talons gold
       caps(g,6,-6,16,-11,2.6,'#2e2a33');
-      g.fillStyle='#5b5364';
-      g.beginPath();g.moveTo(17,-12);g.quadraticCurveTo(30,-18,33,-8);g.quadraticCurveTo(26,-6,17,-10);g.closePath();g.fill();
-      g.strokeStyle='#8c8494';g.lineWidth=1;
-      g.beginPath();g.moveTo(19,-11);g.lineTo(31,-9);g.stroke();},
-    // wraith: something drowned — tattered shroud, reaching claws
+      g.fillStyle='#5b5364'; // the gunbai: war-fan with a steel rim
+      g.beginPath();g.moveTo(17,-12);g.quadraticCurveTo(31,-19,34,-8);g.quadraticCurveTo(26,-5,17,-10);g.closePath();g.fill();
+      g.strokeStyle='#8795a5';g.lineWidth=1.6;
+      g.beginPath();g.moveTo(19,-11);g.lineTo(32,-9);g.stroke();
+      g.strokeStyle='#3a3542';g.lineWidth=1; // torn paper between the ribs
+      for(let i=0;i<3;i++){g.beginPath();g.moveTo(20+i*3.6,-11.6+i*.7);g.lineTo(25+i*3.2,-7.2-i*.4);g.stroke();}},
+    // wraith: something drowned — tattered shroud, three-clawed reaching hands
     wraith(g){
       g.globalAlpha=.88;
-      g.fillStyle='#6c7486';
-      g.beginPath();g.moveTo(-2,-9);g.lineTo(-19,-5);g.lineTo(-9,0);g.lineTo(-21,4);g.lineTo(-2,9);g.closePath();g.fill();
-      g.fillStyle='#59616f';
-      g.beginPath();g.moveTo(-4,-6);g.lineTo(-26,-9);g.lineTo(-12,-2);g.closePath();g.fill();
-      g.beginPath();g.moveTo(-4,6);g.lineTo(-26,9);g.lineTo(-12,2);g.closePath();g.fill();
+      g.fillStyle='#6c7486'; // the shroud: rags longer than the body is wide
+      g.beginPath();g.moveTo(-2,-9);g.lineTo(-22,-6);g.lineTo(-10,-1);g.lineTo(-24,3);g.lineTo(-9,6);g.lineTo(-19,9);g.lineTo(-2,10);g.closePath();g.fill();
+      g.fillStyle='#59616f'; // a second layer, torn deeper
+      g.beginPath();g.moveTo(-4,-7);g.lineTo(-28,-10);g.lineTo(-13,-3);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-4,7);g.lineTo(-28,10);g.lineTo(-13,3);g.closePath();g.fill();
       oBlob(g,0,0,13,11,'#7c8496');sheen(g,0,-3,10,8,'rgba(246,241,226,0.3)');
-      caps(g,6,-5,18,-9,2.4,'#7c8496');caps(g,6,5,18,9,2.4,'#7c8496');
-      caps(g,18,-9,23,-11,1,'#aab2c2');caps(g,18,-9,23,-7,1,'#aab2c2');
-      caps(g,18,9,23,11,1,'#aab2c2');caps(g,18,9,23,7,1,'#aab2c2');
-      oBlob(g,7,0,6,5.5,'#6c7486');
-      g.fillStyle='#151720';g.beginPath();g.arc(9,-2.5,1.7,0,TAU);g.arc(9,2.5,1.7,0,TAU);g.fill();
+      caps(g,6,-5,19,-10,2.4,'#7c8496');caps(g,6,5,19,10,2.4,'#7c8496');
+      for(const sgn of [-1,1]){ // each hand ends in three long claws
+        caps(g,19,sgn*10,26,sgn*13.5,1,'#aab2c2');
+        caps(g,19,sgn*10,25,sgn*8.5,1,'#aab2c2');
+        caps(g,19,sgn*10,27,sgn*10.5,1,'#aab2c2');}
+      oBlob(g,7,0,6,5.5,'#59616f'); // the drowned face sunk in the hood
+      g.fillStyle='#0d1016';g.beginPath();g.ellipse(9.5,0,5,4.4,0,0,TAU);g.fill();
+      glare(g,9,0,2,'#cfe0ff',2.7); // eyes that kept their cold light
+      g.strokeStyle='rgba(140,160,200,0.35)';g.lineWidth=1; // the drip off the hem
+      g.beginPath();g.moveTo(-14,8);g.lineTo(-15,13);g.stroke();
+      g.beginPath();g.moveTo(-6,10);g.lineTo(-5,15);g.stroke();
       g.globalAlpha=1;},
-    // kame: a wall that learned the spear — plated dome, tower helm, reach
+    // kame: a wall that learned the spear — scarred dome, tower helm, long reach
     kame(g){
-      caps(g,-10,-10,-24,-14,5,'#2c3428');caps(g,-10,10,-24,14,5,'#2c3428');
-      oBlob(g,-6,0,20,16.5,'#3e4a3a');
+      caps(g,-10,-10,-25,-15,5,'#2c3428');caps(g,-10,10,-25,15,5,'#2c3428');
+      oBlob(g,-6,0,21,17.5,'#3e4a3a');
       g.strokeStyle='#242c22';g.lineWidth=1.4;
-      g.beginPath();g.ellipse(-6,0,15,12,0,0,TAU);g.stroke();
+      g.beginPath();g.ellipse(-6,0,16,13,0,0,TAU);g.stroke();
       for(let i=0;i<6;i++){const a=i/6*TAU;
-        g.beginPath();g.moveTo(-6+Math.cos(a)*8,Math.sin(a)*6.5);g.lineTo(-6+Math.cos(a)*15,Math.sin(a)*12.2);g.stroke();}
+        g.beginPath();g.moveTo(-6+Math.cos(a)*8,Math.sin(a)*6.5);g.lineTo(-6+Math.cos(a)*16,Math.sin(a)*13);g.stroke();}
+      g.strokeStyle='#242c22';g.lineWidth=1.6; // battle scars across the plates
+      g.beginPath();g.moveTo(-18,-8);g.lineTo(-11,-3);g.lineTo(-16,2);g.stroke();
+      g.beginPath();g.moveTo(-4,12);g.lineTo(1,16);g.stroke();
       g.fillStyle='#2c3828';g.beginPath();g.ellipse(-6,0,6,5,0,0,TAU);g.fill();
       g.strokeStyle='#8795a5';g.lineWidth=1.6;
-      g.beginPath();g.ellipse(-6,0,20,16.5,0,-.9,.7);g.stroke();
+      g.beginPath();g.ellipse(-6,0,21,17.5,0,-.9,.7);g.stroke();
       oBlob(g,8,0,9,8,'#3a4a3a');
-      g.fillStyle='#c9c2ab';g.beginPath();g.ellipse(13,0,4.5,6.5,0,0,TAU);g.fill();
+      g.fillStyle='#c9c2ab'; // the tower helm: riveted, with a spike
+      g.beginPath();g.ellipse(13,0,4.5,6.5,0,0,TAU);g.fill();
       g.strokeStyle='#1d1a16';g.lineWidth=1;
       g.beginPath();g.moveTo(11,-4);g.lineTo(15,4);g.stroke();
-      caps(g,-2,6,40,14,3,'#4a3f28');caps(g,4,7.4,38,13,1,'#6b5b3a');
+      g.beginPath();g.moveTo(15,-6);g.lineTo(15,6);g.stroke();
+      g.fillStyle='#8795a5';g.beginPath();g.moveTo(13,-6);g.lineTo(15,-11);g.lineTo(16,-6);g.closePath();g.fill();
+      glare(g,12,0,1.4,'#d8b04a',3.2); // gold eyes behind the visor
+      caps(g,-2,6,40,15,3,'#4a3f28');caps(g,4,7.4,38,14,1,'#6b5b3a'); // the spear: haft, binding
       g.fillStyle='#c9c2ab';
-      g.beginPath();g.moveTo(40,14);g.lineTo(54,18);g.lineTo(49,21);g.lineTo(38,17.5);g.closePath();g.fill();
+      g.beginPath();g.moveTo(40,15);g.lineTo(54,19);g.lineTo(49,22);g.lineTo(38,18.5);g.closePath();g.fill();
       g.strokeStyle='#8795a5';g.lineWidth=1;g.stroke();
-      g.strokeStyle=RED2;g.lineWidth=1.4;g.lineCap='round';
-      for(let i=0;i<3;i++){g.beginPath();g.moveTo(42,14);g.lineTo(38-i*2,12+i*2);g.stroke();}
-      caps(g,2,8,14,12,4,'#2c3428');},
-    // broker: a lantern with a merchant's manners — it sells health
+      chips(g,40,15,54,19,17);
+      g.strokeStyle=RED2;g.lineWidth=1.4;g.lineCap='round'; // the tassel, blood-red
+      for(let i=0;i<3;i++){g.beginPath();g.moveTo(42,15);g.lineTo(38-i*2,12+i*2);g.stroke();}
+      caps(g,2,8,15,13,4,'#2c3428');},
+    // broker: a lantern with a merchant's manners — the deal is the trap
     broker(g){
       g.strokeStyle='#8c2b1f';g.lineWidth=1.6;
       g.beginPath();g.moveTo(-8,-12);g.quadraticCurveTo(-16,-8,-22,-12);g.stroke();
       g.beginPath();g.moveTo(-8,12);g.quadraticCurveTo(-16,8,-22,12);g.stroke();
-      oBlob(g,0,0,11.5,14.5,'#d8c04a');
-      g.strokeStyle='#8c6d1f';g.lineWidth=1;
-      for(let i=-2;i<=2;i++){g.beginPath();g.ellipse(0,i*5,11.5*(1-Math.abs(i)*.14),2.6,0,0,TAU);g.stroke();}
+      oBlob(g,0,0,11.5,14.5,'#c9a83c'); // the paper has aged; the ribs press through
+      g.strokeStyle='#7a5c18';g.lineWidth=1.2;
+      for(let i=-2;i<=2;i++){g.beginPath();g.ellipse(0,i*5,11.5*(1-Math.abs(i)*.14),2.8,0,0,TAU);g.stroke();}
+      g.strokeStyle='#54420e';g.lineWidth=1; // a split seam, repaired once
+      g.beginPath();g.moveTo(6,-9);g.lineTo(9,-3);g.lineTo(5.4,2);g.stroke();
       g.fillStyle='rgba(255,250,220,0.5)';g.beginPath();g.ellipse(0,0,5,7,0,0,TAU);g.fill();
       g.fillStyle=RED2;g.font='700 9px "Shippori Mincho",serif';g.textAlign='center';g.fillText('礼',0,2.5);
       g.fillStyle='#33302e';
       g.beginPath();g.moveTo(-6,-14);g.lineTo(6,-14);g.lineTo(0,-19);g.closePath();g.fill();
       caps(g,-2,-13,-11,-22,2.2,'#2c2c26');caps(g,-2,13,-11,22,2.2,'#2c2c26');
-      caps(g,8,-6,18,-10,2.2,'#2c2c26');caps(g,8,6,18,10,2.2,'#2c2c26');
-      g.fillStyle='#8a8574';g.beginPath();g.arc(21,-11,3,0,TAU);g.fill();
-      g.fillStyle='#b3372a';g.beginPath();g.arc(20,10,3,0,TAU);g.fill();},
-    // hound: shrine dog that swallowed its own fire
+      caps(g,8,-6,19,-11,2.2,'#2c2c26');caps(g,8,6,19,11,2.2,'#2c2c26'); // thin grasping arms
+      for(const sgn of [-1,1]){ // fingers like a moneylender's
+        caps(g,19,sgn*11,24,sgn*13,1,'#8a8574');
+        caps(g,19,sgn*11,24,sgn*9.4,1,'#8a8574');}
+      g.fillStyle='#8a8574';g.beginPath();g.arc(23,-13,2.2,0,TAU);g.fill(); // a coin it never spends
+      g.fillStyle='#b3372a';g.beginPath();g.arc(21,12,2.6,0,TAU);g.fill();},
+    // hound: shrine dog that swallowed its own fire — low-slung, ribs showing
     hound(g){
-      caps(g,-10,-8,-20,-13,4,'#33302c');caps(g,-10,8,-20,13,4,'#33302c');
-      caps(g,4,-8,14,-12,3.4,'#2a2724');caps(g,4,8,14,12,3.4,'#2a2724');
-      oBlob(g,-2,0,15,10,'#33302c');sheen(g,-2,-4,12,8);
-      g.strokeStyle='#c96a2a';g.lineWidth=2.2;
+      caps(g,-11,-8,-22,-14,4.2,'#33302c');caps(g,-11,8,-22,14,4.2,'#33302c');
+      caps(g,3,-8,15,-13,3.4,'#2a2724');caps(g,3,8,15,13,3.4,'#2a2724');
+      oBlob(g,-3,0,16,10.5,'#33302c');sheen(g,-3,-4,13,8);
+      g.strokeStyle='#1d1a16';g.lineWidth=1.1; // the ribs press through the hide
+      for(let i=0;i<4;i++){g.beginPath();g.ellipse(1-i*4.5,0,2.4,8-i*1.2,0,-1.1,1.1);g.stroke();}
+      g.strokeStyle='#c96a2a';g.lineWidth=2.2; // ember seams along the spine
       for(let i=-2;i<=2;i++){g.beginPath();g.moveTo(6,i*4.5);g.lineTo(10,i*6.5);g.stroke();}
       g.strokeStyle='#e09040';g.lineWidth=1.2;
       for(let i=-1;i<=1;i++){g.beginPath();g.moveTo(6,i*4.5);g.lineTo(9,i*6);g.stroke();}
-      oBlob(g,10,0,7,6,'#2a2724');
-      g.fillStyle='#2a2724';
-      g.beginPath();g.moveTo(15,-3);g.lineTo(24,0);g.lineTo(15,3);g.closePath();g.fill();
+      oBlob(g,11,0,7.5,6,'#2a2724');
+      g.fillStyle='#2a2724'; // the muzzle: longer, jaw split past the face
+      g.beginPath();g.moveTo(15,-3.4);g.lineTo(25,0);g.lineTo(15,3.4);g.closePath();g.fill();
+      maw(g,16,0,3,'#1d1a16'); // fangs that do not hide
       g.fillStyle='#e6dfcc';
-      g.beginPath();g.moveTo(20,-1.5);g.lineTo(23,-.5);g.lineTo(20,0);g.closePath();g.fill();
-      g.beginPath();g.moveTo(20,1.5);g.lineTo(23,.5);g.lineTo(20,0);g.closePath();g.fill();
-      g.fillStyle='#33302c';
-      g.beginPath();g.moveTo(6,-5);g.lineTo(-2,-9);g.lineTo(6,-2.5);g.closePath();g.fill();
-      g.beginPath();g.moveTo(6,5);g.lineTo(-2,9);g.lineTo(6,2.5);g.closePath();g.fill();
-      g.fillStyle=AMBER;g.beginPath();g.arc(12,-2.4,1.7,0,TAU);g.arc(12,2.4,1.7,0,TAU);g.fill();
-      g.strokeStyle='#c96a2a';g.lineWidth=2.4;
-      g.beginPath();g.moveTo(-15,0);g.quadraticCurveTo(-22,-4,-26,2);g.stroke();},
-    // sorcerer: a hood full of bad arithmetic — beads, staff, ink orb
+      g.beginPath();g.moveTo(21,-1.6);g.lineTo(24,-.6);g.lineTo(21,-.1);g.closePath();g.fill();
+      g.beginPath();g.moveTo(21,1.6);g.lineTo(24,.6);g.lineTo(21,.1);g.closePath();g.fill();
+      g.fillStyle='#33302c'; // ears pinned back — a runner, not a barker
+      g.beginPath();g.moveTo(7,-5);g.lineTo(-1,-10);g.lineTo(6,-2.5);g.closePath();g.fill();
+      g.beginPath();g.moveTo(7,5);g.lineTo(-1,10);g.lineTo(6,2.5);g.closePath();g.fill();
+      glare(g,12,0,2.1,AMBER,2.9);
+      g.strokeStyle='#c96a2a';g.lineWidth=2.4; // the fuse-tail smolders behind it
+      g.beginPath();g.moveTo(-16,0);g.quadraticCurveTo(-23,-4,-27,2);g.stroke();
+      g.strokeStyle='rgba(224,144,64,0.4)';g.lineWidth=1;
+      g.beginPath();g.moveTo(-27,2);g.lineTo(-29,-1);g.stroke();},
+    // sorc: a hood full of bad arithmetic — void face, skull beads, hooked staff
     sorc(g){
       g.fillStyle='#2b2333';
-      g.beginPath();g.moveTo(-14,-9);g.quadraticCurveTo(-24,0,-14,9);g.quadraticCurveTo(-8,0,-14,-9);g.closePath();g.fill();
-      oBlob(g,-2,0,15,13,'#2b2333');sheen(g,-2,-4,12,10,'rgba(246,241,226,0.14)');
-      g.strokeStyle='#4a3f5c';g.lineWidth=1.2;
-      g.beginPath();g.ellipse(-2,0,14,12,0,-2.4,-.8);g.stroke();
-      oBlob(g,7,0,8,7,'#3a2f46');
-      g.fillStyle='#191420';g.beginPath();g.ellipse(10,0,5,4.5,0,0,TAU);g.fill();
-      g.fillStyle=GOLD2;g.beginPath();g.arc(12,-2,1.4,0,TAU);g.arc(12,2,1.4,0,TAU);g.fill();
+      g.beginPath();g.moveTo(-14,-9);g.quadraticCurveTo(-25,0,-14,9);g.quadraticCurveTo(-8,0,-14,-9);g.closePath();g.fill();
+      oBlob(g,-2,0,16,13.5,'#2b2333');sheen(g,-2,-4,13,10,'rgba(246,241,226,0.14)');
+      g.strokeStyle='#4a3f5c';g.lineWidth=1.2; // the robe hangs in heavy folds
+      g.beginPath();g.ellipse(-2,0,15,12.5,0,-2.4,-.8);g.stroke();
+      g.strokeStyle='#1a1520';g.lineWidth=1.4;
+      g.beginPath();g.moveTo(-12,-8);g.quadraticCurveTo(-16,0,-12,8);g.stroke();
+      oBlob(g,7,0,8.5,7.5,'#3a2f46');
+      g.fillStyle='#0d0a12';g.beginPath();g.ellipse(10,0,5.5,5,0,0,TAU);g.fill(); // the hood is a hole
+      glare(g,10,0,1.8,GOLD2,2.7); // gold slits in the dark
       g.strokeStyle='#191420';g.lineWidth=1;
       g.beginPath();g.arc(-13,0,10,-1.8,1.8);g.stroke();
-      g.fillStyle='#8c6d1f';
+      g.fillStyle='#8c6d1f'; // the rosary: beads carved like little skulls
       for(let i=0;i<5;i++){const a=-1.6+i*.8;
-        g.beginPath();g.arc(-13+Math.cos(a)*10,Math.sin(a)*10,1.6,0,TAU);g.fill();}
-      caps(g,6,-6,20,-14,2.6,'#191420');
-      g.fillStyle=GOLD2;g.beginPath();g.arc(23,-15,4,0,TAU);g.fill();
+        g.beginPath();g.arc(-13+Math.cos(a)*10,Math.sin(a)*10,1.8,0,TAU);g.fill();
+        g.fillStyle='#191420';g.beginPath();g.arc(-13+Math.cos(a)*10-.7,Math.sin(a)*10,0.5,0,TAU);g.fill();
+        g.fillStyle='#8c6d1f';}
+      caps(g,6,-6,21,-15,2.6,'#191420');
+      g.strokeStyle='#4a3f28';g.lineWidth=3.6;g.lineCap='round'; // the staff, hooked at the head
+      g.beginPath();g.moveTo(6,-6);g.lineTo(23,-16);g.stroke();
+      g.beginPath();g.arc(25,-14,3.4,-.6,2.4);g.stroke();
+      g.fillStyle=GOLD2;g.beginPath();g.arc(23,-18,3.2,0,TAU);g.fill();
       g.strokeStyle='#f2ead2';g.lineWidth=1;
-      g.beginPath();g.arc(23,-15,5.5,-.6,1.8);g.stroke();
+      g.beginPath();g.arc(23,-18,4.8,-.6,1.8);g.stroke();
+      g.strokeStyle='rgba(140,90,40,0.6)';g.lineWidth=1; // ink drips off the orb
+      g.beginPath();g.moveTo(21,-15);g.lineTo(20.4,-12);g.stroke();
+      g.beginPath();g.moveTo(25,-16);g.lineTo(25.6,-13.4);g.stroke();
       caps(g,6,6,16,10,2.6,'#191420');
       g.fillStyle='#3a2f46';g.beginPath();g.arc(18,11,3,0,TAU);g.fill();},
-    // mirror: your own posture, thrown back by yuki
+    // mirror: your own posture, thrown back — wronger every time you look
     mirror(g){
       g.globalAlpha=.92;
       g.fillStyle='rgba(38,34,40,0.9)';
-      g.beginPath();g.moveTo(-8,-7);g.lineTo(-20,-4);g.lineTo(-16,0);g.lineTo(-21,4);g.lineTo(-8,7);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-8,-7);g.lineTo(-22,-5);g.lineTo(-16,0);g.lineTo(-23,4);g.lineTo(-8,7);g.closePath();g.fill();
+      g.strokeStyle='rgba(140,160,200,0.3)';g.lineWidth=1; // the scarf runs like water
+      g.beginPath();g.moveTo(-10,-4);g.lineTo(-24,-2.4);g.stroke();
       oBlob(g,0,0,11,9,'#3c3a44');sheen(g,0,-3,9,7,'rgba(246,241,226,0.3)');
       caps(g,-7,-7,1,-9,2.6,'#8c2b1f');caps(g,-7,7,1,9,2.6,'#8c2b1f');
       kasa(g,3,0,11,9.5);
-      steel(g,8,5,30,9,2.2);oBlob(g,8,5,2.8,2,'#3a3430');
+      oBlob(g,7,0,6.5,5.5,'#3c3a44');
+      g.fillStyle='#0d0b0f';g.beginPath();g.ellipse(9,0,4.2,3.8,0,0,TAU);g.fill();
+      glare(g,9,0,1.6,'#a8c4e8',2.5); // cold, patient, waiting
+      steel(g,8,5,31,10,2.2);oBlob(g,8,5,2.8,2,'#3a3430');
+      chips(g,8,5,31,10,19); // even the copy's edge is chipped
       caps(g,2,-6,10,-9,2.4,'#3c3a44');
       g.strokeStyle='#8795a5';g.lineWidth=1;
       for(let i=0;i<5;i++){const a=i/5*TAU;
         g.beginPath();g.moveTo(Math.cos(a)*15,Math.sin(a)*15);g.lineTo(Math.cos(a+.4)*17,Math.sin(a+.4)*17);g.stroke();}
       g.globalAlpha=1;},
-    // ronin: kept the training, lost the master — two blades, red sash
+    // ronin: kept the training, lost the master — worn steels, tattered sash
     ronin(g){
-      g.fillStyle='rgba(90,40,32,0.85)';
-      g.beginPath();g.moveTo(-6,-6);g.lineTo(-24,-9);g.lineTo(-15,-3);g.lineTo(-27,2);g.lineTo(-8,6);g.closePath();g.fill();
+      g.fillStyle='rgba(90,40,32,0.85)'; // the sash: torn, streaming behind
+      g.beginPath();g.moveTo(-6,-6);g.lineTo(-26,-10);g.lineTo(-17,-3);g.lineTo(-29,1);g.lineTo(-8,6);g.closePath();g.fill();
+      g.fillStyle='rgba(140,43,31,0.6)';
+      g.beginPath();g.moveTo(-8,-4);g.lineTo(-31,-6);g.lineTo(-19,-1);g.closePath();g.fill();
       oBlob(g,-2,0,14,12,'#33302e');sheen(g,-2,-4,11,9);
-      g.strokeStyle='#191714';g.lineWidth=2.2;
+      g.strokeStyle='#191714';g.lineWidth=2.2; // the do-mune straps, worn
       g.beginPath();g.moveTo(-12,-6);g.lineTo(8,-2);g.stroke();
       g.beginPath();g.moveTo(-12,6);g.lineTo(8,2);g.stroke();
       caps(g,-10,-9,0,-12,3,RED);caps(g,-10,9,0,12,3,RED);
       kasa(g,4,0,9,7.5);
-      caps(g,8,-6,18,-11,2.6,'#33302e');
-      steel(g,16,-10,40,-16,2.3);oBlob(g,16,-10,3,2,'#3a3430');
-      caps(g,8,6,17,10,2.6,'#33302e');
-      steel(g,15,9,31,13,2);oBlob(g,15,9,2.6,1.8,'#3a3430');
+      oBlob(g,9,0,7,6,'#33302e'); // the face in the hat's shade
+      g.fillStyle='#15120e';g.beginPath();g.ellipse(11,0,4.6,4,0,0,TAU);g.fill();
+      glare(g,11,0,1.7,'#e8c88a',2.5);
+      g.fillStyle='#c9c2ab';g.beginPath(); // mempo: a slivered half-mask
+      g.moveTo(12,-3);g.lineTo(17,-1);g.lineTo(12,3);g.closePath();g.fill();
+      caps(g,8,-6,19,-11,2.6,'#33302e');
+      steel(g,17,-11,41,-17,2.3);oBlob(g,17,-11,3,2,'#3a3430');
+      chips(g,17,-11,41,-17,53); // this blade has parried a hundred cuts
+      caps(g,8,6,18,11,2.6,'#33302e');
+      steel(g,16,10,32,15,2);oBlob(g,16,10,2.6,1.8,'#3a3430');
       g.strokeStyle=RED;g.lineWidth=1.4;
       g.beginPath();g.arc(4,0,12,-.5,.9);g.stroke();},
-    // archer: paid in rice, deadly at range — jingasa, quiver, great yumi
+    // archer: paid in rice, deadly at range — mempo, great yumi, clawed draw
     archer(g){
       oBlob(g,-2,0,13,11,'#3f4a3f');sheen(g,-2,-3,10,8);
       g.strokeStyle='#2c342c';g.lineWidth=1.2;
       for(let i=-1;i<=1;i++)caps(g,-10,i*5,6,i*7,1,'#2c342c');
-      g.strokeStyle='#8795a5';g.lineWidth=2.6;
+      g.strokeStyle='#8795a5';g.lineWidth=2.6; // shoulder laminates
       g.beginPath();g.ellipse(-4,-9,6,4,0,0,TAU);g.stroke();
       g.beginPath();g.ellipse(-4,9,6,4,0,0,TAU);g.stroke();
-      g.fillStyle='#4a4a3a';
+      g.fillStyle='#4a4a3a'; // the face: a hood and a slivered mempo
       g.beginPath();g.moveTo(9,-7);g.lineTo(15,0);g.lineTo(9,7);g.lineTo(4,0);g.closePath();g.fill();
       g.strokeStyle='#2c2c26';g.lineWidth=1;g.stroke();
-      g.fillStyle='#2c2c26';g.beginPath();g.arc(10,0,2,0,TAU);g.fill();
-      g.fillStyle='#4a3f28';g.beginPath();g.ellipse(-14,-4,4,7,.4,0,TAU);g.fill();
-      caps(g,-17,-8,-15,-11,1.4,'#c9c2ab');caps(g,-14,-9,-13,-12,1.4,'#c9c2ab');
-      g.strokeStyle='#4a3f28';g.lineWidth=2.8;g.lineCap='round';
+      g.fillStyle='#15120e';g.beginPath();g.ellipse(10,0,4.4,3.8,0,0,TAU);g.fill();
+      glare(g,10,0,1.6,'#e8c88a',2.3);
+      g.fillStyle='#c9c2ab';g.beginPath();g.moveTo(11,-2.6);g.lineTo(15,-.8);g.lineTo(11,-.4);g.closePath();g.fill(); // mempo fangs
+      g.fillStyle='#4a3f28';g.beginPath();g.ellipse(-15,-5,4.4,7.5,.4,0,TAU);g.fill(); // the quiver, bristling
+      caps(g,-18,-9,-16,-12,1.4,'#c9c2ab');caps(g,-15,-10,-14,-13,1.4,'#c9c2ab');
+      caps(g,-12,-8,-11,-11,1.4,'#c9c2ab');
+      g.strokeStyle='#4a3f28';g.lineWidth=2.8;g.lineCap='round'; // the yumi: bamboo, bound, worn
       g.beginPath();g.arc(11,0,16,-1.15,1.15);g.stroke();
       g.strokeStyle='#33302c';g.lineWidth=3.2;
       g.beginPath();g.arc(11,0,15.5,-1,1);g.stroke();
+      g.strokeStyle='rgba(74,63,40,0.6)';g.lineWidth=1; // grip wrapping
+      for(let i=0;i<3;i++){g.beginPath();g.moveTo(11+i-1,0);g.lineTo(12+i,3);g.stroke();}
       g.strokeStyle='#ded7c2';g.lineWidth=1;
       g.beginPath();g.moveTo(17.7,-14.6);g.lineTo(17.7,14.6);g.stroke();
-      steel(g,4,0,27,0,1.8);
+      steel(g,5,0,27,0,1.8);
       g.fillStyle='#c9c2ab';
-      g.beginPath();g.moveTo(30,0);g.lineTo(25,-2.4);g.lineTo(25,2.4);g.closePath();g.fill();
-      caps(g,0,-5,9,-8,2.4,'#3f4a3f');caps(g,0,5,9,8,2.4,'#3f4a3f');}};
+      g.beginPath();g.moveTo(31,0);g.lineTo(25,-2.4);g.lineTo(25,2.4);g.closePath();g.fill();
+      caps(g,0,-5,9,-8,2.4,'#3f4a3f');caps(g,0,5,9,8,2.4,'#3f4a3f');
+      caps(g,9,4,15,7,1.2,'#c9c2ab');caps(g,9,6,14,10,1.2,'#c9c2ab');}}; // the draw hand's claws
   for(const k in defs)ESPR[k]=spr(Math.ceil(ENEMY[k].r*5.4),defs[k]);
   if(window.STORY2)for(const k in STORY2.painters)ESPR[k]=spr(Math.ceil((ENEMY[k]||{r:14}).r*5.4),STORY2.painters[k]);}
 
 const BSPR={};
 function bakeBosses(){
   const defs={
-    // uzu: the whirlpool blade — coat like water, two steels
+    // uzu: the whirlpool blade — a coat of ragged water, two duty-worn steels
     uzu(g){
-      g.fillStyle='#2c3848';
-      g.beginPath();g.moveTo(-10,-10);g.quadraticCurveTo(-34,-18,-44,-6);g.quadraticCurveTo(-28,-6,-12,-4);g.closePath();g.fill();
-      g.beginPath();g.moveTo(-10,10);g.quadraticCurveTo(-34,18,-44,6);g.quadraticCurveTo(-28,6,-12,4);g.closePath();g.fill();
+      g.fillStyle='#2c3848'; // the coat spirals off him in torn water tongues
+      g.beginPath();g.moveTo(-10,-10);g.quadraticCurveTo(-36,-20,-48,-7);g.quadraticCurveTo(-30,-8,-12,-4);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-10,10);g.quadraticCurveTo(-36,20,-48,7);g.quadraticCurveTo(-30,8,-12,4);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-12,-14);g.quadraticCurveTo(-30,-30,-44,-26);g.quadraticCurveTo(-28,-20,-14,-16);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-12,14);g.quadraticCurveTo(-30,30,-44,26);g.quadraticCurveTo(-28,20,-14,16);g.closePath();g.fill();
       g.strokeStyle='#4a6076';g.lineWidth=1.4;
       g.beginPath();g.arc(-18,0,26,1.9,2.9);g.stroke();
       g.beginPath();g.arc(-24,0,32,2,3);g.stroke();
-      oBlob(g,-4,0,22,18,'#3a4a5c');sheen(g,-4,-6,18,14);
+      oBlob(g,-4,0,23,19,'#3a4a5c');sheen(g,-4,-6,19,15);
+      g.strokeStyle='#242c38';g.lineWidth=1.2; // the coat's seams strain
+      g.beginPath();g.ellipse(-4,0,20,16,0,-2.2,-.6);g.stroke();
       g.fillStyle='#2c3848';g.beginPath();g.ellipse(6,0,12,10,0,0,TAU);g.fill();
       kasa(g,12,0,12,10);
-      caps(g,14,10,26,16,4,'#3a4a5c');
-      steel(g,24,14,64,20,3);oBlob(g,24,14,3.6,2.6,'#3a3430');
-      caps(g,14,-10,24,-16,4,'#3a4a5c');
-      steel(g,22,-13,52,-22,2.6);oBlob(g,22,-13,3.2,2.2,'#3a3430');
-      caps(g,26,14.6,60,19.4,1,'#7d97b2');caps(g,24,-12.4,48,-21,1,'#7d97b2');},
-    // goroki: warlord of rot — grand horns, spiked plates, huge kanabō
+      g.strokeStyle='#4a3f28';g.lineWidth=1; // the brim is split — a duel survived
+      g.beginPath();g.moveTo(6,-9.5);g.lineTo(3,-12);g.stroke();
+      oBlob(g,15,0,8,7,'#3a4a5c');
+      g.fillStyle='#0d1016';g.beginPath();g.ellipse(17,0,5.4,4.6,0,0,TAU);g.fill();
+      glare(g,17,0,1.5,'#a8c8e8',2.8); // the storm's own cold focus
+      caps(g,14,10,27,17,4,'#3a4a5c');
+      steel(g,25,14,66,21,3);oBlob(g,25,14,3.6,2.6,'#3a3430');
+      chips(g,25,14,66,21,61);
+      caps(g,14,-10,25,-17,4,'#3a4a5c');
+      steel(g,23,-13,54,-23,2.6);oBlob(g,23,-13,3.2,2.2,'#3a3430');
+      chips(g,23,-13,54,-23,29);
+      caps(g,27,14.6,62,19.4,1,'#7d97b2');caps(g,25,-12.4,50,-21,1,'#7d97b2');
+      g.strokeStyle='rgba(140,180,220,0.4)';g.lineWidth=1; // the drip off every hem
+      g.beginPath();g.moveTo(-40,-14);g.lineTo(-41,-9);g.stroke();
+      g.beginPath();g.moveTo(-34,16);g.lineTo(-33,21);g.stroke();},
+    // goroki: warlord of rot — geology for shoulders, a club that ended walls
     goroki(g){
-      caps(g,-26,-22,-58,-34,12,'#3d2721');caps(g,-26,22,-58,34,12,'#3d2721');
-      oBlob(g,-10,0,36,31,'#54362e');sheen(g,-10,-10,30,26);
-      g.fillStyle='#6a5a30';
-      for(let i=0;i<5;i++){const a=hash01(i*7)*TAU,d=hash01(i*13)*22;
+      caps(g,-26,-22,-62,-36,13,'#3d2721');caps(g,-26,22,-62,36,13,'#3d2721');
+      oBlob(g,-10,0,38,33,'#54362e');sheen(g,-10,-11,32,27);
+      g.fillStyle='#6a5a30'; // rot blooms across the hide
+      for(let i=0;i<5;i++){const a=hash01(i*7)*TAU,d=hash01(i*13)*24;
         g.beginPath();g.arc(-10+Math.cos(a)*d,Math.sin(a)*d*.8,2.6+hash01(i*3)*2,0,TAU);g.fill();}
-      g.fillStyle='#3d2721';
-      g.beginPath();g.ellipse(-24,-26,16,12,0,0,TAU);g.fill();
-      g.beginPath();g.ellipse(-24,26,16,12,0,0,TAU);g.fill();
+      g.strokeStyle='#241a14';g.lineWidth=2; // the deep gouges of an old war
+      g.beginPath();g.moveTo(-28,-14);g.lineTo(-19,-7);g.lineTo(-26,1);g.stroke();
+      g.beginPath();g.moveTo(-12,14);g.lineTo(-5,20);g.lineTo(-13,22);g.stroke();
+      g.fillStyle='#3d2721'; // pauldrons: slabs with spikes
+      g.beginPath();g.ellipse(-25,-28,18,13,0,0,TAU);g.fill();
+      g.beginPath();g.ellipse(-25,28,18,13,0,0,TAU);g.fill();
       g.fillStyle='#d9d2bd';
-      for(let s=-1;s<=1;s+=2)for(let i=0;i<3;i++){
-        g.beginPath();g.moveTo(-34+i*8,s*32);g.lineTo(-30+i*8,s*42);g.lineTo(-26+i*8,s*32);g.closePath();g.fill();}
-      oBlob(g,14,0,17,14,'#54362e');
-      g.fillStyle='#e6dfcc';
-      g.beginPath();g.moveTo(22,-9);g.lineTo(46,-24);g.lineTo(26,-4);g.closePath();g.fill();
-      g.beginPath();g.moveTo(22,9);g.lineTo(46,24);g.lineTo(26,4);g.closePath();g.fill();
-      g.fillStyle='#ded7c2';g.beginPath();g.ellipse(26,0,10,9,0,0,TAU);g.fill();
-      g.fillStyle='#241f1c';
-      g.beginPath();g.moveTo(31,-6);g.lineTo(38,-4);g.lineTo(32,-2);g.closePath();g.fill();
-      g.beginPath();g.moveTo(31,6);g.lineTo(38,4);g.lineTo(32,2);g.closePath();g.fill();
-      g.fillStyle=RED;g.beginPath();g.arc(26,-4.5,2.4,0,TAU);g.arc(26,4.5,2.4,0,TAU);g.fill();
-      g.strokeStyle='#241f1c';g.lineWidth=5;
-      g.beginPath();g.ellipse(-12,0,30,24,0,1.2,1.9);g.stroke();
-      caps(g,20,-14,40,-28,10,'#54362e');caps(g,20,14,38,24,10,'#54362e');
-      g.lineCap='butt';
-      g.strokeStyle='#241f1c';g.lineWidth=13;
-      g.beginPath();g.moveTo(38,24);g.lineTo(102,36);g.stroke();
-      g.lineWidth=17;g.beginPath();g.moveTo(96,34);g.lineTo(110,38);g.stroke();
+      for(const sgn of [-1,1])for(let i=0;i<3;i++){
+        g.beginPath();g.moveTo(-36+i*9,sgn*33);g.lineTo(-31+i*9,sgn*46);g.lineTo(-25+i*9,sgn*34);g.closePath();g.fill();}
+      oBlob(g,15,0,18,15,'#54362e');
+      g.fillStyle='#e6dfcc'; // the mask fills the whole front — snarling
+      g.beginPath();g.moveTo(24,-10);g.lineTo(50,-26);g.lineTo(28,-4);g.closePath();g.fill();
+      g.beginPath();g.moveTo(24,10);g.lineTo(50,26);g.lineTo(28,4);g.closePath();g.fill();
+      g.fillStyle='#ded7c2';g.beginPath();g.ellipse(28,0,11,10,0,0,TAU);g.fill();
+      maw(g,31,0,4.6); // the underbite: four fangs past the jaw
+      glare(g,26,0,2.6,RED,4.6);
+      g.strokeStyle='#241f1c';g.lineWidth=6; // the mask's own seam, riveted
+      g.beginPath();g.ellipse(-14,0,32,26,0,1.2,1.9);g.stroke();
+      caps(g,22,-16,44,-30,11,'#54362e');caps(g,22,16,42,26,11,'#54362e');
+      g.lineCap='butt'; // the kanabō: a siege beam with studs and a cracked head
+      g.strokeStyle='#241f1c';g.lineWidth=15;
+      g.beginPath();g.moveTo(40,26);g.lineTo(106,40);g.stroke();
+      g.lineWidth=20;g.beginPath();g.moveTo(98,38.4);g.lineTo(114,41);g.stroke();
       g.fillStyle='#3a3430';
-      for(let i=0;i<5;i++){const t=.6+i*.1;
-        g.beginPath();g.arc(38+64*t,24+12*t,3,0,TAU);g.fill();}
-      g.lineCap='round';},
-    // zangetsu: twilight's edge — pale aura, long gold-sheened katana
+      for(let i=0;i<6;i++){const t=.52+i*.09;
+        g.beginPath();g.arc(40+66*t,26+14*t,3.4+hash01(i*3)*1.6,0,TAU);g.fill();}
+      g.strokeStyle='#15100c';g.lineWidth=1.6;
+      g.beginPath();g.moveTo(104,34);g.lineTo(110,40);g.stroke();
+      g.lineCap='round';
+      g.strokeStyle='#8c2b1f';g.lineWidth=1.4; // a war banner scrap, nailed to the back
+      g.beginPath();g.moveTo(-38,-8);g.quadraticCurveTo(-46,-2,-44,6);g.stroke();
+      g.fillStyle='rgba(140,43,31,0.5)';
+      g.beginPath();g.moveTo(-38,-10);g.lineTo(-46,4);g.lineTo(-42,10);g.lineTo(-36,-2);g.closePath();g.fill();},
+    // zangetsu: twilight's edge — pale tatters, one gold sheen, cold patience
     zangetsu(g){
+      g.fillStyle='rgba(226,230,234,0.55)'; // mist tatters, long as a second coat
+      g.beginPath();g.moveTo(-12,-11);g.quadraticCurveTo(-40,-18,-54,-5);g.quadraticCurveTo(-34,-5,-14,-6);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-12,11);g.quadraticCurveTo(-40,18,-54,5);g.quadraticCurveTo(-34,5,-14,6);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-14,-15);g.quadraticCurveTo(-34,-28,-50,-24);g.quadraticCurveTo(-30,-19,-16,-17);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-14,15);g.quadraticCurveTo(-34,28,-50,24);g.quadraticCurveTo(-30,19,-16,17);g.closePath();g.fill();
       g.fillStyle='#3c3a44';
       g.beginPath();g.moveTo(-12,-11);g.quadraticCurveTo(-38,-16,-48,-4);g.quadraticCurveTo(-30,-4,-14,-5);g.closePath();g.fill();
       g.beginPath();g.moveTo(-12,11);g.quadraticCurveTo(-38,16,-48,4);g.quadraticCurveTo(-30,4,-14,5);g.closePath();g.fill();
-      oBlob(g,-4,0,24,19,'#4a3f28');sheen(g,-4,-7,20,15);
+      oBlob(g,-4,0,25,20,'#4a3f28');sheen(g,-4,-7,21,16);
       g.strokeStyle='#2a2831';g.lineWidth=1.4;
       for(let i=-1;i<=1;i++)caps(g,-16,i*7,8,i*10,1.4,'#2a2831');
-      oBlob(g,6,0,15,12,'#2a2831');
-      g.fillStyle='#e2e6ea';g.beginPath();g.ellipse(14,0,11,9,0,0,TAU);g.fill();
-      g.fillStyle='#15130f';g.beginPath();g.arc(17,-3,1.7,0,TAU);g.arc(17,3,1.7,0,TAU);g.fill();
-      g.strokeStyle='#4a5a68';g.lineWidth=2.6;
-      g.beginPath();g.arc(0,0,34,-.9,.9);g.stroke();
+      oBlob(g,7,0,16,13,'#2a2831');
+      g.fillStyle='#e2e6ea';g.beginPath();g.ellipse(15,0,12,10,0,0,TAU);g.fill();
+      g.fillStyle='#0d0f14';g.beginPath();g.ellipse(18,0,6.5,5.6,0,0,TAU);g.fill();
+      glare(g,18,0,1.7,'#bcd4e8',3.2); // nothing behind it but patience
+      g.strokeStyle='#4a5a68';g.lineWidth=2.6; // the aura: a blade's worth of cold
+      g.beginPath();g.arc(0,0,36,-.9,.9);g.stroke();
       g.strokeStyle='#aeb8c4';g.lineWidth=1;
-      g.beginPath();g.arc(0,0,31,-.7,.7);g.stroke();
-      caps(g,14,10,30,17,4.4,'#3c3a44');
-      steel(g,26,14,66,20,3.2);
-      caps(g,28,13.4,62,19.4,1.2,'#c9932a');
-      oBlob(g,26,14,4,2.8,'#3a3430');
-      caps(g,14,-10,26,-17,4.4,'#3c3a44');},
+      g.beginPath();g.arc(0,0,33,-.7,.7);g.stroke();
+      g.strokeStyle='#5a5364';g.lineWidth=1; // hair strands, wet
+      g.beginPath();g.moveTo(4,-12);g.quadraticCurveTo(2,-24,-6,-30);g.stroke();
+      g.beginPath();g.moveTo(7,-11);g.quadraticCurveTo(9,-22,4,-32);g.stroke();
+      caps(g,15,10,32,18,4.4,'#3c3a44');
+      steel(g,27,14,70,21,3.2);
+      caps(g,29,13.4,66,19.4,1.2,'#c9932a');
+      chips(g,27,14,70,21,83);
+      oBlob(g,27,14,4,2.8,'#3a3430');
+      caps(g,15,-10,28,-18,4.4,'#3c3a44');},
     // orochi: the head only — the coils swim beneath the ink
     orochi(g){
-      g.fillStyle='#3e5044';
-      g.beginPath();g.moveTo(-6,-16);g.quadraticCurveTo(-22,-26,-30,-14);g.quadraticCurveTo(-16,-12,-4,-8);g.closePath();g.fill();
-      g.beginPath();g.moveTo(-6,16);g.quadraticCurveTo(-22,26,-30,14);g.quadraticCurveTo(-16,12,-4,8);g.closePath();g.fill();
-      oBlob(g,-8,0,22,16,'#33413a');
+      g.fillStyle='#3e5044'; // the hood flares before the strike
+      g.beginPath();g.moveTo(-6,-16);g.quadraticCurveTo(-24,-28,-34,-15);g.quadraticCurveTo(-17,-13,-4,-8);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-6,16);g.quadraticCurveTo(-24,28,-34,15);g.quadraticCurveTo(-17,13,-4,8);g.closePath();g.fill();
+      oBlob(g,-8,0,24,17,'#33413a');
       g.strokeStyle='#242c22';g.lineWidth=1.6;
-      g.beginPath();g.ellipse(-8,0,16,11,0,0,TAU);g.stroke();
-      g.fillStyle='#3e5044';g.beginPath();g.ellipse(4,0,16,12,0,0,TAU);g.fill();
+      g.beginPath();g.ellipse(-8,0,18,12,0,0,TAU);g.stroke();
+      g.strokeStyle='#242c22';g.lineWidth=1.4; // scale scars, counted in decades
+      g.beginPath();g.moveTo(-18,-10);g.lineTo(-10,-4);g.lineTo(-16,3);g.stroke();
+      g.beginPath();g.moveTo(-6,9);g.lineTo(0,14);g.stroke();
+      g.fillStyle='#3e5044';g.beginPath();g.ellipse(6,0,17,13,0,0,TAU);g.fill();
       g.fillStyle='#d9d2bd';
-      g.beginPath();g.moveTo(10,-8);g.lineTo(22,-16);g.lineTo(13,-4);g.closePath();g.fill();
-      g.beginPath();g.moveTo(10,8);g.lineTo(22,16);g.lineTo(13,4);g.closePath();g.fill();
-      g.strokeStyle='#8c2b1f';g.lineWidth=1.6;
-      g.beginPath();g.moveTo(16,-5);g.quadraticCurveTo(30,-10,38,-6);g.stroke();
-      g.beginPath();g.moveTo(16,5);g.quadraticCurveTo(30,10,38,6);g.stroke();
+      g.beginPath();g.moveTo(12,-9);g.lineTo(26,-17);g.lineTo(15,-4);g.closePath();g.fill();
+      g.beginPath();g.moveTo(12,9);g.lineTo(26,17);g.lineTo(15,4);g.closePath();g.fill();
+      maw(g,16,0,4); // the whole head's front is mouth
+      g.strokeStyle='#8c2b1f';g.lineWidth=1.6; // the tongue, forked and tasting
+      g.beginPath();g.moveTo(24,0);g.quadraticCurveTo(34,-4,40,-2);g.stroke();
+      g.beginPath();g.moveTo(40,-2);g.lineTo(44,-4);g.moveTo(40,-2);g.lineTo(44,0);g.stroke();
       g.fillStyle='#8c2b1f';
-      g.beginPath();g.moveTo(16,-4);g.lineTo(38,-7);g.lineTo(16,0);g.closePath();g.fill();
-      g.beginPath();g.moveTo(16,4);g.lineTo(38,7);g.lineTo(16,0);g.closePath();g.fill();
+      g.beginPath();g.moveTo(18,-4);g.lineTo(42,-7);g.lineTo(18,0);g.closePath();g.fill();
+      g.beginPath();g.moveTo(18,4);g.lineTo(42,7);g.lineTo(18,0);g.closePath();g.fill();
       g.fillStyle='#e6dfcc';
       for(let i=0;i<3;i++){
-        g.beginPath();g.moveTo(20+i*5,-4);g.lineTo(22+i*5,-2);g.lineTo(19+i*5,-2);g.closePath();g.fill();
-        g.beginPath();g.moveTo(20+i*5,4);g.lineTo(22+i*5,2);g.lineTo(19+i*5,2);g.closePath();g.fill();}
-      g.fillStyle=AMBER;g.beginPath();g.arc(12,-6,2.6,0,TAU);g.arc(12,6,2.6,0,TAU);g.fill();
+        g.beginPath();g.moveTo(22+i*5,-4);g.lineTo(24+i*5,-2);g.lineTo(21+i*5,-2);g.closePath();g.fill();
+        g.beginPath();g.moveTo(22+i*5,4);g.lineTo(24+i*5,2);g.lineTo(21+i*5,2);g.closePath();g.fill();}
+      glare(g,12,0,2.2,AMBER,5.4);
       g.strokeStyle='#242c22';g.lineWidth=2;
-      g.beginPath();g.arc(-2,0,24,-.8,.8);g.stroke();},
-    // jin: the cinder saint — kasaya sashes, ember halo, censer staff
+      g.beginPath();g.arc(-2,0,26,-.8,.8);g.stroke();},
+    // jin: the cinder saint — cracked halo, tattered kasaya, a censer that spills
     jin(g){
-      g.strokeStyle='#c96a2a';g.lineWidth=1.6;g.globalAlpha=.6;
+      g.strokeStyle='#c96a2a';g.lineWidth=1.8;g.globalAlpha=.55; // the halo: ringed, and cracked
       for(let i=0;i<6;i++){const a=-1.3+i*.52;
-        g.beginPath();g.arc(0,0,36,a,a+.22);g.stroke();}
+        g.beginPath();g.arc(0,0,37,a,a+.2);g.stroke();}
       g.globalAlpha=1;
-      oBlob(g,-4,0,26,21,'#4a3020');sheen(g,-4,-8,22,17,'rgba(246,241,226,0.18)');
-      g.fillStyle='#5e3c26';g.beginPath();g.ellipse(2,0,19,15,0,0,TAU);g.fill();
+      g.strokeStyle='#8c4a1f';g.lineWidth=1.4; // the crack in the saint's light
+      g.beginPath();g.moveTo(-16,-33);g.lineTo(-12,-26);g.lineTo(-18,-21);g.stroke();
+      oBlob(g,-4,0,27,22,'#4a3020');sheen(g,-4,-8,23,18,'rgba(246,241,226,0.18)');
+      g.fillStyle='#5e3c26';g.beginPath();g.ellipse(2,0,20,16,0,0,TAU);g.fill();
+      g.strokeStyle='#2a1a10';g.lineWidth=1.2; // the kasaya: torn to ribbon hems
+      g.beginPath();g.moveTo(-14,16);g.lineTo(-17,24);g.lineTo(-11,23);g.lineTo(-13,30);g.stroke();
+      g.beginPath();g.moveTo(2,19);g.lineTo(3,27);g.lineTo(8,24);g.stroke();
       caps(g,-22,-12,10,-4,2.2,'#2a1a10');caps(g,-22,12,10,4,2.2,'#2a1a10');
       g.strokeStyle='#c96a2a';g.lineWidth=1.2;
       g.beginPath();g.arc(-4,0,25,1.1,2.1);g.stroke();
-      oBlob(g,12,0,12,10,'#2a1a10');
-      g.fillStyle=AMBER;g.beginPath();g.arc(12,-4,2.2,0,TAU);g.arc(12,4,2.2,0,TAU);g.fill();
+      oBlob(g,13,0,13,11,'#2a1a10');
+      g.fillStyle='#0d0906';g.beginPath();g.ellipse(16,0,6.5,5.4,0,0,TAU);g.fill(); // a face of shade
+      glare(g,16,0,1.8,AMBER,3.4); // banked coals
       g.fillStyle='#c96a2a';
-      g.beginPath();g.moveTo(6,-8);g.lineTo(12,-14);g.lineTo(18,-8);g.closePath();g.fill();
+      g.beginPath();g.moveTo(10,-9);g.lineTo(16,-16);g.lineTo(22,-9);g.closePath();g.fill();
       g.strokeStyle='#191420';g.lineWidth=1.2;
-      g.beginPath();g.ellipse(4,0,18,14,0,0,TAU);g.stroke();
-      g.fillStyle='#8c4a1f';
+      g.beginPath();g.ellipse(4,0,19,15,0,0,TAU);g.stroke();
+      g.fillStyle='#8c4a1f'; // the rosary: skull beads, each one a name
       for(let i=0;i<7;i++){const a=i/7*TAU;
-        g.beginPath();g.arc(4+Math.cos(a)*18,Math.sin(a)*14,2,0,TAU);g.fill();}
-      caps(g,16,8,44,14,3.2,'#2a1a10');
-      g.fillStyle='#2a1a10';g.beginPath();g.ellipse(46,14,7,6,0,0,TAU);g.fill();
-      g.fillStyle=AMBER;g.beginPath();g.arc(46,14,3.6,0,TAU);g.fill();
-      g.fillStyle='#c96a2a';g.beginPath();g.arc(44,11,1.6,0,TAU);g.arc(48,17,1.4,0,TAU);g.fill();},
-    // sojobo: master of fans — white wing mantle, long nose, twin gunbai
+        g.beginPath();g.arc(4+Math.cos(a)*19,Math.sin(a)*15,2.2,0,TAU);g.fill();
+        g.fillStyle='#191420';g.beginPath();g.arc(4+Math.cos(a)*19-.9,Math.sin(a)*15,0.7,0,TAU);g.fill();
+        g.fillStyle='#8c4a1f';}
+      caps(g,17,8,47,15,3.2,'#2a1a10');
+      g.fillStyle='#2a1a10';g.beginPath();g.ellipse(49,15,7.5,6.5,0,0,TAU);g.fill(); // the censer
+      g.fillStyle=AMBER;g.beginPath();g.arc(49,15,4,0,TAU);g.fill();
+      g.fillStyle='#c96a2a';g.beginPath();g.arc(47,11,1.8,0,TAU);g.arc(51,18,1.6,0,TAU);g.fill();
+      g.strokeStyle='rgba(201,106,42,0.5)';g.lineWidth=1; // embers leak and rise
+      g.beginPath();g.moveTo(53,13);g.lineTo(56,7);g.stroke();
+      g.beginPath();g.moveTo(46,20);g.lineTo(44,26);g.stroke();},
+    // sojobo: master of fans — a mantle of ragged white pinions, gunbai rimmed in steel
     sojobo(g){
-      g.fillStyle='#d5d0c0';
-      g.beginPath();g.moveTo(-4,-14);g.quadraticCurveTo(-40,-30,-54,-12);g.quadraticCurveTo(-30,-10,-8,-6);g.closePath();g.fill();
-      g.beginPath();g.moveTo(-4,14);g.quadraticCurveTo(-40,30,-54,12);g.quadraticCurveTo(-30,10,-8,6);g.closePath();g.fill();
+      g.fillStyle='#d5d0c0'; // the mantle: torn feathers in ranks, points like knives
+      g.beginPath();g.moveTo(-4,-14);g.quadraticCurveTo(-40,-32,-58,-13);g.quadraticCurveTo(-32,-11,-8,-6);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-4,14);g.quadraticCurveTo(-40,32,-58,13);g.quadraticCurveTo(-32,11,-8,6);g.closePath();g.fill();
       g.strokeStyle='#b3ac98';g.lineWidth=1.2;
-      for(let i=0;i<4;i++){caps(g,-12-i*8,-16-i*3,-34-i*6,-24-i*3,1.2,'#b3ac98');
-        caps(g,-12-i*8,16+i*3,-34-i*6,24+i*3,1.2,'#b3ac98');}
-      oBlob(g,-2,0,26,20,'#2e2a33');sheen(g,-2,-6,22,16);
+      for(let i=0;i<5;i++){caps(g,-12-i*8,-16-i*3,-36-i*6,-25-i*3,1.2,'#b3ac98');
+        caps(g,-12-i*8,16+i*3,-36-i*6,25+i*3,1.2,'#b3ac98');}
+      g.fillStyle='#d5d0c0'; // the longest pinions break past the rest
+      g.beginPath();g.moveTo(-20,-26);g.lineTo(-34,-38);g.lineTo(-16,-29);g.closePath();g.fill();
+      g.beginPath();g.moveTo(-20,26);g.lineTo(-34,38);g.lineTo(-16,29);g.closePath();g.fill();
+      oBlob(g,-2,0,27,21,'#2e2a33');sheen(g,-2,-6,23,17);
       g.strokeStyle='#4c4658';g.lineWidth=1.4;
-      g.beginPath();g.ellipse(-2,0,25,19,0,-2.4,-.7);g.stroke();
-      oBlob(g,12,0,13,11,'#d5d0c0');
-      g.fillStyle='#8c2b1f';g.beginPath();g.ellipse(18,0,8,6,0,0,TAU);g.fill();
-      g.fillStyle='#e6dfcc';g.beginPath();g.moveTo(24,-3);g.lineTo(44,0);g.lineTo(24,3);g.closePath();g.fill();
-      g.fillStyle=INK;g.beginPath();g.arc(15,-4,1.8,0,TAU);g.arc(15,4,1.8,0,TAU);g.fill();
-      caps(g,12,-12,26,-22,4,'#2e2a33');
-      g.fillStyle='#4c4658';
-      g.beginPath();g.moveTo(24,-24);g.quadraticCurveTo(44,-34,50,-22);g.quadraticCurveTo(38,-16,24,-20);g.closePath();g.fill();
-      g.strokeStyle='#8795a5';g.lineWidth=1.2;
-      for(let i=0;i<3;i++){g.beginPath();g.moveTo(26+i*7,-22-i*2);g.lineTo(44+i*2,-28);g.stroke();}
-      caps(g,12,12,28,18,4,'#2e2a33');
+      g.beginPath();g.ellipse(-2,0,26,20,0,-2.4,-.7);g.stroke();
+      oBlob(g,13,0,14,12,'#d5d0c0');
+      g.fillStyle='#8c2b1f';g.beginPath();g.ellipse(20,0,9,6.5,0,0,TAU);g.fill();
+      g.fillStyle='#e6dfcc'; // the beak: long, and it has been used
+      g.beginPath();g.moveTo(26,-3.2);g.lineTo(48,0);g.lineTo(26,3.2);g.closePath();g.fill();
+      g.fillStyle='#8c2b1f';g.beginPath();g.moveTo(43,.2);g.lineTo(50,-1);g.lineTo(44,2.2);g.closePath();g.fill();
+      glare(g,17,0,1.9,INK,3.6);
+      caps(g,13,-12,28,-23,4,'#2e2a33');
+      g.fillStyle='#4c4658'; // the gunbai: lacquered, steel-rimmed, paper torn
+      g.beginPath();g.moveTo(26,-25);g.quadraticCurveTo(48,-36,54,-22);g.quadraticCurveTo(40,-15,26,-20);g.closePath();g.fill();
+      g.strokeStyle='#8795a5';g.lineWidth=2;
+      g.beginPath();g.moveTo(28,-24);g.lineTo(52,-22);g.stroke();
+      g.strokeStyle='#3a3542';g.lineWidth=1;
+      for(let i=0;i<4;i++){g.beginPath();g.moveTo(29+i*5,-25.4-i*1.2);g.lineTo(38+i*4.4,-17.6-i*.4);g.stroke();}
+      caps(g,13,12,30,19,4,'#2e2a33');
       g.fillStyle='#8c2b1f';
-      g.beginPath();g.moveTo(28,16);g.quadraticCurveTo(46,22,52,14);g.quadraticCurveTo(40,10,28,14);g.closePath();g.fill();},
-    // yuki: widow of the white gale — fur mantle, ice ring, winter fan
+      g.beginPath();g.moveTo(30,17);g.quadraticCurveTo(50,23,56,14);g.quadraticCurveTo(42,10,30,15);g.closePath();g.fill();
+      g.strokeStyle='#c9932a';g.lineWidth=1.4; // the seal on the red fan
+      g.beginPath();g.arc(43,16,4,0,TAU);g.stroke();},
+    // yuki: widow of the white gale — spiked fur, frost cracks, a fan of shards
     yuki(g){
-      g.strokeStyle='#c8ccd4';g.lineWidth=2;
-      for(let i=-3;i<=3;i++){g.beginPath();g.moveTo(-8,i*8);g.lineTo(-30-i*2,i*12-4);g.stroke();}
-      oBlob(g,-2,0,22,18,'#c8ccd4');sheen(g,-2,-6,18,14,'rgba(255,255,255,0.35)');
-      g.fillStyle='#e2e6ea';g.beginPath();g.ellipse(4,0,16,13,0,0,TAU);g.fill();
+      g.strokeStyle='#c8ccd4';g.lineWidth=2.2; // the mantle: fur combed into icy spikes
+      for(let i=-3;i<=3;i++){g.beginPath();g.moveTo(-8,i*8);g.lineTo(-32-i*2.4,i*13-6);g.stroke();}
+      g.fillStyle='#e2e6ea';
+      for(let i=-2;i<=2;i++){g.beginPath();g.moveTo(-12,i*8);g.lineTo(-27-i*2,i*12-3);g.lineTo(-10,i*8+4);g.closePath();g.fill();}
+      oBlob(g,-2,0,23,19,'#c8ccd4');sheen(g,-2,-6,19,15,'rgba(255,255,255,0.35)');
+      g.fillStyle='#e2e6ea';g.beginPath();g.ellipse(4,0,17,14,0,0,TAU);g.fill();
       g.strokeStyle='#4a5a68';g.lineWidth=1.2;
       g.beginPath();g.moveTo(-14,-8);g.lineTo(18,-3);g.stroke();
       g.beginPath();g.moveTo(-14,8);g.lineTo(18,3);g.stroke();
-      oBlob(g,14,0,10,8.5,'#e2e6ea');
-      g.fillStyle='#232830';g.beginPath();g.ellipse(17,0,6,5.5,0,0,TAU);g.fill();
-      g.fillStyle='#4a5a68';g.beginPath();g.arc(17,-2.5,1.5,0,TAU);g.arc(17,2.5,1.5,0,TAU);g.fill();
+      g.strokeStyle='rgba(140,170,200,0.5)';g.lineWidth=1; // frost cracks across the robe
+      g.beginPath();g.moveTo(-6,-10);g.lineTo(0,-4);g.lineTo(-4,2);g.stroke();
+      g.beginPath();g.moveTo(2,10);g.lineTo(7,14);g.stroke();
+      oBlob(g,15,0,10.5,9,'#e2e6ea');
+      g.fillStyle='#0d0f14';g.beginPath();g.ellipse(18,0,6.2,5.6,0,0,TAU);g.fill();
+      glare(g,18,0,1.5,'#cfe0f2',2.9); // a winter that waits
+      g.fillStyle='#4a5a68';g.beginPath();g.arc(18,-2.8,1.5,0,TAU);g.arc(18,2.8,1.5,0,TAU);g.fill();
       g.strokeStyle='#8795a5';g.lineWidth=1.6;g.globalAlpha=.7;
-      g.beginPath();g.arc(0,0,26,0,TAU);g.stroke();g.globalAlpha=1;
+      g.beginPath();g.arc(0,0,27,0,TAU);g.stroke();g.globalAlpha=1;
       g.fillStyle='#aeb8c4';
       for(let i=0;i<4;i++){const a=i/4*TAU+.4;
-        g.save();g.translate(Math.cos(a)*26,Math.sin(a)*26);g.rotate(a);
-        g.beginPath();g.moveTo(4,0);g.lineTo(0,-2.6);g.lineTo(-4,0);g.lineTo(0,2.6);g.closePath();g.fill();g.restore();}
-      caps(g,14,10,30,17,4,'#e2e6ea');
-      g.fillStyle='#4a5a68';
-      g.beginPath();g.moveTo(30,13);g.quadraticCurveTo(48,16,50,26);g.quadraticCurveTo(36,24,28,18);g.closePath();g.fill();
-      g.strokeStyle='#aeb8c4';g.lineWidth=1;
-      for(let i=0;i<3;i++){g.beginPath();g.moveTo(31+i*5,14+i*1.5);g.lineTo(44+i*2,20+i*1.5);g.stroke();}},
-    // raijin: drum of a hundred storms — thunder rope, hammer fists
+        g.save();g.translate(Math.cos(a)*27,Math.sin(a)*27);g.rotate(a);
+        g.beginPath();g.moveTo(5,0);g.lineTo(0,-3);g.lineTo(-5,0);g.lineTo(0,3);g.closePath();g.fill();g.restore();}
+      caps(g,15,10,32,18,4,'#e2e6ea');
+      g.fillStyle='#4a5a68'; // the fan: opened blades of ice
+      g.beginPath();g.moveTo(32,15);g.quadraticCurveTo(50,17,54,28);g.quadraticCurveTo(40,26,30,20);g.closePath();g.fill();
+      g.strokeStyle='#aeb8c4';g.lineWidth=1.4;
+      for(let i=0;i<4;i++){g.beginPath();g.moveTo(33+i*4.4,15.4+i*1.4);g.lineTo(46+i*3,24+i*2);g.stroke();}
+      g.fillStyle='#cfe0f2'; // the shards on its rim
+      g.beginPath();g.moveTo(50,22);g.lineTo(54,25);g.lineTo(49,26);g.closePath();g.fill();
+      g.beginPath();g.moveTo(44,20);g.lineTo(47,22);g.lineTo(43,23);g.closePath();g.fill();},
+    // raijin: drum of a hundred storms — rope-muscled arms, studded hammer fists
     raijin(g){
-      caps(g,-28,-24,-62,-36,13,'#5c2a22');caps(g,-28,24,-62,36,13,'#5c2a22');
-      oBlob(g,-10,0,30,26,'#7a3a30');sheen(g,-10,-9,26,22);
+      caps(g,-28,-24,-64,-38,13,'#5c2a22');caps(g,-28,24,-64,38,13,'#5c2a22');
+      g.strokeStyle='#3a1a14';g.lineWidth=2.2; // the rope muscles knot down the arms
+      g.beginPath();g.arc(-40,-30,10,-.7,2.1);g.stroke();
+      g.beginPath();g.arc(-40,30,10,1.1,3.9);g.stroke();
+      oBlob(g,-10,0,32,28,'#7a3a30');sheen(g,-10,-9,28,24);
       g.strokeStyle='#241f1c';g.lineWidth=6;
-      g.beginPath();g.ellipse(-12,0,26,20,0,1.1,2);g.stroke();
+      g.beginPath();g.ellipse(-12,0,28,22,0,1.1,2);g.stroke();
+      g.fillStyle='#e0d8c4'; // studs punched along the ribs
+      g.beginPath();g.arc(4,-16,3,0,TAU);g.arc(-8,-19,2.8,0,TAU);g.arc(12,-9,2.6,0,TAU);g.fill();
       g.fillStyle='#e0d8c4';
-      g.beginPath();g.arc(2,-14,3,0,TAU);g.arc(-6,-16,2.6,0,TAU);g.arc(8,-8,2.4,0,TAU);g.fill();
-      oBlob(g,14,0,15,12.5,'#7a3a30');
-      g.fillStyle='#e0d8c4';
-      g.beginPath();g.moveTo(20,-10);g.lineTo(40,-22);g.lineTo(24,-5);g.closePath();g.fill();
-      g.beginPath();g.moveTo(20,10);g.lineTo(40,22);g.lineTo(24,5);g.closePath();g.fill();
-      g.beginPath();g.ellipse(24,0,10,8.5,0,0,TAU);g.fill();
-      g.fillStyle='#241f1c';
-      g.beginPath();g.moveTo(28,-6);g.lineTo(35,-4);g.lineTo(29,-2);g.closePath();g.fill();
-      g.beginPath();g.moveTo(28,6);g.lineTo(35,4);g.lineTo(29,2);g.closePath();g.fill();
-      g.fillStyle=AMBER;g.beginPath();g.arc(23,-4,2.2,0,TAU);g.arc(23,4,2.2,0,TAU);g.fill();
-      g.strokeStyle=AMBER;g.lineWidth=2;
-      g.beginPath();g.arc(0,0,34,1.1,2.1);g.stroke();
-      g.beginPath();g.arc(0,0,34,4.2,5.2);g.stroke();
-      caps(g,22,-12,44,-22,6,'#5c2a22');
-      g.fillStyle='#d8b04a';g.beginPath();g.ellipse(48,-23,6,5,0,0,TAU);g.fill();
-      caps(g,22,12,42,18,6,'#5c2a22');
-      g.fillStyle='#d8b04a';g.beginPath();g.ellipse(46,19,6,5,0,0,TAU);g.fill();},
-    // hollow: the ash daimyō — vast sode, grey cape, twin drawn blades
+      g.beginPath();g.arc(4,16,3,0,TAU);g.arc(-8,19,2.8,0,TAU);g.arc(12,9,2.6,0,TAU);g.fill();
+      g.strokeStyle='#3d2721';g.lineWidth=1.6; // gouges from the wars it drummed in
+      g.beginPath();g.moveTo(-24,-12);g.lineTo(-16,-6);g.lineTo(-22,0);g.stroke();
+      oBlob(g,15,0,16,13.5,'#7a3a30');
+      g.fillStyle='#e0d8c4'; // the mask: thunder's own snarl
+      g.beginPath();g.moveTo(22,-11);g.lineTo(44,-24);g.lineTo(26,-5);g.closePath();g.fill();
+      g.beginPath();g.moveTo(22,11);g.lineTo(44,24);g.lineTo(26,5);g.closePath();g.fill();
+      g.beginPath();g.ellipse(26,0,11,9.5,0,0,TAU);g.fill();
+      maw(g,28,0,3.8); // the underbite, four fangs
+      glare(g,24,0,2.3,AMBER,4.3);
+      g.strokeStyle=AMBER;g.lineWidth=2.4; // the storm-rope, ringed in warning
+      g.beginPath();g.arc(0,0,36,1.1,2.1);g.stroke();
+      g.beginPath();g.arc(0,0,36,4.2,5.2);g.stroke();
+      g.strokeStyle='#8c5a20';g.lineWidth=1;
+      for(let i=0;i<8;i++){const a=i/8*TAU;
+        g.beginPath();g.arc(Math.cos(a)*36,Math.sin(a)*36,2.4,0,TAU);g.stroke();}
+      caps(g,24,-13,48,-24,7,'#5c2a22');
+      caps(g,24,13,46,21,7,'#5c2a22');
+      // the fists are hammers now: studded heads on rope wrists
+      g.fillStyle='#5c2a22';g.beginPath();g.ellipse(52,-24,9,7.6,0,0,TAU);g.fill();
+      g.fillStyle='#d8b04a';
+      for(let i=0;i<4;i++){g.beginPath();g.arc(52+Math.cos(i/4*TAU)*5,-24+Math.sin(i/4*TAU)*4,1.8,0,TAU);g.fill();}
+      g.fillStyle='#5c2a22';g.beginPath();g.ellipse(50,20,9,7.6,0,0,TAU);g.fill();
+      g.fillStyle='#d8b04a';
+      for(let i=0;i<4;i++){g.beginPath();g.arc(50+Math.cos(i/4*TAU+1)*5,20+Math.sin(i/4*TAU+1)*4,1.8,0,TAU);g.fill();}},
+    // hollow: the ash daimyō — a cape torn to ribbons, twin steels with scars
     hollow(g){
       g.fillStyle='#57534e';
-      g.beginPath();g.ellipse(-22,-28,20,14,0,0,TAU);g.fill();
-      g.beginPath();g.ellipse(-22,28,20,14,0,0,TAU);g.fill();
+      g.beginPath();g.ellipse(-23,-29,21,15,0,0,TAU);g.fill();
+      g.beginPath();g.ellipse(-23,29,21,15,0,0,TAU);g.fill();
       g.strokeStyle='#8c8478';g.lineWidth=1.6;
-      g.beginPath();g.ellipse(-22,-28,17,11,0,0,TAU);g.stroke();
-      g.beginPath();g.ellipse(-22,28,17,11,0,0,TAU);g.stroke();
-      g.fillStyle='rgba(70,66,60,0.8)';
-      g.beginPath();g.moveTo(-16,-18);g.lineTo(-52,-28);g.lineTo(-44,-10);g.lineTo(-54,0);g.lineTo(-44,10);g.lineTo(-52,28);g.lineTo(-16,18);g.closePath();g.fill();
-      oBlob(g,-8,0,30,25,'#6a655e');sheen(g,-8,-9,26,21,'rgba(246,241,226,0.16)');
+      g.beginPath();g.ellipse(-23,-29,18,12,0,0,TAU);g.stroke();
+      g.beginPath();g.ellipse(-23,29,18,12,0,0,TAU);g.stroke();
+      g.strokeStyle='#3c3934';g.lineWidth=1.4; // the sode are cracked like kiln ware
+      g.beginPath();g.moveTo(-31,-34);g.lineTo(-24,-27);g.lineTo(-30,-22);g.stroke();
+      g.beginPath();g.moveTo(-31,34);g.lineTo(-24,27);g.lineTo(-30,22);g.stroke();
+      g.fillStyle='rgba(70,66,60,0.8)'; // the cape: ribbons, not cloth
+      g.beginPath();
+      g.moveTo(-16,-18);g.lineTo(-54,-30);g.lineTo(-46,-12);g.lineTo(-60,-2);
+      g.lineTo(-48,0);g.lineTo(-58,10);g.lineTo(-44,12);g.lineTo(-52,30);g.lineTo(-16,18);g.closePath();g.fill();
+      g.strokeStyle='rgba(60,56,50,0.9)';g.lineWidth=1.2; // the ribs of the tears
+      for(let i=0;i<5;i++){g.beginPath();g.moveTo(-18,-14+i*7);g.lineTo(-52,-26+i*13);g.stroke();}
+      oBlob(g,-8,0,32,26,'#6a655e');sheen(g,-8,-9,28,22,'rgba(246,241,226,0.16)');
       g.strokeStyle='#8c8478';g.lineWidth=1.4;
       for(let i=-1;i<=1;i++)caps(g,-24,i*9,8,i*12,1.4,'#8c8478');
-      oBlob(g,14,0,14,12,'#57534e');
-      g.fillStyle='#3c3934';g.beginPath();g.ellipse(22,0,11,9,0,0,TAU);g.fill();
-      g.fillStyle='#15130f';g.beginPath();g.arc(25,-3.5,2,0,TAU);g.arc(25,3.5,2,0,TAU);g.fill();
+      oBlob(g,15,0,15,13,'#57534e');
+      g.fillStyle='#0d0c0a';g.beginPath();g.ellipse(23,0,11,9.4,0,0,TAU);g.fill(); // the hood is empty
+      glare(g,22,0,1.9,'#c9c2ab',4); // ash-grey eyes, and nothing else
       g.fillStyle='#8c8478';
-      g.beginPath();g.moveTo(16,-9);g.lineTo(26,-18);g.lineTo(19,-4);g.closePath();g.fill();
-      g.beginPath();g.moveTo(16,9);g.lineTo(26,18);g.lineTo(19,4);g.closePath();g.fill();
+      g.beginPath();g.moveTo(18,-10);g.lineTo(29,-19);g.lineTo(21,-4);g.closePath();g.fill();
+      g.beginPath();g.moveTo(18,10);g.lineTo(29,19);g.lineTo(21,4);g.closePath();g.fill();
       g.strokeStyle='#8c8478';g.lineWidth=2;
-      g.beginPath();g.arc(-4,0,28,-1.1,1.1);g.stroke();
-      caps(g,18,-12,36,-24,6,'#6a655e');
-      steel(g,34,-20,78,-28,3.2);oBlob(g,34,-20,4,2.8,'#3a3430');
-      caps(g,18,12,34,20,6,'#6a655e');
-      steel(g,32,17,74,25,3.2);oBlob(g,32,17,4,2.8,'#3a3430');},
-    // kami: the painter's hand — one stroke across blank robes
+      g.beginPath();g.arc(-4,0,30,-1.1,1.1);g.stroke();
+      caps(g,19,-12,38,-25,6,'#6a655e');
+      steel(g,36,-21,84,-30,3.2);oBlob(g,36,-21,4,2.8,'#3a3430');
+      chips(g,36,-21,84,-30,97);
+      caps(g,19,12,36,21,6,'#6a655e');
+      steel(g,34,18,80,28,3.2);oBlob(g,34,18,4,2.8,'#3a3430');
+      chips(g,34,18,80,28,61);
+      g.fillStyle='rgba(120,112,100,0.5)'; // ash drifts off him, always
+      for(let i=0;i<5;i++){g.beginPath();g.arc(-30-i*6,Math.sin(i*2.1)*16,1.4,0,TAU);g.fill();}},
+    // kami: the painter's hand — one committed stroke, a seal, and the ink still wet
     kami(g){
-      oBlob(g,-2,0,26,21,'#1f1d26');sheen(g,-2,-7,22,17,'rgba(246,241,226,0.14)');
-      g.fillStyle='#33303d';g.beginPath();g.ellipse(4,0,19,15,0,0,TAU);g.fill();
-      g.strokeStyle='#ece7da';g.lineWidth=4;
-      g.beginPath();g.moveTo(-16,-10);g.quadraticCurveTo(4,-14,16,-2);g.stroke();
+      oBlob(g,-2,0,28,23,'#1f1d26');sheen(g,-2,-7,24,18,'rgba(246,241,226,0.14)');
+      g.fillStyle='#33303d';g.beginPath();g.ellipse(4,0,20,16,0,0,TAU);g.fill();
+      g.strokeStyle='#ece7da';g.lineWidth=4.6; // THE stroke: broader, and it drips
+      g.beginPath();g.moveTo(-18,-11);g.quadraticCurveTo(4,-16,18,-2);g.stroke();
+      g.strokeStyle='rgba(236,231,218,0.5)';g.lineWidth=1.6;
+      g.beginPath();g.moveTo(14,-4);g.lineTo(20,2);g.stroke();
       g.strokeStyle='#b3372a';g.lineWidth=1.4;
       g.strokeRect(8,4,6,6);
-      oBlob(g,12,0,14,11.5,'#1f1d26');
-      g.fillStyle='#ece7da';g.beginPath();g.ellipse(19,0,10,8,0,0,TAU);g.fill();
-      g.fillStyle='#15130f';g.beginPath();g.arc(21,-3,1.6,0,TAU);g.arc(21,3,1.6,0,TAU);g.fill();
-      g.strokeStyle='#b3372a';g.lineWidth=1.6;
-      g.beginPath();g.moveTo(17,-7);g.lineTo(20,1);g.lineTo(15,7);g.stroke();
-      caps(g,14,10,32,18,4.4,'#1f1d26');
-      caps(g,28,15,74,20,4,'#ece7da');
-      caps(g,28,14,74,19,1.4,'#15130f');
-      oBlob(g,28,15,4.4,3,'#3a3430');
-      g.fillStyle='rgba(29,26,22,0.5)';
-      g.beginPath();g.arc(-4,16,2,0,TAU);g.arc(8,13,1.5,0,TAU);g.fill();}};
+      oBlob(g,13,0,15,12.5,'#1f1d26');
+      g.fillStyle='#ece7da';g.beginPath();g.ellipse(20,0,11,9,0,0,TAU);g.fill();
+      g.fillStyle='#0d0c10';g.beginPath();g.ellipse(23,0,6.4,5.4,0,0,TAU);g.fill();
+      glare(g,23,0,1.7,'#ece7da',3.4); // blank eyes that study you
+      g.strokeStyle='#b3372a';g.lineWidth=1.8; // the verdict cut across the face
+      g.beginPath();g.moveTo(19,-7);g.lineTo(23,1);g.lineTo(17,8);g.stroke();
+      caps(g,15,10,34,19,4.4,'#1f1d26');
+      caps(g,30,16,80,22,4.4,'#ece7da'); // the great brush, held low
+      caps(g,30,15,80,21,1.6,'#15130f');
+      oBlob(g,30,16,4.6,3,'#3a3430');
+      g.fillStyle='rgba(29,26,22,0.6)'; // ink gathers at the ferrule
+      g.beginPath();g.arc(84,23,2.6,0,TAU);g.arc(87,19,1.7,0,TAU);g.fill();
+      g.fillStyle='rgba(29,26,22,0.5)'; // a drop falls off the tip
+      g.beginPath();g.arc(88,28,1.4,0,TAU);g.fill();
+      g.fillStyle='rgba(179,55,42,0.5)'; // the seal bleeds at the hem
+      g.beginPath();g.arc(-8,17,2,0,TAU);g.arc(3,14,1.5,0,TAU);g.fill();}};
   for(const k in defs)BSPR[k]=spr(Math.ceil(BOSSES[k].r*5.6),defs[k]);
-  if(window.STORY2)for(const k in STORY2.bossPainters)BSPR[k]=spr(Math.ceil((BOSSES[k]||{r:30}).r*5.6),STORY2.bossPainters[k]);}
+  if(window.STORY2)for(const k in STORY2.bossPainters)BSPR[k]=spr(Math.ceil((BOSSES[k]||{r:30}).r*5.6),STORY2.bossPainters[k]);
+  if(window.STORY3)for(const k in STORY3.bossPainters)BSPR[k]=spr(Math.ceil((BOSSES[k]||{r:30}).r*5.6),STORY3.bossPainters[k]);}
 
 // per-act light direction for shadows + the color grade baked to screen size
 const GRADE={
@@ -1957,6 +2187,7 @@ const GRADE={
   8:{tint:'rgba(140,43,31,0.09)',lx:0,ly:.7,shadow:'rgba(60,16,10,0.3)',vig:.5,amb:'abyss'},
   9:{tint:'rgba(44,58,94,0.15)',lx:.22,ly:.28,shadow:'rgba(10,14,26,0.4)',vig:.5,amb:'moon'}};
 if(window.STORY2)Object.assign(GRADE,STORY2.grade); // story 2: light for the vermilion road
+if(window.STORY3)Object.assign(GRADE,STORY3.grade); // story 3: light for the last page
 const gradeOf=()=>GRADE[curAct()]||GRADE[1];
 function gradeLayer(){
   const act=curAct();
@@ -1986,7 +2217,13 @@ function gradeLayer(){
       m.addColorStop(0,'rgba(224,228,238,0.22)');m.addColorStop(.45,'rgba(224,228,238,0.08)');m.addColorStop(1,'rgba(224,228,238,0)');
       g.fillStyle=m;g.fillRect(0,0,W,H);
       g.fillStyle='rgba(238,240,244,0.2)';g.beginPath();g.arc(mx,my,r,0,TAU);g.fill();
-      g.fillStyle='rgba(44,58,94,0.14)';g.beginPath();g.arc(mx+r*.45,my-r*.3,r*.24,0,TAU);g.fill();}}
+      g.fillStyle='rgba(44,58,94,0.14)';g.beginPath();g.arc(mx+r*.45,my-r*.3,r*.24,0,TAU);g.fill();}
+    // update 2.9 「疾」: the screen's own vignette rides inside the grade now —
+    // the same darkened edges, baked into the one sheet the page already
+    // composites each frame, instead of a second fullscreen pass over it
+    const vg=g.createRadialGradient(W/2,H/2,Math.min(W,H)*.38,W/2,H/2,Math.max(W,H)*.74);
+    vg.addColorStop(0,'rgba(43,36,26,0)');vg.addColorStop(1,'rgba(43,36,26,0.34)');
+    g.fillStyle=vg;g.fillRect(0,0,W,H);}
   return gradeC;}
 
 function buildFloor(act){
@@ -2014,7 +2251,8 @@ function buildFloor(act){
     g.strokeStyle='rgba(160,176,204,0.16)';g.lineWidth=2;
     for(let i=0;i<4;i++){g.beginPath();g.ellipse(RW*.62,RH*.8-i*16,120-i*14,26-i*4,0,0,TAU);g.stroke();}}
   if(G.run&&G.run.abyss){g.fillStyle='rgba(46,24,20,0.34)';g.fillRect(0,0,RW,RH);}
-  if(act>=11&&window.STORY2){STORY2.buildFloor(act,g,seed);}
+  if(act>=17&&window.STORY3){STORY3.buildFloor(act,g,seed);}
+  else if(act>=11&&window.STORY2){STORY2.buildFloor(act,g,seed);}
   else for(let i=0;i<30;i++){const x=hash01(seed+i*3)*RW,y=hash01(seed+i*7)*RH;
     if(act===1){
       g.strokeStyle='rgba(120,130,70,0.4)';g.lineWidth=1.6;
@@ -2093,6 +2331,12 @@ function buildFloor(act){
         const ga=hash01(seed+507+i*5+j)*TAU,gd=r+rnd(2,7);
         g.fillStyle='rgba('+stC+',0.3)';
         g.beginPath();g.arc(x+Math.cos(ga)*gd,y+Math.sin(ga)*gd*sq,1+hash01(seed+508+i+j)*1.3,0,TAU);g.fill();}}}
+  // ---- update 2.8 「威」: THE DRESSED STAGE — set pieces with a past, baked
+  // onto the page: scarecrows and sheaves in the rice, the drowned bridge and
+  // its sampan, the court's tōrō and shimenawa, snow-capped jizō, the war camp
+  // of taiko and tate, the ash garden's graves and charred gate — the stage
+  // becomes a place something happened in, not a texture
+  if(window.DECO)DECO.buildFloor(act,g,seed);
   // the arena frame: two ink borders and a rough outer hatch
   g.strokeStyle=act===7?'#8a8894':INK;g.lineWidth=7;g.strokeRect(WALL-6,WALL-6,RW-WALL*2+12,RH-WALL*2+12);
   g.lineWidth=2.5;g.strokeRect(WALL-16,WALL-16,RW-WALL*2+32,RH-WALL*2+32);
@@ -2141,6 +2385,7 @@ function buildFloor(act){
 // live props that sway in the wind — grass, reeds, bamboo, embers' stalks.
 // generated deterministically per act so the field doesn't reshuffle on redraw.
 function buildProps(act){
+  if(act>=17&&window.STORY3){STORY3.buildProps(act);return;} // the last page paints its own
   if(act>=11&&window.STORY2){STORY2.buildProps(act);return;} // the red road paints its own
   const pr=[];
   const n=act===7?26:(act===4?36:(act===9?42:88));
@@ -2409,9 +2654,23 @@ function inkBurst(x,y,n,col,pow=1){for(let i=0;i<n;i++){const a=rnd(TAU),s=rnd(6
   addPart({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-60,life:rnd(.3,.8),max:.8,size:rnd(1.5,4.5),color:col||INK,grav:520,drag:.9});}}
 function addFloat(x,y,text,color,size=13){if(G.floats.length>70)G.floats.shift();
   if(!SAVE.numbers&&color!==GOLD&&color!==RED)return;G.floats.push({x:x+rnd(-8,8),y:y-14,text,color,size,t:0,dur:.75});}
-function splat(x,y,big){const s=SPLATS[rndi(0,SPLATS.length-1)];G.dctx.save();G.dctx.translate(x,y);G.dctx.rotate(rnd(TAU));
-  const sc=(big?rnd(.9,1.6):rnd(.35,.8));G.dctx.globalAlpha=rnd(.5,.85);
-  G.dctx.drawImage(s,-70*sc,-70*sc,140*sc,140*sc);G.dctx.restore();}
+// update 2.9 「疾」: the page's stains are pressed into the floor itself. every
+// weave the page keeps takes the stamp once at the moment it lands, and the
+// frame stops compositing a whole extra world-sized sheet just to carry old
+// blood — a kill costs two small draws at kill time instead of a full pass
+// at sixty a second, on every machine, forever.
+function paintFloor(fn){
+  if(!G.floorC)return;
+  const f=G.fctx||(G.fctx=G.floorC.getContext('2d'));
+  const fs=G.floorC.width/RW;
+  f.save();f.setTransform(fs,0,0,fs,0,0);
+  try{fn(f);}finally{f.restore();}
+  if(G.floorMip){const m=G.mctx||(G.mctx=G.floorMip.getContext('2d'));
+    m.save();try{fn(m);}finally{m.restore();}}}
+function splat(x,y,big){const s=SPLATS[rndi(0,SPLATS.length-1)];
+  const sc=(big?rnd(.9,1.6):rnd(.35,.8)),al=rnd(.5,.85)*.92,rot=rnd(TAU);
+  paintFloor(g=>{g.save();g.translate(x,y);g.rotate(rot);g.globalAlpha=al;
+    g.drawImage(s,-70*sc,-70*sc,140*sc,140*sc);g.restore();});}
 function shake(){const t=G.trauma*G.trauma,a=rnd(TAU),m=t*(SAVE.shake?16:0);G.shakeX=Math.cos(a)*m;G.shakeY=Math.sin(a)*m;}
 function aimAssist(){let best=null,bd=1e9;
   for(const e of G.enemies){if(e.dead)continue;const d=dist(e.x,e.y,P.x,P.y);if(d<bd){bd=d;best=e;}}
@@ -2454,7 +2713,7 @@ function recalc(){if(!P)return;const m=SAVE.meta;
   P.maxhp=100+m.vit*12+bl('inkwell')*25;P.hp=Math.min(P.hp,P.maxhp);
   if(P.dashCharges>P.st.dashMax)P.dashCharges=P.st.dashMax;
   if(P.gourd===undefined||P.gourd>P.st.gourdMax)P.gourd=P.st.gourdMax;
-  if(G.run&&G.run.story===2&&window.STORY2)STORY2.recalc(P);} // her body answers differently
+  if(G.run&&heroIs2()&&window.STORY2)STORY2.recalc(P);} // her body answers differently — wherever she walks
 
 function startSwing(){const w=WEAPONS[P.weapon];const idx=P.comboIdx%w.dmg.length;
   P.swing={t:0,dur:w.rate*P.st.rate,idx,hit:false,flip:idx%2===1};
@@ -2474,7 +2733,7 @@ function doSwingHit(){const w=WEAPONS[P.weapon];const rng=w.range*P.st.range+P.r
       let crit=Math.random()<P.st.crit;if(crit)dmg*=2;
       if(P.mantle>0)dmg*=1.5;if(P.veng){dmg*=1.6;P.veng=false;}
       if(P.dmgBuffT>0)dmg*=1.25;
-      if(G.run&&G.run.story===2&&window.STORY2)dmg*=1+STORY2.momentum()*.3; // 朱勢 — momentum is her edge
+      if(G.run&&heroIs2()&&window.STORY2)dmg*=1+STORY2.momentum()*.3; // 朱勢 — momentum is her edge, on any road
       if(bl('execute')&&e.hp<e.maxhp*.25)dmg*=2;
       if(e.broken&&e.boss){dmg=dmg*2+e.maxhp*.15;e.broken=false;e.posture=0;
         slowmo(.4,.25);AU.stamp();trauma(.5);G.wash=.5;G.zp=.45;G.lbxT=.6;
@@ -2575,7 +2834,7 @@ function perfectDodge(src){if(P.pdodT>0)return;P.pdodT=.6;
     G.fx.push({kind:'impact',x:src.x,y:src.y,t:0,dur:.2});
     slowmo(.26,.3);trauma(.32);}}
 function doArt(){P.ki=0;P.artT=.5;slowmo(.5,.2);AU.ki();G.flash=.5;G.wash=.35;trauma(.5);G.zp=.35;
-  if(G.run&&G.run.story===2&&window.STORY2){STORY2.doArt(); // 紅潮 — her tide, not the spin
+  if(G.run&&heroIs2()&&window.STORY2){STORY2.doArt(); // 紅潮 — her tide, not the spin, on any road
     for(const pr of G.projs)if(!pr.friendly)pr.dead=true;
     inkBurst(P.x,P.y,30,RED2,1.4);splat(P.x,P.y,true);hitstop(.1);return;}
   const art=artId();
@@ -2661,8 +2920,8 @@ function spawnEnemy(type,x,y,elite){const md=G.run&&G.run.meido;let d=ENEMY[type
   if(md){d=Object.assign({},d);
     if(mdHas('peril'))d.peril=Math.min(.8,(d.peril||0)*2);
     if(mdHas('still'))d.rec=(d.rec||1)*1.2;}
-  const hsc=1.5*(md?(1+(G.run.milestone-1)*.09)*DIFFI().hp:(1+.3*((G.run&&G.run.story===2?G.run.act:act)-1))*DIFFI().hp); // every foe carries half again the flesh
-  const dsc=md?(1+(G.run.milestone-1)*.05)*DIFFI().dmg:(1+.18*((G.run&&G.run.story===2?G.run.act:act)-1))*DIFFI().dmg;
+  const hsc=1.5*(md?(1+(G.run.milestone-1)*.09)*DIFFI().hp:(1+.3*(storyAct()-1))*DIFFI().hp); // every foe carries half again the flesh
+  const dsc=md?(1+(G.run.milestone-1)*.05)*DIFFI().dmg:(1+.18*(storyAct()-1))*DIFFI().dmg;
   const e={type,def:d,x,y,vx:0,vy:0,kx:0,ky:0,r:d.r*(elite?1.2:1),facing:rnd(TAU),state:'seek',t:0,cd:rnd(.3,1),flash:0,stun:0,elite,
     hp:d.hp*hsc*(elite?2.4:1)*(md&&mdHas('armored')?1.4:1)*(G.run.abyss?1+G.run.wave*.03:1),maxhp:0,spd:d.spd*DIFFI().spd*(elite?1.12:1)*(md&&mdHas('frenzy')?1.25:1),dmg:d.dmg*dsc*(elite?1.25:1),
     bob:rnd(TAU),rotS:0,rotT:0,rotAcc:0,life:0,fireT:0,aim:0,chan:0,tpCd:0,side:0,healing:null,atkDone:false,dead:false,
@@ -2692,10 +2951,10 @@ function damageEnemy(e,dmg,opts={}){if(e.dead)return;dmg=Math.max(1,Math.round(d
   if(opts.crit){G.fx.push({kind:'impact',x:e.x,y:e.y,t:0,dur:.14});
     addFloat(e.x,e.y-10,dmg+'!',RED,17);AU.crit();addRing(e.x,e.y,26,RED);}
   else addFloat(e.x,e.y-10,dmg,INK,12);
-  if(e.hp>0&&e.hp<e.maxhp*.34&&G.dctx&&Math.random()<.5){ // the badly hurt leak onto the page
-    G.dctx.globalAlpha=.16;G.dctx.fillStyle=INK;
-    G.dctx.beginPath();G.dctx.arc(e.x+rnd(-10,10),e.y+rnd(-6,12),rnd(2,5),0,TAU);G.dctx.fill();
-    G.dctx.globalAlpha=1;}
+  if(e.hp>0&&e.hp<e.maxhp*.34&&G.floorC&&Math.random()<.5){ // the badly hurt leak onto the page
+    const lx=e.x+rnd(-10,10),ly=e.y+rnd(-6,12),lr=rnd(2,5);
+    paintFloor(g=>{g.globalAlpha=.16;g.fillStyle=INK;
+      g.beginPath();g.arc(lx,ly,lr,0,TAU);g.fill();g.globalAlpha=1;});}
   if(!e.boss){e.kx+=(opts.knock||100)*Math.cos(opts.ang||0)/e.r*3;e.ky+=(opts.knock||100)*Math.sin(opts.ang||0)/e.r*3;}
   inkBurst(e.x,e.y,opts.crit?10:5,INK,.8);AU.hit();
   if(e.type==='sorc'&&e.state==='channel')e.chan+=.4;
@@ -3035,7 +3294,8 @@ wave:{start(b){b.mt=0;b.sub=0;},
  up(b,dt){if(b.sub===0&&b.mt>.85){b.sub=1;b.mt=0;
    G.rings.push({x:b.x,y:b.y,r:50,spd:175,w:30,dmg:16*b.dmgS,max:980,pHit:false});AU.roar();trauma(.4);}
   if(b.mt>1.4)bossEnd(b);}}};
-if(window.STORY2)Object.assign(BOSSMOVES,STORY2.bossMoves); // story 2: the new mechanics;
+if(window.STORY2)Object.assign(BOSSMOVES,STORY2.bossMoves); // story 2: the new mechanics
+if(window.STORY3)Object.assign(BOSSMOVES,STORY3.bossMoves); // story 3: the author's own erasure;
 
 function updateBoss(b,dt){b.t+=dt;b.bob+=dt*2;if(b.flash>0)b.flash-=dt;b.touchCd-=dt;
   if(window.ANIM)ANIM.step(b,dt); // update 2.6: keepers drop from the sky and step into their moves
@@ -3071,10 +3331,10 @@ function spawnBoss(id){const d=BOSSES[id];const act=curAct();
   const md=G.run&&G.run.meido;
   const hs=1.5*(duel?DIFFI().hp*(md?1+(G.run.milestone-1)*.05:1):
     (md?(1+(G.run.milestone-1)*.13)*DIFFI().hp:
-    (1+.22*((G.run&&G.run.story===2?G.run.act:act)-1))*(G.run.abyss?1+G.run.wave*.04:1)*(G.run.gauntlet?1+G.gauntIdx*.07:1)*DIFFI().hp));
+    (1+.22*(storyAct()-1))*(G.run.abyss?1+G.run.wave*.04:1)*(G.run.gauntlet?1+G.gauntIdx*.07:1)*DIFFI().hp));
   const introT=duel?1.3:2.4;
   const b={boss:true,id,def:d,def0:d,name:d.name,x:RW/2,y:RH*.3,vx:0,vy:0,r:d.r,
-    hp:d.hp*hs,maxhp:d.hp*hs,spd:d.spd*DIFFI().spd,dmgS:(1+.18*((G.run&&G.run.story===2?G.run.act:act)-1))*DIFFI().dmg,
+    hp:d.hp*hs,maxhp:d.hp*hs,spd:d.spd*DIFFI().spd,dmgS:(1+.18*(storyAct()-1))*DIFFI().dmg,
     facing:PI/2,state:'intro',stateT:introT,sub:0,mt:0,move:null,lastMove:null,phase2:false,flash:0,stun:0,
     touchCd:0,hist:[],t:0,bob:0,h:0,kanji:d.kanji,tx:RW/2,ty:RH*.3,fireT:0,spir:0,hidden:false,
     hitP:false,dead:false,elite:false,life:0,perilDash:false,duel,
@@ -3293,8 +3553,8 @@ function renderArmory(){const ashEl=$('#ash-armory');if(ashEl)ashEl.textContent=
       else{btn.textContent='draw it';btn.onclick=()=>{SAVE.art=id;persist();AU.ui();renderArmory();};}
       row.appendChild(btn);list.appendChild(row);});}}
 function renderActs(){const body=$('#roads-body');if(!body)return;body.innerHTML='';
-  const section=(kan,name,sub,s2)=>{const h=document.createElement('div');
-    h.className='story-head'+(s2?' s2':'');
+  const section=(kan,name,sub,cls)=>{const h=document.createElement('div');
+    h.className='story-head'+(cls?' '+cls:'');
     h.innerHTML=`<span class="sk">${kan}</span><span class="sn">${name}</span><span class="ss">${sub}</span>`;
     body.appendChild(h);
     const strip=document.createElement('div');strip.className='act-strip';body.appendChild(strip);return strip;};
@@ -3322,6 +3582,27 @@ function renderActs(){const body=$('#roads-body');if(!body)return;body.innerHTML
         (locked?`<div class="lock"><span>封</span></div>`:'');
       if(!locked)d.onclick=()=>{AU.ui();startRun(act,false,false,2);};
       s2.appendChild(d);});}
+  // update 3.0 「終」: the third road — the last page. it opens to a hand that
+  // has walked a road to its end, it remembers which hand you trust, and it
+  // asks the question once, every time you come to it
+  if(window.STORY3){
+    const gate=finaleOpen();
+    const unlocked=gate?Math.max(1,SAVE.unlockedAct3||1):0;
+    const s3=section('終','THE LAST PAGE','the finale · both roads remembered · walk it with the hand you trust','s3');
+    STORY3.acts.forEach((a,i)=>{const act=i+1,locked=(act>unlocked);
+      const d=document.createElement('div');d.className='act-node s3'+(locked?' locked':'')+(gate&&act===unlocked?' cur':'');
+      let dots='';for(let j=0;j<a.stages.length;j++)dots+='<i'+(act<unlocked?' class="done"':'')+'></i>';
+      const tag=(!gate)?'walk a road to its end':
+        (a.stages.some(s=>s.duel)?'act '+act+' · duel':(a.stages.some(s=>s.boss)?'act '+act+' · keeper':'act '+act));
+      d.innerHTML=`<div class="a-kan">${a.kanji}</div><div class="a-name">${a.name}</div>
+        <div class="a-tag">${tag}</div>
+        <div class="a-dots">${dots}</div>`+
+        (locked?`<div class="lock"><span>封</span></div>`:'');
+      if(!locked)d.onclick=()=>{AU.ui();openHeroPick(act);};
+      s3.appendChild(d);});
+    if(SAVE.achieved3){const fin=document.createElement('div');
+      fin.className='s3-done';fin.innerHTML='<span class="seal title-seal">終</span> the chronicle is finished — the page is written';
+      body.appendChild(fin);}}
   // the side roads: every bonus mode, one shelf
   const sb=section('寄','THE SIDE ROADS','bonus modes · where finished blades go');
   const nodes=[];
@@ -3339,12 +3620,45 @@ function renderActs(){const body=$('#roads-body');if(!body)return;body.innerHTML
       (n.lock?`<div class="lock"><span>${n.lock}</span></div>`:'');
     if(n.fn)d.onclick=()=>{AU.ui();n.fn();};
     sb.appendChild(d);}}
+// update 3.0 「終」: the question the last page asks every hand — who walks
+// it? two cards on the road itself, the last choice you are offered before
+// the author. it remembers the hand you last trusted
+function openHeroPick(act){
+  let hp=$('#hero-pick');
+  if(!hp){hp=document.createElement('div');hp.id='hero-pick';
+    const pb=document.querySelector('#s-acts .page-body');
+    if(!pb)return;pb.appendChild(hp);}
+  const last=SAVE.lastHero3||1;
+  hp.innerHTML=`<div class="hp-head">WHO WALKS THE LAST PAGE — ACT ${act}?</div>
+    <div class="hp-cards">
+      <button class="hp-card" data-hero="1">
+        <span class="hk">墨</span>
+        <span class="hn">THE NAMELESS BLADE</span>
+        <span class="hs">the ronin · deflect, posture, the honest answer${last===1?' · the hand you trust':''}</span>
+      </button>
+      <button class="hp-card" data-hero="2">
+        <span class="hk">朱</span>
+        <span class="hn">AKANE 茜</span>
+        <span class="hs">the brush-dancer · momentum is her edge, the tide her art${last===2?' · the hand you trust':''}</span>
+      </button>
+    </div>
+    <button class="mbtn" id="hp-cancel"><span class="idx">◆</span>Not yet</button>`;
+  hp.classList.add('on');
+  hp.querySelectorAll('.hp-card').forEach(b=>b.onclick=()=>{
+    AU.ui();hp.classList.remove('on');
+    startRun(act,false,false,3,+b.dataset.hero);});
+  $('#hp-cancel').onclick=()=>{AU.ui();hp.classList.remove('on');};}
 
-function startRun(act,abyss=false,keepBook=false,story=1){G.run={act,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,abyss,wave:1,bossDead:null,gauntlet:false,story};
+function startRun(act,abyss=false,keepBook=false,story=1,hero){G.run={act,stage:1,blessings:{},ashEarned:0,kills:0,time:0,totalTime:0,stageTime:0,bestCombo:0,deaths:0,revived:false,abyss,wave:1,bossDead:null,gauntlet:false,story};
+  // update 3.0 「終」: the last page is walked by the hand you trust — the
+  // hero flag rides its own field, so akane can walk the finale wearing her
+  // own body, and the ronin keeps the ink road's silhouette everywhere
+  G.run.hero=(story===3?(hero||SAVE.lastHero3||1):(story===2?2:1));
+  if(story===3){SAVE.lastHero3=G.run.hero;persist();}
   if(!keepBook)G.codexSeen=new Set(); // a fresh run re-introduces the cast
   G.codexQ.length=0;G.codexCur=null;G.grantQ.length=0;G.grantShow=null;
   P=newPlayer();P.ownedWeapons=WKEYS.filter(w=>SAVE.weapons[w]);
-  if(story===2&&window.STORY2){STORY2.setupPlayer(P);SAVE.lastWeapon=P.weapon;persist();}
+  if((story===2||G.run.hero===2)&&window.STORY2){STORY2.setupPlayer(P);SAVE.lastWeapon=P.weapon;persist();}
   if(!P.ownedWeapons.includes(SAVE.lastWeapon))SAVE.lastWeapon=P.ownedWeapons[0]||'katana';
   P.weapon=SAVE.lastWeapon;recalc();P.hp=P.maxhp;P.gourd=P.st.gourdMax;
   for(let i=0;i<SAVE.meta.discipline;i++)grantBlessing(choice(BLESS),true);
@@ -3395,7 +3709,7 @@ function meidoWaves(){
   const ec=mdHas('bones')?1:m*.07;
   const mk=n=>{const a=[];for(let i=0;i<n;i++)a.push({t:pool[(r()*pool.length)|0],e:r()<ec});return a;};
   return[mk(Math.ceil(cnt*.6)),mk(Math.max(2,Math.floor(cnt*.4)))];}
-const ACTS_OF=()=>(G.run&&G.run.story===2&&window.STORY2)?STORY2.acts:ACTS; // which road is being walked
+const ACTS_OF=()=>(G.run&&G.run.story===2&&window.STORY2)?STORY2.acts:((G.run&&G.run.story===3&&window.STORY3)?STORY3.acts:ACTS); // which road is being walked
 function currentStageDef(){if(G.run.gauntlet)return{n:'Duel '+(G.gauntIdx+1)+' of '+GAUNTLET.length,w:null};
   if(G.run.meido)return{n:G.run.milestone===5?'The Fifth Mark — a duel':(G.run.milestone===MEIDO_LEN?'The Gate':'Mark '+G.run.milestone),w:null};
   if(G.run.abyss)return{n:'Wave '+G.run.wave,w:null};
@@ -3406,9 +3720,11 @@ function startStage(){const run=G.run;
   G.parts.length=0;G.floats.length=0;G.clearing=0;G.waveIdx=-1;G.waves=[];G.spawnQ=[];G.waveGap=0;
   G.hurtV=0;G.style.pts=0;G.style.combo=0;G.style.rank=0;
   buildFloor(curAct());buildProps(curAct());
-  // update 2.4 「印」: splats are soft ink — they keep the single weave (crispness
-  // buys nothing on a blot), drawn at world size whatever their backing
-  G.decalC=mkCanvas(RW,RH);G.dctx=G.decalC.getContext('2d');
+  if(window.DECO)DECO.build(curAct()); // update 2.8 「威」: the live set + the far/near bands
+  // update 2.9 「疾」: the decal sheet retired — stains press straight into the
+  // floor's weaves now (paintFloor), so a stage begins with clean paper and
+  // nothing carries a second world-sized canvas for the old ink
+  G.decalC=null;G.dctx=null;G.fctx=null;G.mctx=null;
   P.x=RW/2;P.y=RH*.7;P.vx=P.vy=0;P.dead=false;P.deadT=0;
   G.cam.x=P.x;G.cam.y=P.y;HUD.hpGhost=P.hp;
   const sd=currentStageDef();
@@ -3479,6 +3795,11 @@ function stageClear(){if(G.clearing||!G.run)return;G.clearing=1;slowmo(.4,.5);AU
       else if(boss)actClear();
       else showClear('STAGE CLEARED','bless');}});}
 function actClear(){const act=G.run.act;
+  if(G.run.story===3){ // the last page keeps its own count — and its own ending
+    if(act<3)SAVE.unlockedAct3=Math.max(SAVE.unlockedAct3||1,act+1);
+    persist();
+    if(act===3){showVictory3();return;}
+    showClear('ACT '+ACTS_OF()[act-1].kanji+' CLEARED','act');return;}
   if(G.run.story===2){ // the vermilion road remembers its own progress
     if(act<6)SAVE.unlockedAct2=Math.max(SAVE.unlockedAct2||1,act+1);
     persist();
@@ -3570,7 +3891,8 @@ function showClear(title,kind){$('#clear-title').textContent=title;
     add('Leave the Abyss',()=>toMenu('acts'));}
   persist();setMode('clear');AU.stamp();AU.taiko(.35);}
 function startRunKeep(){G.run.ashEarned=0;G.run.kills=0;G.run.revived=false;startStage();}
-function showVictory(){SAVE.gauntletUnlocked=true;persist();
+function showVictory(){SAVE.gauntletUnlocked=true;SAVE.achieved=true;persist();
+  const vl=$('#victory-line');if(vl)vl.innerHTML='The page is blank again.<br>It was never empty.';
   $('#victory-stats').innerHTML=`kills <b>${SAVE.stats.kills}</b> · deaths <b>${SAVE.stats.deaths}</b> · the red road is open — and the abyss awaits`;
   $('#victory-rec').textContent='';
   victoryButtons([['Walk the Vermilion Road 朱',()=>startRun(1,false,false,2)],['Descend into the Abyss',()=>startRun(1,true)],['The Gauntlet 連',()=>startGauntlet()],['The Roads',()=>toMenu('acts')]]);
@@ -3579,12 +3901,25 @@ function showVictory(){SAVE.gauntletUnlocked=true;persist();
 // the second road's own ending: the stamp that said yes, declined
 function showVictory2(){SAVE.achieved2=true;persist();
   const t=Math.round(G.run.totalTime+G.run.time);
+  const vl=$('#victory-line');if(vl)vl.innerHTML='The seal is refused.<br>The page kept your mark anyway.';
   $('#victory-stats').innerHTML=
     `the seal is refused · <b class="mono">${fmtT(t)}</b> · kills <b>${G.run.kills}</b> · best combo <b>${G.run.bestCombo}</b><br>the blank page keeps your mark — the red road remembers who made it.`;
   $('#victory-rec').textContent='';
   victoryButtons([['The Ink Road, Again',()=>startRun(1)],['The Vermilion Road, Again',()=>startRun(1,false,false,2)],['The Roads',()=>toMenu('acts')]]);
   setMode('victory');AU.roar();AU.taiko(.6);G.lbxT=1.4;
   lbSubmit('story2','victory-rec','victory');}
+// update 3.0 「終」: the true ending — the scroll is finished. the author
+// is cut from its own page, and every road the ink ever took ends here
+function showVictory3(){SAVE.achieved3=true;SAVE.achieved=true;persist();
+  const t=Math.round(G.run.totalTime+G.run.time);
+  const vl=$('#victory-line');if(vl)vl.innerHTML='The page is written.<br>The brush is set down — what was blank was only waiting.';
+  $('#victory-stats').innerHTML=
+    `the last page 終 · walked as ${G.run.hero===2?'AKANE 茜':'THE NAMELESS BLADE'} · <b class="mono">${fmtT(t)}</b> · kills <b>${G.run.kills}</b> · best combo <b>${G.run.bestCombo}</b><br>`+
+    `ink road 墨 · vermilion road 朱 · the last page 終 — the chronicle is finished. thank you for walking it.`;
+  $('#victory-rec').textContent='';
+  victoryButtons([['Walk the Last Page, Again',()=>startRun(1,false,false,3,G.run.hero)],['Walk the Roads',()=>toMenu('acts')],['The Title',()=>toMenu('title')]]);
+  setMode('victory');AU.roar();AU.taiko(.75);G.lbxT=1.6;
+  lbSubmit('story3','victory-rec','victory');}
 function showDeath(){const t=G.run.time;
   G.run.totalTime=(G.run.totalTime||0)+t;
   SAVE.stats.deaths++;G.run.deaths++;
@@ -3593,21 +3928,23 @@ function showDeath(){const t=G.run.time;
   const where=G.run.gauntlet?'the gauntlet · duel '+(G.gauntIdx+1)+' of '+GAUNTLET.length:
     (G.run.meido?'the night road · mark '+G.run.milestone+' · seed '+G.run.seed:
     (G.run.abyss?'the abyss · wave '+G.run.wave:
+    (G.run.story===3?'終 · act '+ACTS_OF()[G.run.act-1].kanji+' · stage '+G.run.stage+' · '+(G.run.hero===2?'茜':'墨'):
     (G.run.story===2?'朱 · act '+ACTS_OF()[G.run.act-1].kanji+' · stage '+G.run.stage:
-    'act '+ACTS[G.run.act-1].kanji+' · stage '+G.run.stage)));
+    'act '+ACTS[G.run.act-1].kanji+' · stage '+G.run.stage))));
   $('#death-stats').innerHTML=`${where} · kills <b>${G.run.kills}</b> · time <b>${fmtT(t)}</b> · ash kept <b>${G.run.ashEarned}</b>`;
   $('#death-rec').textContent='';
   if(G.run.abyss)lbSubmit('abyss','death-rec');
   else if(G.run.gauntlet)lbSubmit('gauntlet','death-rec');
   else if(G.run.meido)lbSubmit('meido','death-rec');
+  else if(G.run.story===3)lbSubmit('story3','death-rec');
   else if(G.run.story===2)lbSubmit('story2','death-rec');
   const btns=$('#death-btns');btns.innerHTML='';
   const add=(label,fn)=>{const b=document.createElement('button');b.className='mbtn';
     b.innerHTML=`<span class="idx">◆</span>${label}`;b.onclick=()=>{AU.ui();fn();};btns.appendChild(b);};
-  add('Walk Again',()=>G.run.gauntlet?startGauntlet(true):(G.run.meido?startMeido(G.run.daily,true):startRun(G.run.act,G.run.abyss,true,G.run.story||1)));
+  add('Walk Again',()=>G.run.gauntlet?startGauntlet(true):(G.run.meido?startMeido(G.run.daily,true):startRun(G.run.act,G.run.abyss,true,G.run.story||1,G.run.hero)));
   add('The Shrine',()=>toMenu('shrine'));
   add('The Roads',()=>toMenu('acts'));
-  if(!G.run.gauntlet&&!G.run.meido&&G.run.deaths>=3&&SAVE.difficulty>0)add('Accept Mercy (lower difficulty)',()=>{SAVE.difficulty--;persist();startRun(G.run.act,G.run.abyss,true,G.run.story||1);});
+  if(!G.run.gauntlet&&!G.run.meido&&G.run.deaths>=3&&SAVE.difficulty>0)add('Accept Mercy (lower difficulty)',()=>{SAVE.difficulty--;persist();startRun(G.run.act,G.run.abyss,true,G.run.story||1,G.run.hero);});
   setMode('death');AU.stamp();}
 
 // ---- records: etched server-side when the server exists, and always copied -----
@@ -3633,7 +3970,7 @@ async function lbApi(url,opts){
 function lbEntry(mode){
   const run=G.run;if(!run)return null;
   return {name:SAVE.recordsName,mode,
-    wave:mode==='abyss'?Math.max(0,run.wave-1):(mode==='gauntlet'?G.gauntIdx:(mode==='meido'?Math.max(0,run.milestone-1):(mode==='story2'?6:7))),
+    wave:mode==='abyss'?Math.max(0,run.wave-1):(mode==='gauntlet'?G.gauntIdx:(mode==='meido'?Math.max(0,run.milestone-1):(mode==='story2'?6:(mode==='story3'?3:7)))),
     kills:run.kills,timeSec:Math.max(1,Math.round(run.totalTime)),difficulty:SAVE.difficulty,at:Date.now()};}
 async function lbSubmit(mode,elId='death-rec',ret='death'){
   if(!SAVE.recordsName){pendingMode=mode;pendingRet=ret;openSubmit();return;}
@@ -3683,12 +4020,12 @@ async function loadRecords(m){
     if(!list)return;
     if(!rows.length){list.innerHTML=`<div class="rec-empty">${alone?'no names in this page\u2019s ledger yet':'no names yet — the page is still blank'}</div>`;}
     else{
-      let html=`<div class="rec-h"><span>RANK</span><span>NAME</span><span>${m==='abyss'?'WAVE':(m==='meido'?'MARKS':((m==='story'||m==='story2')?'ACTS':'DUELS'))}</span><span>KILLS</span><span>TIME</span><span>DIFF</span></div>`;
+      let html=`<div class="rec-h"><span>RANK</span><span>NAME</span><span>${m==='abyss'?'WAVE':(m==='meido'?'MARKS':((m==='story'||m==='story2'||m==='story3')?'ACTS':'DUELS'))}</span><span>KILLS</span><span>TIME</span><span>DIFF</span></div>`;
       const DFK=['静','嵐','狱'];
       rows.forEach((r,i)=>{
         const me=r.name===SAVE.recordsName;
         html+=`<div class="rec-r${me?' me':''}"><span class="pos">${i+1}</span><span class="nm">${escapeHtml(r.name)}</span>`+
-          `<span class="dim mono">${m==='abyss'?('w'+r.wave):(m==='meido'?('m'+r.wave):((m==='story'||m==='story2')?(r.wave+'/'+(m==='story2'?'6':'7')):(r.wave+'/10')))}</span><span class="dim mono">${r.kills}</span>`+
+          `<span class="dim mono">${m==='abyss'?('w'+r.wave):(m==='meido'?('m'+r.wave):((m==='story'||m==='story2'||m==='story3')?(r.wave+'/'+(m==='story2'?'6':(m==='story3'?'3':'7'))):(r.wave+'/10')))}</span><span class="dim mono">${r.kills}</span>`+
           `<span class="dim mono">${fmtT(r.timeSec)}</span><span class="dim">${DFK[r.difficulty]||'嵐'}</span></div>`;});
       if(alone)html+=`<div class="rec-empty">the wider records are beyond this page\u2019s reach — these names live in its own ledger</div>`;
       list.innerHTML=html;}
@@ -3698,7 +4035,8 @@ async function loadRecords(m){
       else if(m==='meido')own.textContent=SAVE.abyssUnlocked?(SAVE.meidoBest?'your deepest mark: '+SAVE.meidoBest:'you have not walked the night yet'):'';
       else if(m==='gauntlet')own.textContent=SAVE.gauntletBest?('your best gauntlet: '+fmtT(SAVE.gauntletBest)):'';
       else if(m==='story')own.textContent=SAVE.gauntletUnlocked?'the ink road is finished':'finish act 7 to be counted';
-      else if(m==='story2')own.textContent=SAVE.achieved2?'the vermilion road is finished':'refuse the seal to be counted';}
+      else if(m==='story2')own.textContent=SAVE.achieved2?'the vermilion road is finished':'refuse the seal to be counted';
+      else if(m==='story3')own.textContent=SAVE.achieved3?'the last page is written — the chronicle is finished':'finish the last page to be counted';}
   }catch(e){
     if(list)list.innerHTML='<div class="rec-empty">the records are beyond this page\u2019s reach</div>';}}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -3747,19 +4085,37 @@ function renderBesti(){
   const body=$('#besti-body');if(!body)return;
   const row=(def,k)=>`<div class="brow"><div class="bk">${def.k}</div><div><div class="bn">${def.name}</div><div class="bd">${BESTIARY[k]||''}</div></div></div>`;
   const section=(title,sub,rows)=>`<div class="helpcol"><h4>${title} <small style="font-weight:600;color:var(--ink2)">${sub}</small></h4><div class="besti">${rows.join('')}</div></div>`;
-  const s1e=[],s1b=[],s2e=[],s2b=[];
+  const s1e=[],s1b=[],s2e=[],s2b=[],s3e=[],s3b=[];
   for(const k in ENEMY){const e=ENEMY[k];if(!e)continue;
-    (e.s2?s2e:s1e).push(row(e,k));}
+    (e.s3?s3e:(e.s2?s2e:s1e)).push(row(e,k));}
   for(const k in BOSSES){const b=BOSSES[k];if(!b)continue;
-    (b.s2?s2b:s1b).push(row({name:b.name,k:b.kanji},k));}
+    (b.s3?s3b:(b.s2?s2b:s1b)).push(row({name:b.name,k:b.kanji},k));}
   body.innerHTML=
     section('THE INK ROAD 墨','the first story',s1e.concat(s1b))+
-    section('THE VERMILION ROAD 朱','the second story',s2e.concat(s2b));}
+    section('THE VERMILION ROAD 朱','the second story',s2e.concat(s2b))+
+    section('THE LAST PAGE 終','the finale · both roads remembered',s3e.concat(s3b));}
 
 // ---- the chronicle: the scroll of changes, hung beside the records -------------
 
 const CHTAG={new:'新',fix:'修',vis:'絵',cbt:'戦',eco:'社',base:'基'};
 const CHRONICLE=[
+  {v:'3.0',kan:'終',name:'update 3.0 — the last page',note:'the final edition. a third road opens where both roads ended, and the page itself wakes to be cut',items:[
+    ['new','THE LAST PAGE 終·路: a whole third campaign — the finale both roads were pointing at. three acts across the unwritten margin 白, the hundred parade 百 (every foe the page ever drew, walking at once), and the last page itself 終: three stages and the true end. it opens to a hand that has walked a road to its end, and the roads page now hangs three stories side by side — 墨 · 朱 · 終'],
+    ['new','THE AUTHOR 白紙: HAKUSHI, the author of the blank — a tall calligrapher in white holding the great brush in its high hand and a katana in its low one, a blank paper mask with a single vermilion seal for an eye, an unfinished enso for a halo, and ink still dripping from the tuft mid-fight. it fights with the whole vocabulary of both roads — stamp falls, lunar orbits, mirror servants of you, spiral storms — plus one move no road knew: INK RAIN, the page stamped blank in a falling field. past half it writes its second draft and stops asking'],
+    ['new','THE REDRAWN KEEPERS: the page remembers its own — UZU returns redrawn in rougher ink, half eraser-holes and sketch lines, a red seal pressed where it cracked, faster for what it lost; and GINRO comes back half-erased with the parade behind it. both wear the erasure honestly: paper shows through their wounds'],
+    ['new','THE HAND YOU TRUST: the last page asks its question before every walk — who walks it? the ronin 墨 with deflect and posture, or AKANE 茜 with her momentum and her crimson tide — and it remembers the hand you last trusted. both bodies already know how to walk the finale; the page simply asks which one you believe'],
+    ['fix','the page finally says its own name right — the title wore update 2.8 long after the ink had moved on; it reads 3.0 「終」 the last page now, and what you download is what you see'],
+    ['new','the bestiary files the last page under its own seal, the records keep a FINAL ledger, and the true ending is written: the page is written, the brush is set down — the chronicle is finished']]},
+  {v:'2.9',kan:'歩',name:'update 2.9 — the stride & the cheap page',note:'the gliding died, the enemies walk, and the frame stopped paying for paper it never needed',items:[
+    ['vis','THE STRIDE 歩: enemies no longer slide — every grounded foe of both roads walks on REAL legs, painted live under the body: a thigh from the hip, a knee that leads the step, a sandal that plants, lifts and shrinks as it rises, and a base that widens with every stride. quads (the hound, the fox, the nekomata, the shishi) trot on diagonal pairs; the sparrow springs as one; the kappa gets its stubby river legs back; the hips ride the body\u2019s own sway so the whole figure walks as one — and the dying body\u2019s last fade now eases out instead of ticking'],
+    ['vis','THE CLOTH ANSWERS: oni, ronin, tengu and the kagura dancer drag a live rag of cloth behind them when they hurry — it lags their turn, waves with the wind and their own stride, and eases away when they slow; the sorcerer\u2019s hem and the broker\u2019s lantern now hang a quiet inch above the dirt and roll with it, like things that never quite stand'],
+    ['fix','THE CHEAP PAGE 疾: the frame carried eight fullscreen composites it did not need — the screen\u2019s vignette now rides baked inside the cached grade sheet (one pass, not two), the bloom folds its wide halo into its tight glow at the exact old arithmetic (one additive sheet, not two), and the world of old blood is gone as a layer entirely: every splat, leak and cut-arc is pressed straight into the floor\u2019s own weaves the moment it lands. measured on the field: a full render fell from ~22ms to ~2ms, the dramatic moment included'],
+    ['fix','the menu\u2019s weather used to walk the DOM sixty times a second just to learn no menu was open — it asks every sixteenth beat now, and the answer arrives the same']]} ,
+  {v:'2.8',kan:'威',name:'update 2.8 — the dressed stage',note:'every act learned what a stage holds, and every mask learned how to mean it',items:[
+    ['vis','THE DRESSED STAGE 威·場: the page knew weather and light; it did not know PROPS. every act now carries set pieces with a past — scarecrows and sheaves in the rice, the drowned bridge and its capsized sampan under the rain, stone tōrō and shimenawa ropes in the bamboo court, snow-capped jizō and wandering footprints on the white road, a war camp of taiko drums, tate shields, spent arrows and a spear rack in the storm, gorintō graves and a charred gate in the ash, the painter’s half-finished sketches on the blank page — and the vermilion road gains its torii, red spider lilies, votive ema, a moored lantern raft, the hollow’s root arch, a lone wind-bent tree, a fallen bell and the inkstone itself'],
+    ['vis','THE LIVE SET: the stage breathes while you fight — sashimono war banners whipping in the real wind, water wheels turning in the current, shide paper streamers swinging on their ropes, smoke crawling off the burnt vents, dragonflies patrolling the evening fields, the night road’s shrine lamp breathing on its post — all pure functions of the clock, view-culled, seeded so nothing shuffles'],
+    ['vis','THE AIR HAS DEPTH: a far scenery band above the arena drifts at a fraction of the camera’s pace — dusk hills with terraces and farmhouse roofs, drowned trees in the rain haze, forest walls, the moon road’s pagoda, the silver grass running to the horizon — and a near silhouette band below the field slides slightly faster than the world: tall grass, reeds, pampas plumes, hanging roots. two cached canvases, two drawImages: the page gains a foreground and a horizon for free'],
+    ['vis','THE MASKS MEAN IT 威: every foe and keeper of both roads recut with a predator’s grammar — slitted eyes under heavy brows that glare instead of decorate, fanged underbites breaking the mask’s edge, arms that reach past the body on splayed claws, weapons oversized and notched with service, hides gouged with old scars, cloth torn to points rather than hemmed. the kappa grins all teeth; the oni’s shoulders carry spikes; the wraith’s three-clawed hands reach longer than its shroud; the hound shows its ribs and its fangs both; the keepers arrive wearing their wars — and the fox of the vermilion road is a wedge skull, tall ears, long muzzle: a wolf that learned patience']]} ,
   {v:'2.7',kan:'映',name:'update 2.7 — the cinematic cut',note:'the camera learned to frame the fight, every cut learned to land somewhere, and the title leans toward your hand',items:[
     ['vis','THE FRAMING EYE 映: the camera no longer merely follows — it leans into your own stride, keeps the nearest threat inside the shot (and lets a keeper OWN it), and breathes: a duel is held a breath closer, a crowd is given room, a keeper\u2019s entrance is honoured with a slow lean in. one zoom, eased at the pace of a held breath, shared honestly by the world, the light-passes and your own aim'],
     ['vis','EVERY CUT LANDS: ink now sprays along the steel\u2019s own line, fanning off the cut\u2019s edge, and a short bright glint — six seeded rays, gold when the cut is deep — is born at the exact point of contact and feeds the page\u2019s light; every kill lands a tiny cinematic pop of zoom; the dash kicks the dust it leaves behind'],
@@ -4198,7 +4554,9 @@ function render(){ctx.setTransform(DPR,0,0,DPR,0,0);
   ctx.globalAlpha=1;
   if(inGame&&G.hurtV>0){ctx.globalAlpha=Math.min(.55,G.hurtV);ctx.drawImage(vigHurt(),0,0,W,H);ctx.globalAlpha=1;}
   if(inGame&&G.hurtAT>0)drawHurtArc();
-  if(vigC)ctx.drawImage(vigC,0,0,W,H);
+  // update 2.9 「疾」: in the game the vignette is baked into the grade sheet;
+  // the title and its menus keep the separate pass (they own no grade)
+  if(vigC&&!inGame)ctx.drawImage(vigC,0,0,W,H);
   if(inGame)drawArtsSlash();
   if(inGame&&G.lbx>.01)drawLetterbox();
   if(inGame&&G.wipe)drawWipe();
@@ -4233,6 +4591,7 @@ function renderWorld(){
     const dem=zp*DPR;
     const fsrc=(dem>1.6&&G.floorMip)?G.floorC:(G.floorMip||G.floorC);
     ctx.drawImage(fsrc,0,0,RW,RH);}
+  if(window.DECO)DECO.drawFar(); // update 2.8 「威」: the horizon above the arena — hills, forest walls, the far pagoda, drifting at their own pace
   const act=curAct();
   if(window.AMBI2)AMBI2.onFloor(act); // heavy ambience: cloud-shadows, ground life
   if(act===1||act===3||act===7){ // dawn light leans through in living shafts
@@ -4251,10 +4610,13 @@ function renderWorld(){
   if(act===2){drawWater();drawRipples();drawRainSplashes();}
   else if(act===5)drawRainSplashes(); // the storm's rain lands somewhere now
   drawProps();
+  if(window.DECO)DECO.drawLive(act); // update 2.8 「威」: banners answering the wind, wheels turning, streamers swinging — the set breathes
   drawLanterns(); // the bamboo court's lanterns breathe
   drawSnowGlints(); // the white gale glitters
   drawFireflies();
-  ctx.globalAlpha=.92;ctx.drawImage(G.decalC,0,0,RW,RH);ctx.globalAlpha=1;
+  // update 2.9 「疾」: the decal sheet is gone — blood and cuts are pressed into
+  // the floor's own weaves the moment they land (paintFloor), so the frame no
+  // longer composites a whole extra world of old ink every tick
   ctx.globalAlpha=.15;
   for(let i=0;i<4;i++){const mx=((hash01(i*9.7)*RW)+G.t*(6+i*3))%(RW+500)-250;
     const my=RH*(.18+.2*i)+Math.sin(G.t*.3+i*1.7)*16;ctx.drawImage(MIST[i%3],mx-200,my-100,400,200);}
@@ -4388,6 +4750,7 @@ function renderWorld(){
   ctx.globalAlpha=1;ctx.textAlign='left';
   drawWeather();
   drawGusts();
+  if(window.DECO)DECO.drawNear(); // update 2.8 「威」: the world's hem — silhouettes closer than the fight itself
   if(window.AMBI2)AMBI2.overWorld(act); // heavy ambience: foreground depth, drifting bodies
   ctx.restore();}
 
@@ -4552,6 +4915,7 @@ function drawGusts(){
     ctx.stroke();}
   ctx.globalAlpha=1;}
 function drawWeather(){const act=curAct();
+  if(act>=17&&window.STORY3)return STORY3.drawWeather(act);
   if(act>=11&&window.STORY2)return STORY2.drawWeather(act);
   const n=Math.round((act===5?46:(act===4?30:(act===1?12:(act===6?18:(act===3?10:(act===7?10:(act===9?16:14)))))))*(IS_TOUCH?.6:1));
   // update 2.6 「動」: weather is honest about where the eye stands — the sky
@@ -4689,9 +5053,9 @@ function drawSlash(s){
   ctx.globalAlpha=(1-p)*.55;ctx.strokeStyle='#f6f1e2';ctx.lineWidth=2;
   ctx.beginPath();ctx.arc(P.x,P.y,s.range*.9,sa,ea);ctx.stroke();
   ctx.globalAlpha=1;
-  if(!s.stamped&&G.dctx){s.stamped=true;
-    G.dctx.strokeStyle='rgba(29,26,22,0.07)';G.dctx.lineWidth=10;
-    G.dctx.beginPath();G.dctx.arc(P.x,P.y,s.range,sa,ea);G.dctx.stroke();}}
+  if(!s.stamped&&G.floorC){s.stamped=true; // the cut leaves its arc pressed into the weave
+    paintFloor(g=>{g.strokeStyle='rgba(29,26,22,0.07)';g.lineWidth=10;
+      g.beginPath();g.arc(P.x,P.y,s.range,sa,ea);g.stroke();});}}
 function spreadTip(s){return Math.min(s.spread*.5,.7);}
 
 function drawProj(pr){
@@ -4746,36 +5110,80 @@ function shadowBlob(x,y,r,squash=1){
   ctx.fillStyle=gr.shadow;
   ctx.beginPath();ctx.ellipse(x+ox,y+r*.85+oy,r*.95*squash,r*.36*squash,0,0,TAU);ctx.fill();}
 
-// feet for the grounded types — the walk cycle lives here, not in the bake.
-// hovers (wraith, mirror, sorc, broker) and the webbed kappa skip it.
-const FOOTCOL={oni:'#6b4438',tengu:'#b98c2e',kame:'#2c3428',hound:'#26221e',kitsune:'#8a5a30',doro:'#544536',doroko:'#544536',suzume:'#6b4e2e',nekomata:'#2b241d',shishi:'#5a4a36'};
-const NOFEET={kappa:1,wraith:1,mirror:1,sorc:1,broker:1,wisp:1};
-// update 2.6 「動」: the stride is a real walk — feet advance on the same phase
-// the body sways on, diagonal pairs trot out of step for quads, the striding
-// foot lifts (a touch smaller as it rises), and the cycle's frequency follows
-// the body's real speed, eases off on stopping, and never freezes mid-stride
-function drawFeet(e){
+// update 2.9 「歩」: THE STRIDE — the gliding dies here. the sprites carry no
+// legs (the bake paints torso and arms only), so the walk lives under the
+// body: a thigh from the hip, a knee that leads the step, a sandal that
+// plants and lifts. quads trot on diagonal pairs, the sparrow springs as
+// one, hovers (wraith, mirror, wisp, the floating broker and the sorcerer's
+// hem) and the mud (doro, doroko) keep their own modes of travel.
+const LEGS={
+  kappa:{c:'#3a4a38',f:'#242c22',w:1.3},       // stubby river legs, wide-set
+  oni:{c:'#4a2e28',f:'#241f1c',w:1.75},       // pillars that fall forward
+  tengu:{c:'#2e2a33',f:'#c9932a',w:.95},       // bird shanks, gold talons
+  kame:{c:'#2c3428',f:'#1d1a16',w:1.5},        // squat, deliberate
+  ronin:{c:'#33302e',f:'#2b241d',w:1.1},
+  archer:{c:'#3f4a3f',f:'#2b241d',w:1.05},
+  kagura:{c:'#b3372a',f:'#e2dac8',w:1.1},      // red hakama, pale foot
+  hound:{quad:1,c:'#26221e',f:'#1d1a16',w:1.05},
+  kitsune:{quad:1,c:'#a34a24',f:'#241f1c',w:.95},
+  nekomata:{quad:1,c:'#2e2a33',f:'#1d1a16',w:1},
+  shishi:{quad:1,c:'#8c7a5c',f:'#4e4232',w:1.3},
+  suzume:{hop:1,c:'#6b4e2e',f:'#c9762e',w:.8}}; // both springs at once
+const NOFEET={wraith:1,mirror:1,sorc:1,broker:1,wisp:1,doro:1,doroko:1}; // the legless ways of moving
+// cloth that answers the stride — a rag dragged behind the fast walkers
+const TRAIL={oni:'rgba(74,46,40,0.6)',ronin:'rgba(140,43,31,0.55)',tengu:'rgba(34,31,40,0.55)',kagura:'rgba(232,226,210,0.6)'};
+function drawLegs(e,L){
   const a=window.ANIM?ANIM.pose(e):null;
-  const quad=e.type==='hound';
-  const col=FOOTCOL[e.type]||'#2b241d';
-  const perp=e.r*.5,fs=e.r*.3;
-  const rows=quad?[.42,-.3]:[.05];
+  const fa=e.facing,r=e.r;
   const ph=a?a.ph:e.bob;
-  const amp=a?a.fA:(Math.sqrt(e.vx*e.vx+e.vy*e.vy)>20?1:0);
-  for(const o of rows)for(let s=-1;s<=1;s+=2){
-    const side=e.facing+PI/2*s;
-    const sw=Math.sin(ph+(o<0?PI*.85:0));
-    const step=sw*s*fs*(o<0?-1:1)*amp;
-    const lift=Math.max(0,sw*s)*1.7*amp; // the striding foot rises
-    const fss=fs*(1-lift*.16);
-    const fx=e.x+Math.cos(e.facing)*o*e.r+Math.cos(side)*perp+Math.cos(e.facing)*step;
-    const fy=e.y+Math.sin(e.facing)*o*e.r+Math.sin(side)*perp+Math.sin(e.facing)*step-lift;
-    ctx.fillStyle=col;
-    ctx.beginPath();ctx.ellipse(fx,fy,fss,fss*.62,side,0,TAU);ctx.fill();}}
+  const amp=a?a.fA:((e.vx||0)+(e.vy||0)?1:0);
+  const swy=(a?a.swy:0)*.8; // the hips ride the body's own sway
+  const cf=Math.cos(fa),sf=Math.sin(fa);
+  const w=Math.max(1.7,r*.26*(L.w||1));
+  const fss=Math.max(1.4,r*.15);
+  const sides=L.quad?[.34,-.34]:[.46,-.46]; // hip spread along the perpendicular
+  const rows=L.quad?[.44,-.36]:[0];        // fore/hind along the facing
+  ctx.lineCap='round';
+  let li=0;
+  for(const o of rows)for(const sgn of sides){
+    const p=L.hop?Math.sin(ph):Math.sin(ph+((li&1)?Math.PI:0)+(o<0?Math.PI*.82:0));
+    li++;
+    const side=fa+PI/2*((sgn>0)?1:-1);
+    const cs=Math.cos(side),ss=Math.sin(side);
+    const hipX=e.x+cf*(o*r+swy)+cs*r*sgn,hipY=e.y+sf*(o*r+swy)+ss*r*sgn;
+    const spread=r*(L.quad?0:.1*Math.abs(p))*amp; // a stride widens its base
+    const step=p*r*(L.quad?.55:.5)*amp;
+    const lift=Math.max(0,p)*amp;                  // the striding foot rises
+    const base=r*(L.quad?.12:.2);
+    const footX=hipX+cf*(base+step)+cs*spread;
+    const footY=hipY+sf*(base+step)+ss*spread;
+    // the knee leads the step — a bow in the shin, not a straight post
+    const kneeX=(hipX+footX)*.5+cs*r*.10+cf*r*.07*p;
+    const kneeY=(hipY+footY)*.5+ss*r*.10+sf*r*.07*p;
+    ctx.strokeStyle=L.c;ctx.lineWidth=w*(1-lift*.12);
+    ctx.beginPath();ctx.moveTo(hipX,hipY);ctx.quadraticCurveTo(kneeX,kneeY,footX,footY);ctx.stroke();
+    ctx.fillStyle=L.f;
+    ctx.beginPath();ctx.ellipse(footX,footY-lift*1.6,fss*(1-lift*.22),fss*.66*(1-lift*.22),side,0,TAU);ctx.fill();}}
+// the rag the wind keeps — one stroke of cloth behind a body in a hurry
+function drawTrail(e){
+  const a=window.ANIM?ANIM.pose(e):null;
+  const k=a?a.tr:0;if(k<=.02)return;
+  const fa=e.facing,r=e.r;
+  const bx=e.x-Math.cos(fa)*r*.7,by=e.y-Math.sin(fa)*r*.7;
+  const len=r*(1.1+k*.9)+a.spd*.02;
+  const wav=Math.sin(a.ph*.5+G.t*2.1)*.3+G.wind*.35;
+  const ang=fa+PI+wav*k;
+  ctx.strokeStyle=TRAIL[e.type];ctx.globalAlpha=.5*k;ctx.lineCap='round';
+  ctx.lineWidth=r*.2;
+  ctx.beginPath();ctx.moveTo(bx,by);
+  ctx.quadraticCurveTo(bx-Math.cos(ang)*len*.55,by-Math.sin(ang)*len*.55,
+    bx-Math.cos(ang+wav*.4)*len,by-Math.sin(ang+wav*.4)*len);
+  ctx.stroke();ctx.globalAlpha=1;}
 
 function drawEnemy(e){ctx.save();
   if(e.dead){ // the ink lets go slowly: the body fades, lifts, and thins
-    const q=Math.min(1,(e.deadT||0)/.42);
+    const q0=Math.min(1,(e.deadT||0)/.42);
+    const q=1-Math.pow(1-q0,2); // update 2.9 「歩」: the last breath lands soft — an eased departure, not a timed one
     if(q<1){
       shadowBlob(e.x,e.y,e.r*(1-q*.6));
       ctx.translate(e.x,e.y-q*14);
@@ -4791,8 +5199,13 @@ function drawEnemy(e){ctx.save();
   if(e.boss&&e.id==='orochi')drawSerpentBody(e);
   if(window.MODELS)MODELS.pool(e); // 華: light spills around the shadow
   shadowBlob(e.x,e.y,e.r,1+(e.state==='windup'?-.12:0));
-  if(!NOFEET[e.type]&&!e.boss)drawFeet(e);
-  const hover=(e.type==='wraith'||e.type==='mirror'||e.type==='wisp')?5+Math.sin(e.bob*.7)*3:0;
+  if(!e.boss){ // update 2.9 「歩」: cloth that answers the stride, then the stride itself
+    if(TRAIL[e.type])drawTrail(e);
+    const L=LEGS[e.type];if(L)drawLegs(e,L);}
+  // the hem never touches the dirt: wraiths, mirrors and wisps hang in the air,
+  // the broker sways on its string, the sorcerer's robe keeps an inch of quiet
+  const hvT=(e.type==='wraith'||e.type==='mirror'||e.type==='wisp')?5:(e.type==='broker'?3.5:(e.type==='sorc'?2.5:0));
+  const hover=hvT?hvT+Math.sin(e.bob*.7)*3:0;
   // update 2.6 「動」: the pose is the ANIM layer's — stance lunges, windup
   // coils, stride sway and boss entrances all arrive eased, never stepped
   const a=window.ANIM?ANIM.pose(e):null;
@@ -4930,7 +5343,7 @@ function drawPlayer(){
   const bob=Math.sin(P.walk*2.3)*(moving?2.2:.7);
   ctx.translate(0,bob*.35);
   // cloak: two ragged brushes that follow motion and wind
-  const s2h=!!(G.run&&G.run.story===2&&window.STORY2);
+  const s2h=!!(G.run&&(G.run.story===2||G.run.hero===2)&&window.STORY2);
   const pal=s2h?STORY2.palette():null;
   const back=fa+PI;
   const flap=Math.sin(G.t*9+P.walk)*.25+(moving?.35:.12);
@@ -5355,6 +5768,7 @@ function drawHUD(){
   if(run.gauntlet)ctx.fillText(`THE GAUNTLET 連 · duel ${G.gauntIdx+1}/${GAUNTLET.length} · ${sd.n}${ashTag}`,W/2,rlY);
   else if(run.meido)ctx.fillText(`THE NIGHT ROAD 冥 · mark ${run.milestone}${run.daily?' · daily rite':''} · seed ${run.seed}${ashTag}`,W/2,rlY);
   else if(run.abyss)ctx.fillText(`THE ABYSS · wave ${run.wave} · deepest ${SAVE.abyssBest+1}${ashTag}`,W/2,rlY);
+  else if(run.story===3)ctx.fillText(`終 THE LAST PAGE · ${run.hero===2?'AKANE 茜':'THE NAMELESS BLADE'} · act ${run.act}/3 · stage ${run.stage}/${ACTS_OF()[run.act-1].stages.length} · ${sd.n||''}${ashTag}`,W/2,rlY);
   else if(run.story===2)ctx.fillText(`朱 VERMILION · AKANE 茜 · act ${run.act}/6 · stage ${run.stage}/${ACTS_OF()[run.act-1].stages.length} · ${sd.n||''}${ashTag}`,W/2,rlY);
   else{const act=ACTS[run.act-1];
     ctx.fillText(`ACT ${act.kanji} · stage ${run.stage}/${act.stages.length} · ${sd.n||''}${ashTag}`,W/2,rlY);

@@ -201,23 +201,33 @@ S.grade={
 // (painters run at bake time, long after the engine has defined its helpers)
 
 S.painters={
-  kitsune(g){ // a young fox: russet fur, cream chest, one clever eye
-    g.fillStyle='#b5552c';
-    g.beginPath();g.moveTo(-6,-7);g.quadraticCurveTo(-22,-13,-26,-4);g.quadraticCurveTo(-16,-1,-7,-3);g.closePath();g.fill();
-    g.beginPath();g.moveTo(-6,7);g.quadraticCurveTo(-22,13,-26,4);g.quadraticCurveTo(-16,1,-7,3);g.closePath();g.fill();
+  kitsune(g){ // a young fox — but a fox is a wolf that learned patience: lean, long, low
+    g.fillStyle='#b5552c'; // the brush tail, ragged at the tip
+    g.beginPath();g.moveTo(-6,-7);g.quadraticCurveTo(-23,-14,-28,-4);g.lineTo(-24,-2);g.quadraticCurveTo(-26,2,-23,4);
+    g.lineTo(-27,6);g.quadraticCurveTo(-21,13,-6,7);g.closePath();g.fill();
     g.fillStyle='#8a3d1f';
-    g.beginPath();g.moveTo(-5,-6);g.quadraticCurveTo(-18,-10,-21,-3);g.quadraticCurveTo(-13,-1,-5,-2);g.closePath();g.fill();
-    oBlob(g,-3,0,13,10,'#b5552c');sheen(g,-3,-4,10,7,'rgba(246,241,226,0.2)');
-    g.fillStyle='#e6d9c0';g.beginPath();g.ellipse(3,0,7,5.5,0,0,TAU);g.fill();
-    oBlob(g,9,0,7,6,'#b5552c');
-    g.fillStyle='#efe6d4';g.beginPath();g.moveTo(14,-3);g.lineTo(18,0);g.lineTo(14,3);g.closePath();g.fill();
-    g.fillStyle=INK;g.beginPath();g.arc(10,-2.5,1.4,0,TAU);g.fill();
-    g.fillStyle='#7a3018';
-    g.beginPath();g.moveTo(3,-5.4);g.lineTo(6,-9.6);g.lineTo(7.5,-4.6);g.closePath();g.fill();
-    g.beginPath();g.moveTo(3,5.4);g.lineTo(6,9.6);g.lineTo(7.5,4.6);g.closePath();g.fill();
-    g.strokeStyle='rgba(120,60,30,0.7)';g.lineWidth=1.1;
-    g.beginPath();g.moveTo(-16,-11);g.lineTo(-17,-15);g.stroke();
-    g.beginPath();g.moveTo(-19,-10);g.lineTo(-22,-13);g.stroke();},
+    g.beginPath();g.moveTo(-5,-5);g.quadraticCurveTo(-19,-10,-22,-3);g.lineTo(-18,-1);g.quadraticCurveTo(-19,2,-16,4);g.lineTo(-5,2);g.closePath();g.fill();
+    g.fillStyle='#e6d9c0';g.beginPath();g.moveTo(-20,-5);g.lineTo(-26,-3);g.lineTo(-21,0);g.closePath();g.fill(); // the pale tail-tip
+    oBlob(g,-3,0,14,8.2,'#b5552c');sheen(g,-3,-3,11,6,'rgba(246,241,226,0.2)'); // a runner's flank, not a ball
+    g.fillStyle='#e6d9c0';g.beginPath();g.ellipse(2,0,7,4.6,0,0,TAU);g.fill(); // the cream chest, narrow
+    // the skull: a wedge, not a circle — ears tall and sharp
+    g.fillStyle='#a34a24';
+    g.beginPath();g.moveTo(4,-5.6);g.lineTo(5.4,-11);g.lineTo(8.4,-5.2);g.closePath();g.fill();
+    g.beginPath();g.moveTo(4,5.6);g.lineTo(5.4,11);g.lineTo(8.4,5.2);g.closePath();g.fill();
+    g.fillStyle='#2c1a10';
+    g.beginPath();g.moveTo(5.4,-11);g.lineTo(6.4,-9.4);g.lineTo(7.6,-10.2);g.closePath();g.fill();
+    g.beginPath();g.moveTo(5.4,11);g.lineTo(6.4,9.4);g.lineTo(7.6,10.2);g.closePath();g.fill();
+    oBlob(g,9,0,7.4,5.2,'#b5552c');
+    g.fillStyle='#efe6d4'; // the long muzzle, nose dark
+    g.beginPath();g.moveTo(13,-2.6);g.lineTo(20,0);g.lineTo(13,2.6);g.closePath();g.fill();
+    g.fillStyle='#241f1c';g.beginPath();g.arc(19.4,0,1.3,0,TAU);g.fill();
+    g.strokeStyle='#241f1c';g.lineWidth=.9; // the mouth line, just begun to part
+    g.beginPath();g.moveTo(14,0);g.lineTo(18,.8);g.stroke();
+    g.fillStyle='#e6dfcc';g.beginPath();g.moveTo(16,-1.4);g.lineTo(17.6,-.6);g.lineTo(15.8,0);g.closePath();g.fill(); // a tooth shows
+    glare(g,11,0,2,'#ffb648',2.6); // a fox's amber, narrowed
+    g.strokeStyle='rgba(120,60,30,0.7)';g.lineWidth=1.1; // whisker stubs
+    g.beginPath();g.moveTo(13,-2);g.lineTo(16,-4);g.stroke();
+    g.beginPath();g.moveTo(13,2);g.lineTo(16,4);g.stroke();},
   wisp(g){ // a cold flame keeping an unhung lantern: teal core, paper shade
     g.globalAlpha=.92;
     g.fillStyle='rgba(74,126,140,0.55)';
@@ -230,6 +240,7 @@ S.painters={
     g.fillStyle='#f0d27a';g.beginPath();g.arc(1,1,1.8,0,TAU);g.fill();
     g.strokeStyle='#8c3a20';g.lineWidth=1.2;
     g.beginPath();g.moveTo(-7,-9);g.lineTo(9,-9);g.stroke();
+    glare(g,6,0,.9,'#f0d27a',2); // something looks back through the paper
     g.globalAlpha=1;},
   doro(g){ // river mud pressed into a grudge: layered silt, stone eyes
     g.fillStyle='rgba(88,72,58,0.6)';
@@ -244,10 +255,10 @@ S.painters={
     g.fillStyle='#8a7a64';
     g.beginPath();g.arc(0,-6,2.2,0,TAU);g.arc(-2,4,1.8,0,TAU);g.arc(4,7,1.6,0,TAU);g.fill();
     oBlob(g,13,0,10,8.5,'#5a4a3c');
-    g.fillStyle='#2c241c';
-    g.beginPath();g.arc(15,-3,1.8,0,TAU);g.arc(15,3,1.8,0,TAU);g.fill();
-    g.fillStyle='#c9762e';
-    g.beginPath();g.arc(15,-3,0.9,0,TAU);g.arc(15,3,0.9,0,TAU);g.fill();},
+    maw(g,16,0,2.4); // the grudge opens
+    glare(g,15,0,1.4,'#c9762e',3); // coal-light in the silt
+    g.strokeStyle='#3f3327';g.lineWidth=1.2; // a crack runs the length of it
+    g.beginPath();g.moveTo(-10,-9);g.lineTo(-2,-3);g.lineTo(-9,4);g.stroke();},
   doroko(g){ // half a grudge, still moving
     g.fillStyle='rgba(88,72,58,0.55)';
     g.beginPath();g.moveTo(-6,-5);g.quadraticCurveTo(-17,-9,-18,0);g.quadraticCurveTo(-17,9,-6,5);g.closePath();g.fill();
@@ -255,8 +266,7 @@ S.painters={
     g.strokeStyle='#544536';g.lineWidth=1.2;
     g.beginPath();g.ellipse(-2,0,9,7,0,0,TAU);g.stroke();
     oBlob(g,7,0,5.5,4.5,'#5a4a3c');
-    g.fillStyle='#2c241c';
-    g.beginPath();g.arc(8,-1.8,1.1,0,TAU);g.arc(8,1.8,1.1,0,TAU);g.fill();},
+    glare(g,8,0,.9,'#c9762e',1.9);},
   suzume(g){ // needle-work sparrow: brown wings, a fan of darts
     g.fillStyle='#8a6a42';
     g.beginPath();g.moveTo(-3,-6);g.lineTo(-15,-13);g.lineTo(-5,-1);g.closePath();g.fill();
@@ -266,8 +276,8 @@ S.painters={
       g.beginPath();g.moveTo(-4-i*2,7+i*2);g.lineTo(-13-i*1.5,11+i*2.4);g.stroke();}
     oBlob(g,-2,0,10,8.5,'#9c7850');sheen(g,-2,-3,8,6.5,'rgba(246,241,226,0.2)');
     oBlob(g,7,0,6,5.5,'#b08a5c');
-    g.fillStyle='#2c241c';g.beginPath();g.arc(8,-1.8,1.2,0,TAU);g.arc(8,1.8,1.2,0,TAU);g.fill();
-    g.fillStyle='#c9762e';g.beginPath();g.moveTo(12,0);g.lineTo(16,-1.4);g.lineTo(16,1.4);g.closePath();g.fill();
+    glare(g,8,0,1,RED2,2); // a sparrow's fixed little stare
+    g.fillStyle='#c9762e';g.beginPath();g.moveTo(12,0);g.lineTo(17,-1.4);g.lineTo(17,1.4);g.closePath();g.fill(); // the beak, needle-fine
     g.strokeStyle='#54483a';g.lineWidth=1.6;g.lineCap='round';
     for(let i=0;i<3;i++){const a=-.5+i*.5;
       g.beginPath();g.moveTo(12,0);g.lineTo(12+Math.cos(a)*9,Math.sin(a)*9);g.stroke();}},
@@ -281,7 +291,8 @@ S.painters={
     oBlob(g,-2,0,12,9.5,'#3a3542');sheen(g,-2,-4,9.5,7,'rgba(246,241,226,0.16)');
     g.fillStyle='#4a4556';g.beginPath();g.ellipse(2,0,7,5.5,0,0,TAU);g.fill();
     oBlob(g,9,0,6.5,5.5,'#3a3542');
-    g.fillStyle=RED2;g.beginPath();g.arc(11,-2,1.5,0,TAU);g.arc(11,2,1.5,0,TAU);g.fill();
+    maw(g,12,0,1.9,'#1d1a16'); // the stalker's smile
+    glare(g,11,0,1.2,RED2,2.4);
     g.fillStyle=RED;
     g.beginPath();g.moveTo(4,-4.8);g.lineTo(6.4,-8.4);g.lineTo(7.8,-3.8);g.closePath();g.fill();
     g.beginPath();g.moveTo(4,4.8);g.lineTo(6.4,8.4);g.lineTo(7.8,3.8);g.closePath();g.fill();},
@@ -298,7 +309,7 @@ S.painters={
     g.strokeStyle='rgba(140,43,31,0.6)';g.lineWidth=1;
     g.beginPath();g.moveTo(-9,0);g.lineTo(7,0);g.stroke();
     oBlob(g,10,0,7,6,'#e2dac8');
-    g.fillStyle='#241f1c';g.beginPath();g.arc(11.5,-2,1.2,0,TAU);g.arc(11.5,2,1.2,0,TAU);g.fill();
+    glare(g,11,0,1.1,'#b3372a',2.2); // the dance is a blade's orbit
     g.strokeStyle='#c9932a';g.lineWidth=1.4;
     g.beginPath();g.arc(0,0,17,-.4,.9);g.stroke();
     g.fillStyle='#c9932a';
@@ -313,10 +324,8 @@ S.painters={
     g.beginPath();g.arc(-4,0,15,0,TAU);g.fill();
     g.fillStyle='#8c7a5c';g.beginPath();g.ellipse(4,0,11,9,0,0,TAU);g.fill();
     oBlob(g,10,0,8,7,'#9c8a6a');
-    g.fillStyle='#241f1c';
-    g.beginPath();g.arc(12,-2.6,1.6,0,TAU);g.arc(12,2.6,1.6,0,TAU);g.fill();
-    g.fillStyle=RED;g.beginPath();g.arc(12,-2.6,.8,0,TAU);g.arc(12,2.6,.8,0,TAU);g.fill();
-    g.fillStyle='#5a4a36';g.beginPath();g.ellipse(12,0,4.4,4,0,0,TAU);g.fill();
+    maw(g,13,0,2.6); // the guardian's whole front is a jaw
+    glare(g,12,0,1.5,RED,3.1);
     g.strokeStyle='#c9932a';g.lineWidth=1.2;
     g.beginPath();g.arc(0,0,24,2.2,3.2);g.stroke();
     g.beginPath();g.arc(0,0,24,5.4,6.4);g.stroke();
@@ -341,8 +350,7 @@ S.bossPainters={
     g.beginPath();g.arc(-14,-12,4,0,TAU);g.arc(2,-16,3.4,0,TAU);g.arc(-8,14,3.6,0,TAU);g.fill();
     oBlob(g,14,0,13,11,'#5c6a44');
     g.fillStyle='#e6dfcc';g.beginPath();g.ellipse(19,0,9,8,0,0,TAU);g.fill();
-    g.fillStyle='#241f1c';g.beginPath();g.arc(21,-3,2.2,0,TAU);g.arc(21,3,2.2,0,TAU);g.fill();
-    g.fillStyle='#c9932a';g.beginPath();g.arc(21,-3,1,0,TAU);g.arc(21,3,1,0,TAU);g.fill();
+    glare(g,20,0,1.5,'#c9932a',3.2); // gold, patient, older than the wood
     g.strokeStyle='#b5552c';g.lineWidth=1.6;
     g.beginPath();g.moveTo(14,-8);g.quadraticCurveTo(20,-12,26,-8);g.stroke();
     caps(g,12,10,34,20,5,'#5c6a44');
@@ -365,7 +373,7 @@ S.bossPainters={
     g.beginPath();g.moveTo(-14,-4);g.quadraticCurveTo(0,-9,12,-3);g.stroke();
     oBlob(g,13,0,11,9,'#374262');
     g.fillStyle='#e6dfcc';g.beginPath();g.ellipse(18,0,7.5,6.5,0,0,TAU);g.fill();
-    g.fillStyle='#241f1c';g.beginPath();g.arc(20,-2.4,1.8,0,TAU);g.arc(20,2.4,1.8,0,TAU);g.fill();
+    glare(g,19,0,1.3,'#a8c4e8',2.7); // the river keeps her cold light
     g.fillStyle='#d8b04a';g.beginPath();g.arc(2,4,3.2,0,TAU);g.fill();
     g.fillStyle='#f0d27a';g.beginPath();g.arc(2,4,1.6,0,TAU);g.fill();
     g.strokeStyle='#8c6d1f';g.lineWidth=1;
@@ -386,7 +394,7 @@ S.bossPainters={
     g.beginPath();g.ellipse(-3,0,19,15,0,-.8,.6);g.stroke();
     oBlob(g,12,0,10,8.5,'#2c2830');
     g.fillStyle='#e6dfcc';g.beginPath();g.ellipse(17,0,7,6,0,0,TAU);g.fill();
-    g.fillStyle=RED;g.beginPath();g.arc(19,-2.4,1.8,0,TAU);g.arc(19,2.4,1.8,0,TAU);g.fill();
+    glare(g,18,0,1.4,RED,2.8); // iron does not blink
     g.fillStyle=RED;
     g.beginPath();g.moveTo(8,-8);g.lineTo(11,-12);g.lineTo(13,-7);g.closePath();g.fill();
     g.fillStyle='#8c8494';
@@ -413,10 +421,11 @@ S.bossPainters={
     g.beginPath();g.ellipse(-6,0,25,19,0,0,TAU);g.stroke();
     oBlob(g,12,0,14,11,'#b8bab4');
     g.fillStyle='#5c5e58';g.beginPath();g.ellipse(20,0,10,8,0,0,TAU);g.fill();
-    g.fillStyle=AMBER;g.beginPath();g.arc(22,-3.4,2.4,0,TAU);g.arc(22,3.4,2.4,0,TAU);g.fill();
+    maw(g,25,0,3); // the alpha's jaw leads
+    glare(g,22,0,1.8,AMBER,3.6);
     g.fillStyle='#241f1c';
-    g.beginPath();g.moveTo(28,-5);g.lineTo(34,-2);g.lineTo(28,-1);g.closePath();g.fill();
-    g.beginPath();g.moveTo(28,5);g.lineTo(34,2);g.lineTo(28,1);g.closePath();g.fill();
+    g.beginPath();g.moveTo(30,-5);g.lineTo(36,-2);g.lineTo(30,-1);g.closePath();g.fill();
+    g.beginPath();g.moveTo(30,5);g.lineTo(36,2);g.lineTo(30,1);g.closePath();g.fill();
     g.strokeStyle='#5c5e58';g.lineWidth=2;
     g.beginPath();g.moveTo(4,-12);g.lineTo(12,-18);g.stroke();
     g.beginPath();g.moveTo(4,12);g.lineTo(12,18);g.stroke();
@@ -434,7 +443,7 @@ S.bossPainters={
     for(let i=1;i<=3;i++)caps(g,-20,i*7,6,i*10,1.4,'#8c8478');
     oBlob(g,12,0,12,10,'#6a655e');
     g.fillStyle='#4c4842';g.beginPath();g.ellipse(18,0,9,7.5,0,0,TAU);g.fill();
-    g.fillStyle='#f0d27a';g.beginPath();g.arc(20,-2.8,2,0,TAU);g.arc(20,2.8,2,0,TAU);g.fill();
+    glare(g,19,0,1.5,AMBER,3.2); // the fire behind the ash
     g.fillStyle=RED;g.beginPath();g.arc(0,2,5,0,TAU);g.fill();
     g.fillStyle='#f0d27a';g.beginPath();g.arc(0,2,2.4,0,TAU);g.fill();
     g.strokeStyle='#c9762e';g.lineWidth=1.6;
@@ -461,7 +470,7 @@ S.bossPainters={
     g.fillStyle=RED;g.fillRect(-8,2,7,7);
     oBlob(g,13,0,11,9.5,'#f0ead8');
     g.fillStyle='#3a3430';g.beginPath();g.ellipse(19,0,8,6.5,0,0,TAU);g.fill();
-    g.fillStyle=RED;g.beginPath();g.arc(21,-2.6,1.8,0,TAU);g.arc(21,2.6,1.8,0,TAU);g.fill();
+    glare(g,20,0,1.4,RED,2.9); // the verdict is already written
     g.strokeStyle=RED;g.lineWidth=1.6;
     g.beginPath();g.moveTo(16,-7);g.lineTo(20,1);g.lineTo(15,7);g.stroke();
     caps(g,14,10,46,22,5,'#f0ead8');

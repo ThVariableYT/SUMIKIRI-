@@ -71,12 +71,17 @@ document.addEventListener('pointerdown',e=>{
 },{passive:true});
 
 // ---- the loop -------------------------------------------------------------------
-let last=0,cleared=false;
+// update 2.9 「疾」: the open-screen probe is a DOM walk, and it used to run
+// every animation tick — even mid-fight, sixty times a second, all of it
+// just to say "no menu". it speaks every 16th tick now (a third of a
+// second at the slowest), and the first tick speaks immediately.
+let last=0,cleared=false,domTick=0,screenOpen=false;
 function frame(ts){
   requestAnimationFrame(frame);
   const now=ts/1000;
   const dt=Math.min(.05,now-(last||now-.016));last=now;
-  const open=document.querySelector('.screen.on')&&!document.hidden&&!REDUCE;
+  if((domTick++&15)===0)screenOpen=!!document.querySelector('.screen.on');
+  const open=screenOpen&&!document.hidden&&!REDUCE;
   if(!open){
     if(!cleared){g.clearRect(0,0,W,H);cleared=true;}
     return;}
